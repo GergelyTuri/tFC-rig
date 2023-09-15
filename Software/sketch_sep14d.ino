@@ -5,20 +5,23 @@
 //   20s: CS
 //   15s: trace
 //   5s: US
-// CS+ continuous 10k HZ
-// CS- Paulsed 2k HZ
+// CS+ continuous 10 kHZ
+// CS- Paulsed 2 kHZ
 
 
-// 1.Water droplit to the lick port
+// 1.Water droplet to the lick port
 // 2.Auditory Cue + temporal delay
 // 3.air puff solenoid valve
-// 4.Lick port
+// 4.Lick port -- We will use ESP32 board for this.
+#include <Arduino.h>
+#include <lickport.h>
 
 int buttonPin = 11;
 int WaterSolenoidPin = 5; //Define water pin. 
 int tonePin = 10; //Define Auditory cue pin.
 int AirpuffPin = 4; //Air puff pin. 
 const int LickPin = 12; // Define lick pin.
+char cueType[] = {'CS-', 'CS+'}; //Define cue type.
 
 const unsigned long waterInterval = 500; 
 unsigned long previousTime = 0; 
@@ -69,16 +72,28 @@ unsigned long currentTime = millis();
     }
   }                          
   
-  //2.Autidoty cue---------------------------------------------------------------------------------------------------------------------------------------------------------------
+  //2.Audidory cue---------------------------------------------------------------------------------------------------------------------------------------------------------------
+  int cueStimulus(cueType);{ //i'm not sure if this is the right way to do it.
+    if (cueType == "CS-") {      
+      return tone(tonePin, 2000, 20000);
+    }
+    else if (cueType == "CS+")
+    {
+      return tone(tonePin, 10000, 20000);
+    }    
+  }
+  
   if (currentTime - previousTime >= preAuditoryCue) {
     int randomValue = random(2); // Generate a random integer between 0 and 1.
     if (randomValue == 1) {
-      tone(tonePin, 2000, 20000); // Play auditory cue for 20 seconds
+      cueStimulus("CS-");
       Serial.println("CS-");
     } else {
-      tone(tonePin, 10000, 20000); // Play auditory cue for 20 seconds
+      cueStimulus("CS+");
       Serial.println("CS+");
-      airPuff();
+      airPuff(); // <- this is not ok. we need a function that will turn on the airpuff for 5s
+      // also we need a controller for determining whether we need the puff at all. e.g.
+      //during training we do no need it, but we will need it during the learning and post-reinforcing phase.
     }
     noTone(tonePin); // Stop playing after 20s
   }
