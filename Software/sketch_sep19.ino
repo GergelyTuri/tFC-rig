@@ -42,6 +42,8 @@ int trialEndTime = 0;
 long trialDur = 20000;
 int waterOn=0;
 
+int LickState = digitalRead(LickPin);  //read the lick state.
+int randomValue = random(2);  // Generate a random integer between 0 and 1.
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void setup() {
   Serial.begin(9600);
@@ -69,6 +71,7 @@ void loop() {
 
   if (sessStart == 1) {
     currentTime = millis();
+    Serial.println("Current time: ", currentTime);
     //Water droplets to the lickport ---------------------------------------------------------------------------------------------------------------------------------------------------------------
     if (waterOn == 0 && currentTime - waterOffTime > IWI) {
       Serial.println("rew ON");
@@ -88,7 +91,7 @@ void loop() {
       }
     }
     //Report Lick---------------------------------------------------------------------------------------------------------------------------------------------------------------
-    int LickState = digitalRead(LickPin);  // Assess lick state.
+      
     if (LickState != oldLickState) {
       //Serial.print("Licking");
       if (LickState == 1) {                           //compare current lick state with past lick state, determine if licking stopped.
@@ -111,10 +114,7 @@ void loop() {
     //Auditory cue and airpuff ---------------------------------------------------------------------------------------------------------------------------------------------
     if (trialStart == 1 && millis() - trialStartTime >= preAuditoryCue) {
       Serial.println("Auditory Cue Start");
-      int randomValue = random(2);  // Generate a random integer between 0 and 1.
-      Serial.println(randomValue);
-      // if (trialOn == 1) {
-     
+      Serial.println("randomValue: ", randomValue);
       if (randomValue == 1) {
         cueStimulus("CS-");
       } else {
@@ -135,7 +135,7 @@ void loop() {
 }
 
 // Auditory Cue -------------------------------------------------------------------------------
-void cueStimulus(const char* cueType) {
+void cueStimulus(const char* cueType) {  //don't understand this part -- Gergo
   if (strcmp(cueType, "CS-") == 0) {
     Serial.println("CS-");
     tone(tonePinNegative, 2000, 20000);  // Play auditory cue- for 20 seconds
