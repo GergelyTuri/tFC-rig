@@ -14,4 +14,4 @@ Graphical representtion of the trace-fear conditioning protocol:
 * times the mouse lickes the lickometer
 
 The trials make up blocks. 
-One block consists of 3 trials of `CS+` and 3 trials of `CS-` in random order.
+One block consists of 3 trials of `CS+` and 3 trials of `CS-` in random order with random inter trial intervals (ITIs) between them.
