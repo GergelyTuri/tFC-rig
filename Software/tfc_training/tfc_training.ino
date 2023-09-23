@@ -1,3 +1,11 @@
+// Maintainers: 
+// 1. @Linxmama
+// 2. @GergelyTuri
+// 
+// This script is used in the training phase of the task. (no airpuff delivered)
+
+// TODO: take out the airpuff part!
+
 // Block: 4-6 trials
 // inter-trial interval: 1-5 minutes
 // Trial:
