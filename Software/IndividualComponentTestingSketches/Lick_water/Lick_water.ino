@@ -2,10 +2,7 @@
 const int LickPin = 12;    // Define lick Pin.
 const int WaterSolenoidPin = 5;
 
-const unsigned long duration = 200;
-
-unsigned long lastLickTime = 0;
-bool isDispensing = false;
+bool isDispensing = false; // shoudl this go to the fuction?
 
 void setup() {
   Serial.begin(9600);
@@ -36,36 +33,27 @@ bool isLicking() {
 
 void waterDispensing(bool isDispensing) { 
     if (isDispensing) {
-      unsigned long timeOutDuration = 200;
+      unsigned long timeOnDuration = 200;
       unsigned long waterOn = millis();
       digitalWrite(WaterSolenoidPin, HIGH);
       Serial.println("water on, ms " + String(waterOn));
-      timeOut(waterOn, timeOutDuration, WaterSolenoidPin);
+      timeOn(waterOn, timeOnDuration, WaterSolenoidPin);
       digitalWrite(WaterSolenoidPin, LOW);
       Serial.println("water off, ms " + String(millis()));
       isDispensing = false;
   }
 }
-// void waterDispensing(bool isDispensing) { 
-//     if (isDispensing) {
-//       unsigned long on = millis();
-//       unsigned long duration = on + 200;
-//       while (millis() < duration) {        
-//           digitalWrite(WaterSolenoidPin, HIGH);
-//           Serial.println("water on, ms " + String(on));
-//           break;
-//       }      
-//       digitalWrite(WaterSolenoidPin, LOW);
-//       Serial.println("water off, ms " + String(millis()));
-//       isDispensing = false;
-//     } else {
-//       digitalWrite(WaterSolenoidPin, LOW);
-//     }    
-// }
 
 void timeOut(unsigned long startTime, unsigned long duration, int pin) {
   unsigned long endTime = startTime + duration;
-  while (millis() < endTime) { // do i need that +5?
+  while (millis() < endTime) {
     digitalWrite(pin, LOW);
+  }
+}
+
+void timeOn(unsigned long startTime, unsigned long duration, int pin) {
+  unsigned long endTime = startTime + duration;
+  while (millis() < endTime) { 
+        digitalWrite(pin, HIGH);
   }
 }
