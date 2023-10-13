@@ -22,24 +22,50 @@ void loop() {
 }
 
 bool isLicking() {
+  unsigned long timeOutDuration = 100;
   int LickState = digitalRead(LickPin);  // Read the lick sensor state.
-
-  if (LickState == HIGH) {  // Lick sensor is active HIGH (change this if your sensor is different).
-    Serial.println("lick, ms " + String(millis()));
+  if (LickState == HIGH) {
+    unsigned long lickTime = millis();
+    Serial.println("Lick on, ms " + String(lickTime));
+    timeOut(lickTime, timeOutDuration, LickPin);    
     return true;
+  } else {
+    return false;
   }
 }
 
 void waterDispensing(bool isDispensing) { 
     if (isDispensing) {
-    unsigned long on = millis();
-    unsigned int duration = on + 200;
-    while (duration > millis()) {        
-        digitalWrite(WaterSolenoidPin, HIGH);
-        Serial.println("water on, ms " + String(on));
-    }
-    unsigned long off = millis();
-    digitalWrite(WaterSolenoidPin, LOW);
-    Serial.println("water off, ms " + String(off));
-    }
+      unsigned long timeOutDuration = 200;
+      unsigned long waterOn = millis();
+      digitalWrite(WaterSolenoidPin, HIGH);
+      Serial.println("water on, ms " + String(waterOn));
+      timeOut(waterOn, timeOutDuration, WaterSolenoidPin);
+      digitalWrite(WaterSolenoidPin, LOW);
+      Serial.println("water off, ms " + String(millis()));
+      isDispensing = false;
+  }
+}
+// void waterDispensing(bool isDispensing) { 
+//     if (isDispensing) {
+//       unsigned long on = millis();
+//       unsigned long duration = on + 200;
+//       while (millis() < duration) {        
+//           digitalWrite(WaterSolenoidPin, HIGH);
+//           Serial.println("water on, ms " + String(on));
+//           break;
+//       }      
+//       digitalWrite(WaterSolenoidPin, LOW);
+//       Serial.println("water off, ms " + String(millis()));
+//       isDispensing = false;
+//     } else {
+//       digitalWrite(WaterSolenoidPin, LOW);
+//     }    
+// }
+
+void timeOut(unsigned long startTime, unsigned long duration, int pin) {
+  unsigned long endTime = startTime + duration;
+  while (millis() < endTime) { // do i need that +5?
+    digitalWrite(pin, LOW);
+  }
 }
