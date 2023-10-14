@@ -25,31 +25,31 @@ int tonePinNegative = 9;   //CS-
 int AirpuffPin = 4;        //Air puff pin.
 const int LickPin = 12;    // Define lick Pin.
 
-const unsigned long waterInterval = 5000;  //Water turn on and off every 5 seconds.
+const unsigned long waterInterval = 50;  //Water turn on and off every 5 seconds.
 unsigned long previousTime = 0;
-const unsigned long preAuditoryCue = 10000;    //Wait 10 seonds at the begining of the trial before playing auditory cue.
-const unsigned long airpuffStartTime = 10000;  //air puff starts. {sped up for testing}
-const unsigned long airpuffDur = 5000;         //air puff duration.
+const unsigned long preAuditoryCue = 1000;    //Wait 10 seonds at the begining of the trial before playing auditory cue.
+const unsigned long airpuffStartTime = 1000;  //air puff starts. {sped up for testing}
+const unsigned long airpuffDur = 50;         //air puff duration.
 unsigned long currentTime = 0;                 //millis();
-unsigned long toneDur = 200000;                //Tone duration.
+unsigned long toneDur = 2000;                //Tone duration.
 int oldLickState = 0;
 int sessStart = 0;
 
 long waterOnTime = 0;
 long waterOffTime = 0;
-int IWI = 5000;  // Water interval
+int IWI = 500;  // Water interval
 int trialStart = 0;
-int ITI = 10000;  //trial interval
+int ITI = 1000;  //trial interval
 int trialOn = 0;
 long trialStartTime = 0;
 int trialEndTime = 0;
-long trialDur = 50000;  //trial duration
+long trialDur = 5000;  //trial duration
 int toneNeg = 0;        //indicate whether CS- is playing or not.
 int waterOn = 0;
 
 int PulseToneState = 0;
 unsigned long PulsePreviousTime = 0;
-const long PulseDuration = 1000;
+const long PulseDuration = 100;
 int toneState = 0;    //Initialize the tone state to LOW (Off)
 int randomValue = 0;  //Generate a random integer between 0 and 1.
 

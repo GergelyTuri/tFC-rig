@@ -1,8 +1,4 @@
-#include "TimerControl.h"
-
-TimerControl lickControl(12, INPUT);
-TimerControl waterControl(5, OUTPUT);
-
+// this is a copy of the original file. it works as is.  
 const int LickPin = 12;    // Define lick Pin.
 const int WaterSolenoidPin = 5;
 
@@ -28,7 +24,7 @@ bool isLicking() {
   if (LickState == HIGH) {
     unsigned long lickTime = millis();
     Serial.println("Lick on, ms " + String(lickTime));
-    lickControl.timeOut(timeOutDuration);
+    timeOut(lickTime, timeOutDuration, LickPin);    
     return true;
   } else {
     return false;
@@ -41,9 +37,23 @@ void waterDispensing(bool isDispensing) {
       unsigned long waterOn = millis();
       digitalWrite(WaterSolenoidPin, HIGH);
       Serial.println("water on, ms " + String(waterOn));
-      waterControl.timeOn(timeOnDuration);
+      timeOn(waterOn, timeOnDuration, WaterSolenoidPin);
       digitalWrite(WaterSolenoidPin, LOW);
       Serial.println("water off, ms " + String(millis()));
       isDispensing = false;
+  }
+}
+
+void timeOut(unsigned long startTime, unsigned long duration, int pin) {
+  unsigned long endTime = startTime + duration;
+  while (millis() < endTime) {
+    digitalWrite(pin, LOW);
+  }
+}
+
+void timeOn(unsigned long startTime, unsigned long duration, int pin) {
+  unsigned long endTime = startTime + duration;
+  while (millis() < endTime) { 
+        digitalWrite(pin, HIGH);
   }
 }
