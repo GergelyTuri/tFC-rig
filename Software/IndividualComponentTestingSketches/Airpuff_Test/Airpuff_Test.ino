@@ -1,15 +1,21 @@
-
-int AirpuffPin = 4;  //Air puff pin.
+/* This should turn the air puff on and off in `duration` intervals,
+ * it is useful to ensure the output is working as expected.
+ */
+const int airPuffPin = 4;
+const int duration = 1000;
 
 void setup() {
-  pinMode(AirpuffPin, OUTPUT);  //Airpuff output.
+  pinMode(airPuffPin, OUTPUT);
 }
 
 void loop() {
-digitalWrite(AirpuffPin, HIGH);
-delay (500);
-Serial.println("AirpuffOn");
-digitalWrite(AirpuffPin, LOW);
-delay(500);
-Serial.println("AirpuffHigh");
+  Serial.print(millis());
+  Serial.println(": on");
+  digitalWrite(airPuffPin, HIGH);
+  delay(duration);
+
+  Serial.print(millis());
+  Serial.println(": on");
+  digitalWrite(airPuffPin, LOW);
+  delay(duration);
 }
