@@ -16,6 +16,11 @@
  *  - Each trial is triggered with a button press
  *  - (The alternative would be a defined inter-trial wait period)
  *
+ * It can be improved by:
+ *
+ *  - Adding an `init.h` with the values we define at start
+ *  - (So they are not re-used in flush functions)
+ *
  */
 #include "rig.h"
 #include "trial.h"
@@ -63,7 +68,9 @@ void loop() {
         // Executes continuously during each trial
         checkForTrialEnd();
         checkLick();
-        checkWater();
+        if (WATER_REWARD_AVAILABLE) {
+          checkWater();
+        }
 
         // Inter-trial interval
         if (trialHasEnded) {
