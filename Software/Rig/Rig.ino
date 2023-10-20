@@ -47,11 +47,14 @@ long trialEndTime = 0;
 
 long lastLickTime = 0;
 bool isLicking = false;
-long waterStartTime = 0;
+long waterStartTime = __LONG_MAX__;
 
 bool isPuffing = false;
+long puffStartTime = __LONG_MAX__;
 long puffStopTime = 0;
-long puffStartTime = 0;
+
+bool positiveSignalPlaying = false;
+long positiveSignalStart = __LONG_MAX__;
 
 void setup() {
   Serial.begin(BAUD_RATE);
@@ -86,6 +89,7 @@ void loop() {
         }
         if (DELIVER_AIR_PUFFS) {
           checkAir();
+          checkPositiveSignal();
         }
 
         // Inter-trial interval
@@ -93,7 +97,9 @@ void loop() {
           print("Cleaning up last trial");
           flushTrialMetaData();
           flushLickMetaData();
-          print("Waiting the inter-trial interval");
+          flushAirPuffMetaData();
+          flushPositiveSignalMetaData();
+          vprint("Waiting the inter-trial interval", INTER_TRIAL_WAIT_INTERVAL);
           delay(INTER_TRIAL_WAIT_INTERVAL);
         }
       }
@@ -180,7 +186,7 @@ void checkWater() {
 void flushLickMetaData() {
   lastLickTime = 0;
   isLicking = false;
-  waterStartTime = 0;
+  waterStartTime = __LONG_MAX__;
 
   digitalWrite(WaterSolenoidPin, LOW);
   print("Water off via trial flush");
@@ -191,7 +197,7 @@ void flushLickMetaData() {
  * Only on during CS+, but managed separate from auditory cue
  *
  */
- void checkAir() {
+void checkAir() {
   bool isPuffing = digitalRead(PIN_AIR_PUFF);
   long currentTime = millis();
   long trialTime = currentTime - trialStartTime;
@@ -214,14 +220,38 @@ void flushLickMetaData() {
       puffStopTime = currentTime;
     }
   }
- }
- void flushAirPuffMetaData() {
+}
+void flushAirPuffMetaData() {
   puffStartTime = __LONG_MAX__;
   puffStopTime = 0;
 
   digitalWrite(PIN_AIR_PUFF, LOW);
   print("Puff stop via trial flush");
- }
+}
+
+
+/* POSITIVE SIGNAL
+ *
+ */
+void checkPositiveSignal() {
+  trialTime = millis() - trialStartTime;
+  if (!positiveSignalPlaying && (trialTime > AUDITORY_START)) {
+    tone(PIN_TONE_POSITIVE, POSITIVE_FREQUENCY, POSITIVE_DURATION);
+    positiveSignalPlaying = true;
+    positiveSignalStart = trialTime;
+    print("Positive signal start");
+  } else if (positiveSignalPlaying && ((millis() - positiveSignalStart) > POSITIVE_DURATION)) {
+    noTone(PIN_TONE_POSITIVE);
+    positiveSignalPlaying = false;
+    print("Positive signal stop");
+  }
+}
+void flushPositiveSignalMetaData() {
+  positiveSignalStart = __LONG_MAX__;
+  noTone(PIN_TONE_POSITIVE);
+  positiveSignalPlaying = false;
+  print("Positive signal stop via trial flush");
+}
 
 
 /* PRINTING HELPER FUNCTIONS

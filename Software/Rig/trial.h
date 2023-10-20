@@ -10,7 +10,7 @@
 #define TRIAL
 
 const int NUMBER_OF_TRIALS = 6;
-const int INTER_TRIAL_WAIT_INTERVAL = 1000; // ms
+const int INTER_TRIAL_WAIT_INTERVAL = 60000; // ms
 const long TRIAL_DURATION = 50000; // ms
 
 const long LICK_TIMEOUT = 100; // ms
@@ -25,5 +25,12 @@ const int INTER_PUFF_PAUSE_TIME = 1000;
 // n_puffs*(puff_duration + puff_pause_time) - puff_pause_time
 // TODO: calculate me
 const int AIR_PUFF_TOTAL_TIME = 5000; // [ms]
+
+const long AUDITORY_START = 15000; // ms, in trial time
+const long AUDITORY_STOP = 35000; // ms, trial time
+const int POSITIVE_FREQUENCY = 5000; // Hz
+// Auditory stop minus start
+// TODO: calculate me
+const long POSITIVE_DURATION = 20000;
 
 #endif
