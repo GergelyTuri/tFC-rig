@@ -32,6 +32,8 @@ bool trialHasEnded = false;
 long trialEndTime = 0;
 
 long lastLickTime = 0;
+bool isLicking = false;
+long waterStartTime = 0;
 
 void setup() {
   Serial.begin(BAUD_RATE);
@@ -61,6 +63,7 @@ void loop() {
         // Executes continuously during each trial
         checkForTrialEnd();
         checkLick();
+        checkWater();
 
         // Inter-trial interval
         if (trialHasEnded) {
@@ -120,18 +123,44 @@ void flushTrialMetaData() {
 
 
 /* LICK MANAGEMENT
+ * This includes dispensing water.
  *
  */
 void checkLick () {
   int lickState = digitalRead(PIN_LICK);
   long currentLickTime = millis();
-  if ((lickState == HIGH) && ((currentLickTime - lastLickTime) > LICK_TIMEOUT)) {
-    lastLickTime = currentLickTime;
-    print("Lick");
+  long sinceLastLickTime = currentLickTime - lastLickTime;
+  if (sinceLastLickTime > LICK_TIMEOUT) {
+    if (lickState == HIGH) {
+      lastLickTime = currentLickTime;
+      isLicking = true;
+      print("Lick");
+    }
+    if (lickState == LOW) {
+      isLicking = false;
+    }
+  }
+}
+void checkWater() {
+  int waterState = digitalRead(PIN_WATER_SOLENOID);
+  if (isLicking && (waterState == LOW)) {
+    waterStartTime = millis();
+    digitalWrite(WaterSolenoidPin, HIGH);
+    print("Water on")
+  } else if (waterState == HIGH) {
+    if ((millis() - waterStartTime) > WATER_DISPENSE_TIME) {
+      digitalWrite(WaterSolenoidPin, LOW);
+      print("Water off")
+    }
   }
 }
 void flushLickMetaData() {
   lastLickTime = 0;
+  isLicking = false;
+  waterStartTime = 0;
+
+  digitalWrite(WaterSolenoidPin, LOW);
+  print("Water off via trial flush")
 }
 
 
