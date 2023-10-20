@@ -29,6 +29,11 @@
  *  - Per-session randomization for
  *    - Order of set of cues {CS+, CS+, CS+, CS-, CS-, CS-}
  *    - Inter-trial interval length (e.g. 1-5min)
+ *  - Consistency between "end" and "start" semantics
+ *  - Check that differences in "global time" and "trial time" aren't
+ *    going to cause any issues (some code "thinks" in global, other code
+ *    "thinks" in trial, depending on requirements)
+ *    - For example, refactor air puffs to use just one
  *
  */
 #include "rig.h"
@@ -55,6 +60,10 @@ long puffStopTime = 0;
 
 bool positiveSignalPlaying = false;
 long positiveSignalStart = __LONG_MAX__;
+
+bool negativeSignalPlaying = false;
+bool negativeSignalStart = __LONG_MAX__;
+bool negativeSignalStop = 0;
 
 void setup() {
   Serial.begin(BAUD_RATE);
@@ -90,6 +99,8 @@ void loop() {
         if (DELIVER_AIR_PUFFS) {
           checkAir();
           checkPositiveSignal();
+        } else {
+          checkNegativeSignal();
         }
 
         // Inter-trial interval
@@ -99,6 +110,7 @@ void loop() {
           flushLickMetaData();
           flushAirPuffMetaData();
           flushPositiveSignalMetaData();
+          flushNegativeSignalMetaData();
           vprint("Waiting the inter-trial interval", INTER_TRIAL_WAIT_INTERVAL);
           delay(INTER_TRIAL_WAIT_INTERVAL);
         }
@@ -235,22 +247,59 @@ void flushAirPuffMetaData() {
  */
 void checkPositiveSignal() {
   trialTime = millis() - trialStartTime;
-  if (!positiveSignalPlaying && (trialTime > AUDITORY_START)) {
+  if (!positiveSignalPlaying && (trialTime > AUDITORY_START) && (trialTime < (AUDITORY_STOP - AUDITORY_BUFFER))) {
+    // Should only hit this code once per trial.
+    // The buffer tries to prevent entering a second time, since:
+    //
+    //    POSITIVE_DURATION = AUDITORY_STOP - AUDITORY_START
+    //
     tone(PIN_TONE_POSITIVE, POSITIVE_FREQUENCY, POSITIVE_DURATION);
     positiveSignalPlaying = true;
     positiveSignalStart = trialTime;
     print("Positive signal start");
-  } else if (positiveSignalPlaying && ((millis() - positiveSignalStart) > POSITIVE_DURATION)) {
+  } else if (positiveSignalPlaying && ((trialTime - positiveSignalStart) > POSITIVE_DURATION)) {
     noTone(PIN_TONE_POSITIVE);
     positiveSignalPlaying = false;
     print("Positive signal stop");
   }
 }
 void flushPositiveSignalMetaData() {
+  positiveSignalPlaying = false;
   positiveSignalStart = __LONG_MAX__;
   noTone(PIN_TONE_POSITIVE);
-  positiveSignalPlaying = false;
   print("Positive signal stop via trial flush");
+}
+
+
+/* NEGATIVE SIGNAL
+ * This needs to pulse the tone, unlike positive.
+ *
+ */
+void checkNegativeSignal() {
+  trialTime = millis() - trialStartTime;
+  if (trialTime > AUDITORY_START) && (trialTime < (AUDITORY_STOP - AUDITORY_BUFFER)) {
+    if (!negativeSignalPlaying && ((trialTime - negativeSignalStop) > NEGATIVE_CYCLE_DURATION)) {
+      tone(PIN_TONE_NEGATIVE, NEGATIVE_FREQUENCY, NEGATIVE_PULSE_DURATION);
+      negativeSignalPlaying = true;
+      negativeSignalStart = trialTime;
+      print("Negative signal start");
+    } else if (negativeSignalPlaying && ((trialTime - negativeSignalStart) > NEGATIVE_PULSE_DURATION)) {
+      // Calling `noTone` is redundant with letting `tone` stop a signal
+      // of length `NEGATIVE_PULSE_DURATION` but we want to be consistent
+      // in how we treat and print tones
+      noTone(PIN_TONE_NEGATIVE);
+      negativeSignalPlaying = false;
+      negativeSignalStop = trialTime;
+      print("Negative signal stop");
+    }
+  }
+}
+void flushNegativeSignalMetaData() {
+  negativeSignalPlaying = false;
+  negativeSignalStart = __LONG_MAX__;
+  negativeSignalStop = 0;
+  noTone(PIN_TONE_NEGATIVE);
+  print("Negative signal stop via trial flush")
 }
 
 

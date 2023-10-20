@@ -32,5 +32,11 @@ const int POSITIVE_FREQUENCY = 5000; // Hz
 // Auditory stop minus start
 // TODO: calculate me
 const long POSITIVE_DURATION = 20000;
+// This needs to be less than the duration of any auditory signal burst
+const int AUDITORY_BUFFER = 100; // ms
+const int NEGATIVE_FREQUENCY = 2000; // Hz
+const int NEGATIVE_PULSE_DURATION = 200; // ms
+// Rest plus pulse duration (cycle) is one second
+const int NEGATIVE_CYCLE_DURATION = 1000; // ms
 
 #endif
