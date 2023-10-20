@@ -9,17 +9,26 @@
  *
  * Defines a configurable run of the experimental rig with the following options:
  *
- *  - 
+ *  - Choose to make water available
+ *  - Deliver a positive or negative auditory signal
+ *  - Deliver air puffs or not (positive auditory signal)
  *
  * The current implementation makes some assumptions:
  *
- *  - Each trial is triggered with a button press
- *  - (The alternative would be a defined inter-trial wait period)
+ *  - Each session is triggered with a button press
+ *  - Air puffs are delivered at a fixed point in the trial
+ *  - There are two auditory signals: positive and negative
+ *    - Positive is a constant 5kHz tone
+ *    - Negative is a pulsed 2kHz tone
+ *  - Air puffs are only delivered after a positive auditory signal
  *
  * It can be improved by:
  *
  *  - Adding an `init.h` with the values we define at start
  *  - (So they are not re-used in flush functions)
+ *  - Per-session randomization for
+ *    - Order of set of cues {CS+, CS+, CS+, CS-, CS-, CS-}
+ *    - Inter-trial interval length (e.g. 1-5min)
  *
  */
 #include "rig.h"
@@ -39,6 +48,10 @@ long trialEndTime = 0;
 long lastLickTime = 0;
 bool isLicking = false;
 long waterStartTime = 0;
+
+bool isPuffing = false;
+long puffStopTime = 0;
+long puffStartTime = 0;
 
 void setup() {
   Serial.begin(BAUD_RATE);
@@ -70,6 +83,9 @@ void loop() {
         checkLick();
         if (WATER_REWARD_AVAILABLE) {
           checkWater();
+        }
+        if (DELIVER_AIR_PUFFS) {
+          checkAir();
         }
 
         // Inter-trial interval
@@ -153,11 +169,11 @@ void checkWater() {
   if (isLicking && (waterState == LOW)) {
     waterStartTime = millis();
     digitalWrite(WaterSolenoidPin, HIGH);
-    print("Water on")
+    print("Water on");
   } else if (waterState == HIGH) {
     if ((millis() - waterStartTime) > WATER_DISPENSE_TIME) {
       digitalWrite(WaterSolenoidPin, LOW);
-      print("Water off")
+      print("Water off");
     }
   }
 }
@@ -167,8 +183,45 @@ void flushLickMetaData() {
   waterStartTime = 0;
 
   digitalWrite(WaterSolenoidPin, LOW);
-  print("Water off via trial flush")
+  print("Water off via trial flush");
 }
+
+
+/* AIR PUFF MANAGEMENT
+ * Only on during CS+, but managed separate from auditory cue
+ *
+ */
+ void checkAir() {
+  bool isPuffing = digitalRead(PIN_AIR_PUFF);
+  long currentTime = millis();
+  long trialTime = currentTime - trialStartTime;
+  if ((trialTime >= AIR_PUFF_START_TIME) && (trialTime < AIR_PUFF_TOTAL_TIME + AIR_PUFF_START_TIME)) {
+    if (!isPuffing && ((currentTime - puffStopTime) > INTER_PUFF_PAUSE_TIME)) {
+      digitalWrite(PIN_AIR_PUFF, HIGH);
+      print("Puff start");
+      puffStartTime = currentTime;
+    }
+    if (isPuffing && ((currentTime - puffStartTime) > AIR_PUFF_DURATION)) {
+      digitalWrite(PIN_AIR_PUFF, LOW);
+      print("Puff stop");
+      puffStopTime = currentTime;
+    }
+  } else {
+    // Makes sure we are not puffing
+    if (isPuffing) {
+      digitalWrite(PIN_AIR_PUFF, LOW);
+      print("Puff stop, catch block");
+      puffStopTime = currentTime;
+    }
+  }
+ }
+ void flushAirPuffMetaData() {
+  puffStartTime = __LONG_MAX__;
+  puffStopTime = 0;
+
+  digitalWrite(PIN_AIR_PUFF, LOW);
+  print("Puff stop via trial flush");
+ }
 
 
 /* PRINTING HELPER FUNCTIONS
