@@ -26,14 +26,12 @@
  *
  *  - Adding an `init.h` with the values we define at start
  *  - (So they are not re-used in flush functions)
- *  - Per-session randomization for
- *    - Order of set of cues {CS+, CS+, CS+, CS-, CS-, CS-}
- *    - Inter-trial interval length (e.g. 1-5min)
  *  - Consistency between "end" and "start" semantics
  *  - Check that differences in "global time" and "trial time" aren't
  *    going to cause any issues (some code "thinks" in global, other code
  *    "thinks" in trial, depending on requirements)
  *    - For example, refactor air puffs to use just one
+ *  - The trial order randomization seems biased to start at trial 1
  *
  */
 #include "rig.h"
@@ -44,6 +42,10 @@ long sessionStartTime = __LONG_MAX__;
 bool sessionHasEnded = false;
 long sessionEndTime = 0;
 
+char trialTypes[] = "000111";
+int currentTrialType = 0;
+long randomInterTrialInterval = 0;
+
 int currentTrial = 0;
 bool trialHasStarted = false;
 long trialStartTime = __LONG_MAX__;
@@ -52,7 +54,8 @@ long trialEndTime = 0;
 
 long lastLickTime = 0;
 bool isLicking = false;
-long waterStartTime = __LONG_MAX__;
+int lickCount = 0;
+long lastWaterTime = 0;
 
 bool isPuffing = false;
 long puffStartTime = __LONG_MAX__;
@@ -62,8 +65,8 @@ bool positiveSignalPlaying = false;
 long positiveSignalStart = __LONG_MAX__;
 
 bool negativeSignalPlaying = false;
-bool negativeSignalStart = __LONG_MAX__;
-bool negativeSignalStop = 0;
+long negativeSignalStart = 0;
+long negativeSignalStop = 0;
 
 void setup() {
   Serial.begin(BAUD_RATE);
@@ -73,17 +76,34 @@ void setup() {
   pinMode(PIN_TONE_POSITIVE, OUTPUT);
   pinMode(PIN_BUTTON, INPUT_PULLUP);
   pinMode(PIN_LICK, INPUT);
+
+  // Each session of trials has a different random seed taken by
+  // reading from a disconnected pin.
+  randomSeed(analogRead(0));
+
+  // Each session is a random permutation of {CS-, CS-, CS-, CS+, CS+, CS+}.
+  // Note that 0 is CS-, 1 is CS+. This uses Fisher-Yates shuffle. Note
+  // that this assumes there are `6` trials and would not fully randomize
+  // the trials otherwise
+  for (int i = NUMBER_OF_TRIALS-1; i > 0; --i) {
+    int j = random (0, i+1);
+    char temp = trialTypes[i];
+    trialTypes[i] = trialTypes[j];
+    trialTypes[j] = temp;
+  }
 }
 
 void loop() {
   if ((digitalRead(PIN_BUTTON) == LOW) && (!sessionHasStarted) && (!sessionHasEnded)) {
+    printSessionParameters();
+
     print("Session has started");
     sessionHasStarted = true;
     sessionStartTime = millis();
   }
 
-  // The session loop. It executes all `N_TRIALS` trials with the
-  // `INTER_TRIAL_WAIT_INTERVAL` wait period between trials.
+  // The session loop. It executes all `n` trials with the
+  // inter-trial wait period between trials.
   if (sessionHasStarted && !sessionHasEnded) {
     if (!trialHasStarted) {
       trialStart();
@@ -96,11 +116,13 @@ void loop() {
         if (WATER_REWARD_AVAILABLE) {
           checkWater();
         }
-        if (DELIVER_AIR_PUFFS) {
-          checkAir();
-          checkPositiveSignal();
-        } else {
-          checkNegativeSignal();
+        if (USING_AUDITORY_CUES) {
+          if (currentTrialType == 1) {
+            checkAir();
+            checkPositiveSignal();
+          } else {
+            checkNegativeSignal();
+          }
         }
 
         // Inter-trial interval
@@ -111,8 +133,17 @@ void loop() {
           flushAirPuffMetaData();
           flushPositiveSignalMetaData();
           flushNegativeSignalMetaData();
-          vprint("Waiting the inter-trial interval", INTER_TRIAL_WAIT_INTERVAL);
-          delay(INTER_TRIAL_WAIT_INTERVAL);
+          vprint("Waiting the inter-trial interval", randomInterTrialInterval);
+
+          // Use `randomInterTrialInterval` in the real trial. Use
+          // `INTER_TRIAL_DEBUG_WAIT_INTERVAL` for debugging as it is set to
+          // just one second
+          if (DEBUGGING) {
+            print("DEBUGGING: Waiting for 1s");
+            delay(INTER_TRIAL_DEBUG_WAIT_INTERVAL);
+          } else {
+            delay(randomInterTrialInterval);
+          }
         }
       }
     }
@@ -132,6 +163,53 @@ void loop() {
   }
 }
 
+/* SESSION MANAGEMENT
+ *
+ */
+void printSessionParameters() {
+  // Add variables defined in `trial.h` or `rig.h` (or other) here.
+  // That way, everything that defines the trial is recorded in case an
+  // issue comes up later in the analysis
+  print("Session consists of six trial, three CS+, three CS- in the following order");
+  print("0 is CS-, 1 is CS+");
+  vprint("trialTypes", trialTypes);
+
+  // print("Printing Adrduino or rig parameters");
+  vprint("BAUD_RATE", BAUD_RATE);
+  vprint("PIN_AIR_PUFF", PIN_AIR_PUFF);
+  vprint("PIN_WATER_SOLENOID", PIN_WATER_SOLENOID);
+  vprint("PIN_TONE_NEGATIVE", PIN_TONE_NEGATIVE);
+  vprint("PIN_TONE_POSITIVE", PIN_TONE_POSITIVE);
+  vprint("PIN_BUTTON", PIN_BUTTON);
+  vprint("PIN_LICK", PIN_LICK);
+
+  // print("Printing session parameters");
+  vprint("DEBUGGING", DEBUGGING);
+  vprint("NUMBER_OF_TRIALS", NUMBER_OF_TRIALS);
+  vprint("INTER_TRIAL_DEBUG_WAIT_INTERVAL", INTER_TRIAL_DEBUG_WAIT_INTERVAL);
+  vprint("TRIAL_DURATION", TRIAL_DURATION);
+  vprint("LICK_TIMEOUT", LICK_TIMEOUT);
+  vprint("LICK_COUNT_TIMEOUT", LICK_COUNT_TIMEOUT);
+  vprint("WATER_REWARD_AVAILABLE", WATER_REWARD_AVAILABLE);
+  vprint("WATER_DISPENSE_TIME", WATER_DISPENSE_TIME);
+  vprint("WATER_DISPENSE_ON_NUMBER_LICKS", WATER_DISPENSE_ON_NUMBER_LICKS);
+  vprint("WATER_TIMEOUT", WATER_TIMEOUT);
+  vprint("USING_AUDITORY_CUES", USING_AUDITORY_CUES);
+  vprint("NUMBER_OF_PUFFS", NUMBER_OF_PUFFS);
+  vprint("AIR_PUFF_START_TIME", AIR_PUFF_START_TIME);
+  vprint("AIR_PUFF_DURATION", AIR_PUFF_DURATION);
+  vprint("INTER_PUFF_PAUSE_TIME", INTER_PUFF_PAUSE_TIME);
+  vprint("AIR_PUFF_TOTAL_TIME", AIR_PUFF_TOTAL_TIME);
+  vprint("AUDITORY_START", AUDITORY_START);
+  vprint("AUDITORY_STOP", AUDITORY_STOP);
+  vprint("POSITIVE_FREQUENCY", POSITIVE_FREQUENCY);
+  vprint("POSITIVE_DURATION", POSITIVE_DURATION);
+  vprint("AUDITORY_BUFFER", AUDITORY_BUFFER);
+  vprint("NEGATIVE_FREQUENCY", NEGATIVE_FREQUENCY);
+  vprint("NEGATIVE_PULSE_DURATION", NEGATIVE_PULSE_DURATION);
+  vprint("NEGATIVE_CYCLE_DURATION", NEGATIVE_CYCLE_DURATION);
+}
+
 /* TRIAL MANAGEMENT
  *
  */
@@ -139,11 +217,24 @@ void trialStart() {
   print("Trial has started");
   trialHasStarted = true;
 
-  // Prints out the trial parameters.
-  // These will be the same for each trial, taken from a list (defined
-  // for each trial separately), or randomly generated.
+  // Check debugging
+  if (DEBUGGING) {
+    print("WARNING: DEBUGGING is set to true");
+    print("This impacts the structure of the trial!!!!");
+  }
+
+  // At the start of each trial, define an inter-trial interval between 1min and 5min
+  randomInterTrialInterval = random(MIN_ITI, MAX_ITI);
+
+  // Prints out the trial-specific parameters. Other parameters are
+  // printed at session start
   print("Printing trial parameters");
-  vprint("TRIAL_DURATION", TRIAL_DURATION);
+  vprint("randomInterTrialInterval", randomInterTrialInterval);
+  // This strange subtraction is due to casting a char to an int,
+  // where the char takes on its ASCII value but we subtract the ASCII
+  // value of zero to give us the true numeric
+  currentTrialType = trialTypes[currentTrial] - 48;
+  vprint("currentTrialType", currentTrialType);
 
   trialStartTime = millis();
 }
@@ -175,22 +266,39 @@ void checkLick () {
     if (lickState == HIGH) {
       lastLickTime = currentLickTime;
       isLicking = true;
+      lickCount++;
       print("Lick");
+      if (DEBUGGING) {
+        vprint("lickCount", lickCount);
+      }
     }
     if (lickState == LOW) {
       isLicking = false;
     }
   }
+  if (sinceLastLickTime > LICK_COUNT_TIMEOUT) {
+    if (lickCount > 0) {
+      print("Resetting lick count");
+      lickCount = 0;
+    }
+  }
 }
 void checkWater() {
   int waterState = digitalRead(PIN_WATER_SOLENOID);
-  if (isLicking && (waterState == LOW)) {
-    waterStartTime = millis();
-    digitalWrite(WaterSolenoidPin, HIGH);
-    print("Water on");
+  long currentWaterTime = millis();
+  long sinceLastWaterTime = currentWaterTime - lastWaterTime;
+  if (isLicking && (lickCount >= WATER_DISPENSE_ON_NUMBER_LICKS) && (waterState == LOW)) {
+    if (sinceLastWaterTime > WATER_TIMEOUT) {
+      // Only turn the water back on if the timeout has passed since the
+      // last water turn on time
+      digitalWrite(PIN_WATER_SOLENOID, HIGH);
+      lastWaterTime = currentWaterTime;
+      print("Water on");
+    }
   } else if (waterState == HIGH) {
-    if ((millis() - waterStartTime) > WATER_DISPENSE_TIME) {
-      digitalWrite(WaterSolenoidPin, LOW);
+    if (sinceLastWaterTime > WATER_DISPENSE_TIME) {
+      // Wait for the dispence time before turning it off
+      digitalWrite(PIN_WATER_SOLENOID, LOW);
       print("Water off");
     }
   }
@@ -198,9 +306,9 @@ void checkWater() {
 void flushLickMetaData() {
   lastLickTime = 0;
   isLicking = false;
-  waterStartTime = __LONG_MAX__;
+  lastWaterTime = 0;
 
-  digitalWrite(WaterSolenoidPin, LOW);
+  digitalWrite(PIN_WATER_SOLENOID, LOW);
   print("Water off via trial flush");
 }
 
@@ -246,7 +354,7 @@ void flushAirPuffMetaData() {
  *
  */
 void checkPositiveSignal() {
-  trialTime = millis() - trialStartTime;
+  long trialTime = millis() - trialStartTime;
   if (!positiveSignalPlaying && (trialTime > AUDITORY_START) && (trialTime < (AUDITORY_STOP - AUDITORY_BUFFER))) {
     // Should only hit this code once per trial.
     // The buffer tries to prevent entering a second time, since:
@@ -272,21 +380,20 @@ void flushPositiveSignalMetaData() {
 
 
 /* NEGATIVE SIGNAL
- * This needs to pulse the tone, unlike positive.
+ * This needs to pulse the tone, unlike positive. It only prints start
+ * and stop during debugging because of the time prints can take
  *
  */
 void checkNegativeSignal() {
-  trialTime = millis() - trialStartTime;
-  if (trialTime > AUDITORY_START) && (trialTime < (AUDITORY_STOP - AUDITORY_BUFFER)) {
-    if (!negativeSignalPlaying && ((trialTime - negativeSignalStop) > NEGATIVE_CYCLE_DURATION)) {
+  long trialTime = millis() - trialStartTime;
+  if ((trialTime > AUDITORY_START) && (trialTime < (AUDITORY_STOP - AUDITORY_BUFFER))) {
+    if (!negativeSignalPlaying && ((trialTime - negativeSignalStart) > NEGATIVE_CYCLE_DURATION)) {
+      // This uses positive duration to see if the `noTone` below can turn the signal off
       tone(PIN_TONE_NEGATIVE, NEGATIVE_FREQUENCY, NEGATIVE_PULSE_DURATION);
       negativeSignalPlaying = true;
       negativeSignalStart = trialTime;
       print("Negative signal start");
     } else if (negativeSignalPlaying && ((trialTime - negativeSignalStart) > NEGATIVE_PULSE_DURATION)) {
-      // Calling `noTone` is redundant with letting `tone` stop a signal
-      // of length `NEGATIVE_PULSE_DURATION` but we want to be consistent
-      // in how we treat and print tones
       noTone(PIN_TONE_NEGATIVE);
       negativeSignalPlaying = false;
       negativeSignalStop = trialTime;
@@ -296,10 +403,10 @@ void checkNegativeSignal() {
 }
 void flushNegativeSignalMetaData() {
   negativeSignalPlaying = false;
-  negativeSignalStart = __LONG_MAX__;
+  negativeSignalStart = 0;
   negativeSignalStop = 0;
   noTone(PIN_TONE_NEGATIVE);
-  print("Negative signal stop via trial flush")
+  print("Negative signal stop via trial flush");
 }
 
 
@@ -314,6 +421,16 @@ void prePrint() {
   Serial.print(": ");
   Serial.print(millis());
   Serial.print(": ");
+  long trialTime = millis() - trialStartTime;
+  if (trialTime < millis()) {
+    // Only print true trial time if it is less than the current time
+    // since we reset trial time to long max between trials
+    Serial.print(millis() - trialStartTime);
+    Serial.print(": ");
+  } else {
+    Serial.print(0);
+    Serial.print(": ");
+  }
 }
 void print(int x) {
   prePrint();
@@ -335,5 +452,10 @@ void vprint (char* x, int y) {
 void vprint (char* x, long y) {
   char s[50];
   sprintf(s, "%s: %ld", x, y);
+  print(s);
+}
+void vprint (char* x, char* y) {
+  char s[50];
+  sprintf(s, "%s: %s", x, y);
   print(s);
 }
