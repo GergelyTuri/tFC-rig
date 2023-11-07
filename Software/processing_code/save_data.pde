@@ -176,12 +176,8 @@ void endSession() {
   
   output.flush(); // Write the remaining data
   output.close(); // Finish the file
-  println("END SESSION");
+  println("END SESSION"); 
   
-  extension = ".png";
-  filename = animal.concat(extension);
-  saveFrame(filename);  // added 121010 to save graph  
   exit(); // Stop the program
-  //  }  // end ELSE for writing end of file
   
 }
