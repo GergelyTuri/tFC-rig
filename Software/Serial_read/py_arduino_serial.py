@@ -32,7 +32,10 @@ def main():
 
     file_path = f"{mouse_id}_{formatted_date_time}.json"
 
+    time.sleep(2)
+
     try:
+        time.sleep(2)
         with sc(commport, 9600) as comm, open(file_path, "w", encoding="utf-8") as f:
             print(f"{comm.port} is connected")
             while True:

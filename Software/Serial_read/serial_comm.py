@@ -1,7 +1,7 @@
 """Module for serial communication with Arduino.
 maintainer: @gergelyturi"""
-
 import json
+import time
 
 import serial
 
@@ -19,14 +19,14 @@ class SerialComm:
     def __init__(self, port, baudrate):
         self.port = port
         self.baudrate = baudrate
-        self.ser = serial.Serial(port, baudrate, timeout=30)
+        self.ser = serial.Serial(port, baudrate, timeout=10)
         self.ser.flush()
 
     def __enter__(self):
         """
         Opens the serial connection and returns the object itself as the context manager.
         """
-        self.ser = serial.Serial(self.port, self.baudrate, timeout=1)
+        self.ser = serial.Serial(self.port, self.baudrate, timeout=10)
         self.ser.flush()
         return self
 
