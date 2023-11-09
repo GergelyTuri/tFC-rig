@@ -24,8 +24,9 @@ def main():
         "-c", "--commport", required=True, help="Arduino's communication port"
     )
 
-    mouse_id = ap.parse_args().mouse_id
-    commport = ap.parse_args().commport
+    args = ap.parse_args()
+    mouse_id = args.mouse_id
+    commport = args.commport
     current_date_time = datetime.now()
     formatted_date_time = current_date_time.strftime("%Y-%m-%d_%H-%M-%S")
 
