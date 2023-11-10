@@ -1,3 +1,9 @@
+"""
+This is the simplified version of the `py_arduino.py` script.
+It reads serial data from arduino and prints it to console.
+The arduino has to be connected to the computer via USB.
+"""
+
 import argparse
 import time
 
