@@ -26,16 +26,16 @@ class SerialComm:
         """
         Opens the serial connection and returns the object itself as the context manager.
         """
-        self.ser = serial.Serial(self.port, self.baudrate, timeout=10)
+        if not self.ser.is_open:
+            self.ser.open()
         self.ser.flush()
         return self
 
-    def __exit__(self, exc_type, exc_value, traceback):
+    def __exit__(self, _exc_type, _exc_value, _traceback):
         """
         Closes the serial connection.
         """
-        if self.ser:
-            self.ser.close()
+        self.ser.close()
 
     def read(self):
         """
@@ -79,7 +79,7 @@ class SerialComm:
                 return json.loads(line)
             except json.JSONDecodeError:
                 print(f"JSONDecodeError: {line}")
-                return None
+                return {"error": "JSONDecodeError", "data": line}
         else:
             return None
 
