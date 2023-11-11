@@ -76,7 +76,11 @@ class SerialComm:
         line = self.read()
         if line is not None:
             try:
-                return json.loads(line)
+                return json.loads(
+                    {
+                        "message": line,
+                    }
+                )
             except json.JSONDecodeError:
                 print(f"JSONDecodeError: {line}")
                 return {"error": "JSONDecodeError", "data": line}

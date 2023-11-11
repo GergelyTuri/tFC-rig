@@ -38,16 +38,20 @@ def main():
         with sc(commport, 9600) as comm, open(file_path, "w", encoding="utf-8") as f:
             print(f"{comm} is connected")
             while True:
-                data = comm.read_json()
+                data = comm.read()
                 print(f"data: {data}")
                 if data is not None and "error" not in data:
-                    print(data)
-                    json.dump(data, f)
+                    data_json = {
+                        "m": data,
+                        "port": comm.port,
+                        "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f"),
+                    }
+                    json.dump(data_json, f)
                     f.write("\n")  # Write a newline to separate JSON entries
                     f.flush()
                 else:
                     print(f"Non-JSON data: {data}")
-                time.sleep(1)
+                time.sleep(0.05)
     except serial.SerialException as e:
         print(f"{commport} is not connected: {e}")
     except KeyboardInterrupt:
