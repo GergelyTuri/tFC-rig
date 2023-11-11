@@ -76,6 +76,8 @@ void setup() {
   pinMode(PIN_TONE_POSITIVE, OUTPUT);
   pinMode(PIN_BUTTON, INPUT_PULLUP);
   pinMode(PIN_LICK, INPUT);
+  pinMode(PIN_SESSION_TIGGER, OUTPUT);
+  pinMode(PIN_TRIAL_TRIGGER, OUTPUT);
 
   // Each session of trials has a different random seed taken by
   // reading from a disconnected pin.
@@ -95,6 +97,7 @@ void setup() {
 
 void loop() {
   if ((digitalRead(PIN_BUTTON) == LOW) && (!sessionHasStarted) && (!sessionHasEnded)) {
+    digitalWrite(PIN_SESSION_TIGGER, HIGH);
     printSessionParameters();
 
     print("Session has started");
@@ -157,6 +160,7 @@ void loop() {
   }
 
   if (currentTrial > NUMBER_OF_TRIALS) {
+    digitalWrite(PIN_SESSION_TIGGER, LOW);
     print("Session has ended");
     sessionHasEnded = true;
     sessionEndTime = millis();
@@ -182,6 +186,8 @@ void printSessionParameters() {
   vprint("PIN_TONE_POSITIVE", PIN_TONE_POSITIVE);
   vprint("PIN_BUTTON", PIN_BUTTON);
   vprint("PIN_LICK", PIN_LICK);
+  vprint("PIN_SESSION_TIGGER", PIN_SESSION_TIGGER);
+  vprint("PIN_TRIAL_TRIGGER", PIN_TRIAL_TRIGGER);
 
   // print("Printing session parameters");
   vprint("DEBUGGING", DEBUGGING);
@@ -214,6 +220,7 @@ void printSessionParameters() {
  *
  */
 void trialStart() {
+  digitalWrite(PIN_TRIAL_TRIGGER, HIGH);
   print("Trial has started");
   trialHasStarted = true;
 
@@ -240,6 +247,7 @@ void trialStart() {
 }
 void checkForTrialEnd() {
   if (millis() - trialStartTime > TRIAL_DURATION) {
+    digitalWrite(PIN_TRIAL_TRIGGER, LOW);
     print("Trial has ended");
     trialHasEnded = true;
     trialEndTime = millis();
