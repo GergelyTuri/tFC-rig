@@ -121,7 +121,9 @@ void loop() {
         }
         if (USING_AUDITORY_CUES) {
           if (currentTrialType == 1) {
-            checkAir();
+            if (USING_AIR_PUFFS) {
+              checkAir();
+            }
             checkPositiveSignal();
           } else {
             checkNegativeSignal();
@@ -159,7 +161,7 @@ void loop() {
     delay(60000);
   }
 
-  if (currentTrial > NUMBER_OF_TRIALS) {
+  if (currentTrial >= NUMBER_OF_TRIALS) {
     digitalWrite(PIN_SESSION_TIGGER, LOW);
     print("Session has ended");
     sessionHasEnded = true;

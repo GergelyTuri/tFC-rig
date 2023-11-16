@@ -15,8 +15,8 @@ const int NUMBER_OF_TRIALS = 6;
 // NOTE: this is only used for debugging, the "real" trial uses a
 // random value between 1min and 5min
 const long INTER_TRIAL_DEBUG_WAIT_INTERVAL = 1000; // ms
-const long MIN_ITI = 1000; // ms
-const long MAX_ITI = 5000; // ms
+const long MIN_ITI = 60000; // ms
+const long MAX_ITI = 300000; // ms
 // Be careful setting trial duration. It needs to be at least equal to
 // the air puff start time plus air puff duration
 const long TRIAL_DURATION = 50000; // ms
@@ -34,7 +34,8 @@ const int WATER_DISPENSE_ON_NUMBER_LICKS = 2;
 // so a value of 700ms means a 500ms timeout after it closes
 const int WATER_TIMEOUT = 700; // ms
 
-const bool USING_AUDITORY_CUES = true; // Turns off auditory cue checks for debugging etc.
+const bool USING_AUDITORY_CUES = true; // Turns off auditory cue checks for debugging
+const bool USING_AIR_PUFFS = true; // Turns off air puffs for training
 const int NUMBER_OF_PUFFS = 5;
 // Note that air puff start time is relative to the trial start time.
 // If the air puff should start 10s after the auditory cue ends, it
