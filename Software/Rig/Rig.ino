@@ -121,7 +121,9 @@ void loop() {
         }
         if (USING_AUDITORY_CUES) {
           if (currentTrialType == 1) {
-            checkAir();
+            if (USING_AIR_PUFFS) {
+              checkAir();
+            }
             checkPositiveSignal();
           } else {
             checkNegativeSignal();
