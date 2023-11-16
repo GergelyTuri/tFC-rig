@@ -15,8 +15,8 @@ const int NUMBER_OF_TRIALS = 6;
 // NOTE: this is only used for debugging, the "real" trial uses a
 // random value between 1min and 5min
 const long INTER_TRIAL_DEBUG_WAIT_INTERVAL = 1000; // ms
-const long MIN_ITI = 1000; // ms
-const long MAX_ITI = 5000; // ms
+const long MIN_ITI = 60000; // ms
+const long MAX_ITI = 300000; // ms
 // Be careful setting trial duration. It needs to be at least equal to
 // the air puff start time plus air puff duration
 const long TRIAL_DURATION = 50000; // ms
