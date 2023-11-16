@@ -161,7 +161,7 @@ void loop() {
     delay(60000);
   }
 
-  if (currentTrial > NUMBER_OF_TRIALS) {
+  if (currentTrial >= NUMBER_OF_TRIALS) {
     digitalWrite(PIN_SESSION_TIGGER, LOW);
     print("Session has ended");
     sessionHasEnded = true;
