@@ -5,9 +5,8 @@ Upload `Rig.ino` to the Arduino. This is the main program that runs the rig.
 TODO:
 
 * Block water delivery during the ITI!!!
-* Can we add a `MAX_REWARD_NUMBER` which sets the maximum number of water deliveries in a row? This is to prevent the animal from drinking too much water. Let's say we set it to 5, then the animal can only get 5 rewards in a row, then a few sec later it can get reawards again. 
 * Documetation -- Doxygen?
-* need a way to daisy chain multiple arduinos together and run the same script on then simultanelously.
+* Need a way to daisy chain multiple arduinos together and run the same script on then simultanelously.
 
 ## Rig Operation
 
@@ -54,3 +53,25 @@ During each trial, a random auditory cue is played, and in the `CS+` case air pu
 #### `USING_AIR_PUFFS`
 
 Set this to `false` to stop sending air puffs, whether or not we are using auditory cues (although if we are not using auditory cues, we will also not send air puffs based on the way the rig was designed).
+
+### Attenuating Water Rewards
+
+There are a few options for modifying how much, and how often, water is available to the mouse.
+
+#### `WATER_DISPENSE_ON_NUMBER_LICKS`
+
+Licks are recorded with a small timeout `LICK_TIMEOUT` between licks. Consecutive licks are counted, with a longer timeout `LICK_COUNT_TIMEOUT` to reset the lick counter. So, if the lick timeout is 100ms, but the mouse is licking continuously for 300ms, there are 3 licks counted. But then if the lick count timeout is 250ms and the mouse stops licking for the next 300ms, the lick counter is set back to 0.
+
+For water to dispense, a set number of `WATER_DISPENSE_ON_NUMBER_LICKS` licks have to have occurred in a row. In the above example where the mouse licks continuously for 300ms (three licks counted), with water dispensed after `2` licks the water reward would become available 200ms into the mouse's 300ms licking. Increasing this value makes it more difficult to obtain the water reward.
+
+#### `WATER_DISPENSE_TIME`
+
+This controls how long water is dispensed for in milliseconds. That is, once the conditions for dispensing water are met, water is dispensed for a set time (to ensure some water is available to the mouse) based on this parameter. The amount of reward available _when_ the mouse is rewarded can be controlled by this parameter.
+
+#### `WATER_TIMEOUT`
+
+When the conditions for water dispensation are met, a water timeout counter starts, and `WATER_TIMEOUT` milliseconds must elapse before another reward is available. So, if the timeout is 700ms and water is dispensed for 200ms, but the mouse continues to meet the conditions for water dispensation (much licking), water is unavailable for 500ms. This timeout can be increased to attenuate the water available to the mouse.
+
+#### Further Attenuation
+
+The software running the rig can be modified to further prevent or attenuate the availability of the water reward, but the above parameters are considered sufficient at this time.
