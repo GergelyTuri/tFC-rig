@@ -1,0 +1,2029 @@
+{
+    "header": {
+        "mouse_id": "mouse_74-5",
+        "Start_time": "2023-11-15_10-56-02",
+        "commport": "COM14"
+    },
+    "data": [
+        {
+            "message": "0: 0: 0: Waiting for session to start...",
+            "absolute_time": "2023-11-15_10-56-06.363919"
+        },
+        {
+            "message": "0: 100: 0: Waiting for session to start...",
+            "absolute_time": "2023-11-15_10-56-06.473671"
+        },
+        {
+            "message": "0: 201: 0: Waiting for session to start...",
+            "absolute_time": "2023-11-15_10-56-06.580567"
+        },
+        {
+            "message": "0: 302: 0: Waiting for session to start...",
+            "absolute_time": "2023-11-15_10-56-06.677453"
+        },
+        {
+            "message": "0: 402: 0: Waiting for session to start...",
+            "absolute_time": "2023-11-15_10-56-06.780312"
+        },
+        {
+            "message": "0: 502: 0: Waiting for session to start...",
+            "absolute_time": "2023-11-15_10-56-06.866881"
+        },
+        {
+            "message": "0: 604: 0: Waiting for session to start...",
+            "absolute_time": "2023-11-15_10-56-06.981293"
+        },
+        {
+            "message": "0: 704: 0: Waiting for session to start...",
+            "absolute_time": "2023-11-15_10-56-07.067876"
+        },
+        {
+            "message": "0: 804: 0: Waiting for session to start...",
+            "absolute_time": "2023-11-15_10-56-07.182273"
+        },
+        {
+            "message": "0: 905: 0: Waiting for session to start...",
+            "absolute_time": "2023-11-15_10-56-07.268965"
+        },
+        {
+            "message": "0: 1006: 0: Waiting for session to start...",
+            "absolute_time": "2023-11-15_10-56-07.382743"
+        },
+        {
+            "message": "0: 1106: 0: Waiting for session to start...",
+            "absolute_time": "2023-11-15_10-56-07.489141"
+        },
+        {
+            "message": "0: 1207: 0: Waiting for session to start...",
+            "absolute_time": "2023-11-15_10-56-07.575747"
+        },
+        {
+            "message": "0: 1308: 0: Waiting for session to start...",
+            "absolute_time": "2023-11-15_10-56-07.685691"
+        },
+        {
+            "message": "0: 1409: 0: Waiting for session to start...",
+            "absolute_time": "2023-11-15_10-56-07.787999"
+        },
+        {
+            "message": "0: 1509: 0: Waiting for session to start...",
+            "absolute_time": "2023-11-15_10-56-07.890483"
+        },
+        {
+            "message": "0: 1609: 0: Waiting for session to start...",
+            "absolute_time": "2023-11-15_10-56-07.977194"
+        },
+        {
+            "message": "0: 1711: 0: Waiting for session to start...",
+            "absolute_time": "2023-11-15_10-56-08.091190"
+        },
+        {
+            "message": "0: 1811: 0: Waiting for session to start...",
+            "absolute_time": "2023-11-15_10-56-08.177881"
+        },
+        {
+            "message": "0: 1911: 0: Waiting for session to start...",
+            "absolute_time": "2023-11-15_10-56-08.291737"
+        },
+        {
+            "message": "0: 2013: 0: Waiting for session to start...",
+            "absolute_time": "2023-11-15_10-56-08.378440"
+        },
+        {
+            "message": "0: 2113: 0: Waiting for session to start...",
+            "absolute_time": "2023-11-15_10-56-08.492789"
+        },
+        {
+            "message": "0: 2213: 0: Waiting for session to start...",
+            "absolute_time": "2023-11-15_10-56-08.579339"
+        },
+        {
+            "message": "0: 2315: 0: Waiting for session to start...",
+            "absolute_time": "2023-11-15_10-56-08.693320"
+        },
+        {
+            "message": "0: 2415: 0: Waiting for session to start...",
+            "absolute_time": "2023-11-15_10-56-08.795587"
+        },
+        {
+            "message": "0: 2515: 0: Waiting for session to start...",
+            "absolute_time": "2023-11-15_10-56-08.897895"
+        },
+        {
+            "message": "0: 2616: 0: Waiting for session to start...",
+            "absolute_time": "2023-11-15_10-56-08.985112"
+        },
+        {
+            "message": "0: 2717: 0: Waiting for session to start...",
+            "absolute_time": "2023-11-15_10-56-09.098585"
+        },
+        {
+            "message": "0: 2818: 0: Waiting for session to start...",
+            "absolute_time": "2023-11-15_10-56-09.185667"
+        },
+        {
+            "message": "0: 2918: 0: Session consists of six trial, three CS+, three CS- in the following order",
+            "absolute_time": "2023-11-15_10-56-09.336171"
+        },
+        {
+            "message": "0: 2946: 0: 0 is CS-, 1 is CS+",
+            "absolute_time": "2023-11-15_10-56-09.395854"
+        },
+        {
+            "message": "0: 2978: 0: trialTypes: 011100",
+            "absolute_time": "2023-11-15_10-56-09.450084"
+        },
+        {
+            "message": "0: 3012: 0: BAUD_RATE: 9600",
+            "absolute_time": "2023-11-15_10-56-09.504115"
+        },
+        {
+            "message": "0: 3042: 0: PIN_AIR_PUFF: 4",
+            "absolute_time": "2023-11-15_10-56-09.557368"
+        },
+        {
+            "message": "0: 3073: 0: PIN_WATER_SOLENOID: 5",
+            "absolute_time": "2023-11-15_10-56-09.610921"
+        },
+        {
+            "message": "0: 3108: 0: PIN_TONE_NEGATIVE: 9",
+            "absolute_time": "2023-11-15_10-56-09.665167"
+        },
+        {
+            "message": "0: 3144: 0: PIN_TONE_POSITIVE: 10",
+            "absolute_time": "2023-11-15_10-56-09.719901"
+        },
+        {
+            "message": "0: 3180: 0: PIN_BUTTON: 11",
+            "absolute_time": "2023-11-15_10-56-09.774444"
+        },
+        {
+            "message": "0: 3210: 0: PIN_LICK: 12",
+            "absolute_time": "2023-11-15_10-56-09.827996"
+        },
+        {
+            "message": "0: 3236: 0: DEBUGGING: 0",
+            "absolute_time": "2023-11-15_10-56-09.881755"
+        },
+        {
+            "message": "0: 3264: 0: NUMBER_OF_TRIALS: 6",
+            "absolute_time": "2023-11-15_10-56-09.935948"
+        },
+        {
+            "message": "0: 3298: 0: INTER_TRIAL_DEBUG_WAIT_INTERVAL: 1000",
+            "absolute_time": "2023-11-15_10-56-09.990355"
+        },
+        {
+            "message": "0: 3351: 0: TRIAL_DURATION: 50000",
+            "absolute_time": "2023-11-15_10-56-10.046163"
+        },
+        {
+            "message": "0: 3387: 0: LICK_TIMEOUT: 100",
+            "absolute_time": "2023-11-15_10-56-10.100358"
+        },
+        {
+            "message": "0: 3420: 0: LICK_COUNT_TIMEOUT: 1000",
+            "absolute_time": "2023-11-15_10-56-10.155116"
+        },
+        {
+            "message": "0: 3459: 0: WATER_REWARD_AVAILABLE: 1",
+            "absolute_time": "2023-11-15_10-56-10.208316"
+        },
+        {
+            "message": "0: 3500: 0: WATER_DISPENSE_TIME: 200",
+            "absolute_time": "2023-11-15_10-56-10.263059"
+        },
+        {
+            "message": "0: 3539: 0: WATER_DISPENSE_ON_NUMBER_LICKS: 2",
+            "absolute_time": "2023-11-15_10-56-10.318737"
+        },
+        {
+            "message": "0: 3588: 0: WATER_TIMEOUT: 700",
+            "absolute_time": "2023-11-15_10-56-10.374504"
+        },
+        {
+            "message": "0: 3621: 0: USING_AUDITORY_CUES: 1",
+            "absolute_time": "2023-11-15_10-56-10.428730"
+        },
+        {
+            "message": "0: 3658: 0: NUMBER_OF_PUFFS: 5",
+            "absolute_time": "2023-11-15_10-56-10.483055"
+        },
+        {
+            "message": "0: 3692: 0: AIR_PUFF_START_TIME: 45000",
+            "absolute_time": "2023-11-15_10-56-10.537626"
+        },
+        {
+            "message": "0: 3734: 0: AIR_PUFF_DURATION: 200",
+            "absolute_time": "2023-11-15_10-56-10.589117"
+        },
+        {
+            "message": "0: 3771: 0: INTER_PUFF_PAUSE_TIME: 1000",
+            "absolute_time": "2023-11-15_10-56-10.640302"
+        },
+        {
+            "message": "0: 3814: 0: AIR_PUFF_TOTAL_TIME: 5000",
+            "absolute_time": "2023-11-15_10-56-10.694863"
+        },
+        {
+            "message": "0: 3854: 0: AUDITORY_START: 15000",
+            "absolute_time": "2023-11-15_10-56-10.753515"
+        },
+        {
+            "message": "0: 3891: 0: AUDITORY_STOP: 35000",
+            "absolute_time": "2023-11-15_10-56-10.804250"
+        },
+        {
+            "message": "0: 3926: 0: POSITIVE_FREQUENCY: 5000",
+            "absolute_time": "2023-11-15_10-56-10.858562"
+        },
+        {
+            "message": "0: 3965: 0: POSITIVE_DURATION: 20000",
+            "absolute_time": "2023-11-15_10-56-10.913343"
+        },
+        {
+            "message": "0: 4005: 0: AUDITORY_BUFFER: 100",
+            "absolute_time": "2023-11-15_10-56-10.967983"
+        },
+        {
+            "message": "0: 4040: 0: NEGATIVE_FREQUENCY: 2000",
+            "absolute_time": "2023-11-15_10-56-11.022750"
+        },
+        {
+            "message": "0: 4080: 0: NEGATIVE_PULSE_DURATION: 1000",
+            "absolute_time": "2023-11-15_10-56-11.074624"
+        },
+        {
+            "message": "0: 4124: 0: NEGATIVE_CYCLE_DURATION: 2000",
+            "absolute_time": "2023-11-15_10-56-11.129847"
+        },
+        {
+            "message": "0: 4169: 0: Session has started",
+            "absolute_time": "2023-11-15_10-56-11.184805"
+        },
+        {
+            "message": "0: 4204: 0: Trial has started",
+            "absolute_time": "2023-11-15_10-56-11.239071"
+        },
+        {
+            "message": "0: 4236: 0: Printing trial parameters",
+            "absolute_time": "2023-11-15_10-56-11.293483"
+        },
+        {
+            "message": "0: 4277: 0: randomInterTrialInterval: 2372",
+            "absolute_time": "2023-11-15_10-56-11.348254"
+        },
+        {
+            "message": "0: 4322: 0: currentTrialType: 0",
+            "absolute_time": "2023-11-15_10-56-11.403883"
+        },
+        {
+            "message": "0: 19355: 15001: Negative signal start",
+            "absolute_time": "2023-11-15_10-56-25.748977"
+        },
+        {
+            "message": "0: 20356: 16002: Negative signal stop",
+            "absolute_time": "2023-11-15_10-56-26.739034"
+        },
+        {
+            "message": "0: 21356: 17002: Negative signal start",
+            "absolute_time": "2023-11-15_10-56-27.739370"
+        },
+        {
+            "message": "0: 22358: 18004: Negative signal stop",
+            "absolute_time": "2023-11-15_10-56-28.755059"
+        },
+        {
+            "message": "0: 23357: 19003: Negative signal start",
+            "absolute_time": "2023-11-15_10-56-29.756724"
+        },
+        {
+            "message": "0: 24358: 20004: Negative signal stop",
+            "absolute_time": "2023-11-15_10-56-30.744702"
+        },
+        {
+            "message": "0: 24387: 20034: Lick",
+            "absolute_time": "2023-11-15_10-56-30.808429"
+        },
+        {
+            "message": "0: 24388: 20034: Resetting lick count",
+            "absolute_time": "2023-11-15_10-56-30.862110"
+        },
+        {
+            "message": "0: 25358: 21004: Negative signal start",
+            "absolute_time": "2023-11-15_10-56-31.750980"
+        },
+        {
+            "message": "0: 26359: 22005: Negative signal stop",
+            "absolute_time": "2023-11-15_10-56-32.755693"
+        },
+        {
+            "message": "0: 27359: 23005: Negative signal start",
+            "absolute_time": "2023-11-15_10-56-33.755059"
+        },
+        {
+            "message": "0: 27663: 23309: Lick",
+            "absolute_time": "2023-11-15_10-56-34.070109"
+        },
+        {
+            "message": "0: 27664: 23310: Resetting lick count",
+            "absolute_time": "2023-11-15_10-56-34.123477"
+        },
+        {
+            "message": "0: 28360: 24006: Negative signal stop",
+            "absolute_time": "2023-11-15_10-56-34.758833"
+        },
+        {
+            "message": "0: 29360: 25006: Negative signal start",
+            "absolute_time": "2023-11-15_10-56-35.766064"
+        },
+        {
+            "message": "0: 30361: 26007: Negative signal stop",
+            "absolute_time": "2023-11-15_10-56-36.769789"
+        },
+        {
+            "message": "0: 31361: 27007: Negative signal start",
+            "absolute_time": "2023-11-15_10-56-37.757587"
+        },
+        {
+            "message": "0: 32362: 28008: Negative signal stop",
+            "absolute_time": "2023-11-15_10-56-38.758282"
+        },
+        {
+            "message": "0: 33362: 29008: Negative signal start",
+            "absolute_time": "2023-11-15_10-56-39.776004"
+        },
+        {
+            "message": "0: 34363: 30009: Negative signal stop",
+            "absolute_time": "2023-11-15_10-56-40.763340"
+        },
+        {
+            "message": "0: 35363: 31009: Negative signal start",
+            "absolute_time": "2023-11-15_10-56-41.778847"
+        },
+        {
+            "message": "0: 36364: 32010: Negative signal stop",
+            "absolute_time": "2023-11-15_10-56-42.769799"
+        },
+        {
+            "message": "0: 37364: 33010: Negative signal start",
+            "absolute_time": "2023-11-15_10-56-43.767469"
+        },
+        {
+            "message": "0: 37524: 33170: Lick",
+            "absolute_time": "2023-11-15_10-56-43.946775"
+        },
+        {
+            "message": "0: 37524: 33171: Resetting lick count",
+            "absolute_time": "2023-11-15_10-56-44.000639"
+        },
+        {
+            "message": "0: 37657: 33304: Lick",
+            "absolute_time": "2023-11-15_10-56-44.055719"
+        },
+        {
+            "message": "0: 38365: 34011: Negative signal stop",
+            "absolute_time": "2023-11-15_10-56-44.773942"
+        },
+        {
+            "message": "0: 38658: 34304: Resetting lick count",
+            "absolute_time": "2023-11-15_10-56-45.067543"
+        },
+        {
+            "message": "0: 41449: 37096: Lick",
+            "absolute_time": "2023-11-15_10-56-47.838123"
+        },
+        {
+            "message": "0: 41450: 37096: Resetting lick count",
+            "absolute_time": "2023-11-15_10-56-47.903999"
+        },
+        {
+            "message": "0: 41903: 37549: Lick",
+            "absolute_time": "2023-11-15_10-56-48.313135"
+        },
+        {
+            "message": "0: 42904: 38550: Resetting lick count",
+            "absolute_time": "2023-11-15_10-56-49.318430"
+        },
+        {
+            "message": "0: 47215: 42861: Lick",
+            "absolute_time": "2023-11-15_10-56-53.625218"
+        },
+        {
+            "message": "0: 47215: 42862: Resetting lick count",
+            "absolute_time": "2023-11-15_10-56-53.678905"
+        },
+        {
+            "message": "0: 48263: 43909: Lick",
+            "absolute_time": "2023-11-15_10-56-54.670584"
+        },
+        {
+            "message": "0: 48263: 43909: Resetting lick count",
+            "absolute_time": "2023-11-15_10-56-54.727529"
+        },
+        {
+            "message": "0: 48979: 44625: Lick",
+            "absolute_time": "2023-11-15_10-56-55.397165"
+        },
+        {
+            "message": "0: 49651: 45297: Lick",
+            "absolute_time": "2023-11-15_10-56-56.064331"
+        },
+        {
+            "message": "0: 49651: 45297: Water on",
+            "absolute_time": "2023-11-15_10-56-56.115558"
+        },
+        {
+            "message": "0: 49852: 45498: Water off",
+            "absolute_time": "2023-11-15_10-56-56.271090"
+        },
+        {
+            "message": "0: 50440: 46086: Lick",
+            "absolute_time": "2023-11-15_10-56-56.851571"
+        },
+        {
+            "message": "0: 50441: 46087: Water on",
+            "absolute_time": "2023-11-15_10-56-56.906782"
+        },
+        {
+            "message": "0: 50642: 46288: Water off",
+            "absolute_time": "2023-11-15_10-56-57.063173"
+        },
+        {
+            "message": "0: 51441: 47087: Resetting lick count",
+            "absolute_time": "2023-11-15_10-56-57.881798"
+        },
+        {
+            "message": "0: 54355: 50001: Trial has ended",
+            "absolute_time": "2023-11-15_10-57-00.779379"
+        },
+        {
+            "message": "0: 54355: 50002: Cleaning up last trial",
+            "absolute_time": "2023-11-15_10-57-00.838572"
+        },
+        {
+            "message": "1: 54369: 0: Water off via trial flush",
+            "absolute_time": "2023-11-15_10-57-00.893547"
+        },
+        {
+            "message": "1: 54410: 0: Puff stop via trial flush",
+            "absolute_time": "2023-11-15_10-57-00.951300"
+        },
+        {
+            "message": "1: 54452: 0: Positive signal stop via trial flush",
+            "absolute_time": "2023-11-15_10-57-01.004340"
+        },
+        {
+            "message": "1: 54505: 0: Negative signal stop via trial flush",
+            "absolute_time": "2023-11-15_10-57-01.060063"
+        },
+        {
+            "message": "1: 54558: 0: Waiting the inter-trial interval: 2372",
+            "absolute_time": "2023-11-15_10-57-01.115837"
+        },
+        {
+            "message": "1: 56982: 0: Trial has started",
+            "absolute_time": "2023-11-15_10-57-03.424526"
+        },
+        {
+            "message": "1: 56983: 0: Printing trial parameters",
+            "absolute_time": "2023-11-15_10-57-03.478809"
+        },
+        {
+            "message": "1: 56992: 0: randomInterTrialInterval: 3794",
+            "absolute_time": "2023-11-15_10-57-03.534033"
+        },
+        {
+            "message": "1: 57039: 0: currentTrialType: 1",
+            "absolute_time": "2023-11-15_10-57-03.589882"
+        },
+        {
+            "message": "1: 57976: 905: Lick",
+            "absolute_time": "2023-11-15_10-57-04.410646"
+        },
+        {
+            "message": "1: 57977: 906: Resetting lick count",
+            "absolute_time": "2023-11-15_10-57-04.464203"
+        },
+        {
+            "message": "1: 58187: 1116: Lick",
+            "absolute_time": "2023-11-15_10-57-04.621535"
+        },
+        {
+            "message": "1: 59188: 2117: Resetting lick count",
+            "absolute_time": "2023-11-15_10-57-05.628010"
+        },
+        {
+            "message": "1: 61499: 4428: Lick",
+            "absolute_time": "2023-11-15_10-57-07.928977"
+        },
+        {
+            "message": "1: 61500: 4429: Resetting lick count",
+            "absolute_time": "2023-11-15_10-57-07.982556"
+        },
+        {
+            "message": "1: 61959: 4888: Lick",
+            "absolute_time": "2023-11-15_10-57-08.394734"
+        },
+        {
+            "message": "1: 62960: 5889: Resetting lick count",
+            "absolute_time": "2023-11-15_10-57-09.400535"
+        },
+        {
+            "message": "1: 64034: 6963: Lick",
+            "absolute_time": "2023-11-15_10-57-10.478938"
+        },
+        {
+            "message": "1: 64035: 6964: Resetting lick count",
+            "absolute_time": "2023-11-15_10-57-10.532484"
+        },
+        {
+            "message": "1: 65929: 8858: Lick",
+            "absolute_time": "2023-11-15_10-57-12.377255"
+        },
+        {
+            "message": "1: 65930: 8859: Resetting lick count",
+            "absolute_time": "2023-11-15_10-57-12.430380"
+        },
+        {
+            "message": "1: 66963: 9892: Lick",
+            "absolute_time": "2023-11-15_10-57-13.405897"
+        },
+        {
+            "message": "1: 66963: 9893: Resetting lick count",
+            "absolute_time": "2023-11-15_10-57-13.459192"
+        },
+        {
+            "message": "1: 72072: 15001: Positive signal start",
+            "absolute_time": "2023-11-15_10-57-18.526475"
+        },
+        {
+            "message": "1: 92073: 35002: Positive signal stop",
+            "absolute_time": "2023-11-15_10-57-38.546215"
+        },
+        {
+            "message": "1: 102071: 45000: Puff start",
+            "absolute_time": "2023-11-15_10-57-48.549503"
+        },
+        {
+            "message": "1: 102272: 45201: Puff stop",
+            "absolute_time": "2023-11-15_10-57-48.760918"
+        },
+        {
+            "message": "1: 103273: 46202: Puff start",
+            "absolute_time": "2023-11-15_10-57-49.750005"
+        },
+        {
+            "message": "1: 103474: 46403: Puff stop",
+            "absolute_time": "2023-11-15_10-57-49.964830"
+        },
+        {
+            "message": "1: 104475: 47404: Puff start",
+            "absolute_time": "2023-11-15_10-57-50.955156"
+        },
+        {
+            "message": "1: 104676: 47605: Puff stop",
+            "absolute_time": "2023-11-15_10-57-51.169513"
+        },
+        {
+            "message": "1: 105677: 48606: Puff start",
+            "absolute_time": "2023-11-15_10-57-52.159705"
+        },
+        {
+            "message": "1: 105878: 48807: Puff stop",
+            "absolute_time": "2023-11-15_10-57-52.372653"
+        },
+        {
+            "message": "1: 106880: 49809: Puff start",
+            "absolute_time": "2023-11-15_10-57-53.363689"
+        },
+        {
+            "message": "1: 107071: 50000: Puff stop, catch block",
+            "absolute_time": "2023-11-15_10-57-53.577137"
+        },
+        {
+            "message": "1: 107072: 50001: Trial has ended",
+            "absolute_time": "2023-11-15_10-57-53.632912"
+        },
+        {
+            "message": "1: 107086: 50024: Cleaning up last trial",
+            "absolute_time": "2023-11-15_10-57-53.688392"
+        },
+        {
+            "message": "2: 107130: 0: Water off via trial flush",
+            "absolute_time": "2023-11-15_10-57-53.743499"
+        },
+        {
+            "message": "2: 107172: 0: Puff stop via trial flush",
+            "absolute_time": "2023-11-15_10-57-53.798432"
+        },
+        {
+            "message": "2: 107215: 0: Positive signal stop via trial flush",
+            "absolute_time": "2023-11-15_10-57-53.853644"
+        },
+        {
+            "message": "2: 107270: 0: Negative signal stop via trial flush",
+            "absolute_time": "2023-11-15_10-57-53.909941"
+        },
+        {
+            "message": "2: 107323: 0: Waiting the inter-trial interval: 3794",
+            "absolute_time": "2023-11-15_10-57-53.965685"
+        },
+        {
+            "message": "2: 111170: 0: Trial has started",
+            "absolute_time": "2023-11-15_10-57-57.668616"
+        },
+        {
+            "message": "2: 111171: 0: Printing trial parameters",
+            "absolute_time": "2023-11-15_10-57-57.724112"
+        },
+        {
+            "message": "2: 111183: 0: randomInterTrialInterval: 1163",
+            "absolute_time": "2023-11-15_10-57-57.779420"
+        },
+        {
+            "message": "2: 111230: 0: currentTrialType: 1",
+            "absolute_time": "2023-11-15_10-57-57.835185"
+        },
+        {
+            "message": "2: 123612: 12348: Lick",
+            "absolute_time": "2023-11-15_10-58-10.112033"
+        },
+        {
+            "message": "2: 123613: 12349: Resetting lick count",
+            "absolute_time": "2023-11-15_10-58-10.171342"
+        },
+        {
+            "message": "2: 124045: 12782: Lick",
+            "absolute_time": "2023-11-15_10-58-10.554694"
+        },
+        {
+            "message": "2: 124206: 12943: Lick",
+            "absolute_time": "2023-11-15_10-58-10.707770"
+        },
+        {
+            "message": "2: 124207: 12943: Water on",
+            "absolute_time": "2023-11-15_10-58-10.770477"
+        },
+        {
+            "message": "2: 124408: 13144: Water off",
+            "absolute_time": "2023-11-15_10-58-10.923955"
+        },
+        {
+            "message": "2: 124683: 13419: Lick",
+            "absolute_time": "2023-11-15_10-58-11.182740"
+        },
+        {
+            "message": "2: 124850: 13587: Lick",
+            "absolute_time": "2023-11-15_10-58-11.342755"
+        },
+        {
+            "message": "2: 124908: 13644: Water on",
+            "absolute_time": "2023-11-15_10-58-11.408486"
+        },
+        {
+            "message": "2: 125109: 13845: Water off",
+            "absolute_time": "2023-11-15_10-58-11.626908"
+        },
+        {
+            "message": "2: 125382: 14118: Lick",
+            "absolute_time": "2023-11-15_10-58-11.884571"
+        },
+        {
+            "message": "2: 125879: 14616: Lick",
+            "absolute_time": "2023-11-15_10-58-12.401548"
+        },
+        {
+            "message": "2: 125880: 14616: Water on",
+            "absolute_time": "2023-11-15_10-58-12.455322"
+        },
+        {
+            "message": "2: 126081: 14817: Water off",
+            "absolute_time": "2023-11-15_10-58-12.609331"
+        },
+        {
+            "message": "2: 126265: 15001: Positive signal start",
+            "absolute_time": "2023-11-15_10-58-12.794488"
+        },
+        {
+            "message": "2: 126609: 15345: Lick",
+            "absolute_time": "2023-11-15_10-58-13.118857"
+        },
+        {
+            "message": "2: 126610: 15346: Water on",
+            "absolute_time": "2023-11-15_10-58-13.169648"
+        },
+        {
+            "message": "2: 126811: 15547: Water off",
+            "absolute_time": "2023-11-15_10-58-13.325606"
+        },
+        {
+            "message": "2: 127053: 15789: Lick",
+            "absolute_time": "2023-11-15_10-58-13.584387"
+        },
+        {
+            "message": "2: 127474: 16210: Lick",
+            "absolute_time": "2023-11-15_10-58-13.995157"
+        },
+        {
+            "message": "2: 127475: 16211: Water on",
+            "absolute_time": "2023-11-15_10-58-14.048881"
+        },
+        {
+            "message": "2: 127676: 16412: Water off",
+            "absolute_time": "2023-11-15_10-58-14.207795"
+        },
+        {
+            "message": "2: 128475: 17211: Resetting lick count",
+            "absolute_time": "2023-11-15_10-58-14.991195"
+        },
+        {
+            "message": "2: 131234: 19971: Lick",
+            "absolute_time": "2023-11-15_10-58-17.763754"
+        },
+        {
+            "message": "2: 131235: 19972: Resetting lick count",
+            "absolute_time": "2023-11-15_10-58-17.818043"
+        },
+        {
+            "message": "2: 131870: 20606: Lick",
+            "absolute_time": "2023-11-15_10-58-18.381563"
+        },
+        {
+            "message": "2: 132871: 21607: Resetting lick count",
+            "absolute_time": "2023-11-15_10-58-19.413390"
+        },
+        {
+            "message": "2: 137169: 25905: Lick",
+            "absolute_time": "2023-11-15_10-58-23.714995"
+        },
+        {
+            "message": "2: 137170: 25906: Resetting lick count",
+            "absolute_time": "2023-11-15_10-58-23.768761"
+        },
+        {
+            "message": "2: 137313: 26050: Lick",
+            "absolute_time": "2023-11-15_10-58-23.823479"
+        },
+        {
+            "message": "2: 138314: 27050: Resetting lick count",
+            "absolute_time": "2023-11-15_10-58-24.860741"
+        },
+        {
+            "message": "2: 138583: 27319: Lick",
+            "absolute_time": "2023-11-15_10-58-25.119667"
+        },
+        {
+            "message": "2: 138584: 27320: Resetting lick count",
+            "absolute_time": "2023-11-15_10-58-25.172967"
+        },
+        {
+            "message": "2: 138730: 27466: Lick",
+            "absolute_time": "2023-11-15_10-58-25.278980"
+        },
+        {
+            "message": "2: 138888: 27624: Lick",
+            "absolute_time": "2023-11-15_10-58-25.434775"
+        },
+        {
+            "message": "2: 138889: 27625: Water on",
+            "absolute_time": "2023-11-15_10-58-25.488777"
+        },
+        {
+            "message": "2: 139090: 27826: Water off",
+            "absolute_time": "2023-11-15_10-58-25.609351"
+        },
+        {
+            "message": "2: 139606: 28342: Lick",
+            "absolute_time": "2023-11-15_10-58-26.134046"
+        },
+        {
+            "message": "2: 139607: 28343: Water on",
+            "absolute_time": "2023-11-15_10-58-26.187806"
+        },
+        {
+            "message": "2: 139808: 28544: Water off",
+            "absolute_time": "2023-11-15_10-58-26.343717"
+        },
+        {
+            "message": "2: 139959: 28696: Lick",
+            "absolute_time": "2023-11-15_10-58-26.500270"
+        },
+        {
+            "message": "2: 140237: 28973: Lick",
+            "absolute_time": "2023-11-15_10-58-26.758026"
+        },
+        {
+            "message": "2: 140308: 29044: Water on",
+            "absolute_time": "2023-11-15_10-58-26.834721"
+        },
+        {
+            "message": "2: 140338: 29074: Lick",
+            "absolute_time": "2023-11-15_10-58-26.890136"
+        },
+        {
+            "message": "2: 140509: 29245: Water off",
+            "absolute_time": "2023-11-15_10-58-27.046173"
+        },
+        {
+            "message": "2: 140521: 29257: Lick",
+            "absolute_time": "2023-11-15_10-58-27.100520"
+        },
+        {
+            "message": "2: 140641: 29377: Lick",
+            "absolute_time": "2023-11-15_10-58-27.169837"
+        },
+        {
+            "message": "2: 140834: 29570: Lick",
+            "absolute_time": "2023-11-15_10-58-27.375043"
+        },
+        {
+            "message": "2: 140993: 29729: Lick",
+            "absolute_time": "2023-11-15_10-58-27.531203"
+        },
+        {
+            "message": "2: 141009: 29745: Water on",
+            "absolute_time": "2023-11-15_10-58-27.585003"
+        },
+        {
+            "message": "2: 141176: 29913: Lick",
+            "absolute_time": "2023-11-15_10-58-27.695376"
+        },
+        {
+            "message": "2: 141210: 29946: Water off",
+            "absolute_time": "2023-11-15_10-58-27.758044"
+        },
+        {
+            "message": "2: 141357: 30093: Lick",
+            "absolute_time": "2023-11-15_10-58-27.879139"
+        },
+        {
+            "message": "2: 141557: 30294: Lick",
+            "absolute_time": "2023-11-15_10-58-28.092069"
+        },
+        {
+            "message": "2: 142558: 31294: Resetting lick count",
+            "absolute_time": "2023-11-15_10-58-29.103311"
+        },
+        {
+            "message": "2: 144241: 32978: Lick",
+            "absolute_time": "2023-11-15_10-58-30.791308"
+        },
+        {
+            "message": "2: 144242: 32978: Resetting lick count",
+            "absolute_time": "2023-11-15_10-58-30.844785"
+        },
+        {
+            "message": "2: 146266: 35002: Positive signal stop",
+            "absolute_time": "2023-11-15_10-58-32.807978"
+        },
+        {
+            "message": "2: 156264: 45000: Puff start",
+            "absolute_time": "2023-11-15_10-58-42.805138"
+        },
+        {
+            "message": "2: 156465: 45201: Puff stop",
+            "absolute_time": "2023-11-15_10-58-43.020675"
+        },
+        {
+            "message": "2: 157466: 46202: Puff start",
+            "absolute_time": "2023-11-15_10-58-44.010724"
+        },
+        {
+            "message": "2: 157667: 46403: Puff stop",
+            "absolute_time": "2023-11-15_10-58-44.225735"
+        },
+        {
+            "message": "2: 158060: 46796: Lick",
+            "absolute_time": "2023-11-15_10-58-44.604359"
+        },
+        {
+            "message": "2: 158060: 46797: Resetting lick count",
+            "absolute_time": "2023-11-15_10-58-44.662007"
+        },
+        {
+            "message": "2: 158469: 47205: Lick",
+            "absolute_time": "2023-11-15_10-58-45.023443"
+        },
+        {
+            "message": "2: 158668: 47404: Puff start",
+            "absolute_time": "2023-11-15_10-58-45.229917"
+        },
+        {
+            "message": "2: 158761: 47497: Lick",
+            "absolute_time": "2023-11-15_10-58-45.335243"
+        },
+        {
+            "message": "2: 158763: 47499: Water on",
+            "absolute_time": "2023-11-15_10-58-45.390494"
+        },
+        {
+            "message": "2: 158869: 47605: Puff stop",
+            "absolute_time": "2023-11-15_10-58-45.443270"
+        },
+        {
+            "message": "2: 158964: 47700: Water off",
+            "absolute_time": "2023-11-15_10-58-45.519526"
+        },
+        {
+            "message": "2: 159762: 48498: Resetting lick count",
+            "absolute_time": "2023-11-15_10-58-46.338992"
+        },
+        {
+            "message": "2: 159810: 48547: Lick",
+            "absolute_time": "2023-11-15_10-58-46.394179"
+        },
+        {
+            "message": "2: 159811: 48547: Resetting lick count",
+            "absolute_time": "2023-11-15_10-58-46.447586"
+        },
+        {
+            "message": "2: 159870: 48606: Puff start",
+            "absolute_time": "2023-11-15_10-58-46.502428"
+        },
+        {
+            "message": "2: 160071: 48807: Puff stop",
+            "absolute_time": "2023-11-15_10-58-46.623550"
+        },
+        {
+            "message": "2: 160715: 49451: Lick",
+            "absolute_time": "2023-11-15_10-58-47.294549"
+        },
+        {
+            "message": "2: 161072: 49808: Puff start",
+            "absolute_time": "2023-11-15_10-58-47.623829"
+        },
+        {
+            "message": "2: 161264: 50000: Puff stop, catch block",
+            "absolute_time": "2023-11-15_10-58-47.837561"
+        },
+        {
+            "message": "2: 161265: 50001: Trial has ended",
+            "absolute_time": "2023-11-15_10-58-47.893263"
+        },
+        {
+            "message": "2: 161280: 50024: Cleaning up last trial",
+            "absolute_time": "2023-11-15_10-58-47.947887"
+        },
+        {
+            "message": "3: 161324: 0: Water off via trial flush",
+            "absolute_time": "2023-11-15_10-58-48.003106"
+        },
+        {
+            "message": "3: 161366: 0: Puff stop via trial flush",
+            "absolute_time": "2023-11-15_10-58-48.058173"
+        },
+        {
+            "message": "3: 161409: 0: Positive signal stop via trial flush",
+            "absolute_time": "2023-11-15_10-58-48.113903"
+        },
+        {
+            "message": "3: 161463: 0: Negative signal stop via trial flush",
+            "absolute_time": "2023-11-15_10-58-48.170134"
+        },
+        {
+            "message": "3: 161516: 0: Waiting the inter-trial interval: 1163",
+            "absolute_time": "2023-11-15_10-58-48.225922"
+        },
+        {
+            "message": "3: 162733: 0: Trial has started",
+            "absolute_time": "2023-11-15_10-58-49.309595"
+        },
+        {
+            "message": "3: 162734: 0: Printing trial parameters",
+            "absolute_time": "2023-11-15_10-58-49.361671"
+        },
+        {
+            "message": "3: 162745: 0: randomInterTrialInterval: 1488",
+            "absolute_time": "2023-11-15_10-58-49.416925"
+        },
+        {
+            "message": "3: 162793: 0: currentTrialType: 1",
+            "absolute_time": "2023-11-15_10-58-49.472525"
+        },
+        {
+            "message": "3: 162830: 12: Resetting lick count",
+            "absolute_time": "2023-11-15_10-58-49.527773"
+        },
+        {
+            "message": "3: 162994: 168: Lick",
+            "absolute_time": "2023-11-15_10-58-49.582353"
+        },
+        {
+            "message": "3: 162995: 169: Resetting lick count",
+            "absolute_time": "2023-11-15_10-58-49.636204"
+        },
+        {
+            "message": "3: 163175: 350: Lick",
+            "absolute_time": "2023-11-15_10-58-49.742151"
+        },
+        {
+            "message": "3: 163372: 547: Lick",
+            "absolute_time": "2023-11-15_10-58-49.949372"
+        },
+        {
+            "message": "3: 163373: 547: Water on",
+            "absolute_time": "2023-11-15_10-58-50.003148"
+        },
+        {
+            "message": "3: 163548: 722: Lick",
+            "absolute_time": "2023-11-15_10-58-50.110604"
+        },
+        {
+            "message": "3: 163574: 748: Water off",
+            "absolute_time": "2023-11-15_10-58-50.161185"
+        },
+        {
+            "message": "3: 163941: 1115: Lick",
+            "absolute_time": "2023-11-15_10-58-50.522154"
+        },
+        {
+            "message": "3: 164486: 1660: Lick",
+            "absolute_time": "2023-11-15_10-58-51.036214"
+        },
+        {
+            "message": "3: 164487: 1661: Water on",
+            "absolute_time": "2023-11-15_10-58-51.092517"
+        },
+        {
+            "message": "3: 164687: 1861: Water off",
+            "absolute_time": "2023-11-15_10-58-51.248014"
+        },
+        {
+            "message": "3: 164752: 1927: Lick",
+            "absolute_time": "2023-11-15_10-58-51.302060"
+        },
+        {
+            "message": "3: 165753: 2927: Resetting lick count",
+            "absolute_time": "2023-11-15_10-58-52.334022"
+        },
+        {
+            "message": "3: 166048: 3222: Lick",
+            "absolute_time": "2023-11-15_10-58-52.592931"
+        },
+        {
+            "message": "3: 166049: 3223: Resetting lick count",
+            "absolute_time": "2023-11-15_10-58-52.656995"
+        },
+        {
+            "message": "3: 166287: 3461: Lick",
+            "absolute_time": "2023-11-15_10-58-52.865127"
+        },
+        {
+            "message": "3: 166543: 3718: Lick",
+            "absolute_time": "2023-11-15_10-58-53.123571"
+        },
+        {
+            "message": "3: 166544: 3718: Water on",
+            "absolute_time": "2023-11-15_10-58-53.177215"
+        },
+        {
+            "message": "3: 166745: 3919: Water off",
+            "absolute_time": "2023-11-15_10-58-53.297772"
+        },
+        {
+            "message": "3: 166773: 3948: Lick",
+            "absolute_time": "2023-11-15_10-58-53.361382"
+        },
+        {
+            "message": "3: 167044: 4218: Lick",
+            "absolute_time": "2023-11-15_10-58-53.620025"
+        },
+        {
+            "message": "3: 167192: 4367: Lick",
+            "absolute_time": "2023-11-15_10-58-53.776053"
+        },
+        {
+            "message": "3: 167245: 4419: Water on",
+            "absolute_time": "2023-11-15_10-58-53.829333"
+        },
+        {
+            "message": "3: 167446: 4620: Water off",
+            "absolute_time": "2023-11-15_10-58-54.005953"
+        },
+        {
+            "message": "3: 167526: 4701: Lick",
+            "absolute_time": "2023-11-15_10-58-54.115926"
+        },
+        {
+            "message": "3: 167763: 4937: Lick",
+            "absolute_time": "2023-11-15_10-58-54.320490"
+        },
+        {
+            "message": "3: 168035: 5209: Lick",
+            "absolute_time": "2023-11-15_10-58-54.581371"
+        },
+        {
+            "message": "3: 168036: 5210: Water on",
+            "absolute_time": "2023-11-15_10-58-54.647256"
+        },
+        {
+            "message": "3: 168236: 5410: Water off",
+            "absolute_time": "2023-11-15_10-58-54.804025"
+        },
+        {
+            "message": "3: 168273: 5448: Lick",
+            "absolute_time": "2023-11-15_10-58-54.857793"
+        },
+        {
+            "message": "3: 168522: 5697: Lick",
+            "absolute_time": "2023-11-15_10-58-55.081116"
+        },
+        {
+            "message": "3: 168739: 5914: Lick",
+            "absolute_time": "2023-11-15_10-58-55.287901"
+        },
+        {
+            "message": "3: 168740: 5914: Water on",
+            "absolute_time": "2023-11-15_10-58-55.351635"
+        },
+        {
+            "message": "3: 168941: 6115: Water off",
+            "absolute_time": "2023-11-15_10-58-55.508073"
+        },
+        {
+            "message": "3: 169174: 6348: Lick",
+            "absolute_time": "2023-11-15_10-58-55.731641"
+        },
+        {
+            "message": "3: 169725: 6899: Lick",
+            "absolute_time": "2023-11-15_10-58-56.300066"
+        },
+        {
+            "message": "3: 169726: 6900: Water on",
+            "absolute_time": "2023-11-15_10-58-56.353854"
+        },
+        {
+            "message": "3: 169927: 7101: Water off",
+            "absolute_time": "2023-11-15_10-58-56.510114"
+        },
+        {
+            "message": "3: 170726: 7900: Resetting lick count",
+            "absolute_time": "2023-11-15_10-58-57.296378"
+        },
+        {
+            "message": "3: 171137: 8311: Lick",
+            "absolute_time": "2023-11-15_10-58-57.717272"
+        },
+        {
+            "message": "3: 171138: 8312: Resetting lick count",
+            "absolute_time": "2023-11-15_10-58-57.772576"
+        },
+        {
+            "message": "3: 171250: 8424: Lick",
+            "absolute_time": "2023-11-15_10-58-57.825790"
+        },
+        {
+            "message": "3: 171454: 8628: Lick",
+            "absolute_time": "2023-11-15_10-58-58.032902"
+        },
+        {
+            "message": "3: 171455: 8629: Water on",
+            "absolute_time": "2023-11-15_10-58-58.086523"
+        },
+        {
+            "message": "3: 171655: 8829: Water off",
+            "absolute_time": "2023-11-15_10-58-58.242591"
+        },
+        {
+            "message": "3: 171972: 9146: Lick",
+            "absolute_time": "2023-11-15_10-58-58.551911"
+        },
+        {
+            "message": "3: 172725: 9900: Lick",
+            "absolute_time": "2023-11-15_10-58-59.286284"
+        },
+        {
+            "message": "3: 172726: 9900: Water on",
+            "absolute_time": "2023-11-15_10-58-59.345099"
+        },
+        {
+            "message": "3: 172928: 10102: Water off",
+            "absolute_time": "2023-11-15_10-58-59.501300"
+        },
+        {
+            "message": "3: 173015: 10189: Lick",
+            "absolute_time": "2023-11-15_10-58-59.607219"
+        },
+        {
+            "message": "3: 173284: 10459: Lick",
+            "absolute_time": "2023-11-15_10-58-59.866047"
+        },
+        {
+            "message": "3: 173528: 10703: Lick",
+            "absolute_time": "2023-11-15_10-59-00.087052"
+        },
+        {
+            "message": "3: 173529: 10703: Water on",
+            "absolute_time": "2023-11-15_10-59-00.147772"
+        },
+        {
+            "message": "3: 173730: 10904: Water off",
+            "absolute_time": "2023-11-15_10-59-00.303891"
+        },
+        {
+            "message": "3: 173746: 10920: Lick",
+            "absolute_time": "2023-11-15_10-59-00.358018"
+        },
+        {
+            "message": "3: 174747: 11921: Resetting lick count",
+            "absolute_time": "2023-11-15_10-59-01.331208"
+        },
+        {
+            "message": "3: 177827: 15001: Positive signal start",
+            "absolute_time": "2023-11-15_10-59-04.410052"
+        },
+        {
+            "message": "3: 197828: 35002: Positive signal stop",
+            "absolute_time": "2023-11-15_10-59-24.434723"
+        },
+        {
+            "message": "3: 207826: 45000: Puff start",
+            "absolute_time": "2023-11-15_10-59-34.438000"
+        },
+        {
+            "message": "3: 208027: 45201: Puff stop",
+            "absolute_time": "2023-11-15_10-59-34.648419"
+        },
+        {
+            "message": "3: 209028: 46202: Puff start",
+            "absolute_time": "2023-11-15_10-59-35.639012"
+        },
+        {
+            "message": "3: 209229: 46403: Puff stop",
+            "absolute_time": "2023-11-15_10-59-35.852129"
+        },
+        {
+            "message": "3: 210230: 47404: Puff start",
+            "absolute_time": "2023-11-15_10-59-36.841654"
+        },
+        {
+            "message": "3: 210432: 47606: Puff stop",
+            "absolute_time": "2023-11-15_10-59-37.057056"
+        },
+        {
+            "message": "3: 211433: 48607: Puff start",
+            "absolute_time": "2023-11-15_10-59-38.046853"
+        },
+        {
+            "message": "3: 211634: 48808: Puff stop",
+            "absolute_time": "2023-11-15_10-59-38.261231"
+        },
+        {
+            "message": "3: 212635: 49809: Puff start",
+            "absolute_time": "2023-11-15_10-59-39.251174"
+        },
+        {
+            "message": "3: 212826: 50000: Puff stop, catch block",
+            "absolute_time": "2023-11-15_10-59-39.464667"
+        },
+        {
+            "message": "3: 212827: 50001: Trial has ended",
+            "absolute_time": "2023-11-15_10-59-39.519769"
+        },
+        {
+            "message": "3: 212841: 50023: Cleaning up last trial",
+            "absolute_time": "2023-11-15_10-59-39.574509"
+        },
+        {
+            "message": "4: 212885: 0: Water off via trial flush",
+            "absolute_time": "2023-11-15_10-59-39.629930"
+        },
+        {
+            "message": "4: 212927: 0: Puff stop via trial flush",
+            "absolute_time": "2023-11-15_10-59-39.685018"
+        },
+        {
+            "message": "4: 212970: 0: Positive signal stop via trial flush",
+            "absolute_time": "2023-11-15_10-59-39.740167"
+        },
+        {
+            "message": "4: 213024: 0: Negative signal stop via trial flush",
+            "absolute_time": "2023-11-15_10-59-39.796531"
+        },
+        {
+            "message": "4: 213078: 0: Waiting the inter-trial interval: 1488",
+            "absolute_time": "2023-11-15_10-59-39.852624"
+        },
+        {
+            "message": "4: 214619: 0: Trial has started",
+            "absolute_time": "2023-11-15_10-59-41.238530"
+        },
+        {
+            "message": "4: 214620: 0: Printing trial parameters",
+            "absolute_time": "2023-11-15_10-59-41.301879"
+        },
+        {
+            "message": "4: 214632: 0: randomInterTrialInterval: 1692",
+            "absolute_time": "2023-11-15_10-59-41.356983"
+        },
+        {
+            "message": "4: 214679: 0: currentTrialType: 0",
+            "absolute_time": "2023-11-15_10-59-41.412594"
+        },
+        {
+            "message": "4: 229714: 15001: Negative signal start",
+            "absolute_time": "2023-11-15_10-59-56.367357"
+        },
+        {
+            "message": "4: 230715: 16002: Negative signal stop",
+            "absolute_time": "2023-11-15_10-59-57.360620"
+        },
+        {
+            "message": "4: 231715: 17002: Negative signal start",
+            "absolute_time": "2023-11-15_10-59-58.373484"
+        },
+        {
+            "message": "4: 232381: 17669: Lick",
+            "absolute_time": "2023-11-15_10-59-59.038592"
+        },
+        {
+            "message": "4: 232382: 17669: Resetting lick count",
+            "absolute_time": "2023-11-15_10-59-59.091824"
+        },
+        {
+            "message": "4: 232716: 18003: Negative signal stop",
+            "absolute_time": "2023-11-15_10-59-59.366278"
+        },
+        {
+            "message": "4: 233657: 18944: Lick",
+            "absolute_time": "2023-11-15_11-00-00.294862"
+        },
+        {
+            "message": "4: 233657: 18945: Resetting lick count",
+            "absolute_time": "2023-11-15_11-00-00.351325"
+        },
+        {
+            "message": "4: 233716: 19003: Negative signal start",
+            "absolute_time": "2023-11-15_11-00-00.406414"
+        },
+        {
+            "message": "4: 234417: 19704: Lick",
+            "absolute_time": "2023-11-15_11-00-01.074649"
+        },
+        {
+            "message": "4: 234576: 19863: Lick",
+            "absolute_time": "2023-11-15_11-00-01.233398"
+        },
+        {
+            "message": "4: 234577: 19864: Water on",
+            "absolute_time": "2023-11-15_11-00-01.284075"
+        },
+        {
+            "message": "4: 234717: 20004: Negative signal stop",
+            "absolute_time": "2023-11-15_11-00-01.369369"
+        },
+        {
+            "message": "4: 234778: 20065: Water off",
+            "absolute_time": "2023-11-15_11-00-01.428493"
+        },
+        {
+            "message": "4: 235577: 20864: Resetting lick count",
+            "absolute_time": "2023-11-15_11-00-02.250709"
+        },
+        {
+            "message": "4: 235717: 21004: Negative signal start",
+            "absolute_time": "2023-11-15_11-00-02.371699"
+        },
+        {
+            "message": "4: 236718: 22005: Negative signal stop",
+            "absolute_time": "2023-11-15_11-00-03.384109"
+        },
+        {
+            "message": "4: 237718: 23005: Negative signal start",
+            "absolute_time": "2023-11-15_11-00-04.372185"
+        },
+        {
+            "message": "4: 238103: 23390: Lick",
+            "absolute_time": "2023-11-15_11-00-04.751653"
+        },
+        {
+            "message": "4: 238103: 23391: Resetting lick count",
+            "absolute_time": "2023-11-15_11-00-04.803380"
+        },
+        {
+            "message": "4: 238235: 23523: Lick",
+            "absolute_time": "2023-11-15_11-00-04.909416"
+        },
+        {
+            "message": "4: 238374: 23662: Lick",
+            "absolute_time": "2023-11-15_11-00-05.014040"
+        },
+        {
+            "message": "4: 238375: 23662: Water on",
+            "absolute_time": "2023-11-15_11-00-05.077493"
+        },
+        {
+            "message": "4: 238528: 23816: Lick",
+            "absolute_time": "2023-11-15_11-00-05.182200"
+        },
+        {
+            "message": "4: 238576: 23863: Water off",
+            "absolute_time": "2023-11-15_11-00-05.235739"
+        },
+        {
+            "message": "4: 238720: 24007: Negative signal stop",
+            "absolute_time": "2023-11-15_11-00-05.391231"
+        },
+        {
+            "message": "4: 238775: 24062: Lick",
+            "absolute_time": "2023-11-15_11-00-05.445987"
+        },
+        {
+            "message": "4: 238945: 24233: Lick",
+            "absolute_time": "2023-11-15_11-00-05.600112"
+        },
+        {
+            "message": "4: 239173: 24460: Lick",
+            "absolute_time": "2023-11-15_11-00-05.823061"
+        },
+        {
+            "message": "4: 239174: 24461: Water on",
+            "absolute_time": "2023-11-15_11-00-05.876487"
+        },
+        {
+            "message": "4: 239354: 24641: Lick",
+            "absolute_time": "2023-11-15_11-00-05.996735"
+        },
+        {
+            "message": "4: 239375: 24662: Water off",
+            "absolute_time": "2023-11-15_11-00-06.056848"
+        },
+        {
+            "message": "4: 239554: 24841: Lick",
+            "absolute_time": "2023-11-15_11-00-06.213359"
+        },
+        {
+            "message": "4: 239719: 25006: Negative signal start",
+            "absolute_time": "2023-11-15_11-00-06.385524"
+        },
+        {
+            "message": "4: 239722: 25010: Lick",
+            "absolute_time": "2023-11-15_11-00-06.441664"
+        },
+        {
+            "message": "4: 240720: 26007: Negative signal stop",
+            "absolute_time": "2023-11-15_11-00-07.379460"
+        },
+        {
+            "message": "4: 240723: 26010: Resetting lick count",
+            "absolute_time": "2023-11-15_11-00-07.441033"
+        },
+        {
+            "message": "4: 240887: 26175: Lick",
+            "absolute_time": "2023-11-15_11-00-07.547194"
+        },
+        {
+            "message": "4: 240888: 26175: Resetting lick count",
+            "absolute_time": "2023-11-15_11-00-07.600979"
+        },
+        {
+            "message": "4: 241720: 27007: Negative signal start",
+            "absolute_time": "2023-11-15_11-00-08.387213"
+        },
+        {
+            "message": "4: 242016: 27304: Lick",
+            "absolute_time": "2023-11-15_11-00-08.671532"
+        },
+        {
+            "message": "4: 242017: 27304: Resetting lick count",
+            "absolute_time": "2023-11-15_11-00-08.722815"
+        },
+        {
+            "message": "4: 242259: 27547: Lick",
+            "absolute_time": "2023-11-15_11-00-08.930976"
+        },
+        {
+            "message": "4: 242721: 28008: Negative signal stop",
+            "absolute_time": "2023-11-15_11-00-09.392496"
+        },
+        {
+            "message": "4: 243260: 28547: Resetting lick count",
+            "absolute_time": "2023-11-15_11-00-09.928928"
+        },
+        {
+            "message": "4: 243721: 29008: Negative signal start",
+            "absolute_time": "2023-11-15_11-00-10.393876"
+        },
+        {
+            "message": "4: 244722: 30009: Negative signal stop",
+            "absolute_time": "2023-11-15_11-00-11.395205"
+        },
+        {
+            "message": "4: 245722: 31009: Negative signal start",
+            "absolute_time": "2023-11-15_11-00-12.399282"
+        },
+        {
+            "message": "4: 246361: 31648: Lick",
+            "absolute_time": "2023-11-15_11-00-13.011998"
+        },
+        {
+            "message": "4: 246362: 31649: Resetting lick count",
+            "absolute_time": "2023-11-15_11-00-13.072763"
+        },
+        {
+            "message": "4: 246544: 31831: Lick",
+            "absolute_time": "2023-11-15_11-00-13.230716"
+        },
+        {
+            "message": "4: 246723: 32010: Negative signal stop",
+            "absolute_time": "2023-11-15_11-00-13.386883"
+        },
+        {
+            "message": "4: 247545: 32832: Resetting lick count",
+            "absolute_time": "2023-11-15_11-00-14.217955"
+        },
+        {
+            "message": "4: 247723: 33010: Negative signal start",
+            "absolute_time": "2023-11-15_11-00-14.390443"
+        },
+        {
+            "message": "4: 248100: 33387: Lick",
+            "absolute_time": "2023-11-15_11-00-14.759884"
+        },
+        {
+            "message": "4: 248100: 33388: Resetting lick count",
+            "absolute_time": "2023-11-15_11-00-14.813578"
+        },
+        {
+            "message": "4: 248724: 34011: Negative signal stop",
+            "absolute_time": "2023-11-15_11-00-15.395986"
+        },
+        {
+            "message": "4: 249639: 34926: Lick",
+            "absolute_time": "2023-11-15_11-00-16.325628"
+        },
+        {
+            "message": "4: 249639: 34927: Resetting lick count",
+            "absolute_time": "2023-11-15_11-00-16.379381"
+        },
+        {
+            "message": "4: 249834: 35121: Lick",
+            "absolute_time": "2023-11-15_11-00-16.485815"
+        },
+        {
+            "message": "4: 250715: 36003: Lick",
+            "absolute_time": "2023-11-15_11-00-17.368066"
+        },
+        {
+            "message": "4: 250716: 36003: Water on",
+            "absolute_time": "2023-11-15_11-00-17.431287"
+        },
+        {
+            "message": "4: 250917: 36204: Water off",
+            "absolute_time": "2023-11-15_11-00-17.587064"
+        },
+        {
+            "message": "4: 251716: 37003: Resetting lick count",
+            "absolute_time": "2023-11-15_11-00-18.394280"
+        },
+        {
+            "message": "4: 252268: 37555: Lick",
+            "absolute_time": "2023-11-15_11-00-18.932860"
+        },
+        {
+            "message": "4: 252268: 37556: Resetting lick count",
+            "absolute_time": "2023-11-15_11-00-18.987106"
+        },
+        {
+            "message": "4: 252556: 37844: Lick",
+            "absolute_time": "2023-11-15_11-00-19.247260"
+        },
+        {
+            "message": "4: 252747: 38035: Lick",
+            "absolute_time": "2023-11-15_11-00-19.403129"
+        },
+        {
+            "message": "4: 252748: 38035: Water on",
+            "absolute_time": "2023-11-15_11-00-19.466261"
+        },
+        {
+            "message": "4: 252864: 38152: Lick",
+            "absolute_time": "2023-11-15_11-00-19.533358"
+        },
+        {
+            "message": "4: 252949: 38236: Water off",
+            "absolute_time": "2023-11-15_11-00-19.635596"
+        },
+        {
+            "message": "4: 252986: 38273: Lick",
+            "absolute_time": "2023-11-15_11-00-19.689903"
+        },
+        {
+            "message": "4: 253107: 38394: Lick",
+            "absolute_time": "2023-11-15_11-00-19.794807"
+        },
+        {
+            "message": "4: 253241: 38528: Lick",
+            "absolute_time": "2023-11-15_11-00-19.899363"
+        },
+        {
+            "message": "4: 253370: 38657: Lick",
+            "absolute_time": "2023-11-15_11-00-20.038171"
+        },
+        {
+            "message": "4: 253449: 38736: Water on",
+            "absolute_time": "2023-11-15_11-00-20.139968"
+        },
+        {
+            "message": "4: 253476: 38763: Lick",
+            "absolute_time": "2023-11-15_11-00-20.193715"
+        },
+        {
+            "message": "4: 253650: 38937: Water off",
+            "absolute_time": "2023-11-15_11-00-20.314420"
+        },
+        {
+            "message": "4: 254477: 39764: Resetting lick count",
+            "absolute_time": "2023-11-15_11-00-21.158670"
+        },
+        {
+            "message": "4: 262039: 47326: Lick",
+            "absolute_time": "2023-11-15_11-00-28.732770"
+        },
+        {
+            "message": "4: 262039: 47327: Resetting lick count",
+            "absolute_time": "2023-11-15_11-00-28.786197"
+        },
+        {
+            "message": "4: 264714: 50001: Trial has ended",
+            "absolute_time": "2023-11-15_11-00-31.397677"
+        },
+        {
+            "message": "4: 264714: 50002: Cleaning up last trial",
+            "absolute_time": "2023-11-15_11-00-31.458556"
+        },
+        {
+            "message": "5: 264729: 0: Water off via trial flush",
+            "absolute_time": "2023-11-15_11-00-31.513983"
+        },
+        {
+            "message": "5: 264771: 0: Puff stop via trial flush",
+            "absolute_time": "2023-11-15_11-00-31.568801"
+        },
+        {
+            "message": "5: 264814: 0: Positive signal stop via trial flush",
+            "absolute_time": "2023-11-15_11-00-31.623699"
+        },
+        {
+            "message": "5: 264868: 0: Negative signal stop via trial flush",
+            "absolute_time": "2023-11-15_11-00-31.680372"
+        },
+        {
+            "message": "5: 264923: 0: Waiting the inter-trial interval: 1692",
+            "absolute_time": "2023-11-15_11-00-31.736711"
+        },
+        {
+            "message": "5: 266668: 0: Trial has started",
+            "absolute_time": "2023-11-15_11-00-33.378794"
+        },
+        {
+            "message": "5: 266669: 0: Printing trial parameters",
+            "absolute_time": "2023-11-15_11-00-33.433614"
+        },
+        {
+            "message": "5: 266680: 0: randomInterTrialInterval: 2291",
+            "absolute_time": "2023-11-15_11-00-33.488651"
+        },
+        {
+            "message": "5: 266728: 0: currentTrialType: 0",
+            "absolute_time": "2023-11-15_11-00-33.543843"
+        },
+        {
+            "message": "5: 281762: 15001: Negative signal start",
+            "absolute_time": "2023-11-15_11-00-48.488217"
+        },
+        {
+            "message": "5: 282763: 16002: Negative signal stop",
+            "absolute_time": "2023-11-15_11-00-49.477914"
+        },
+        {
+            "message": "5: 283763: 17002: Negative signal start",
+            "absolute_time": "2023-11-15_11-00-50.487339"
+        },
+        {
+            "message": "5: 284764: 18003: Negative signal stop",
+            "absolute_time": "2023-11-15_11-00-51.477813"
+        },
+        {
+            "message": "5: 285764: 19003: Negative signal start",
+            "absolute_time": "2023-11-15_11-00-52.492484"
+        },
+        {
+            "message": "5: 286765: 20004: Negative signal stop",
+            "absolute_time": "2023-11-15_11-00-53.480296"
+        },
+        {
+            "message": "5: 287765: 21004: Negative signal start",
+            "absolute_time": "2023-11-15_11-00-54.483935"
+        },
+        {
+            "message": "5: 288766: 22005: Negative signal stop",
+            "absolute_time": "2023-11-15_11-00-55.484646"
+        },
+        {
+            "message": "5: 289766: 23005: Negative signal start",
+            "absolute_time": "2023-11-15_11-00-56.486155"
+        },
+        {
+            "message": "5: 290767: 24006: Negative signal stop",
+            "absolute_time": "2023-11-15_11-00-57.487201"
+        },
+        {
+            "message": "5: 291767: 25006: Negative signal start",
+            "absolute_time": "2023-11-15_11-00-58.488207"
+        },
+        {
+            "message": "5: 292768: 26007: Negative signal stop",
+            "absolute_time": "2023-11-15_11-00-59.489515"
+        },
+        {
+            "message": "5: 293768: 27007: Negative signal start",
+            "absolute_time": "2023-11-15_11-01-00.495102"
+        },
+        {
+            "message": "5: 294769: 28008: Negative signal stop",
+            "absolute_time": "2023-11-15_11-01-01.492361"
+        },
+        {
+            "message": "5: 295769: 29008: Negative signal start",
+            "absolute_time": "2023-11-15_11-01-02.506990"
+        },
+        {
+            "message": "5: 296770: 30009: Negative signal stop",
+            "absolute_time": "2023-11-15_11-01-03.509625"
+        },
+        {
+            "message": "5: 297771: 31010: Negative signal start",
+            "absolute_time": "2023-11-15_11-01-04.511141"
+        },
+        {
+            "message": "5: 298772: 32011: Negative signal stop",
+            "absolute_time": "2023-11-15_11-01-05.500113"
+        },
+        {
+            "message": "5: 299772: 33011: Negative signal start",
+            "absolute_time": "2023-11-15_11-01-06.515896"
+        },
+        {
+            "message": "5: 300773: 34012: Negative signal stop",
+            "absolute_time": "2023-11-15_11-01-07.503607"
+        },
+        {
+            "message": "5: 316762: 50001: Trial has ended",
+            "absolute_time": "2023-11-15_11-01-23.518108"
+        },
+        {
+            "message": "5: 316762: 50002: Cleaning up last trial",
+            "absolute_time": "2023-11-15_11-01-23.572693"
+        },
+        {
+            "message": "6: 316777: 0: Water off via trial flush",
+            "absolute_time": "2023-11-15_11-01-23.627911"
+        },
+        {
+            "message": "6: 316820: 0: Puff stop via trial flush",
+            "absolute_time": "2023-11-15_11-01-23.683544"
+        },
+        {
+            "message": "6: 316862: 0: Positive signal stop via trial flush",
+            "absolute_time": "2023-11-15_11-01-23.738557"
+        },
+        {
+            "message": "6: 316916: 0: Negative signal stop via trial flush",
+            "absolute_time": "2023-11-15_11-01-23.794686"
+        },
+        {
+            "message": "6: 316971: 0: Waiting the inter-trial interval: 2291",
+            "absolute_time": "2023-11-15_11-01-23.850950"
+        },
+        {
+            "message": "6: 319314: 0: Trial has started",
+            "absolute_time": "2023-11-15_11-01-26.066380"
+        },
+        {
+            "message": "6: 319315: 0: Printing trial parameters",
+            "absolute_time": "2023-11-15_11-01-26.124596"
+        },
+        {
+            "message": "6: 319327: 0: randomInterTrialInterval: 4772",
+            "absolute_time": "2023-11-15_11-01-26.179684"
+        },
+        {
+            "message": "6: 319375: 0: currentTrialType: -48",
+            "absolute_time": "2023-11-15_11-01-26.235430"
+        },
+        {
+            "message": "6: 334411: 15001: Negative signal start",
+            "absolute_time": "2023-11-15_11-01-41.198087"
+        },
+        {
+            "message": "6: 335412: 16002: Negative signal stop",
+            "absolute_time": "2023-11-15_11-01-42.185486"
+        },
+        {
+            "message": "6: 336077: 16668: Lick",
+            "absolute_time": "2023-11-15_11-01-42.863381"
+        },
+        {
+            "message": "6: 336078: 16668: Resetting lick count",
+            "absolute_time": "2023-11-15_11-01-42.917126"
+        },
+        {
+            "message": "6: 336218: 16808: Lick",
+            "absolute_time": "2023-11-15_11-01-42.987942"
+        },
+        {
+            "message": "6: 336412: 17002: Negative signal start",
+            "absolute_time": "2023-11-15_11-01-43.193346"
+        },
+        {
+            "message": "6: 337219: 17809: Resetting lick count",
+            "absolute_time": "2023-11-15_11-01-43.999949"
+        },
+        {
+            "message": "6: 337413: 18003: Negative signal stop",
+            "absolute_time": "2023-11-15_11-01-44.193614"
+        },
+        {
+            "message": "6: 338413: 19003: Negative signal start",
+            "absolute_time": "2023-11-15_11-01-45.192050"
+        },
+        {
+            "message": "6: 339414: 20004: Negative signal stop",
+            "absolute_time": "2023-11-15_11-01-46.191113"
+        },
+        {
+            "message": "6: 340414: 21004: Negative signal start",
+            "absolute_time": "2023-11-15_11-01-47.194890"
+        },
+        {
+            "message": "6: 340951: 21541: Lick",
+            "absolute_time": "2023-11-15_11-01-47.719141"
+        },
+        {
+            "message": "6: 340952: 21542: Resetting lick count",
+            "absolute_time": "2023-11-15_11-01-47.778886"
+        },
+        {
+            "message": "6: 341097: 21687: Lick",
+            "absolute_time": "2023-11-15_11-01-47.884748"
+        },
+        {
+            "message": "6: 341265: 21855: Lick",
+            "absolute_time": "2023-11-15_11-01-48.040252"
+        },
+        {
+            "message": "6: 341266: 21856: Water on",
+            "absolute_time": "2023-11-15_11-01-48.094087"
+        },
+        {
+            "message": "6: 341415: 22005: Negative signal stop",
+            "absolute_time": "2023-11-15_11-01-48.199073"
+        },
+        {
+            "message": "6: 341467: 22057: Water off",
+            "absolute_time": "2023-11-15_11-01-48.263770"
+        },
+        {
+            "message": "6: 342266: 22856: Resetting lick count",
+            "absolute_time": "2023-11-15_11-01-49.063368"
+        },
+        {
+            "message": "6: 342415: 23005: Negative signal start",
+            "absolute_time": "2023-11-15_11-01-49.216345"
+        },
+        {
+            "message": "6: 343416: 24006: Negative signal stop",
+            "absolute_time": "2023-11-15_11-01-50.208387"
+        },
+        {
+            "message": "6: 344416: 25006: Negative signal start",
+            "absolute_time": "2023-11-15_11-01-51.207010"
+        },
+        {
+            "message": "6: 344679: 25270: Lick",
+            "absolute_time": "2023-11-15_11-01-51.472444"
+        },
+        {
+            "message": "6: 344680: 25270: Resetting lick count",
+            "absolute_time": "2023-11-15_11-01-51.525604"
+        },
+        {
+            "message": "6: 344849: 25439: Lick",
+            "absolute_time": "2023-11-15_11-01-51.630857"
+        },
+        {
+            "message": "6: 345027: 25617: Lick",
+            "absolute_time": "2023-11-15_11-01-51.806700"
+        },
+        {
+            "message": "6: 345027: 25618: Water on",
+            "absolute_time": "2023-11-15_11-01-51.862238"
+        },
+        {
+            "message": "6: 345228: 25818: Water off",
+            "absolute_time": "2023-11-15_11-01-52.018527"
+        },
+        {
+            "message": "6: 345248: 25839: Lick",
+            "absolute_time": "2023-11-15_11-01-52.072799"
+        },
+        {
+            "message": "6: 345417: 26007: Negative signal stop",
+            "absolute_time": "2023-11-15_11-01-52.216157"
+        },
+        {
+            "message": "6: 346249: 26839: Resetting lick count",
+            "absolute_time": "2023-11-15_11-01-53.035408"
+        },
+        {
+            "message": "6: 346417: 27007: Negative signal start",
+            "absolute_time": "2023-11-15_11-01-53.217441"
+        },
+        {
+            "message": "6: 346706: 27297: Lick",
+            "absolute_time": "2023-11-15_11-01-53.475583"
+        },
+        {
+            "message": "6: 346707: 27297: Resetting lick count",
+            "absolute_time": "2023-11-15_11-01-53.541947"
+        },
+        {
+            "message": "6: 346881: 27471: Lick",
+            "absolute_time": "2023-11-15_11-01-53.663880"
+        },
+        {
+            "message": "6: 347418: 28008: Negative signal stop",
+            "absolute_time": "2023-11-15_11-01-54.209939"
+        },
+        {
+            "message": "6: 347882: 28472: Resetting lick count",
+            "absolute_time": "2023-11-15_11-01-54.679788"
+        },
+        {
+            "message": "6: 348418: 29008: Negative signal start",
+            "absolute_time": "2023-11-15_11-01-55.213375"
+        },
+        {
+            "message": "6: 349419: 30009: Negative signal stop",
+            "absolute_time": "2023-11-15_11-01-56.210503"
+        },
+        {
+            "message": "6: 350419: 31009: Negative signal start",
+            "absolute_time": "2023-11-15_11-01-57.224116"
+        },
+        {
+            "message": "6: 351420: 32010: Negative signal stop",
+            "absolute_time": "2023-11-15_11-01-58.227902"
+        },
+        {
+            "message": "6: 352420: 33010: Negative signal start",
+            "absolute_time": "2023-11-15_11-01-59.216691"
+        },
+        {
+            "message": "6: 353421: 34011: Negative signal stop",
+            "absolute_time": "2023-11-15_11-02-00.231229"
+        },
+        {
+            "message": "6: 361758: 42348: Lick",
+            "absolute_time": "2023-11-15_11-02-08.567593"
+        },
+        {
+            "message": "6: 361759: 42349: Resetting lick count",
+            "absolute_time": "2023-11-15_11-02-08.620857"
+        },
+        {
+            "message": "6: 369411: 50001: Trial has ended",
+            "absolute_time": "2023-11-15_11-02-16.248333"
+        },
+        {
+            "message": "6: 369411: 50002: Cleaning up last trial",
+            "absolute_time": "2023-11-15_11-02-16.303089"
+        },
+        {
+            "message": "7: 369426: 0: Water off via trial flush",
+            "absolute_time": "2023-11-15_11-02-16.358140"
+        },
+        {
+            "message": "7: 369469: 0: Puff stop via trial flush",
+            "absolute_time": "2023-11-15_11-02-16.413505"
+        },
+        {
+            "message": "7: 369511: 0: Positive signal stop via trial flush",
+            "absolute_time": "2023-11-15_11-02-16.468673"
+        },
+        {
+            "message": "7: 369565: 0: Negative signal stop via trial flush",
+            "absolute_time": "2023-11-15_11-02-16.524467"
+        },
+        {
+            "message": "7: 369619: 0: Waiting the inter-trial interval: 4772",
+            "absolute_time": "2023-11-15_11-02-16.580739"
+        },
+        {
+            "message": "7: 374445: 0: Session has ended",
+            "absolute_time": "2023-11-15_11-02-21.258482"
+        }
+    ]
+}
