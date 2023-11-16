@@ -1,4 +1,4 @@
 .vscode
 *.pyc
 Software/Serial_read/__pycache__/
-Software/Serial_read/*.json
+# Software/Serial_read/*.json
