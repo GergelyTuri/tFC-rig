@@ -7,6 +7,8 @@ TODO:
 * Block water delivery during the ITI!!!
 * Documetation -- Doxygen?
 * Need a way to daisy chain multiple arduinos together and run the same script on then simultanelously.
+* Let's reset the arduino every time before the session starts to make sure everything is in a good state. see [this](https://arduinogetstarted.com/faq/how-to-reset-arduino-by-programming)
+* let's also stop running the script when `KeyboardInterrupt` is raised in the  `py_arduion_serial.py` script. 
 
 ## Rig Operation
 
