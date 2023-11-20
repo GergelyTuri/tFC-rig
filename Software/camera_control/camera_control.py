@@ -17,7 +17,7 @@ cam = cc.e3VisionCamera("e3v8375")
 cam.camera_action("DISCONNECT")
 # this may be needed for the first time you run the script
 # TODO: figure out how you can get the current state of the cameras if possible
-# cam.camera_action("BIND")
+cam.camera_action("BIND")
 
 cam.camera_action(
     "CONNECT",
