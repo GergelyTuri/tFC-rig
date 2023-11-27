@@ -138,17 +138,36 @@ void loop() {
           flushAirPuffMetaData();
           flushPositiveSignalMetaData();
           flushNegativeSignalMetaData();
-          vprint("Waiting the inter-trial interval", randomInterTrialInterval);
 
           // Use `randomInterTrialInterval` in the real trial. Use
           // `INTER_TRIAL_DEBUG_WAIT_INTERVAL` for debugging as it is set to
           // just one second
+          long interTrialIntervalStartTime = millis();
           if (DEBUGGING) {
+            // delay(INTER_TRIAL_DEBUG_WAIT_INTERVAL);
             print("DEBUGGING: Waiting for 1s");
-            delay(INTER_TRIAL_DEBUG_WAIT_INTERVAL);
+            long interTrialIntervalWaitTime = INTER_TRIAL_DEBUG_WAIT_INTERVAL;
           } else {
-            delay(randomInterTrialInterval);
+            // delay(randomInterTrialInterval);
+            vprint("Waiting the inter-trial interval", randomInterTrialInterval);
+            long interTrialIntervalWaitTime = randomInterTrialInterval;
           }
+          
+
+          /* INTER TRIAL INTERVAL LOOP
+           * Do things during the inter-trial interval. For example,
+           * continue to detect licks. Functions called during this
+           * loop need to be agnostic to the trial time or to the fact
+           * that a trial is happening, since there is no trial time
+           * and a trial is not happening :)
+           */
+          while (millis() - interTrialIntervalStartTime < interTrialIntervalWaitTime) {
+            checkLick();
+          }
+          // Any module called during the inter-trial interval loop
+          // should be flushed afterwards, so it is ready for the next
+          // trial.
+          flushLickMetaData();
         }
       }
     }
