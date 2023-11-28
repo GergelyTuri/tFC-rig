@@ -1,4 +1,5 @@
-"""This is a class for helper fuctions for processing behavior data."""
+"""This is a class for helper fuctions for processing behavior data.
+11/28/23 adding header info to the class"""
 
 import json
 from dataclasses import dataclass, field
@@ -10,12 +11,13 @@ import pandas as pd
 @dataclass
 class Processing:
     file: str
-    data: dict = field(init=False)
+    header: dict = field(init=False)
+    session_data: dict = field(init=False)
     trials: list = field(init=False)
 
     def __post_init__(self):
-        self.data = self.load_data()
-        self.trials = list(self.data.keys())
+        self.header, self.session_data = self.load_data()
+        self.trials = list(self.session_data.keys())
 
     def load_data(self):
         """
@@ -25,8 +27,10 @@ class Processing:
             dict: The loaded data.
         """
         with open(self.file, "r", encoding="cp1252") as f:
-            data = json.load(f)
-        return data
+            content = json.load(f)
+            header = content.get("header", {})
+            session_data = content.get("data", {})
+        return header, session_data
 
     def prepropcess_trial(self, trial):
         """
@@ -41,7 +45,7 @@ class Processing:
         Raises:
             ValueError: If the trial type is not found in the trial data.
         """
-        trial_df = pd.DataFrame.from_dict(self.data[trial])
+        trial_df = pd.DataFrame.from_dict(self.session_data[trial])
         trial_type = None
 
         for message in trial_df["message"]:
@@ -121,10 +125,12 @@ class Processing:
             fig (matplotlib.figure.Figure): The generated figure object.
             axes (numpy.ndarray): The array of axes objects.
         """
+        mouse_id = self.header["mouse_id"]
+        start_time = self.header["Start_time"]
         fig, axes = plt.subplots(
             nrows=2, ncols=3, figsize=(15, 10), sharex=True, sharey=True
         )  # Adjust figsize as needed
-        fig.suptitle("Session Data")
+        fig.suptitle(f"ID: {mouse_id}, Start time: {start_time}")
 
         # Flatten the axes array for easy iteration
         axes = axes.flatten()

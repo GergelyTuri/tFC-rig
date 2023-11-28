@@ -1,3 +1,19 @@
+"""
+This script parses a JSON file containing behavioral data and extracts relevant information.
+
+The script takes a command-line argument specifying the path to the JSON file to parse.
+It reads the JSON file, extracts the header entries and data entries, and performs the following tasks:
+- Prints the header entries
+- Identifies the start and end times of a session
+- Counts the number of trials and prints the start times of each trial
+- Extracts information for each trial, including session and trial times, message, and absolute time
+- Writes the extracted data to a new JSON file named "session.json" with an indented format
+
+Usage: python process_json.py -f <path_to_json_file>
+author: @gergelyturi
+11/28/23 - version 1.0
+"""
+
 import argparse
 import json
 
@@ -5,12 +21,27 @@ import pandas as pd
 
 
 def main():
+    """
+    Parse a JSON file and extract relevant information.
+
+    This function reads a JSON file, extracts specific information from it, and saves the extracted data
+    into a new JSON file named "session.json".
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
     ap = argparse.ArgumentParser()
     ap.add_argument("-f", "--file", required=True, help="file to parse")
     args = ap.parse_args()
 
     with open(args.file, "r", encoding="cp1252") as f:
         data = json.load(f)
+
+    header_entries = data.get("header", [])
+    print(header_entries)
 
     data_entries = data.get("data", [])
 
@@ -68,7 +99,7 @@ def main():
                 trial_ended = True
 
     with open("session.json", "w", encoding="cp1252") as f:
-        json.dump(trials, f, indent=4)
+        json.dump({"header": header_entries, "data": trials}, f, indent=4)
 
 
 if __name__ == "__main__":
