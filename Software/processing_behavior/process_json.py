@@ -12,6 +12,7 @@ It reads the JSON file, extracts the header entries and data entries, and perfor
 Usage: python process_json.py -f <path_to_json_file>
 author: @gergelyturi
 11/28/23 - version 1.0
+11/29/23 - version 1.1 imporving data read and save
 """
 
 import argparse
@@ -98,7 +99,8 @@ def main():
             if "Trial has ended" in message:
                 trial_ended = True
 
-    with open("session.json", "w", encoding="cp1252") as f:
+    output_file_name = args.file.split(".")[0] + "_processed.json"
+    with open(output_file_name, "w", encoding="cp1252") as f:
         json.dump({"header": header_entries, "data": trials}, f, indent=4)
 
 
