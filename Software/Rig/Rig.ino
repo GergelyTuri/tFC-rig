@@ -76,6 +76,8 @@ void setup() {
   pinMode(PIN_TONE_POSITIVE, OUTPUT);
   pinMode(PIN_BUTTON, INPUT_PULLUP);
   pinMode(PIN_LICK, INPUT);
+  pinMode(PIN_MOUSE_LED, OUTPUT);
+  pinMode(PIN_CAMERA, OUTPUT);
 
   // Secondary pins are used to trigger "secondary" (vs. primary) rigs
   // in a daisy-chain setup. Just one is added until the primary-
@@ -116,6 +118,7 @@ void loop() {
 
     print("Session has started");
     sessionHasStarted = true;
+    digitalWrite(PIN_CAMERA, HIGH);
     sessionStartTime = millis();
   }
 
@@ -204,6 +207,7 @@ void loop() {
     digitalWrite(PIN_SESSION_TIGGER, LOW);
     print("Session has ended");
     sessionHasEnded = true;
+    digitalWrite(PIN_CAMERA, LOW);
     sessionEndTime = millis();
   }
 }
@@ -248,6 +252,8 @@ void printSessionParameters() {
   vprint("PIN_TONE_POSITIVE", PIN_TONE_POSITIVE);
   vprint("PIN_BUTTON", PIN_BUTTON);
   vprint("PIN_LICK", PIN_LICK);
+  vprint("PIN_MOUSE_LED", PIN_MOUSE_LED);
+  vprint("PIN_CAMERA", PIN_CAMERA);
 
   // print("Printing session parameters");
   vprint("DEBUGGING", DEBUGGING);
@@ -284,6 +290,9 @@ void trialStart() {
   print("Trial has started");
   trialHasStarted = true;
 
+  // Lets mouse know water is available
+  digitalWrite(PIN_MOUSE_LED, HIGH);
+
   // Check debugging
   if (DEBUGGING) {
     print("WARNING: DEBUGGING is set to true");
@@ -309,6 +318,7 @@ void checkForTrialEnd() {
   if (millis() - trialStartTime > TRIAL_DURATION) {
     print("Trial has ended");
     trialHasEnded = true;
+    digitalWrite(PIN_MOUSE_LED, LOW);
     trialEndTime = millis();
   }
 }

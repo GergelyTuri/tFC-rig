@@ -16,8 +16,10 @@ const int PIN_TONE_NEGATIVE = 9;
 const int PIN_TONE_POSITIVE = 10;
 const int PIN_BUTTON = 11;
 const int PIN_LICK = 12;
+const int PIN_CAMERA = 13;
+const int PIN_MOUSE_LED = 14;
 
 // Rig pins
-const int PIN_SECONDARY_1 = 13;
+const int PIN_SECONDARY_1 = 15;
 
 #endif
