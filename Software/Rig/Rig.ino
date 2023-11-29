@@ -76,8 +76,18 @@ void setup() {
   pinMode(PIN_TONE_POSITIVE, OUTPUT);
   pinMode(PIN_BUTTON, INPUT_PULLUP);
   pinMode(PIN_LICK, INPUT);
-  pinMode(PIN_SESSION_TIGGER, OUTPUT);
-  pinMode(PIN_TRIAL_TRIGGER, OUTPUT);
+
+  // Secondary pins are used to trigger "secondary" (vs. primary) rigs
+  // in a daisy-chain setup. Just one is added until the primary-
+  // secondary code is tested. Only the primary rig should use these
+  // pins. The secondary rigs should have a connection to the primary
+  // rig in place of the `PIN_BUTTON`. Because a button is `HIGH` by
+  // default and `LOW` when pressed, the secondary pins are set to
+  // `HIGH` here
+  if (IS_PRIMARY_RIG) {
+    pinMode(PIN_SECONDARY_1, OUTPUT);
+    digitalWrite(PIN_SECONDARY_1, HIGH);
+  }
 
   // Each session of trials has a different random seed taken by
   // reading from a disconnected pin.
@@ -97,7 +107,11 @@ void setup() {
 
 void loop() {
   if ((digitalRead(PIN_BUTTON) == LOW) && (!sessionHasStarted) && (!sessionHasEnded)) {
-    digitalWrite(PIN_SESSION_TIGGER, HIGH);
+    // Because this function has a delay to ensure the simulated button
+    // press is sent to secondary rigs, call it all the time to avoid
+    // drift between rigs
+    simulateButtonPress();
+
     printSessionParameters();
 
     print("Session has started");
@@ -144,11 +158,9 @@ void loop() {
           // just one second
           long interTrialIntervalStartTime = millis();
           if (DEBUGGING) {
-            // delay(INTER_TRIAL_DEBUG_WAIT_INTERVAL);
             print("DEBUGGING: Waiting for 1s");
             long interTrialIntervalWaitTime = INTER_TRIAL_DEBUG_WAIT_INTERVAL;
           } else {
-            // delay(randomInterTrialInterval);
             vprint("Waiting the inter-trial interval", randomInterTrialInterval);
             long interTrialIntervalWaitTime = randomInterTrialInterval;
           }
@@ -161,9 +173,17 @@ void loop() {
            * that a trial is happening, since there is no trial time
            * and a trial is not happening :)
            */
-          while (millis() - interTrialIntervalStartTime < interTrialIntervalWaitTime) {
-            checkLick();
+          if (IS_PRIMARY_RIG) {
+            while (millis() - interTrialIntervalStartTime < interTrialIntervalWaitTime) {
+              interTrialIntervalLoop();
+            }
+          } else {
+            while (digitalRead(PIN_BUTTON == HIGH)) {
+              interTrialIntervalLoop();
+            }
           }
+          simulateButtonPress();
+
           // Any module called during the inter-trial interval loop
           // should be flushed afterwards, so it is ready for the next
           // trial.
@@ -188,6 +208,27 @@ void loop() {
   }
 }
 
+
+/* RIG MANAGEMENT
+ *
+ */
+void simulateButtonPress() {
+  digitalWrite(PIN_SECONDARY_1, LOW);
+  // WARNING: this waits, to simulate a button press signal sent to
+  // other rigs. Do not call `simulateButtonPress` during time-
+  // sensitive operations!!!
+  delay(SECONDARY_PIN_PAUSE);
+  digitalWrite(PIN_SECONDARY_1, HIGH);
+}
+void interTrialIntervalLoop() {
+  // The `interTrialIntervalLoop` is called in two separate while loops
+  // for primary and secondary rigs respectively, for now it is just
+  // checking licks but if more inter-trial interval stuff needs to
+  // happen it can be added here and not in two places above
+  checkLick();
+}
+
+
 /* SESSION MANAGEMENT
  *
  */
@@ -207,8 +248,6 @@ void printSessionParameters() {
   vprint("PIN_TONE_POSITIVE", PIN_TONE_POSITIVE);
   vprint("PIN_BUTTON", PIN_BUTTON);
   vprint("PIN_LICK", PIN_LICK);
-  vprint("PIN_SESSION_TIGGER", PIN_SESSION_TIGGER);
-  vprint("PIN_TRIAL_TRIGGER", PIN_TRIAL_TRIGGER);
 
   // print("Printing session parameters");
   vprint("DEBUGGING", DEBUGGING);
@@ -237,11 +276,11 @@ void printSessionParameters() {
   vprint("NEGATIVE_CYCLE_DURATION", NEGATIVE_CYCLE_DURATION);
 }
 
+
 /* TRIAL MANAGEMENT
  *
  */
 void trialStart() {
-  digitalWrite(PIN_TRIAL_TRIGGER, HIGH);
   print("Trial has started");
   trialHasStarted = true;
 
@@ -268,7 +307,6 @@ void trialStart() {
 }
 void checkForTrialEnd() {
   if (millis() - trialStartTime > TRIAL_DURATION) {
-    digitalWrite(PIN_TRIAL_TRIGGER, LOW);
     print("Trial has ended");
     trialHasEnded = true;
     trialEndTime = millis();

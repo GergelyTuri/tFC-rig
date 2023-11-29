@@ -11,6 +11,10 @@
 
 const bool DEBUGGING = false;
 
+const bool IS_PRIMARY_RIG = true;
+// Wait this amount of time to "simulate" button pressing
+const long SECONDARY_PIN_PAUSE = 500; // ms
+
 const int NUMBER_OF_TRIALS = 6;
 // NOTE: this is only used for debugging, the "real" trial uses a
 // random value between 1min and 5min
