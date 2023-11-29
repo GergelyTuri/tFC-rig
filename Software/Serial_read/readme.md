@@ -12,3 +12,4 @@ The main package is `pyserial`, which was installed with pip.
 
 TODO:
 * python script to parse the json files. 
+* look into whehter the arduio code can be stopped by the python script when `KeyboardInterrupt` is raised.
