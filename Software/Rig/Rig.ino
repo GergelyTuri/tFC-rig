@@ -1,11 +1,21 @@
 /* Given that the Arduino is connected to components at the following pins:
  *
- *  -  4: Air puff
- *  -  5: Water solenoid
+ * DIGITAL PINS
+ * ============
+ *  -  digital 4: Air puff
+ *  -  digital 5: Water solenoid
+ * 
+ * ANALOG PINS
+ * ===========
  *  -  9: Auditory cue (CS-)
  *  - 10: Auditory cue (CS+)
  *  - 11: Button to start trial
  *  - 12: Lick
+ *  -  3: triggering camera recording also
+ *  -  4: setting an LED to on during the trial
+
+// Rig pins
+const int PIN_SECONDARY_1 = 15;
  *
  * Defines a configurable run of the experimental rig with the following options:
  *
