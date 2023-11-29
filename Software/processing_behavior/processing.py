@@ -80,6 +80,40 @@ class Processing:
         trial_df.set_index("time", inplace=True)
         return trial_df, trial_type
 
+    def rate_calulator(self, trial, event):
+        """
+        Calculates the event rate for a given trial and event.
+
+        Args:
+            trial (object): The trial object.
+            event (str): The event to calculate the rate for.
+
+        Returns:
+            dict: A dictionary containing the event, frequency, count, duration, and trial type.
+        """
+        data_df, trial_type = self.prepropcess_trial(trial)
+        if data_df.empty:
+            raise ValueError(f"No data available for trial {trial}")
+        if not data_df["message"].str.contains(event).any():
+            raise ValueError(f"Event '{event}' not found in trial: {trial}")
+
+        event_df = data_df[data_df["message"].str.contains(event)]
+        count = event_df.shape[0]
+        duration = (data_df.index[-1] - data_df.index[0]).total_seconds()
+
+        if duration <= 0:
+            raise ValueError(f"Trial duration is <= 0 for trial {trial}")
+
+        frequency = count / duration
+        results = {
+            "event": event,
+            "frequency": frequency,
+            "count": count,
+            "duration": duration,
+            "trial_type": trial_type,
+        }
+        return results
+
     def plot_trial(self, trial, ax=None):
         """
         Plots the trial data.
