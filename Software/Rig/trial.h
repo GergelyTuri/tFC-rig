@@ -10,6 +10,9 @@
 #define TRIAL
 
 const bool DEBUGGING = false;
+const int N_DEBUG_CYCLES = 0;
+const int DEBUG_CYCLE_DURATION = 1000; // ms
+const int DEBUG_TEST_SECONDARY = false;
 
 const bool IS_PRIMARY_RIG = true;
 // Wait this amount of time to "simulate" button pressing
@@ -18,7 +21,7 @@ const long SECONDARY_PIN_PAUSE = 500; // ms
 const int NUMBER_OF_TRIALS = 6;
 // NOTE: this is only used for debugging, the "real" trial uses a
 // random value between 1min and 5min
-const long INTER_TRIAL_DEBUG_WAIT_INTERVAL = 1000; // ms
+const long INTER_TRIAL_DEBUG_WAIT_INTERVAL = 5000; // ms
 const long MIN_ITI = 60000; // ms
 const long MAX_ITI = 300000; // ms
 // Be careful setting trial duration. It needs to be at least equal to
