@@ -133,15 +133,19 @@ class Processing:
             _, ax = plt.subplots()
         trial_df, trial_type = self.prepropcess_trial(trial)
         # Identifying and plotting Negative Signal Periods
-        negative_start_times = trial_df.index[trial_df["negative_signal_start"]]
-        negative_end_times = trial_df.index[trial_df["negative_signal_end"]]
+        if trial_type == "0":
+            start_times = trial_df.index[trial_df["negative_signal_start"]]
+            end_times = trial_df.index[trial_df["negative_signal_end"]]
+        elif trial_type == "1":
+            start_times = trial_df.index[trial_df["positive_signal_start"]]
+            end_times = trial_df.index[trial_df["positive_signal_end"]]
         air_puff_start_times = trial_df.index[trial_df["airpuff_start"]]
         air_puff_end_times = trial_df.index[trial_df["airpuff_end"]]
 
         trial_df["lick"].resample("1L").sum().plot(ax=ax)
         trial_df["water"].resample("1L").sum().plot(ax=ax, color="k")
 
-        for start, end in zip(negative_start_times, negative_end_times):
+        for start, end in zip(start_times, end_times):
             ax.fill_betweenx(y=[0, 1], x1=start, x2=end, color="red", alpha=0.2)
 
         for start, end in zip(air_puff_start_times, air_puff_end_times):
