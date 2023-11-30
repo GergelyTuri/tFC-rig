@@ -97,6 +97,12 @@ void setup() {
   // default and `LOW` when pressed, the secondary pins are set to
   // `HIGH` here
   if (IS_PRIMARY_RIG) {
+    // TODO: can we make it so secondary output on the primary rig is the same pin as the input on the secondary rig
+    // so during setup we don't have to edit 'rig.h'
+    //
+    // Add logic to skip positive and negative tones on secondary rigs (need tok eep water, licks, air puffs)
+    //
+    // Add to the README the setup process for multiple boards
     pinMode(PIN_SECONDARY_1, OUTPUT);
     digitalWrite(PIN_SECONDARY_1, HIGH);
   }
