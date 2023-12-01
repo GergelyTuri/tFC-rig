@@ -97,6 +97,12 @@ void setup() {
   // default and `LOW` when pressed, the secondary pins are set to
   // `HIGH` here
   if (IS_PRIMARY_RIG) {
+    // TODO: can we make it so secondary output on the primary rig is the same pin as the input on the secondary rig
+    // so during setup we don't have to edit 'rig.h'
+    //
+    // Add logic to skip positive and negative tones on secondary rigs (need tok eep water, licks, air puffs)
+    //
+    // Add to the README the setup process for multiple boards
     pinMode(PIN_SECONDARY_1, OUTPUT);
     digitalWrite(PIN_SECONDARY_1, HIGH);
   }
@@ -170,12 +176,13 @@ void loop() {
           // `INTER_TRIAL_DEBUG_WAIT_INTERVAL` for debugging as it is set to
           // just one second
           long interTrialIntervalStartTime = millis();
+          long interTrialIntervalWaitTime;
           if (DEBUGGING) {
             print("DEBUGGING: Waiting for 1s");
-            long interTrialIntervalWaitTime = INTER_TRIAL_DEBUG_WAIT_INTERVAL;
+            interTrialIntervalWaitTime = INTER_TRIAL_DEBUG_WAIT_INTERVAL;
           } else {
             vprint("Waiting the inter-trial interval", randomInterTrialInterval);
-            long interTrialIntervalWaitTime = randomInterTrialInterval;
+            interTrialIntervalWaitTime = randomInterTrialInterval;
           }
           
 
@@ -191,8 +198,11 @@ void loop() {
               interTrialIntervalLoop();
             }
           } else {
-            while (digitalRead(PIN_BUTTON == HIGH)) {
+            while (true) {
               interTrialIntervalLoop();
+              if (digitalRead(PIN_BUTTON) == LOW) {
+                break;
+              }
             }
           }
           simulateButtonPress();
@@ -205,8 +215,7 @@ void loop() {
       }
     }
   } else if (!sessionHasStarted) {
-    print("Waiting for session to start...");
-    delay(100);
+    rigOutsideSessionPause();
   } else {
     print("Your session has ended, but a sketch cannot stop Arduino.");
     print("Waiting a minute...");
@@ -214,7 +223,7 @@ void loop() {
   }
 
   if (currentTrial >= NUMBER_OF_TRIALS) {
-    digitalWrite(PIN_SESSION_TIGGER, LOW);
+    digitalWrite(PIN_MOUSE_LED, LOW);
     print("Session has ended");
     sessionHasEnded = true;
     digitalWrite(PIN_CAMERA, LOW);
@@ -233,6 +242,14 @@ void simulateButtonPress() {
   // sensitive operations!!!
   delay(SECONDARY_PIN_PAUSE);
   digitalWrite(PIN_SECONDARY_1, HIGH);
+
+  if (!IS_PRIMARY_RIG) {
+    if (digitalRead(PIN_BUTTON) == HIGH) {
+      print("Connected to primary rig");
+    } else {
+      print("Not seeing connection to primary rig");
+    }
+  }
 }
 void interTrialIntervalLoop() {
   // The `interTrialIntervalLoop` is called in two separate while loops
@@ -240,6 +257,53 @@ void interTrialIntervalLoop() {
   // checking licks but if more inter-trial interval stuff needs to
   // happen it can be added here and not in two places above
   checkLick();
+}
+void rigOutsideSessionPause() {
+  if (DEBUGGING) {
+    // We do get stuck here, so consider setting `N_DEBUG_CYCLES` to
+    // 0 to avoid this when you know your output pins are working
+    if (N_DEBUG_CYCLES > 0) {
+      print("Testing pins...");
+      print("Air puff");
+      debugCycleOutputPin(PIN_AIR_PUFF, N_DEBUG_CYCLES, DEBUG_CYCLE_DURATION);
+      print("Water solenoid");
+      debugCycleOutputPin(PIN_WATER_SOLENOID, N_DEBUG_CYCLES, DEBUG_CYCLE_DURATION);
+      print("Positive tone");
+      debugCycleOutputPin(PIN_TONE_POSITIVE, N_DEBUG_CYCLES, DEBUG_CYCLE_DURATION);
+      print("Negative tone");
+      debugCycleOutputPin(PIN_TONE_NEGATIVE, N_DEBUG_CYCLES, DEBUG_CYCLE_DURATION);
+      print("Mouse LED");
+      debugCycleOutputPin(PIN_MOUSE_LED, N_DEBUG_CYCLES, DEBUG_CYCLE_DURATION);
+      print("Camera");
+      debugCycleOutputPin(PIN_CAMERA, N_DEBUG_CYCLES, DEBUG_CYCLE_DURATION);
+      print("Secondary rig 1");
+      debugCycleOutputPin(PIN_SECONDARY_1, N_DEBUG_CYCLES, DEBUG_CYCLE_DURATION);
+    }
+    if (DEBUG_TEST_SECONDARY) {
+      while (true) {
+        print("Simulating button press...");
+        delay(DEBUG_CYCLE_DURATION);
+        simulateButtonPress();
+      }
+    }
+  } else {
+    print("Waiting for session to start...");
+    delay(100);
+  }
+}
+void debugCycleOutputPin(int pin, int n_cycles, int cycle_time) {
+  // This is a debugging function to cycle an output pin on and off
+  // for a given number of cycles. It is meant to be used when
+  // developing the rig, not when running trials with a mouse in
+  // training or testing
+  for (int i = 0; i < n_cycles; i++) {
+    print("Pin on");
+    digitalWrite(pin, HIGH);
+    delay(cycle_time);
+    print("Pin off");
+    digitalWrite(pin, LOW);
+    delay(cycle_time);
+  }
 }
 
 
@@ -267,6 +331,7 @@ void printSessionParameters() {
 
   // print("Printing session parameters");
   vprint("DEBUGGING", DEBUGGING);
+  vprint("IS_PRIMARY_RIG", IS_PRIMARY_RIG);
   vprint("NUMBER_OF_TRIALS", NUMBER_OF_TRIALS);
   vprint("INTER_TRIAL_DEBUG_WAIT_INTERVAL", INTER_TRIAL_DEBUG_WAIT_INTERVAL);
   vprint("TRIAL_DURATION", TRIAL_DURATION);
