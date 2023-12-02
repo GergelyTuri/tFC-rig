@@ -13,9 +13,8 @@
  *  - 12: Lick
  *  -  3: triggering camera recording also
  *  -  4: setting an LED to on during the trial
-
-// Rig pins
-const int PIN_SECONDARY = 15;
+ *  -  6: Secondary pin (daisy chains)
+ *  -  7: Reset pin (board connected to its own reset input)
  *
  * Defines a configurable run of the experimental rig with the following options:
  *
@@ -35,18 +34,21 @@ const int PIN_SECONDARY = 15;
  * It can be improved by:
  *
  *  - Adding an `init.h` with the values we define at start
- *  - (So they are not re-used in flush functions)
+ *    (So they are not re-used in flush functions)
  *  - Consistency between "end" and "start" semantics
  *  - Check that differences in "global time" and "trial time" aren't
  *    going to cause any issues (some code "thinks" in global, other code
  *    "thinks" in trial, depending on requirements)
  *    - For example, refactor air puffs to use just one
  *  - The trial order randomization seems biased to start at trial 1
+ *  - Refactor the top-level `loop` blocks into session functions, e.g.
+ *    `preSessionReset`, `sessionStart`, `sessionEnd`, `postSessionReset`
  *
  */
 #include "rig.h"
 #include "trial.h"
 
+long rigStartTime = __LONG_MAX__;
 bool sessionHasStarted = false;
 long sessionStartTime = __LONG_MAX__;
 bool sessionHasEnded = false;
@@ -87,6 +89,7 @@ void setup() {
   pinMode(PIN_LICK, INPUT);
   pinMode(PIN_MOUSE_LED, OUTPUT);
   pinMode(PIN_CAMERA, OUTPUT);
+  pinMode(PIN_RESET, OUTPUT);
 
   // Secondary pins are used to trigger "secondary" (vs. primary) rigs
   // in a daisy-chain setup. Just one is added until the primary-
@@ -99,11 +102,10 @@ void setup() {
     // Add logic to skip positive and negative tones on secondary rigs (need tok eep water, licks, air puffs)
     pinMode(PIN_BUTTON, INPUT_PULLUP);
     pinMode(PIN_SECONDARY, OUTPUT);
-    digitalWrite(PIN_SECONDARY, HIGH);
   } else {
     // Configures the secondary pin the and does
     // not configure `PIN_BUTTON`
-    pinMode(PIN_SECONDARY, INPUT_PULLUP);
+    pinMode(PIN_SECONDARY, INPUT);
   }
 
   // Each session of trials has a different random seed taken by
@@ -120,9 +122,20 @@ void setup() {
     trialTypes[i] = trialTypes[j];
     trialTypes[j] = temp;
   }
+
+  // Keeps track of the rig start time. This should be close to 0 since
+  // `millis` starts when the rig starts, but is tracked separately for
+  // readability
+  rigStartTime = millis();
 }
 
 void loop() {
+  // Checks for a pre-session reset
+  if ((!sessionHasStarted) && (!sessionHasEnded) && (millis() - rigStartTime > RIG_PERIODIC_RESET_TIME)) {
+    rigSoftwareReset();
+  }
+
+  // Checks for the session start
   if (checkSessionStart() && (!sessionHasStarted) && (!sessionHasEnded)) {
     // Because this function has a delay to ensure the simulated button
     // press is sent to secondary rigs, call it all the time to avoid
@@ -221,12 +234,19 @@ void loop() {
     delay(60000);
   }
 
+  // Checks for the session end
   if (currentTrial >= NUMBER_OF_TRIALS) {
     digitalWrite(PIN_MOUSE_LED, LOW);
     print("Session has ended");
     sessionHasEnded = true;
     digitalWrite(PIN_CAMERA, LOW);
     sessionEndTime = millis();
+  }
+
+  // If the session has ended and the `RIG_PERIODIC_RESET_TIME` has
+  // passed again, we initiate a software reset
+  if ((sessionHasStarted) && (sessionHasEnded) && (millis() - sessionEndTime > RIG_PERIODIC_RESET_TIME)) {
+    rigSoftwareReset();
   }
 }
 
@@ -240,27 +260,19 @@ bool checkSessionStart() {
       return true;
     }
   } else {
-    if (digitalRead(PIN_SECONDARY) == LOW) {
+    if (digitalRead(PIN_SECONDARY) == HIGH) {
       return true;
     }
   }
   return false;
 }
 void simulateButtonPress() {
-  digitalWrite(PIN_SECONDARY, LOW);
+  digitalWrite(PIN_SECONDARY, HIGH);
   // WARNING: this waits, to simulate a button press signal sent to
   // other rigs. Do not call `simulateButtonPress` during time-
   // sensitive operations!!!
   delay(SECONDARY_PIN_PAUSE);
-  digitalWrite(PIN_SECONDARY, HIGH);
-
-  if (!IS_PRIMARY_RIG) {
-    if (digitalRead(PIN_SECONDARY) == HIGH) {
-      print("Connected to primary rig");
-    } else {
-      print("Not seeing connection to primary rig");
-    }
-  }
+  digitalWrite(PIN_SECONDARY, LOW);
 }
 void interTrialIntervalLoop() {
   // The `interTrialIntervalLoop` is called in two separate while loops
@@ -315,6 +327,28 @@ void debugCycleOutputPin(int pin, int n_cycles, int cycle_time) {
     digitalWrite(pin, LOW);
     delay(cycle_time);
   }
+}
+void rigSoftwareReset() {
+  // Leave the rig in a good state, just in case something with the
+  // software reset method used does not do so
+  flushRigOutputPins();
+
+  // It is actually a hardware reset right now, driven by software. But
+  // perhaps this can be changed for a software-only reset
+  digitalWrite(PIN_RESET, HIGH);
+}
+void flushRigOutputPins() {
+  // If we move to a software-based reset, we want to make sure pins
+  // do not get stuck in a bad state
+  digitalWrite(PIN_AIR_PUFF, LOW);
+  digitalWrite(PIN_CAMERA, LOW);
+  digitalWrite(PIN_MOUSE_LED, LOW);
+  digitalWrite(PIN_RESET, LOW);
+  digitalWrite(PIN_SECONDARY, LOW);
+  digitalWrite(PIN_WATER_SOLENOID, LOW);
+
+  noTone(PIN_TONE_POSITIVE);
+  noTone(PIN_TONE_NEGATIVE);
 }
 
 

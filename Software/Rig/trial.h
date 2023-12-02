@@ -17,6 +17,9 @@ const int DEBUG_TEST_SECONDARY = false;
 const bool IS_PRIMARY_RIG = true;
 // Wait this amount of time to "simulate" button pressing
 const long SECONDARY_PIN_PAUSE = 500; // ms
+// If we have waited this amount of time without a session start,
+// perform a software reset
+const long RIG_PERIODIC_RESET_TIME = 300000; // ms
 
 const int NUMBER_OF_TRIALS = 6;
 // NOTE: this is only used for debugging, the "real" trial uses a
