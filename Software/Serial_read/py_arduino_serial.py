@@ -28,39 +28,43 @@ from serial_comm import SerialComm as sc
 
 
 def main():
-    """
-    Reads data from an Arduino connected to the specified communication port and saves it to a JSON file.
-
-    Args:
-        mouse_id (str): ID of the mouse.
-        commport (str): Communication port of the Arduino.
-
-    Returns:
-        None
-    """
     ap = argparse.ArgumentParser()
-    ap.add_argument("-id", "--mouse_id", required=True, help="id of the mouse")
+    ap.add_argument("-ids", "--mouse_ids", required=True, help="id of the mouse")
     ap.add_argument(
-        "-c", "--commport", required=True, help="Arduino's communication port"
+        "-p",
+        "--primaryport",
+        required=True,
+        help="Communication port for the primary Arduino",
+    )
+    ap.add_argument(
+        "s1",
+        "--secondaryport1",
+        required=True,
+        help="Communication port for the secondary Arduino",
     )
 
     args = ap.parse_args()
-    mouse_id = args.mouse_id
-    commport = args.commport
+    mouse_ids = list(args.mouse_id)
+    arduinos = list(args.primaryport, args.secondaryport1)
     current_date_time = datetime.now()
     formatted_date_time = current_date_time.strftime("%Y-%m-%d_%H-%M-%S")
 
-    data_list = []
+    primary_data_list = []
+    secondary_data_list = []    
     end_session_message = "Session has ended"
-    file_path = f"{mouse_id}_{formatted_date_time}.json"
-    header = {
-        "mouse_id": mouse_id,
-        "Start_time": formatted_date_time,
-        "commport": commport,
-    }
+    for mouse, port in zip(mouse_ids, arduinos):
+        file_path = f"{mouse}_{formatted_date_time}.json"
+
+        header = {
+            "mouse_id": mouse,
+            "Start_time": formatted_date_time,
+            "commport": port,
+        }
     time.sleep(2)
 
     try:
+        for ardiuno in arduinos:
+
         with sc(commport, 9600) as comm:
             print(f"{comm} is connected")
             while True:
