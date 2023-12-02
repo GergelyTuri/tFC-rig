@@ -388,7 +388,6 @@ void printSessionParameters() {
   vprint("WATER_DISPENSE_ON_NUMBER_LICKS", WATER_DISPENSE_ON_NUMBER_LICKS);
   vprint("WATER_TIMEOUT", WATER_TIMEOUT);
   vprint("USING_AUDITORY_CUES", USING_AUDITORY_CUES);
-  vprint("NUMBER_OF_PUFFS", NUMBER_OF_PUFFS);
   vprint("AIR_PUFF_START_TIME", AIR_PUFF_START_TIME);
   vprint("AIR_PUFF_DURATION", AIR_PUFF_DURATION);
   vprint("INTER_PUFF_PAUSE_TIME", INTER_PUFF_PAUSE_TIME);
@@ -495,7 +494,7 @@ void checkWater() {
     }
   } else if (waterState == HIGH) {
     if (sinceLastWaterTime > WATER_DISPENSE_TIME) {
-      // Wait for the dispence time before turning it off
+      // Wait for the dispense time before turning it off
       digitalWrite(PIN_WATER_SOLENOID, LOW);
       print("Water off");
     }
