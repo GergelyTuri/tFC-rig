@@ -8,6 +8,7 @@ TODO:
 * Documetation -- Doxygen?
 * Need a way to daisy chain multiple arduinos together and run the same script on then simultanelously.
 * Let's reset the arduino every time before the session starts to make sure everything is in a good state. see [this](https://arduinogetstarted.com/faq/how-to-reset-arduino-by-programming)
+this does not seem to work. I think i don't get the logic. it resets the arduino but then it does not run the setup function again. i also tried an implementation based on watchdog timer but that did not work either. it resets the arduino but then it does not run the setup function again. Maybe using the reset pin would work. 
 * let's also stop running the script when `KeyboardInterrupt` is raised in the  `py_arduion_serial.py` script. 
 
 ## Rig Operation

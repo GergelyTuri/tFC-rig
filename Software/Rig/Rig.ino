@@ -120,11 +120,11 @@ void setup() {
     char temp = trialTypes[i];
     trialTypes[i] = trialTypes[j];
     trialTypes[j] = temp;
-  }
+  } 
 }
 
-void loop() {
-  if ((digitalRead(PIN_BUTTON) == LOW) && (!sessionHasStarted) && (!sessionHasEnded)) {
+void loop() {  
+  if ((digitalRead(PIN_BUTTON) == LOW) && (!sessionHasStarted) && (!sessionHasEnded)) {  
     // Because this function has a delay to ensure the simulated button
     // press is sent to secondary rigs, call it all the time to avoid
     // drift between rigs
