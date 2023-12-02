@@ -102,7 +102,6 @@ void setup() {
     // Add logic to skip positive and negative tones on secondary rigs (need tok eep water, licks, air puffs)
     pinMode(PIN_BUTTON, INPUT_PULLUP);
     pinMode(PIN_SECONDARY, OUTPUT);
-    digitalWrite(PIN_SECONDARY, HIGH);
   } else {
     // Configures the secondary pin the and does
     // not configure `PIN_BUTTON`
