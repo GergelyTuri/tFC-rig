@@ -262,7 +262,7 @@ bool checkSessionStart() {
     }
   } else {
     if (digitalRead(PIN_SECONDARY) == HIGH) {
-      return true
+      return true;
     }
   }
   return false;
