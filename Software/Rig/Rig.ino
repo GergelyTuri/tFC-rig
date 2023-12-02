@@ -15,7 +15,7 @@
  *  -  4: setting an LED to on during the trial
 
 // Rig pins
-const int PIN_SECONDARY_1 = 15;
+const int PIN_SECONDARY = 15;
  *
  * Defines a configurable run of the experimental rig with the following options:
  *
@@ -84,7 +84,6 @@ void setup() {
   pinMode(PIN_WATER_SOLENOID, OUTPUT);
   pinMode(PIN_TONE_NEGATIVE, OUTPUT);
   pinMode(PIN_TONE_POSITIVE, OUTPUT);
-  pinMode(PIN_BUTTON, INPUT_PULLUP);
   pinMode(PIN_LICK, INPUT);
   pinMode(PIN_MOUSE_LED, OUTPUT);
   pinMode(PIN_CAMERA, OUTPUT);
@@ -97,14 +96,14 @@ void setup() {
   // default and `LOW` when pressed, the secondary pins are set to
   // `HIGH` here
   if (IS_PRIMARY_RIG) {
-    // TODO: can we make it so secondary output on the primary rig is the same pin as the input on the secondary rig
-    // so during setup we don't have to edit 'rig.h'
-    //
     // Add logic to skip positive and negative tones on secondary rigs (need tok eep water, licks, air puffs)
-    //
-    // Add to the README the setup process for multiple boards
-    pinMode(PIN_SECONDARY_1, OUTPUT);
-    digitalWrite(PIN_SECONDARY_1, HIGH);
+    pinMode(PIN_BUTTON, INPUT_PULLUP);
+    pinMode(PIN_SECONDARY, OUTPUT);
+    digitalWrite(PIN_SECONDARY, HIGH);
+  } else {
+    // Configures the secondary pin the and does
+    // not configure `PIN_BUTTON`
+    pinMode(PIN_SECONDARY, INPUT_PULLUP);
   }
 
   // Each session of trials has a different random seed taken by
@@ -124,7 +123,7 @@ void setup() {
 }
 
 void loop() {
-  if ((digitalRead(PIN_BUTTON) == LOW) && (!sessionHasStarted) && (!sessionHasEnded)) {
+  if (checkSessionStart() && (!sessionHasStarted) && (!sessionHasEnded)) {
     // Because this function has a delay to ensure the simulated button
     // press is sent to secondary rigs, call it all the time to avoid
     // drift between rigs
@@ -152,7 +151,7 @@ void loop() {
         if (WATER_REWARD_AVAILABLE) {
           checkWater();
         }
-        if (USING_AUDITORY_CUES) {
+        if (USING_AUDITORY_CUES && IS_PRIMARY_RIG) {
           if (currentTrialType == 1) {
             if (USING_AIR_PUFFS) {
               checkAir();
@@ -200,7 +199,7 @@ void loop() {
           } else {
             while (true) {
               interTrialIntervalLoop();
-              if (digitalRead(PIN_BUTTON) == LOW) {
+              if (checkSessionStart()) {
                 break;
               }
             }
@@ -235,16 +234,28 @@ void loop() {
 /* RIG MANAGEMENT
  *
  */
+bool checkSessionStart() {
+  if (IS_PRIMARY_RIG) {
+    if (digitalRead(PIN_BUTTON) == LOW) {
+      return true;
+    }
+  } else {
+    if (digitalRead(PIN_SECONDARY) == LOW) {
+      return true
+    }
+  }
+  return false;
+}
 void simulateButtonPress() {
-  digitalWrite(PIN_SECONDARY_1, LOW);
+  digitalWrite(PIN_SECONDARY, LOW);
   // WARNING: this waits, to simulate a button press signal sent to
   // other rigs. Do not call `simulateButtonPress` during time-
   // sensitive operations!!!
   delay(SECONDARY_PIN_PAUSE);
-  digitalWrite(PIN_SECONDARY_1, HIGH);
+  digitalWrite(PIN_SECONDARY, HIGH);
 
   if (!IS_PRIMARY_RIG) {
-    if (digitalRead(PIN_BUTTON) == HIGH) {
+    if (digitalRead(PIN_SECONDARY) == HIGH) {
       print("Connected to primary rig");
     } else {
       print("Not seeing connection to primary rig");
@@ -277,7 +288,7 @@ void rigOutsideSessionPause() {
       print("Camera");
       debugCycleOutputPin(PIN_CAMERA, N_DEBUG_CYCLES, DEBUG_CYCLE_DURATION);
       print("Secondary rig 1");
-      debugCycleOutputPin(PIN_SECONDARY_1, N_DEBUG_CYCLES, DEBUG_CYCLE_DURATION);
+      debugCycleOutputPin(PIN_SECONDARY, N_DEBUG_CYCLES, DEBUG_CYCLE_DURATION);
     }
     if (DEBUG_TEST_SECONDARY) {
       while (true) {
@@ -328,6 +339,7 @@ void printSessionParameters() {
   vprint("PIN_LICK", PIN_LICK);
   vprint("PIN_MOUSE_LED", PIN_MOUSE_LED);
   vprint("PIN_CAMERA", PIN_CAMERA);
+  vprint("PIN_SECONDARY", PIN_SECONDARY);
 
   // print("Printing session parameters");
   vprint("DEBUGGING", DEBUGGING);
