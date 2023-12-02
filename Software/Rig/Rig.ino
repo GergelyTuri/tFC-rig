@@ -241,7 +241,7 @@ bool checkSessionStart() {
     }
   } else {
     if (digitalRead(PIN_SECONDARY) == LOW) {
-      return true
+      return true;
     }
   }
   return false;
