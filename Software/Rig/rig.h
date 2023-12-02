@@ -21,6 +21,6 @@ const int PIN_LICK = 12;
 const int PIN_CAMERA = 2;
 const int PIN_MOUSE_LED = 3;
 // Rig pins
-const int PIN_SECONDARY_1 = 6;
+const int PIN_SECONDARY = 6;
 
 #endif

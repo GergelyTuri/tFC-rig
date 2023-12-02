@@ -24,6 +24,30 @@ The rig Arduino sketch works with the following stages:
     * No water available
     * No audio signals
 
+### Daisy-Chaining Rigs
+
+The rig Arduino sketch has been written to be run in two overall modes:
+
+* Primary
+* Secondary
+
+When running a `primary` rig, all peripherals are controlled as described elsewhere, _and_ a "secondary" signal is sent on `PIN_SECONDARY` when:
+
+* The session starts (the button connected to the primary rig is pressed)
+* Each trial starts (each inter-trial interval ends)
+
+When running a `secondary` rig, the `PIN_BUTTON` is not connected, and instead `PIN_SECONDARY` is used to determine when:
+
+* The session starts
+* Each trial starts
+
+Follow these steps to configure multiple boards:
+
+1. Setup the hardware on the primary rig. Ensure all peripherals (lick sensor, water solenoid, positive tone speaker, negative tone speaker, air puff, session start button, and a connection on the secondary pin to as many secondary rigs, in parallel, as desired)
+1. Setup the hardware on the secondary rig. There is no need to connect the button, speakers, or air puff. The pinout can be exactly the same, noting that the `PIN_SECONDARY` is an input pin during setup rather than an output pin
+1. Upload the latest working rig sketch to the primary rig. Be sure to set `IS_PRIMARY_RIG` to `true` and be sure that all other trial parameters are set as desired based on whether the session is a training session or an experiment, and based on the trial design as discussed elsewhere
+1. Upload the latest working rig sketch to the primary rig. Be sure to set `IS_PRIMARY_RIG` to `false`. All other settings should be identical
+
 ### Maximum Session Length
 
 The maximum session length depends on:
