@@ -1,33 +1,38 @@
 """
-This script reads data from an Arduino connected to the specified communication port and
-saves it to a JSON file.
+Python script to read data from Arduino serial ports and save it to a JSON file.
 
-The script takes two arguments: mouse_id (str) and commport (str).
+This script reads data from Arduino serial ports and saves it to a JSON file.
+It takes command line arguments for mouse IDs and communication ports. The script continuously
+reads data from the serial ports and appends it to a data list. When a specific end session
+message is received, the script stops reading data, saves the data to a JSON file, and exits.
 
-The data is saved in a JSON file with the name "{mouse_id}_{formatted_date_time}.json".
+Usage:
+    python py_arduino_serial.py -ids <mouse_ids> -p <primaryport> -s1 <secondaryport1>
 
-The script uses the SerialComm class from the serial_comm module to establish
-a connection with the Arduino.
-
-The data is read from the Arduino and saved to a list of dictionaries,
-where each dictionary contains the message and the absolute time of the message.
-
-The script stops reading data when it receives
-the "Session has ended" message from the Arduino or when the user interrupts the script.
-
-The data is saved to the JSON file along with a header containing
-the mouse_id, start time, and commport.
+Example:
+    python py_arduino_serial.py -ids mouse1,mouse2 -p COM3 -s1 COM4
 """
+
 import argparse
 import json
 import time
 from datetime import datetime
+from os.path import join
 
 import serial
 from serial_comm import SerialComm as sc
 
 
 def main():
+    """
+    Main function that reads data from Arduino serial ports and saves it to a JSON file.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
     ap = argparse.ArgumentParser()
     ap.add_argument("-ids", "--mouse_ids", required=True, help="id of the mouse")
     ap.add_argument(
@@ -37,69 +42,86 @@ def main():
         help="Communication port for the primary Arduino",
     )
     ap.add_argument(
-        "s1",
+        "-s1",
         "--secondaryport1",
         required=True,
         help="Communication port for the secondary Arduino",
     )
 
     args = ap.parse_args()
-    mouse_ids = list(args.mouse_id)
-    arduinos = list(args.primaryport, args.secondaryport1)
+    mouse_ids = args.mouse_ids.split(",")
+    ports = [args.primaryport, args.secondaryport1]
+
+    if len(mouse_ids) != len(ports):
+        raise ValueError(
+            f"Number of mouse ids ({len(mouse_ids)}) does not match number of arduino ports ({len(ports)})"
+        )
+
+    # Global variables
     current_date_time = datetime.now()
     formatted_date_time = current_date_time.strftime("%Y-%m-%d_%H-%M-%S")
-
-    primary_data_list = []
-    secondary_data_list = []    
     end_session_message = "Session has ended"
-    for mouse, port in zip(mouse_ids, arduinos):
-        file_path = f"{mouse}_{formatted_date_time}.json"
+    session_ended = False  # Flag to indicate the end of the session
+    file_name = "_".join(mouse_ids) + f"_{formatted_date_time}.json"
 
-        header = {
-            "mouse_id": mouse,
-            "Start_time": formatted_date_time,
-            "commport": port,
-        }
+    data_list = {mouse_id: [] for mouse_id in mouse_ids}
+
+    header = {
+        "mouse_ids": mouse_ids,
+        "primary_port": args.primaryport,
+        "secondary_port": args.secondaryport1,
+        "mouse_port_assignment": dict(zip(mouse_ids, ports)),
+        "Start_time": formatted_date_time,
+    }
+    # Initialize serial communication
+    comms = {mouse_id: sc(port, 9600) for mouse_id, port in zip(mouse_ids, ports)}
     time.sleep(2)
 
     try:
-        for ardiuno in arduinos:
-
-        with sc(commport, 9600) as comm:
-            print(f"{comm} is connected")
-            while True:
+        while True:
+            for mouse_id, comm in comms.items():
                 data = comm.read()
                 if data is not None and "error" not in data:
-                    print(f"data: {data}")
-                    try:
-                        data_json = {
-                            "message": data,
-                            "absolute_time": datetime.now().strftime(
-                                "%Y-%m-%d_%H-%M-%S.%f"
-                            ),
-                        }
-                    except json.JSONDecodeError:
-                        print(f"JSONDecodeError: {data}")
-                    data_list.append(data_json)
+                    print(f"{mouse_id}: {data}")
+                    data_json = {
+                        "message": data,
+                        "mouse_id": mouse_id,
+                        "port": comm.port,
+                        "absolute_time": datetime.now().strftime(
+                            "%Y-%m-%d_%H-%M-%S.%f"
+                        ),
+                    }
+                    data_list[mouse_id].append(data_json)
                     if end_session_message in data_json.get("message", ""):
                         print("Session has ended, closing file and exiting...")
+                        session_ended = True
                         break
-                else:
-                    # TODO: supperss these print statements if not in debug mode
-                    # maybe do something more meaningful here (error handling, restarting communication, etc.)
+                elif data is not None and "error" in data:
                     print(f"Non-JSON data: {data}")
-                time.sleep(0.05)
+            if session_ended:
+                end_session_message = {
+                    "message": end_session_message,
+                    "absolute_time": datetime.now().strftime("%Y-%m-%d_%H-%M-%S.%f"),
+                }
+                for mouse_data in data_list.values():
+                    mouse_data.append(end_session_message)
+                break  # Exit the while loop
+        time.sleep(0.05)
+
     except serial.SerialException as e:
-        print(f"{commport} is not connected: {e}")
+        print(f"Serial port error: {e}")
     except KeyboardInterrupt:
-        data_list.append(
-            {"KeyboardInterrupt": datetime.now().strftime("%Y-%m-%d_%H-%M-%S.%f")}
-        )
+        keyboard_interrupt = {
+            "message": "KeyboardInterrupt",
+            "absolute_time": datetime.now().strftime("%Y-%m-%d_%H-%M-%S.%f"),
+        }
+        for mouse_data in data_list.values():
+            mouse_data.append(keyboard_interrupt)
         print("KeyboardInterrupt detected. Saving data to file...")
 
-    with open(file_path, "w", encoding="utf-8") as f:
+    with open(join("data", file_name), "w", encoding="utf-8") as f:
         json.dump({"header": header, "data": data_list}, f, indent=4)
-        print(f"Data saved to {file_path}")
+        print(f"Data saved to {file_name}")
 
 
 if __name__ == "__main__":
