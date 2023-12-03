@@ -38,7 +38,7 @@ def main():
     ap.add_argument("-f", "--file", required=True, help="file to parse")
     args = ap.parse_args()
 
-    with open(args.file, "r", encoding="cp1252") as f:
+    with open(args.file, "r", encoding="utf-8") as f:
         data = json.load(f)
 
     header_entries = data.get("header", [])
@@ -100,7 +100,7 @@ def main():
                 trial_ended = True
 
     output_file_name = args.file.split(".")[0] + "_processed.json"
-    with open(output_file_name, "w", encoding="cp1252") as f:
+    with open(output_file_name, "w", encoding="utf-8") as f:
         json.dump({"header": header_entries, "data": trials}, f, indent=4)
 
 
