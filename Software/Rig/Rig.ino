@@ -175,7 +175,7 @@ void loop() {
           }
         }
 
-        // Inter-trial interval
+        // Trial clean-up
         if (trialHasEnded) {
           print("Cleaning up last trial");
           flushTrialMetaData();
@@ -183,7 +183,10 @@ void loop() {
           flushAirPuffMetaData();
           flushPositiveSignalMetaData();
           flushNegativeSignalMetaData();
+        }
 
+        // Inter-trial interval
+        if (currentTrial >= NUMBER_OF_TRIALS) {
           // Use `randomInterTrialInterval` in the real trial. Use
           // `INTER_TRIAL_DEBUG_WAIT_INTERVAL` for debugging as it is set to
           // just one second
