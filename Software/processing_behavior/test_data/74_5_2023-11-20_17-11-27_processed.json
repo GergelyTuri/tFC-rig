@@ -1,0 +1,2199 @@
+{
+    "header": {
+        "mouse_id": "74_5",
+        "Start_time": "2023-11-20_17-11-27",
+        "commport": "COM14"
+    },
+    "data": {
+        "Trial_1": [
+            {
+                "session_millis": 82050,
+                "trial_millis": 0,
+                "message": "Trial has started",
+                "absolute_time": "2023-11-20_17-12-53.790046"
+            },
+            {
+                "session_millis": 82082,
+                "trial_millis": 0,
+                "message": "Printing trial parameters",
+                "absolute_time": "2023-11-20_17-12-53.847673"
+            },
+            {
+                "session_millis": 82124,
+                "trial_millis": 0,
+                "message": "randomInterTrialInterval: 110490",
+                "absolute_time": "2023-11-20_17-12-53.899596"
+            },
+            {
+                "session_millis": 82172,
+                "trial_millis": 0,
+                "message": "currentTrialType: 1",
+                "absolute_time": "2023-11-20_17-12-53.952192"
+            },
+            {
+                "session_millis": 91032,
+                "trial_millis": 8828,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-13-02.105503"
+            },
+            {
+                "session_millis": 91033,
+                "trial_millis": 8828,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-13-02.168280"
+            },
+            {
+                "session_millis": 91191,
+                "trial_millis": 8986,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-13-02.274990"
+            },
+            {
+                "session_millis": 92191,
+                "trial_millis": 9986,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-13-03.295272"
+            },
+            {
+                "session_millis": 94906,
+                "trial_millis": 12701,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-13-06.002252"
+            },
+            {
+                "session_millis": 94907,
+                "trial_millis": 12702,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-13-06.053646"
+            },
+            {
+                "session_millis": 97206,
+                "trial_millis": 15001,
+                "message": "Positive signal start",
+                "absolute_time": "2023-11-20_17-13-08.316845"
+            },
+            {
+                "session_millis": 103196,
+                "trial_millis": 20991,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-13-14.295477"
+            },
+            {
+                "session_millis": 103196,
+                "trial_millis": 20992,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-13-14.348517"
+            },
+            {
+                "session_millis": 104041,
+                "trial_millis": 21836,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-13-15.136053"
+            },
+            {
+                "session_millis": 105041,
+                "trial_millis": 22836,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-13-16.157602"
+            },
+            {
+                "session_millis": 117207,
+                "trial_millis": 35002,
+                "message": "Positive signal stop",
+                "absolute_time": "2023-11-20_17-13-28.336170"
+            },
+            {
+                "session_millis": 119927,
+                "trial_millis": 37722,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-13-31.047503"
+            },
+            {
+                "session_millis": 119928,
+                "trial_millis": 37723,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-13-31.107341"
+            },
+            {
+                "session_millis": 120126,
+                "trial_millis": 37921,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-13-31.259538"
+            },
+            {
+                "session_millis": 121127,
+                "trial_millis": 38922,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-13-32.257766"
+            },
+            {
+                "session_millis": 127205,
+                "trial_millis": 45000,
+                "message": "Puff start",
+                "absolute_time": "2023-11-20_17-13-38.356478"
+            },
+            {
+                "session_millis": 127406,
+                "trial_millis": 45201,
+                "message": "Puff stop",
+                "absolute_time": "2023-11-20_17-13-38.561064"
+            },
+            {
+                "session_millis": 128407,
+                "trial_millis": 46202,
+                "message": "Puff start",
+                "absolute_time": "2023-11-20_17-13-39.541397"
+            },
+            {
+                "session_millis": 128608,
+                "trial_millis": 46403,
+                "message": "Puff stop",
+                "absolute_time": "2023-11-20_17-13-39.754449"
+            },
+            {
+                "session_millis": 129609,
+                "trial_millis": 47404,
+                "message": "Puff start",
+                "absolute_time": "2023-11-20_17-13-40.771026"
+            },
+            {
+                "session_millis": 129810,
+                "trial_millis": 47605,
+                "message": "Puff stop",
+                "absolute_time": "2023-11-20_17-13-40.974016"
+            },
+            {
+                "session_millis": 130811,
+                "trial_millis": 48606,
+                "message": "Puff start",
+                "absolute_time": "2023-11-20_17-13-41.969016"
+            },
+            {
+                "session_millis": 131012,
+                "trial_millis": 48807,
+                "message": "Puff stop",
+                "absolute_time": "2023-11-20_17-13-42.146742"
+            },
+            {
+                "session_millis": 132013,
+                "trial_millis": 49808,
+                "message": "Puff start",
+                "absolute_time": "2023-11-20_17-13-43.173035"
+            },
+            {
+                "session_millis": 132205,
+                "trial_millis": 50000,
+                "message": "Puff stop, catch block",
+                "absolute_time": "2023-11-20_17-13-43.356815"
+            },
+            {
+                "session_millis": 132206,
+                "trial_millis": 50001,
+                "message": "Trial has ended",
+                "absolute_time": "2023-11-20_17-13-43.415547"
+            }
+        ],
+        "Trial_2": [
+            {
+                "session_millis": 243003,
+                "trial_millis": 0,
+                "message": "Trial has started",
+                "absolute_time": "2023-11-20_17-15-34.295423"
+            },
+            {
+                "session_millis": 243003,
+                "trial_millis": 0,
+                "message": "Printing trial parameters",
+                "absolute_time": "2023-11-20_17-15-34.354514"
+            },
+            {
+                "session_millis": 243015,
+                "trial_millis": 0,
+                "message": "randomInterTrialInterval: 62089",
+                "absolute_time": "2023-11-20_17-15-34.411068"
+            },
+            {
+                "session_millis": 243064,
+                "trial_millis": 0,
+                "message": "currentTrialType: 0",
+                "absolute_time": "2023-11-20_17-15-34.467437"
+            },
+            {
+                "session_millis": 245299,
+                "trial_millis": 2203,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-15-36.616851"
+            },
+            {
+                "session_millis": 245300,
+                "trial_millis": 2203,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-15-36.670227"
+            },
+            {
+                "session_millis": 258098,
+                "trial_millis": 15001,
+                "message": "Negative signal start",
+                "absolute_time": "2023-11-20_17-15-49.418284"
+            },
+            {
+                "session_millis": 259099,
+                "trial_millis": 16002,
+                "message": "Negative signal stop",
+                "absolute_time": "2023-11-20_17-15-50.415028"
+            },
+            {
+                "session_millis": 260099,
+                "trial_millis": 17002,
+                "message": "Negative signal start",
+                "absolute_time": "2023-11-20_17-15-51.431983"
+            },
+            {
+                "session_millis": 261100,
+                "trial_millis": 18003,
+                "message": "Negative signal stop",
+                "absolute_time": "2023-11-20_17-15-52.421930"
+            },
+            {
+                "session_millis": 261240,
+                "trial_millis": 18143,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-15-52.549139"
+            },
+            {
+                "session_millis": 261241,
+                "trial_millis": 18144,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-15-52.608576"
+            },
+            {
+                "session_millis": 262100,
+                "trial_millis": 19003,
+                "message": "Negative signal start",
+                "absolute_time": "2023-11-20_17-15-53.429896"
+            },
+            {
+                "session_millis": 263101,
+                "trial_millis": 20004,
+                "message": "Negative signal stop",
+                "absolute_time": "2023-11-20_17-15-54.427397"
+            },
+            {
+                "session_millis": 264101,
+                "trial_millis": 21004,
+                "message": "Negative signal start",
+                "absolute_time": "2023-11-20_17-15-55.429282"
+            },
+            {
+                "session_millis": 265102,
+                "trial_millis": 22005,
+                "message": "Negative signal stop",
+                "absolute_time": "2023-11-20_17-15-56.439311"
+            },
+            {
+                "session_millis": 266102,
+                "trial_millis": 23005,
+                "message": "Negative signal start",
+                "absolute_time": "2023-11-20_17-15-57.444175"
+            },
+            {
+                "session_millis": 266360,
+                "trial_millis": 23263,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-15-57.699803"
+            },
+            {
+                "session_millis": 266361,
+                "trial_millis": 23264,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-15-57.753287"
+            },
+            {
+                "session_millis": 266527,
+                "trial_millis": 23430,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-15-57.858636"
+            },
+            {
+                "session_millis": 267103,
+                "trial_millis": 24006,
+                "message": "Negative signal stop",
+                "absolute_time": "2023-11-20_17-15-58.439211"
+            },
+            {
+                "session_millis": 267528,
+                "trial_millis": 24431,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-15-58.856630"
+            },
+            {
+                "session_millis": 268103,
+                "trial_millis": 25006,
+                "message": "Negative signal start",
+                "absolute_time": "2023-11-20_17-15-59.447168"
+            },
+            {
+                "session_millis": 269104,
+                "trial_millis": 26007,
+                "message": "Negative signal stop",
+                "absolute_time": "2023-11-20_17-16-00.433138"
+            },
+            {
+                "session_millis": 270104,
+                "trial_millis": 27007,
+                "message": "Negative signal start",
+                "absolute_time": "2023-11-20_17-16-01.449508"
+            },
+            {
+                "session_millis": 271105,
+                "trial_millis": 28008,
+                "message": "Negative signal stop",
+                "absolute_time": "2023-11-20_17-16-02.437000"
+            },
+            {
+                "session_millis": 271425,
+                "trial_millis": 28328,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-16-02.754909"
+            },
+            {
+                "session_millis": 271426,
+                "trial_millis": 28329,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-16-02.808405"
+            },
+            {
+                "session_millis": 272105,
+                "trial_millis": 29008,
+                "message": "Negative signal start",
+                "absolute_time": "2023-11-20_17-16-03.441804"
+            },
+            {
+                "session_millis": 273106,
+                "trial_millis": 30009,
+                "message": "Negative signal stop",
+                "absolute_time": "2023-11-20_17-16-04.452983"
+            },
+            {
+                "session_millis": 274106,
+                "trial_millis": 31009,
+                "message": "Negative signal start",
+                "absolute_time": "2023-11-20_17-16-05.458502"
+            },
+            {
+                "session_millis": 275107,
+                "trial_millis": 32010,
+                "message": "Negative signal stop",
+                "absolute_time": "2023-11-20_17-16-06.446572"
+            },
+            {
+                "session_millis": 276107,
+                "trial_millis": 33010,
+                "message": "Negative signal start",
+                "absolute_time": "2023-11-20_17-16-07.448010"
+            },
+            {
+                "session_millis": 277108,
+                "trial_millis": 34011,
+                "message": "Negative signal stop",
+                "absolute_time": "2023-11-20_17-16-08.457239"
+            },
+            {
+                "session_millis": 293098,
+                "trial_millis": 50001,
+                "message": "Trial has ended",
+                "absolute_time": "2023-11-20_17-16-24.467801"
+            }
+        ],
+        "Trial_3": [
+            {
+                "session_millis": 355450,
+                "trial_millis": 0,
+                "message": "Trial has started",
+                "absolute_time": "2023-11-20_17-17-26.889098"
+            },
+            {
+                "session_millis": 355450,
+                "trial_millis": 0,
+                "message": "Printing trial parameters",
+                "absolute_time": "2023-11-20_17-17-26.955242"
+            },
+            {
+                "session_millis": 355463,
+                "trial_millis": 0,
+                "message": "randomInterTrialInterval: 91021",
+                "absolute_time": "2023-11-20_17-17-27.009804"
+            },
+            {
+                "session_millis": 355511,
+                "trial_millis": 0,
+                "message": "currentTrialType: 1",
+                "absolute_time": "2023-11-20_17-17-27.063060"
+            },
+            {
+                "session_millis": 365936,
+                "trial_millis": 10391,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-17-37.393088"
+            },
+            {
+                "session_millis": 365937,
+                "trial_millis": 10392,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-17-37.447904"
+            },
+            {
+                "session_millis": 366126,
+                "trial_millis": 10581,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-17-37.602587"
+            },
+            {
+                "session_millis": 367127,
+                "trial_millis": 11582,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-17-38.591731"
+            },
+            {
+                "session_millis": 370546,
+                "trial_millis": 15001,
+                "message": "Positive signal start",
+                "absolute_time": "2023-11-20_17-17-42.030700"
+            },
+            {
+                "session_millis": 372815,
+                "trial_millis": 17271,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-17-44.283788"
+            },
+            {
+                "session_millis": 372816,
+                "trial_millis": 17272,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-17-44.336541"
+            },
+            {
+                "session_millis": 376033,
+                "trial_millis": 20488,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-17-47.510611"
+            },
+            {
+                "session_millis": 376034,
+                "trial_millis": 20489,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-17-47.564827"
+            },
+            {
+                "session_millis": 390547,
+                "trial_millis": 35002,
+                "message": "Positive signal stop",
+                "absolute_time": "2023-11-20_17-18-02.043352"
+            },
+            {
+                "session_millis": 400545,
+                "trial_millis": 45000,
+                "message": "Puff start",
+                "absolute_time": "2023-11-20_17-18-12.070487"
+            },
+            {
+                "session_millis": 400746,
+                "trial_millis": 45201,
+                "message": "Puff stop",
+                "absolute_time": "2023-11-20_17-18-12.281104"
+            },
+            {
+                "session_millis": 401362,
+                "trial_millis": 45818,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-18-12.894563"
+            },
+            {
+                "session_millis": 401363,
+                "trial_millis": 45818,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-18-12.947687"
+            },
+            {
+                "session_millis": 401747,
+                "trial_millis": 46202,
+                "message": "Puff start",
+                "absolute_time": "2023-11-20_17-18-13.258808"
+            },
+            {
+                "session_millis": 401948,
+                "trial_millis": 46403,
+                "message": "Puff stop",
+                "absolute_time": "2023-11-20_17-18-13.468305"
+            },
+            {
+                "session_millis": 402949,
+                "trial_millis": 47404,
+                "message": "Puff start",
+                "absolute_time": "2023-11-20_17-18-14.456831"
+            },
+            {
+                "session_millis": 403150,
+                "trial_millis": 47605,
+                "message": "Puff stop",
+                "absolute_time": "2023-11-20_17-18-14.667659"
+            },
+            {
+                "session_millis": 404151,
+                "trial_millis": 48606,
+                "message": "Puff start",
+                "absolute_time": "2023-11-20_17-18-15.655823"
+            },
+            {
+                "session_millis": 404352,
+                "trial_millis": 48807,
+                "message": "Puff stop",
+                "absolute_time": "2023-11-20_17-18-15.872485"
+            },
+            {
+                "session_millis": 405353,
+                "trial_millis": 49808,
+                "message": "Puff start",
+                "absolute_time": "2023-11-20_17-18-16.863626"
+            },
+            {
+                "session_millis": 405545,
+                "trial_millis": 50000,
+                "message": "Puff stop, catch block",
+                "absolute_time": "2023-11-20_17-18-17.076623"
+            },
+            {
+                "session_millis": 405547,
+                "trial_millis": 50002,
+                "message": "Trial has ended",
+                "absolute_time": "2023-11-20_17-18-17.131859"
+            }
+        ],
+        "Trial_4": [
+            {
+                "session_millis": 496873,
+                "trial_millis": 0,
+                "message": "Trial has started",
+                "absolute_time": "2023-11-20_17-19-48.524424"
+            },
+            {
+                "session_millis": 496874,
+                "trial_millis": 0,
+                "message": "Printing trial parameters",
+                "absolute_time": "2023-11-20_17-19-48.579104"
+            },
+            {
+                "session_millis": 496885,
+                "trial_millis": 0,
+                "message": "randomInterTrialInterval: 63339",
+                "absolute_time": "2023-11-20_17-19-48.633392"
+            },
+            {
+                "session_millis": 496934,
+                "trial_millis": 0,
+                "message": "currentTrialType: 0",
+                "absolute_time": "2023-11-20_17-19-48.689659"
+            },
+            {
+                "session_millis": 497779,
+                "trial_millis": 812,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-19-49.407348"
+            },
+            {
+                "session_millis": 497779,
+                "trial_millis": 813,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-19-49.467351"
+            },
+            {
+                "session_millis": 497924,
+                "trial_millis": 958,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-19-49.573005"
+            },
+            {
+                "session_millis": 498757,
+                "trial_millis": 1790,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-19-50.393026"
+            },
+            {
+                "session_millis": 498757,
+                "trial_millis": 1791,
+                "message": "Water on",
+                "absolute_time": "2023-11-20_17-19-50.449825"
+            },
+            {
+                "session_millis": 498921,
+                "trial_millis": 1954,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-19-50.554233"
+            },
+            {
+                "session_millis": 498958,
+                "trial_millis": 1991,
+                "message": "Water off",
+                "absolute_time": "2023-11-20_17-19-50.613269"
+            },
+            {
+                "session_millis": 499254,
+                "trial_millis": 2287,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-19-50.923420"
+            },
+            {
+                "session_millis": 499374,
+                "trial_millis": 2407,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-19-51.027971"
+            },
+            {
+                "session_millis": 499458,
+                "trial_millis": 2491,
+                "message": "Water on",
+                "absolute_time": "2023-11-20_17-19-51.097035"
+            },
+            {
+                "session_millis": 499495,
+                "trial_millis": 2528,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-19-51.154636"
+            },
+            {
+                "session_millis": 499599,
+                "trial_millis": 2632,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-19-51.258901"
+            },
+            {
+                "session_millis": 499659,
+                "trial_millis": 2692,
+                "message": "Water off",
+                "absolute_time": "2023-11-20_17-19-51.312112"
+            },
+            {
+                "session_millis": 499853,
+                "trial_millis": 2887,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-19-51.522544"
+            },
+            {
+                "session_millis": 500228,
+                "trial_millis": 3262,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-19-51.880355"
+            },
+            {
+                "session_millis": 500229,
+                "trial_millis": 3262,
+                "message": "Water on",
+                "absolute_time": "2023-11-20_17-19-51.934137"
+            },
+            {
+                "session_millis": 500348,
+                "trial_millis": 3381,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-19-51.987670"
+            },
+            {
+                "session_millis": 500430,
+                "trial_millis": 3463,
+                "message": "Water off",
+                "absolute_time": "2023-11-20_17-19-52.094544"
+            },
+            {
+                "session_millis": 500716,
+                "trial_millis": 3749,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-19-52.351694"
+            },
+            {
+                "session_millis": 501114,
+                "trial_millis": 4147,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-19-52.769110"
+            },
+            {
+                "session_millis": 501115,
+                "trial_millis": 4148,
+                "message": "Water on",
+                "absolute_time": "2023-11-20_17-19-52.822699"
+            },
+            {
+                "session_millis": 501316,
+                "trial_millis": 4349,
+                "message": "Water off",
+                "absolute_time": "2023-11-20_17-19-52.978625"
+            },
+            {
+                "session_millis": 501762,
+                "trial_millis": 4795,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-19-53.390533"
+            },
+            {
+                "session_millis": 501816,
+                "trial_millis": 4849,
+                "message": "Water on",
+                "absolute_time": "2023-11-20_17-19-53.456376"
+            },
+            {
+                "session_millis": 502017,
+                "trial_millis": 5050,
+                "message": "Water off",
+                "absolute_time": "2023-11-20_17-19-53.666551"
+            },
+            {
+                "session_millis": 502763,
+                "trial_millis": 5796,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-19-54.415958"
+            },
+            {
+                "session_millis": 503206,
+                "trial_millis": 6240,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-19-54.854708"
+            },
+            {
+                "session_millis": 503207,
+                "trial_millis": 6240,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-19-54.905997"
+            },
+            {
+                "session_millis": 503335,
+                "trial_millis": 6368,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-19-55.011308"
+            },
+            {
+                "session_millis": 503460,
+                "trial_millis": 6494,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-19-55.116026"
+            },
+            {
+                "session_millis": 503461,
+                "trial_millis": 6494,
+                "message": "Water on",
+                "absolute_time": "2023-11-20_17-19-55.169374"
+            },
+            {
+                "session_millis": 503581,
+                "trial_millis": 6614,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-19-55.223904"
+            },
+            {
+                "session_millis": 503662,
+                "trial_millis": 6695,
+                "message": "Water off",
+                "absolute_time": "2023-11-20_17-19-55.329787"
+            },
+            {
+                "session_millis": 503831,
+                "trial_millis": 6865,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-19-55.485919"
+            },
+            {
+                "session_millis": 504528,
+                "trial_millis": 7561,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-19-56.202875"
+            },
+            {
+                "session_millis": 504529,
+                "trial_millis": 7562,
+                "message": "Water on",
+                "absolute_time": "2023-11-20_17-19-56.256161"
+            },
+            {
+                "session_millis": 504652,
+                "trial_millis": 7685,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-19-56.307743"
+            },
+            {
+                "session_millis": 504729,
+                "trial_millis": 7762,
+                "message": "Water off",
+                "absolute_time": "2023-11-20_17-19-56.371056"
+            },
+            {
+                "session_millis": 504909,
+                "trial_millis": 7942,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-19-56.551766"
+            },
+            {
+                "session_millis": 505286,
+                "trial_millis": 8319,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-19-56.933306"
+            },
+            {
+                "session_millis": 505287,
+                "trial_millis": 8320,
+                "message": "Water on",
+                "absolute_time": "2023-11-20_17-19-56.986764"
+            },
+            {
+                "session_millis": 505430,
+                "trial_millis": 8463,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-19-57.091715"
+            },
+            {
+                "session_millis": 505488,
+                "trial_millis": 8521,
+                "message": "Water off",
+                "absolute_time": "2023-11-20_17-19-57.144902"
+            },
+            {
+                "session_millis": 505815,
+                "trial_millis": 8848,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-19-57.454174"
+            },
+            {
+                "session_millis": 506206,
+                "trial_millis": 9239,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-19-57.873581"
+            },
+            {
+                "session_millis": 506206,
+                "trial_millis": 9239,
+                "message": "Water on",
+                "absolute_time": "2023-11-20_17-19-57.927343"
+            },
+            {
+                "session_millis": 506335,
+                "trial_millis": 9368,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-19-57.981235"
+            },
+            {
+                "session_millis": 506407,
+                "trial_millis": 9440,
+                "message": "Water off",
+                "absolute_time": "2023-11-20_17-19-58.051266"
+            },
+            {
+                "session_millis": 507002,
+                "trial_millis": 10035,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-19-58.674683"
+            },
+            {
+                "session_millis": 507003,
+                "trial_millis": 10036,
+                "message": "Water on",
+                "absolute_time": "2023-11-20_17-19-58.727794"
+            },
+            {
+                "session_millis": 507203,
+                "trial_millis": 10236,
+                "message": "Water off",
+                "absolute_time": "2023-11-20_17-19-58.848138"
+            },
+            {
+                "session_millis": 507537,
+                "trial_millis": 10570,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-19-59.188974"
+            },
+            {
+                "session_millis": 508483,
+                "trial_millis": 11516,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-20-00.158888"
+            },
+            {
+                "session_millis": 508484,
+                "trial_millis": 11517,
+                "message": "Water on",
+                "absolute_time": "2023-11-20_17-20-00.212267"
+            },
+            {
+                "session_millis": 508615,
+                "trial_millis": 11648,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-20-00.271337"
+            },
+            {
+                "session_millis": 508685,
+                "trial_millis": 11718,
+                "message": "Water off",
+                "absolute_time": "2023-11-20_17-20-00.338740"
+            },
+            {
+                "session_millis": 509276,
+                "trial_millis": 12309,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-20-00.956525"
+            },
+            {
+                "session_millis": 509277,
+                "trial_millis": 12310,
+                "message": "Water on",
+                "absolute_time": "2023-11-20_17-20-01.010443"
+            },
+            {
+                "session_millis": 509478,
+                "trial_millis": 12511,
+                "message": "Water off",
+                "absolute_time": "2023-11-20_17-20-01.128627"
+            },
+            {
+                "session_millis": 510048,
+                "trial_millis": 13081,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-20-01.702761"
+            },
+            {
+                "session_millis": 510049,
+                "trial_millis": 13082,
+                "message": "Water on",
+                "absolute_time": "2023-11-20_17-20-01.754460"
+            },
+            {
+                "session_millis": 510249,
+                "trial_millis": 13282,
+                "message": "Water off",
+                "absolute_time": "2023-11-20_17-20-01.910455"
+            },
+            {
+                "session_millis": 511049,
+                "trial_millis": 14082,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-20-02.730619"
+            },
+            {
+                "session_millis": 511937,
+                "trial_millis": 14970,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-20-03.602565"
+            },
+            {
+                "session_millis": 511938,
+                "trial_millis": 14971,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-20-03.654723"
+            },
+            {
+                "session_millis": 511968,
+                "trial_millis": 15001,
+                "message": "Negative signal start",
+                "absolute_time": "2023-11-20_17-20-03.709306"
+            },
+            {
+                "session_millis": 512969,
+                "trial_millis": 16002,
+                "message": "Negative signal stop",
+                "absolute_time": "2023-11-20_17-20-04.647602"
+            },
+            {
+                "session_millis": 513614,
+                "trial_millis": 16647,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-20-05.261630"
+            },
+            {
+                "session_millis": 513615,
+                "trial_millis": 16648,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-20-05.326024"
+            },
+            {
+                "session_millis": 513862,
+                "trial_millis": 16896,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-20-05.529851"
+            },
+            {
+                "session_millis": 513969,
+                "trial_millis": 17002,
+                "message": "Negative signal start",
+                "absolute_time": "2023-11-20_17-20-05.634739"
+            },
+            {
+                "session_millis": 514006,
+                "trial_millis": 17039,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-20-05.698683"
+            },
+            {
+                "session_millis": 514007,
+                "trial_millis": 17040,
+                "message": "Water on",
+                "absolute_time": "2023-11-20_17-20-05.752252"
+            },
+            {
+                "session_millis": 514125,
+                "trial_millis": 17158,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-20-05.806021"
+            },
+            {
+                "session_millis": 514208,
+                "trial_millis": 17241,
+                "message": "Water off",
+                "absolute_time": "2023-11-20_17-20-05.862931"
+            },
+            {
+                "session_millis": 514382,
+                "trial_millis": 17415,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-20-06.029759"
+            },
+            {
+                "session_millis": 514970,
+                "trial_millis": 18003,
+                "message": "Negative signal stop",
+                "absolute_time": "2023-11-20_17-20-06.657475"
+            },
+            {
+                "session_millis": 515383,
+                "trial_millis": 18416,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-20-07.079994"
+            },
+            {
+                "session_millis": 515970,
+                "trial_millis": 19003,
+                "message": "Negative signal start",
+                "absolute_time": "2023-11-20_17-20-07.647189"
+            },
+            {
+                "session_millis": 516087,
+                "trial_millis": 19120,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-20-07.756400"
+            },
+            {
+                "session_millis": 516087,
+                "trial_millis": 19121,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-20-07.809624"
+            },
+            {
+                "session_millis": 516224,
+                "trial_millis": 19257,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-20-07.914845"
+            },
+            {
+                "session_millis": 516376,
+                "trial_millis": 19409,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-20-08.034857"
+            },
+            {
+                "session_millis": 516377,
+                "trial_millis": 19410,
+                "message": "Water on",
+                "absolute_time": "2023-11-20_17-20-08.094163"
+            },
+            {
+                "session_millis": 516488,
+                "trial_millis": 19521,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-20-08.147714"
+            },
+            {
+                "session_millis": 516578,
+                "trial_millis": 19611,
+                "message": "Water off",
+                "absolute_time": "2023-11-20_17-20-08.256600"
+            },
+            {
+                "session_millis": 516736,
+                "trial_millis": 19770,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-20-08.412501"
+            },
+            {
+                "session_millis": 516971,
+                "trial_millis": 20004,
+                "message": "Negative signal stop",
+                "absolute_time": "2023-11-20_17-20-08.645121"
+            },
+            {
+                "session_millis": 517737,
+                "trial_millis": 20770,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-20-09.422505"
+            },
+            {
+                "session_millis": 517971,
+                "trial_millis": 21004,
+                "message": "Negative signal start",
+                "absolute_time": "2023-11-20_17-20-09.646360"
+            },
+            {
+                "session_millis": 518283,
+                "trial_millis": 21316,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-20-09.963879"
+            },
+            {
+                "session_millis": 518284,
+                "trial_millis": 21317,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-20-10.017187"
+            },
+            {
+                "session_millis": 518745,
+                "trial_millis": 21779,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-20-10.430608"
+            },
+            {
+                "session_millis": 518857,
+                "trial_millis": 21890,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-20-10.535271"
+            },
+            {
+                "session_millis": 518858,
+                "trial_millis": 21891,
+                "message": "Water on",
+                "absolute_time": "2023-11-20_17-20-10.588790"
+            },
+            {
+                "session_millis": 518972,
+                "trial_millis": 22005,
+                "message": "Negative signal stop",
+                "absolute_time": "2023-11-20_17-20-10.642851"
+            },
+            {
+                "session_millis": 518998,
+                "trial_millis": 22032,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-20-10.707934"
+            },
+            {
+                "session_millis": 519058,
+                "trial_millis": 22091,
+                "message": "Water off",
+                "absolute_time": "2023-11-20_17-20-10.761676"
+            },
+            {
+                "session_millis": 519972,
+                "trial_millis": 23005,
+                "message": "Negative signal start",
+                "absolute_time": "2023-11-20_17-20-11.650591"
+            },
+            {
+                "session_millis": 519999,
+                "trial_millis": 23032,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-20-11.710323"
+            },
+            {
+                "session_millis": 520363,
+                "trial_millis": 23397,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-20-12.020559"
+            },
+            {
+                "session_millis": 520364,
+                "trial_millis": 23397,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-20-12.084345"
+            },
+            {
+                "session_millis": 520973,
+                "trial_millis": 24006,
+                "message": "Negative signal stop",
+                "absolute_time": "2023-11-20_17-20-12.650282"
+            },
+            {
+                "session_millis": 521973,
+                "trial_millis": 25006,
+                "message": "Negative signal start",
+                "absolute_time": "2023-11-20_17-20-13.651176"
+            },
+            {
+                "session_millis": 522212,
+                "trial_millis": 25246,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-20-13.883005"
+            },
+            {
+                "session_millis": 522213,
+                "trial_millis": 25246,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-20-13.938696"
+            },
+            {
+                "session_millis": 522380,
+                "trial_millis": 25413,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-20-14.044067"
+            },
+            {
+                "session_millis": 522502,
+                "trial_millis": 25535,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-20-14.173522"
+            },
+            {
+                "session_millis": 522503,
+                "trial_millis": 25536,
+                "message": "Water on",
+                "absolute_time": "2023-11-20_17-20-14.226109"
+            },
+            {
+                "session_millis": 522704,
+                "trial_millis": 25737,
+                "message": "Water off",
+                "absolute_time": "2023-11-20_17-20-14.381987"
+            },
+            {
+                "session_millis": 522974,
+                "trial_millis": 26007,
+                "message": "Negative signal stop",
+                "absolute_time": "2023-11-20_17-20-14.656111"
+            },
+            {
+                "session_millis": 523503,
+                "trial_millis": 26536,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-20-15.193289"
+            },
+            {
+                "session_millis": 523974,
+                "trial_millis": 27007,
+                "message": "Negative signal start",
+                "absolute_time": "2023-11-20_17-20-15.655691"
+            },
+            {
+                "session_millis": 524975,
+                "trial_millis": 28008,
+                "message": "Negative signal stop",
+                "absolute_time": "2023-11-20_17-20-16.660516"
+            },
+            {
+                "session_millis": 525975,
+                "trial_millis": 29008,
+                "message": "Negative signal start",
+                "absolute_time": "2023-11-20_17-20-17.659295"
+            },
+            {
+                "session_millis": 526258,
+                "trial_millis": 29292,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-20-17.935340"
+            },
+            {
+                "session_millis": 526259,
+                "trial_millis": 29292,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-20-17.990088"
+            },
+            {
+                "session_millis": 526976,
+                "trial_millis": 30009,
+                "message": "Negative signal stop",
+                "absolute_time": "2023-11-20_17-20-18.663332"
+            },
+            {
+                "session_millis": 527976,
+                "trial_millis": 31009,
+                "message": "Negative signal start",
+                "absolute_time": "2023-11-20_17-20-19.674687"
+            },
+            {
+                "session_millis": 528977,
+                "trial_millis": 32010,
+                "message": "Negative signal stop",
+                "absolute_time": "2023-11-20_17-20-20.677120"
+            },
+            {
+                "session_millis": 529977,
+                "trial_millis": 33010,
+                "message": "Negative signal start",
+                "absolute_time": "2023-11-20_17-20-21.665439"
+            },
+            {
+                "session_millis": 530239,
+                "trial_millis": 33273,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-20-21.931903"
+            },
+            {
+                "session_millis": 530240,
+                "trial_millis": 33273,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-20-21.985436"
+            },
+            {
+                "session_millis": 530978,
+                "trial_millis": 34011,
+                "message": "Negative signal stop",
+                "absolute_time": "2023-11-20_17-20-22.678093"
+            },
+            {
+                "session_millis": 535077,
+                "trial_millis": 38110,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-20-26.767349"
+            },
+            {
+                "session_millis": 535077,
+                "trial_millis": 38111,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-20-26.821060"
+            },
+            {
+                "session_millis": 535337,
+                "trial_millis": 38372,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-20-27.029728"
+            },
+            {
+                "session_millis": 535478,
+                "trial_millis": 38511,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-20-27.187127"
+            },
+            {
+                "session_millis": 535479,
+                "trial_millis": 38512,
+                "message": "Water on",
+                "absolute_time": "2023-11-20_17-20-27.240471"
+            },
+            {
+                "session_millis": 535680,
+                "trial_millis": 38713,
+                "message": "Water off",
+                "absolute_time": "2023-11-20_17-20-27.396476"
+            },
+            {
+                "session_millis": 535840,
+                "trial_millis": 38873,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-20-27.551929"
+            },
+            {
+                "session_millis": 536024,
+                "trial_millis": 39057,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-20-27.715012"
+            },
+            {
+                "session_millis": 536605,
+                "trial_millis": 39639,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-20-28.300482"
+            },
+            {
+                "session_millis": 536606,
+                "trial_millis": 39639,
+                "message": "Water on",
+                "absolute_time": "2023-11-20_17-20-28.351917"
+            },
+            {
+                "session_millis": 536807,
+                "trial_millis": 39840,
+                "message": "Water off",
+                "absolute_time": "2023-11-20_17-20-28.507436"
+            },
+            {
+                "session_millis": 537606,
+                "trial_millis": 40639,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-20-29.308250"
+            },
+            {
+                "session_millis": 541014,
+                "trial_millis": 44047,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-20-32.738440"
+            },
+            {
+                "session_millis": 541015,
+                "trial_millis": 44048,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-20-32.792189"
+            },
+            {
+                "session_millis": 541278,
+                "trial_millis": 44311,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-20-32.999848"
+            },
+            {
+                "session_millis": 542279,
+                "trial_millis": 45312,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-20-33.993798"
+            },
+            {
+                "session_millis": 542733,
+                "trial_millis": 45767,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-20-34.457490"
+            },
+            {
+                "session_millis": 542734,
+                "trial_millis": 45767,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-20-34.510766"
+            },
+            {
+                "session_millis": 542855,
+                "trial_millis": 45888,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-20-34.565450"
+            },
+            {
+                "session_millis": 543855,
+                "trial_millis": 46888,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-20-35.571121"
+            },
+            {
+                "session_millis": 546605,
+                "trial_millis": 49638,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-20-38.303766"
+            },
+            {
+                "session_millis": 546605,
+                "trial_millis": 49639,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-20-38.361428"
+            },
+            {
+                "session_millis": 546738,
+                "trial_millis": 49771,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-20-38.467552"
+            },
+            {
+                "session_millis": 546968,
+                "trial_millis": 50001,
+                "message": "Trial has ended",
+                "absolute_time": "2023-11-20_17-20-38.675098"
+            }
+        ],
+        "Trial_5": [
+            {
+                "session_millis": 610570,
+                "trial_millis": 0,
+                "message": "Trial has started",
+                "absolute_time": "2023-11-20_17-21-42.380168"
+            },
+            {
+                "session_millis": 610571,
+                "trial_millis": 0,
+                "message": "Printing trial parameters",
+                "absolute_time": "2023-11-20_17-21-42.434554"
+            },
+            {
+                "session_millis": 610582,
+                "trial_millis": 0,
+                "message": "randomInterTrialInterval: 112549",
+                "absolute_time": "2023-11-20_17-21-42.487626"
+            },
+            {
+                "session_millis": 610632,
+                "trial_millis": 0,
+                "message": "currentTrialType: 0",
+                "absolute_time": "2023-11-20_17-21-42.543133"
+            },
+            {
+                "session_millis": 610669,
+                "trial_millis": 11,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-21-42.595889"
+            },
+            {
+                "session_millis": 625667,
+                "trial_millis": 15001,
+                "message": "Negative signal start",
+                "absolute_time": "2023-11-20_17-21-57.489855"
+            },
+            {
+                "session_millis": 626668,
+                "trial_millis": 16002,
+                "message": "Negative signal stop",
+                "absolute_time": "2023-11-20_17-21-58.500053"
+            },
+            {
+                "session_millis": 627668,
+                "trial_millis": 17002,
+                "message": "Negative signal start",
+                "absolute_time": "2023-11-20_17-21-59.504436"
+            },
+            {
+                "session_millis": 628417,
+                "trial_millis": 17751,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-22-00.235924"
+            },
+            {
+                "session_millis": 628418,
+                "trial_millis": 17752,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-22-00.289496"
+            },
+            {
+                "session_millis": 628634,
+                "trial_millis": 17969,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-22-00.447142"
+            },
+            {
+                "session_millis": 628669,
+                "trial_millis": 18003,
+                "message": "Negative signal stop",
+                "absolute_time": "2023-11-20_17-22-00.506623"
+            },
+            {
+                "session_millis": 628882,
+                "trial_millis": 18217,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-22-00.718973"
+            },
+            {
+                "session_millis": 628883,
+                "trial_millis": 18217,
+                "message": "Water on",
+                "absolute_time": "2023-11-20_17-22-00.771175"
+            },
+            {
+                "session_millis": 629084,
+                "trial_millis": 18418,
+                "message": "Water off",
+                "absolute_time": "2023-11-20_17-22-00.923563"
+            },
+            {
+                "session_millis": 629182,
+                "trial_millis": 18517,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-22-01.027977"
+            },
+            {
+                "session_millis": 629470,
+                "trial_millis": 18804,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-22-01.285566"
+            },
+            {
+                "session_millis": 629669,
+                "trial_millis": 19003,
+                "message": "Negative signal start",
+                "absolute_time": "2023-11-20_17-22-01.495197"
+            },
+            {
+                "session_millis": 629809,
+                "trial_millis": 19143,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-22-01.626170"
+            },
+            {
+                "session_millis": 629810,
+                "trial_millis": 19144,
+                "message": "Water on",
+                "absolute_time": "2023-11-20_17-22-01.683879"
+            },
+            {
+                "session_millis": 629936,
+                "trial_millis": 19271,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-22-01.751991"
+            },
+            {
+                "session_millis": 630011,
+                "trial_millis": 19345,
+                "message": "Water off",
+                "absolute_time": "2023-11-20_17-22-01.860244"
+            },
+            {
+                "session_millis": 630670,
+                "trial_millis": 20004,
+                "message": "Negative signal stop",
+                "absolute_time": "2023-11-20_17-22-02.493622"
+            },
+            {
+                "session_millis": 630937,
+                "trial_millis": 20271,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-22-02.763373"
+            },
+            {
+                "session_millis": 631191,
+                "trial_millis": 20525,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-22-03.033457"
+            },
+            {
+                "session_millis": 631192,
+                "trial_millis": 20526,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-22-03.088715"
+            },
+            {
+                "session_millis": 631670,
+                "trial_millis": 21004,
+                "message": "Negative signal start",
+                "absolute_time": "2023-11-20_17-22-03.497003"
+            },
+            {
+                "session_millis": 631832,
+                "trial_millis": 21166,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-22-03.664771"
+            },
+            {
+                "session_millis": 632671,
+                "trial_millis": 22005,
+                "message": "Negative signal stop",
+                "absolute_time": "2023-11-20_17-22-04.514349"
+            },
+            {
+                "session_millis": 632833,
+                "trial_millis": 22167,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-22-04.667857"
+            },
+            {
+                "session_millis": 633671,
+                "trial_millis": 23005,
+                "message": "Negative signal start",
+                "absolute_time": "2023-11-20_17-22-05.514336"
+            },
+            {
+                "session_millis": 633906,
+                "trial_millis": 23240,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-22-05.722366"
+            },
+            {
+                "session_millis": 633906,
+                "trial_millis": 23241,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-22-05.786201"
+            },
+            {
+                "session_millis": 634041,
+                "trial_millis": 23375,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-22-05.892049"
+            },
+            {
+                "session_millis": 634173,
+                "trial_millis": 23507,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-22-05.996877"
+            },
+            {
+                "session_millis": 634173,
+                "trial_millis": 23508,
+                "message": "Water on",
+                "absolute_time": "2023-11-20_17-22-06.052406"
+            },
+            {
+                "session_millis": 634374,
+                "trial_millis": 23708,
+                "message": "Water off",
+                "absolute_time": "2023-11-20_17-22-06.207664"
+            },
+            {
+                "session_millis": 634457,
+                "trial_millis": 23791,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-22-06.277229"
+            },
+            {
+                "session_millis": 634672,
+                "trial_millis": 24006,
+                "message": "Negative signal stop",
+                "absolute_time": "2023-11-20_17-22-06.504262"
+            },
+            {
+                "session_millis": 634672,
+                "trial_millis": 24007,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-22-06.568537"
+            },
+            {
+                "session_millis": 635672,
+                "trial_millis": 25006,
+                "message": "Negative signal start",
+                "absolute_time": "2023-11-20_17-22-07.506399"
+            },
+            {
+                "session_millis": 635673,
+                "trial_millis": 25007,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-22-07.571625"
+            },
+            {
+                "session_millis": 636673,
+                "trial_millis": 26007,
+                "message": "Negative signal stop",
+                "absolute_time": "2023-11-20_17-22-08.509683"
+            },
+            {
+                "session_millis": 637673,
+                "trial_millis": 27007,
+                "message": "Negative signal start",
+                "absolute_time": "2023-11-20_17-22-09.523996"
+            },
+            {
+                "session_millis": 637939,
+                "trial_millis": 27273,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-22-09.779697"
+            },
+            {
+                "session_millis": 637939,
+                "trial_millis": 27274,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-22-09.836071"
+            },
+            {
+                "session_millis": 638190,
+                "trial_millis": 27524,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-22-10.041463"
+            },
+            {
+                "session_millis": 638309,
+                "trial_millis": 27643,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-22-10.146285"
+            },
+            {
+                "session_millis": 638309,
+                "trial_millis": 27644,
+                "message": "Water on",
+                "absolute_time": "2023-11-20_17-22-10.200010"
+            },
+            {
+                "session_millis": 638433,
+                "trial_millis": 27767,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-22-10.253811"
+            },
+            {
+                "session_millis": 638510,
+                "trial_millis": 27844,
+                "message": "Water off",
+                "absolute_time": "2023-11-20_17-22-10.367769"
+            },
+            {
+                "session_millis": 638674,
+                "trial_millis": 28008,
+                "message": "Negative signal stop",
+                "absolute_time": "2023-11-20_17-22-10.523404"
+            },
+            {
+                "session_millis": 639434,
+                "trial_millis": 28768,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-22-11.293453"
+            },
+            {
+                "session_millis": 639674,
+                "trial_millis": 29008,
+                "message": "Negative signal start",
+                "absolute_time": "2023-11-20_17-22-11.513525"
+            },
+            {
+                "session_millis": 640044,
+                "trial_millis": 29378,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-22-11.885237"
+            },
+            {
+                "session_millis": 640045,
+                "trial_millis": 29379,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-22-11.941367"
+            },
+            {
+                "session_millis": 640675,
+                "trial_millis": 30009,
+                "message": "Negative signal stop",
+                "absolute_time": "2023-11-20_17-22-12.517532"
+            },
+            {
+                "session_millis": 641675,
+                "trial_millis": 31009,
+                "message": "Negative signal start",
+                "absolute_time": "2023-11-20_17-22-13.517629"
+            },
+            {
+                "session_millis": 642676,
+                "trial_millis": 32010,
+                "message": "Negative signal stop",
+                "absolute_time": "2023-11-20_17-22-14.532249"
+            },
+            {
+                "session_millis": 643676,
+                "trial_millis": 33010,
+                "message": "Negative signal start",
+                "absolute_time": "2023-11-20_17-22-15.534324"
+            },
+            {
+                "session_millis": 644677,
+                "trial_millis": 34011,
+                "message": "Negative signal stop",
+                "absolute_time": "2023-11-20_17-22-16.522416"
+            },
+            {
+                "session_millis": 651524,
+                "trial_millis": 40859,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-22-23.383436"
+            },
+            {
+                "session_millis": 651525,
+                "trial_millis": 40859,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-22-23.434689"
+            },
+            {
+                "session_millis": 659012,
+                "trial_millis": 48346,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-22-30.866366"
+            },
+            {
+                "session_millis": 659013,
+                "trial_millis": 48347,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-22-30.926171"
+            },
+            {
+                "session_millis": 660667,
+                "trial_millis": 50001,
+                "message": "Trial has ended",
+                "absolute_time": "2023-11-20_17-22-32.536966"
+            }
+        ],
+        "Trial_6": [
+            {
+                "session_millis": 773480,
+                "trial_millis": 0,
+                "message": "Trial has started",
+                "absolute_time": "2023-11-20_17-24-25.524560"
+            },
+            {
+                "session_millis": 773481,
+                "trial_millis": 0,
+                "message": "Printing trial parameters",
+                "absolute_time": "2023-11-20_17-24-25.578651"
+            },
+            {
+                "session_millis": 773492,
+                "trial_millis": 0,
+                "message": "randomInterTrialInterval: 68712",
+                "absolute_time": "2023-11-20_17-24-25.633737"
+            },
+            {
+                "session_millis": 773541,
+                "trial_millis": 0,
+                "message": "currentTrialType: 1",
+                "absolute_time": "2023-11-20_17-24-25.688429"
+            },
+            {
+                "session_millis": 781747,
+                "trial_millis": 8173,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-24-33.767365"
+            },
+            {
+                "session_millis": 781747,
+                "trial_millis": 8174,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-24-33.827399"
+            },
+            {
+                "session_millis": 788575,
+                "trial_millis": 15001,
+                "message": "Positive signal start",
+                "absolute_time": "2023-11-20_17-24-40.630363"
+            },
+            {
+                "session_millis": 798756,
+                "trial_millis": 25182,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-24-50.806598"
+            },
+            {
+                "session_millis": 798756,
+                "trial_millis": 25183,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-24-50.861843"
+            },
+            {
+                "session_millis": 798892,
+                "trial_millis": 25318,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-24-50.968299"
+            },
+            {
+                "session_millis": 799059,
+                "trial_millis": 25486,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-24-51.124526"
+            },
+            {
+                "session_millis": 799060,
+                "trial_millis": 25486,
+                "message": "Water on",
+                "absolute_time": "2023-11-20_17-24-51.177863"
+            },
+            {
+                "session_millis": 799185,
+                "trial_millis": 25611,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-24-51.231520"
+            },
+            {
+                "session_millis": 799261,
+                "trial_millis": 25687,
+                "message": "Water off",
+                "absolute_time": "2023-11-20_17-24-51.307785"
+            },
+            {
+                "session_millis": 799486,
+                "trial_millis": 25912,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-24-51.527136"
+            },
+            {
+                "session_millis": 799951,
+                "trial_millis": 26378,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-24-52.000508"
+            },
+            {
+                "session_millis": 799952,
+                "trial_millis": 26378,
+                "message": "Water on",
+                "absolute_time": "2023-11-20_17-24-52.058170"
+            },
+            {
+                "session_millis": 800153,
+                "trial_millis": 26579,
+                "message": "Water off",
+                "absolute_time": "2023-11-20_17-24-52.214563"
+            },
+            {
+                "session_millis": 800172,
+                "trial_millis": 26599,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-24-52.269562"
+            },
+            {
+                "session_millis": 801173,
+                "trial_millis": 27599,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-24-53.241732"
+            },
+            {
+                "session_millis": 801936,
+                "trial_millis": 28363,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-24-54.014153"
+            },
+            {
+                "session_millis": 801937,
+                "trial_millis": 28363,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-24-54.067822"
+            },
+            {
+                "session_millis": 803721,
+                "trial_millis": 30148,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-24-55.807972"
+            },
+            {
+                "session_millis": 803722,
+                "trial_millis": 30148,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-24-55.861735"
+            },
+            {
+                "session_millis": 805016,
+                "trial_millis": 31442,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-24-57.092112"
+            },
+            {
+                "session_millis": 805017,
+                "trial_millis": 31443,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-24-57.145874"
+            },
+            {
+                "session_millis": 805148,
+                "trial_millis": 31574,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-24-57.202583"
+            },
+            {
+                "session_millis": 806149,
+                "trial_millis": 32575,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-24-58.234183"
+            },
+            {
+                "session_millis": 808257,
+                "trial_millis": 34684,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-25-00.334029"
+            },
+            {
+                "session_millis": 808258,
+                "trial_millis": 34684,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-25-00.387653"
+            },
+            {
+                "session_millis": 808376,
+                "trial_millis": 34802,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-25-00.443017"
+            },
+            {
+                "session_millis": 808512,
+                "trial_millis": 34938,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-25-00.598931"
+            },
+            {
+                "session_millis": 808513,
+                "trial_millis": 34939,
+                "message": "Water on",
+                "absolute_time": "2023-11-20_17-25-00.652448"
+            },
+            {
+                "session_millis": 808576,
+                "trial_millis": 35002,
+                "message": "Positive signal stop",
+                "absolute_time": "2023-11-20_17-25-00.706059"
+            },
+            {
+                "session_millis": 808658,
+                "trial_millis": 35084,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-25-00.760817"
+            },
+            {
+                "session_millis": 808714,
+                "trial_millis": 35140,
+                "message": "Water off",
+                "absolute_time": "2023-11-20_17-25-00.812606"
+            },
+            {
+                "session_millis": 809659,
+                "trial_millis": 36085,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-25-01.734896"
+            },
+            {
+                "session_millis": 810733,
+                "trial_millis": 37159,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-25-02.820520"
+            },
+            {
+                "session_millis": 810734,
+                "trial_millis": 37160,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-25-02.874152"
+            },
+            {
+                "session_millis": 813882,
+                "trial_millis": 40309,
+                "message": "Lick",
+                "absolute_time": "2023-11-20_17-25-05.946671"
+            },
+            {
+                "session_millis": 813883,
+                "trial_millis": 40309,
+                "message": "Resetting lick count",
+                "absolute_time": "2023-11-20_17-25-06.007926"
+            },
+            {
+                "session_millis": 818574,
+                "trial_millis": 45000,
+                "message": "Puff start",
+                "absolute_time": "2023-11-20_17-25-10.679601"
+            },
+            {
+                "session_millis": 818775,
+                "trial_millis": 45201,
+                "message": "Puff stop",
+                "absolute_time": "2023-11-20_17-25-10.850584"
+            },
+            {
+                "session_millis": 819776,
+                "trial_millis": 46202,
+                "message": "Puff start",
+                "absolute_time": "2023-11-20_17-25-11.867160"
+            },
+            {
+                "session_millis": 819977,
+                "trial_millis": 46403,
+                "message": "Puff stop",
+                "absolute_time": "2023-11-20_17-25-12.069354"
+            },
+            {
+                "session_millis": 820978,
+                "trial_millis": 47404,
+                "message": "Puff start",
+                "absolute_time": "2023-11-20_17-25-13.056298"
+            },
+            {
+                "session_millis": 821179,
+                "trial_millis": 47605,
+                "message": "Puff stop",
+                "absolute_time": "2023-11-20_17-25-13.275463"
+            },
+            {
+                "session_millis": 822180,
+                "trial_millis": 48606,
+                "message": "Puff start",
+                "absolute_time": "2023-11-20_17-25-14.266185"
+            },
+            {
+                "session_millis": 822381,
+                "trial_millis": 48807,
+                "message": "Puff stop",
+                "absolute_time": "2023-11-20_17-25-14.476652"
+            },
+            {
+                "session_millis": 823382,
+                "trial_millis": 49808,
+                "message": "Puff start",
+                "absolute_time": "2023-11-20_17-25-15.469847"
+            },
+            {
+                "session_millis": 823574,
+                "trial_millis": 50000,
+                "message": "Puff stop, catch block",
+                "absolute_time": "2023-11-20_17-25-15.680158"
+            },
+            {
+                "session_millis": 823575,
+                "trial_millis": 50001,
+                "message": "Trial has ended",
+                "absolute_time": "2023-11-20_17-25-15.735352"
+            }
+        ]
+    }
+}
