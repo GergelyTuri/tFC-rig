@@ -175,7 +175,7 @@ void loop() {
           }
         }
 
-        // Trial clean-up
+        // Inter-trial interval
         if (trialHasEnded) {
           print("Cleaning up last trial");
           flushTrialMetaData();
@@ -183,21 +183,23 @@ void loop() {
           flushAirPuffMetaData();
           flushPositiveSignalMetaData();
           flushNegativeSignalMetaData();
-        }
 
-        // Inter-trial interval
-        if (currentTrial < NUMBER_OF_TRIALS) {
           // Use `randomInterTrialInterval` in the real trial. Use
           // `INTER_TRIAL_DEBUG_WAIT_INTERVAL` for debugging as it is set to
           // just one second
           long interTrialIntervalStartTime = millis();
           long interTrialIntervalWaitTime;
           if (DEBUGGING) {
-            print("DEBUGGING: Waiting for 1s");
+            vprint("DEBUGGING: Waiting for", INTER_TRIAL_DEBUG_WAIT_INTERVAL);
             interTrialIntervalWaitTime = INTER_TRIAL_DEBUG_WAIT_INTERVAL;
           } else {
-            vprint("Waiting the inter-trial interval", randomInterTrialInterval);
-            interTrialIntervalWaitTime = randomInterTrialInterval;
+            if (currentTrial < NUMBER_OF_TRIALS) {
+              vprint("Waiting the inter-trial interval", randomInterTrialInterval);
+              interTrialIntervalWaitTime = randomInterTrialInterval;
+            } else {
+              vprint("Waiting after the last trial", POST_LAST_TRIAL_INTERVAL)
+              interTrialIntervalWaitTime = POST_LAST_TRIAL_INTERVAL;
+            }
           }
           
 
