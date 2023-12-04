@@ -197,7 +197,7 @@ void loop() {
               vprint("Waiting the inter-trial interval", randomInterTrialInterval);
               interTrialIntervalWaitTime = randomInterTrialInterval;
             } else {
-              vprint("Waiting after the last trial", POST_LAST_TRIAL_INTERVAL)
+              vprint("Waiting after the last trial", POST_LAST_TRIAL_INTERVAL);
               interTrialIntervalWaitTime = POST_LAST_TRIAL_INTERVAL;
             }
           }
