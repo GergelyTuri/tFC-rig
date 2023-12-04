@@ -190,11 +190,16 @@ void loop() {
           long interTrialIntervalStartTime = millis();
           long interTrialIntervalWaitTime;
           if (DEBUGGING) {
-            print("DEBUGGING: Waiting for 1s");
+            vprint("DEBUGGING: Waiting for", INTER_TRIAL_DEBUG_WAIT_INTERVAL);
             interTrialIntervalWaitTime = INTER_TRIAL_DEBUG_WAIT_INTERVAL;
           } else {
-            vprint("Waiting the inter-trial interval", randomInterTrialInterval);
-            interTrialIntervalWaitTime = randomInterTrialInterval;
+            if (currentTrial < NUMBER_OF_TRIALS) {
+              vprint("Waiting the inter-trial interval", randomInterTrialInterval);
+              interTrialIntervalWaitTime = randomInterTrialInterval;
+            } else {
+              vprint("Waiting after the last trial", POST_LAST_TRIAL_INTERVAL)
+              interTrialIntervalWaitTime = POST_LAST_TRIAL_INTERVAL;
+            }
           }
           
 

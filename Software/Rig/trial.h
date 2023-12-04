@@ -133,6 +133,14 @@ const long MAX_ITI = 300000;
 // least equal to the air puff start time plus air puff duration based
 // on trial design
 const long TRIAL_DURATION = 50000;
+//
+// ------------------------
+// POST_LAST_TRIAL_INTERVAL
+// [milliseconds]
+// Wait for this amount of time after the last trial. We don't want
+// this length to be random, but the inter-trial code is run during this
+// interval as well
+const long POST_LAST_TRIAL_INTERVAL = 60000;
 
 
 
