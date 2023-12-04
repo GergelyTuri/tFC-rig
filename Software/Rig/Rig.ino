@@ -186,7 +186,7 @@ void loop() {
         }
 
         // Inter-trial interval
-        if (currentTrial >= NUMBER_OF_TRIALS) {
+        if (currentTrial < NUMBER_OF_TRIALS) {
           // Use `randomInterTrialInterval` in the real trial. Use
           // `INTER_TRIAL_DEBUG_WAIT_INTERVAL` for debugging as it is set to
           // just one second
