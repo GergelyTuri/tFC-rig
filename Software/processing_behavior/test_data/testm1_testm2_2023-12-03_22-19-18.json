@@ -1,0 +1,2463 @@
+{
+    "header": {
+        "mouse_ids": [
+            "testm1",
+            "testm2"
+        ],
+        "primary_port": "COM3",
+        "secondary_port": "COM4",
+        "mouse_port_assignment": {
+            "testm1": "COM3",
+            "testm2": "COM4"
+        },
+        "Start_time": "2023-12-03_22-19-18"
+    },
+    "data": {
+        "testm1": [
+            {
+                "message": "0: 0: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-20.121668"
+            },
+            {
+                "message": "0: 101: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-20.124654"
+            },
+            {
+                "message": "0: 201: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-20.128674"
+            },
+            {
+                "message": "0: 302: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-20.132664"
+            },
+            {
+                "message": "0: 403: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-20.230372"
+            },
+            {
+                "message": "0: 503: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-20.328109"
+            },
+            {
+                "message": "0: 604: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-20.430835"
+            },
+            {
+                "message": "0: 705: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-20.532564"
+            },
+            {
+                "message": "0: 805: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-20.631298"
+            },
+            {
+                "message": "0: 907: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-20.734024"
+            },
+            {
+                "message": "0: 1007: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-20.835754"
+            },
+            {
+                "message": "0: 1107: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-20.938481"
+            },
+            {
+                "message": "0: 1209: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-21.037217"
+            },
+            {
+                "message": "0: 1309: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-21.138945"
+            },
+            {
+                "message": "0: 1410: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-21.237681"
+            },
+            {
+                "message": "0: 1511: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-21.340408"
+            },
+            {
+                "message": "0: 1611: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-21.442135"
+            },
+            {
+                "message": "0: 1713: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-21.540871"
+            },
+            {
+                "message": "0: 1813: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-21.643598"
+            },
+            {
+                "message": "0: 1913: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-21.745326"
+            },
+            {
+                "message": "0: 2015: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-21.844061"
+            },
+            {
+                "message": "0: 2115: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-21.945789"
+            },
+            {
+                "message": "0: 2216: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-22.048514"
+            },
+            {
+                "message": "0: 2317: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-22.147250"
+            },
+            {
+                "message": "0: 2417: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-22.248979"
+            },
+            {
+                "message": "0: 2519: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-22.351703"
+            },
+            {
+                "message": "0: 2619: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-22.450441"
+            },
+            {
+                "message": "0: 2720: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-22.552167"
+            },
+            {
+                "message": "0: 2821: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-22.654897"
+            },
+            {
+                "message": "0: 2921: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-22.752634"
+            },
+            {
+                "message": "0: 3022: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-22.855359"
+            },
+            {
+                "message": "0: 3123: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-22.954095"
+            },
+            {
+                "message": "0: 3224: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-23.055824"
+            },
+            {
+                "message": "0: 3324: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-23.158548"
+            },
+            {
+                "message": "0: 3425: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-23.257284"
+            },
+            {
+                "message": "0: 3526: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-23.359012"
+            },
+            {
+                "message": "0: 3627: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-23.461739"
+            },
+            {
+                "message": "0: 3728: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-23.560474"
+            },
+            {
+                "message": "0: 3828: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-23.662203"
+            },
+            {
+                "message": "0: 3929: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-23.764927"
+            },
+            {
+                "message": "0: 4030: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-23.862668"
+            },
+            {
+                "message": "0: 4130: 0: Waiting for session to start...",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-23.965392"
+            },
+            {
+                "message": "0: 4731: 0: Session consists of six trial, three CS+, three CS- in the following order",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-24.612661"
+            },
+            {
+                "message": "0: 4758: 0: 0 is CS-, 1 is CS+",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-24.683473"
+            },
+            {
+                "message": "0: 4792: 0: trialTypes: 000111",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-24.684469"
+            },
+            {
+                "message": "0: 4825: 0: BAUD_RATE: 9600",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-24.710401"
+            },
+            {
+                "message": "0: 4855: 0: PIN_AIR_PUFF: 4",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-24.739322"
+            },
+            {
+                "message": "0: 4885: 0: PIN_WATER_SOLENOID: 5",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-24.776226"
+            },
+            {
+                "message": "0: 4922: 0: PIN_TONE_NEGATIVE: 9",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-24.809138"
+            },
+            {
+                "message": "0: 4957: 0: PIN_TONE_POSITIVE: 10",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-24.848034"
+            },
+            {
+                "message": "0: 4994: 0: PIN_BUTTON: 11",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-24.883938"
+            },
+            {
+                "message": "0: 5022: 0: PIN_LICK: 12",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-24.920839"
+            },
+            {
+                "message": "0: 5050: 0: PIN_MOUSE_LED: 3",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-24.949761"
+            },
+            {
+                "message": "0: 5081: 0: PIN_CAMERA: 2",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-24.977686"
+            },
+            {
+                "message": "0: 5109: 0: PIN_SECONDARY: 6",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-25.007615"
+            },
+            {
+                "message": "0: 5140: 0: DEBUGGING: 0",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-25.035532"
+            },
+            {
+                "message": "0: 5167: 0: IS_PRIMARY_RIG: 1",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-25.068443"
+            },
+            {
+                "message": "0: 5199: 0: NUMBER_OF_TRIALS: 6",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-25.093378"
+            },
+            {
+                "message": "0: 5233: 0: INTER_TRIAL_DEBUG_WAIT_INTERVAL: 5000",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-25.141249"
+            },
+            {
+                "message": "0: 5286: 0: TRIAL_DURATION: 50000",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-25.178150"
+            },
+            {
+                "message": "0: 5323: 0: LICK_TIMEOUT: 100",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-25.210064"
+            },
+            {
+                "message": "0: 5355: 0: LICK_COUNT_TIMEOUT: 1000",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-25.250956"
+            },
+            {
+                "message": "0: 5395: 0: WATER_REWARD_AVAILABLE: 1",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-25.287856"
+            },
+            {
+                "message": "0: 5436: 0: WATER_DISPENSE_TIME: 200",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-25.329745"
+            },
+            {
+                "message": "0: 5475: 0: WATER_DISPENSE_ON_NUMBER_LICKS: 2",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-25.378614"
+            },
+            {
+                "message": "0: 5524: 0: WATER_TIMEOUT: 700",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-25.411527"
+            },
+            {
+                "message": "0: 5557: 0: USING_AUDITORY_CUES: 1",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-25.449425"
+            },
+            {
+                "message": "0: 5595: 0: NUMBER_OF_PUFFS: 5",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-25.486327"
+            },
+            {
+                "message": "0: 5627: 0: AIR_PUFF_START_TIME: 45000",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-25.526220"
+            },
+            {
+                "message": "0: 5669: 0: AIR_PUFF_DURATION: 200",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-25.563121"
+            },
+            {
+                "message": "0: 5707: 0: INTER_PUFF_PAUSE_TIME: 1000",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-25.604012"
+            },
+            {
+                "message": "0: 5749: 0: AIR_PUFF_TOTAL_TIME: 5000",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-25.644903"
+            },
+            {
+                "message": "0: 5790: 0: AUDITORY_START: 15000",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-25.681804"
+            },
+            {
+                "message": "0: 5826: 0: AUDITORY_STOP: 35000",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-25.719703"
+            },
+            {
+                "message": "0: 5862: 0: POSITIVE_FREQUENCY: 5000",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-25.755607"
+            },
+            {
+                "message": "0: 5902: 0: POSITIVE_DURATION: 20000",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-25.796498"
+            },
+            {
+                "message": "0: 5941: 0: AUDITORY_BUFFER: 100",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-25.833400"
+            },
+            {
+                "message": "0: 5977: 0: NEGATIVE_FREQUENCY: 2000",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-25.870300"
+            },
+            {
+                "message": "0: 6016: 0: NEGATIVE_PULSE_DURATION: 1000",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-25.915180"
+            },
+            {
+                "message": "0: 6061: 0: NEGATIVE_CYCLE_DURATION: 2000",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-25.960060"
+            },
+            {
+                "message": "0: 6106: 0: Session has started",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-25.996961"
+            },
+            {
+                "message": "0: 6139: 0: Trial has started",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-26.034860"
+            },
+            {
+                "message": "0: 6172: 0: Printing trial parameters",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-26.070765"
+            },
+            {
+                "message": "0: 6212: 0: randomInterTrialInterval: 137975",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-26.115645"
+            },
+            {
+                "message": "0: 6260: 0: currentTrialType: 0",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-26.152546"
+            },
+            {
+                "message": "0: 21292: 15001: Negative signal start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-41.155449"
+            },
+            {
+                "message": "0: 22293: 16002: Negative signal stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-42.154779"
+            },
+            {
+                "message": "0: 23293: 17002: Negative signal start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-43.158097"
+            },
+            {
+                "message": "0: 24294: 18003: Negative signal stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-44.161416"
+            },
+            {
+                "message": "0: 25294: 19003: Negative signal start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-45.164734"
+            },
+            {
+                "message": "0: 26295: 20004: Negative signal stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-46.165060"
+            },
+            {
+                "message": "0: 27295: 21004: Negative signal start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-47.168378"
+            },
+            {
+                "message": "0: 28296: 22005: Negative signal stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-48.171697"
+            },
+            {
+                "message": "0: 29296: 23005: Negative signal start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-49.175017"
+            },
+            {
+                "message": "0: 30297: 24006: Negative signal stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-50.174346"
+            },
+            {
+                "message": "0: 31297: 25006: Negative signal start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-51.177664"
+            },
+            {
+                "message": "0: 32299: 26008: Negative signal stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-52.180983"
+            },
+            {
+                "message": "0: 33298: 27007: Negative signal start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-53.184300"
+            },
+            {
+                "message": "0: 34299: 28008: Negative signal stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-54.187619"
+            },
+            {
+                "message": "0: 35299: 29008: Negative signal start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-55.187946"
+            },
+            {
+                "message": "0: 36300: 30009: Negative signal stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-56.191265"
+            },
+            {
+                "message": "0: 37300: 31009: Negative signal start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-57.194584"
+            },
+            {
+                "message": "0: 38301: 32010: Negative signal stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-58.197900"
+            },
+            {
+                "message": "0: 39301: 33010: Negative signal start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-19-59.197230"
+            },
+            {
+                "message": "0: 40302: 34011: Negative signal stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-20-00.217504"
+            },
+            {
+                "message": "0: 56292: 50001: Trial has ended",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-20-16.219644"
+            },
+            {
+                "message": "0: 56292: 50002: Cleaning up last trial",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-20-16.260541"
+            },
+            {
+                "message": "1: 56305: 0: Water off via trial flush",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-20-16.301424"
+            },
+            {
+                "message": "1: 56346: 0: Puff stop via trial flush",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-20-16.342314"
+            },
+            {
+                "message": "1: 56388: 0: Positive signal stop via trial flush",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-20-16.396171"
+            },
+            {
+                "message": "1: 56441: 0: Negative signal stop via trial flush",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-20-16.449032"
+            },
+            {
+                "message": "1: 56495: 0: Waiting the inter-trial interval: 137975",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-20-16.505877"
+            },
+            {
+                "message": "1: 194967: 0: Water off via trial flush",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-22-35.174721"
+            },
+            {
+                "message": "1: 194968: 0: Trial has started",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-22-35.211623"
+            },
+            {
+                "message": "1: 194979: 0: Printing trial parameters",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-22-35.252513"
+            },
+            {
+                "message": "1: 195022: 0: randomInterTrialInterval: 102456",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-22-35.301383"
+            },
+            {
+                "message": "1: 195073: 0: currentTrialType: 0",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-22-35.338283"
+            },
+            {
+                "message": "1: 210106: 15001: Negative signal start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-22-50.343184"
+            },
+            {
+                "message": "1: 211107: 16002: Negative signal stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-22-51.343508"
+            },
+            {
+                "message": "1: 212107: 17002: Negative signal start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-22-52.346826"
+            },
+            {
+                "message": "1: 213108: 18003: Negative signal stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-22-53.350146"
+            },
+            {
+                "message": "1: 214108: 19003: Negative signal start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-22-54.354462"
+            },
+            {
+                "message": "1: 215109: 20004: Negative signal stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-22-55.356784"
+            },
+            {
+                "message": "1: 216109: 21004: Negative signal start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-22-56.356113"
+            },
+            {
+                "message": "1: 217110: 22005: Negative signal stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-22-57.359434"
+            },
+            {
+                "message": "1: 218110: 23005: Negative signal start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-22-58.362749"
+            },
+            {
+                "message": "1: 219111: 24006: Negative signal stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-22-59.367066"
+            },
+            {
+                "message": "1: 220111: 25006: Negative signal start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-23-00.370383"
+            },
+            {
+                "message": "1: 221112: 26007: Negative signal stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-23-01.369716"
+            },
+            {
+                "message": "1: 222112: 27007: Negative signal start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-23-02.373031"
+            },
+            {
+                "message": "1: 223113: 28008: Negative signal stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-23-03.376351"
+            },
+            {
+                "message": "1: 224113: 29008: Negative signal start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-23-04.383659"
+            },
+            {
+                "message": "1: 225114: 30009: Negative signal stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-23-05.378996"
+            },
+            {
+                "message": "1: 226114: 31009: Negative signal start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-23-06.382315"
+            },
+            {
+                "message": "1: 227115: 32010: Negative signal stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-23-07.386632"
+            },
+            {
+                "message": "1: 228115: 33010: Negative signal start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-23-08.389951"
+            },
+            {
+                "message": "1: 229116: 34011: Negative signal stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-23-09.389280"
+            },
+            {
+                "message": "1: 245106: 50001: Trial has ended",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-23-25.407470"
+            },
+            {
+                "message": "1: 245107: 50002: Cleaning up last trial",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-23-25.452349"
+            },
+            {
+                "message": "2: 245122: 0: Water off via trial flush",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-23-25.493241"
+            },
+            {
+                "message": "2: 245164: 0: Puff stop via trial flush",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-23-25.539117"
+            },
+            {
+                "message": "2: 245207: 0: Positive signal stop via trial flush",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-23-25.591976"
+            },
+            {
+                "message": "2: 245261: 0: Negative signal stop via trial flush",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-23-25.644834"
+            },
+            {
+                "message": "2: 245315: 0: Waiting the inter-trial interval: 102456",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-23-25.702680"
+            },
+            {
+                "message": "2: 348268: 0: Water off via trial flush",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-25-08.781191"
+            },
+            {
+                "message": "2: 348269: 0: Trial has started",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-25-08.818093"
+            },
+            {
+                "message": "2: 348280: 0: Printing trial parameters",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-25-08.858985"
+            },
+            {
+                "message": "2: 348323: 0: randomInterTrialInterval: 177176",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-25-08.907853"
+            },
+            {
+                "message": "2: 348374: 0: currentTrialType: 0",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-25-08.944754"
+            },
+            {
+                "message": "2: 363407: 15001: Negative signal start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-25-23.951646"
+            },
+            {
+                "message": "2: 364408: 16002: Negative signal stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-25-24.950977"
+            },
+            {
+                "message": "2: 365408: 17002: Negative signal start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-25-25.954295"
+            },
+            {
+                "message": "2: 366409: 18003: Negative signal stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-25-26.958610"
+            },
+            {
+                "message": "2: 367409: 19003: Negative signal start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-25-27.961935"
+            },
+            {
+                "message": "2: 368410: 20004: Negative signal stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-25-28.965247"
+            },
+            {
+                "message": "2: 369410: 21004: Negative signal start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-25-29.964577"
+            },
+            {
+                "message": "2: 370411: 22005: Negative signal stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-25-30.967896"
+            },
+            {
+                "message": "2: 371411: 23005: Negative signal start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-25-31.971215"
+            },
+            {
+                "message": "2: 372412: 24006: Negative signal stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-25-32.974533"
+            },
+            {
+                "message": "2: 373412: 25006: Negative signal start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-25-33.977850"
+            },
+            {
+                "message": "2: 374413: 26007: Negative signal stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-25-34.978177"
+            },
+            {
+                "message": "2: 375413: 27007: Negative signal start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-25-35.981495"
+            },
+            {
+                "message": "2: 376414: 28008: Negative signal stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-25-36.984815"
+            },
+            {
+                "message": "2: 377414: 29008: Negative signal start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-25-37.988133"
+            },
+            {
+                "message": "2: 378415: 30009: Negative signal stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-25-38.987462"
+            },
+            {
+                "message": "2: 379415: 31009: Negative signal start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-25-39.990781"
+            },
+            {
+                "message": "2: 380416: 32010: Negative signal stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-25-40.994100"
+            },
+            {
+                "message": "2: 381416: 33010: Negative signal start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-25-41.997447"
+            },
+            {
+                "message": "2: 382417: 34011: Negative signal stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-25-42.997771"
+            },
+            {
+                "message": "2: 398407: 50001: Trial has ended",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-25-59.016230"
+            },
+            {
+                "message": "2: 398408: 50002: Cleaning up last trial",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-25-59.062108"
+            },
+            {
+                "message": "3: 398423: 0: Water off via trial flush",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-25-59.102001"
+            },
+            {
+                "message": "3: 398466: 0: Puff stop via trial flush",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-25-59.146395"
+            },
+            {
+                "message": "3: 398508: 0: Positive signal stop via trial flush",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-25-59.200251"
+            },
+            {
+                "message": "3: 398562: 0: Negative signal stop via trial flush",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-25-59.253110"
+            },
+            {
+                "message": "3: 398616: 0: Waiting the inter-trial interval: 177176",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-25-59.310958"
+            },
+            {
+                "message": "3: 576288: 0: Water off via trial flush",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-28-57.260204"
+            },
+            {
+                "message": "3: 576289: 0: Trial has started",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-28-57.292629"
+            },
+            {
+                "message": "3: 576301: 0: Printing trial parameters",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-28-57.342497"
+            },
+            {
+                "message": "3: 576344: 0: randomInterTrialInterval: 64211",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-28-57.389694"
+            },
+            {
+                "message": "3: 576393: 0: currentTrialType: 1",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-28-57.426596"
+            },
+            {
+                "message": "3: 591426: 15001: Positive signal start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-29-12.427387"
+            },
+            {
+                "message": "3: 611427: 35002: Positive signal stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-29-32.467361"
+            },
+            {
+                "message": "3: 621425: 45000: Puff start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-29-42.478305"
+            },
+            {
+                "message": "3: 621626: 45201: Puff stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-29-42.678767"
+            },
+            {
+                "message": "3: 622627: 46202: Puff start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-29-43.682349"
+            },
+            {
+                "message": "3: 622828: 46403: Puff stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-29-43.882398"
+            },
+            {
+                "message": "3: 623830: 47405: Puff start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-29-44.885814"
+            },
+            {
+                "message": "3: 624031: 47606: Puff stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-29-45.086278"
+            },
+            {
+                "message": "3: 625032: 48607: Puff start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-29-46.089780"
+            },
+            {
+                "message": "3: 625233: 48808: Puff stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-29-46.291241"
+            },
+            {
+                "message": "3: 626234: 49809: Puff start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-29-47.294632"
+            },
+            {
+                "message": "3: 626425: 50000: Puff stop, catch block",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-29-47.499087"
+            },
+            {
+                "message": "3: 626426: 50001: Trial has ended",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-29-47.535987"
+            },
+            {
+                "message": "3: 626441: 50024: Cleaning up last trial",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-29-47.580868"
+            },
+            {
+                "message": "4: 626485: 0: Water off via trial flush",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-29-47.621758"
+            },
+            {
+                "message": "4: 626527: 0: Puff stop via trial flush",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-29-47.666638"
+            },
+            {
+                "message": "4: 626570: 0: Positive signal stop via trial flush",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-29-47.720494"
+            },
+            {
+                "message": "4: 626624: 0: Negative signal stop via trial flush",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-29-47.773352"
+            },
+            {
+                "message": "4: 626677: 0: Waiting the inter-trial interval: 64211",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-29-47.831203"
+            },
+            {
+                "message": "4: 691385: 0: Water off via trial flush",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-30-52.591357"
+            },
+            {
+                "message": "4: 691386: 0: Trial has started",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-30-52.624267"
+            },
+            {
+                "message": "4: 691397: 0: Printing trial parameters",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-30-52.670146"
+            },
+            {
+                "message": "4: 691440: 0: randomInterTrialInterval: 189775",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-30-52.720011"
+            },
+            {
+                "message": "4: 691490: 0: currentTrialType: 1",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-30-52.755915"
+            },
+            {
+                "message": "4: 706524: 15001: Positive signal start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-31-07.760509"
+            },
+            {
+                "message": "4: 726525: 35002: Positive signal stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-31-27.800834"
+            },
+            {
+                "message": "4: 736523: 45000: Puff start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-31-37.806363"
+            },
+            {
+                "message": "4: 736724: 45201: Puff stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-31-38.007826"
+            },
+            {
+                "message": "4: 737725: 46202: Puff start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-31-39.010660"
+            },
+            {
+                "message": "4: 737926: 46403: Puff stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-31-39.211644"
+            },
+            {
+                "message": "4: 738927: 47404: Puff start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-31-40.214751"
+            },
+            {
+                "message": "4: 739128: 47605: Puff stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-31-40.416213"
+            },
+            {
+                "message": "4: 740129: 48606: Puff start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-31-41.423058"
+            },
+            {
+                "message": "4: 740330: 48807: Puff stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-31-41.621528"
+            },
+            {
+                "message": "4: 741331: 49808: Puff start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-31-42.627898"
+            },
+            {
+                "message": "4: 741523: 50000: Puff stop, catch block",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-31-42.832351"
+            },
+            {
+                "message": "4: 741524: 50001: Trial has ended",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-31-42.865263"
+            },
+            {
+                "message": "4: 741538: 50024: Cleaning up last trial",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-31-42.910142"
+            },
+            {
+                "message": "5: 741582: 0: Water off via trial flush",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-31-42.958016"
+            },
+            {
+                "message": "5: 741624: 0: Puff stop via trial flush",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-31-42.995915"
+            },
+            {
+                "message": "5: 741667: 0: Positive signal stop via trial flush",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-31-43.048948"
+            },
+            {
+                "message": "5: 741722: 0: Negative signal stop via trial flush",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-31-43.102805"
+            },
+            {
+                "message": "5: 741775: 0: Waiting the inter-trial interval: 189775",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-31-43.164151"
+            },
+            {
+                "message": "5: 932046: 0: Water off via trial flush",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-34-53.738562"
+            },
+            {
+                "message": "5: 932047: 0: Trial has started",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-34-53.772838"
+            },
+            {
+                "message": "5: 932059: 0: Printing trial parameters",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-34-53.815473"
+            },
+            {
+                "message": "5: 932102: 0: randomInterTrialInterval: 252496",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-34-53.869367"
+            },
+            {
+                "message": "5: 932152: 0: currentTrialType: 1",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-34-53.900297"
+            },
+            {
+                "message": "5: 947186: 15001: Positive signal start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-35-08.907510"
+            },
+            {
+                "message": "5: 967187: 35002: Positive signal stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-35-28.948444"
+            },
+            {
+                "message": "5: 977185: 45000: Puff start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-35-38.954330"
+            },
+            {
+                "message": "5: 977386: 45201: Puff stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-35-39.155176"
+            },
+            {
+                "message": "5: 978387: 46202: Puff start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-35-40.158473"
+            },
+            {
+                "message": "5: 978588: 46403: Puff stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-35-40.358795"
+            },
+            {
+                "message": "5: 979589: 47404: Puff start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-35-41.362772"
+            },
+            {
+                "message": "5: 979790: 47605: Puff stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-35-41.563592"
+            },
+            {
+                "message": "5: 980791: 48606: Puff start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-35-42.566107"
+            },
+            {
+                "message": "5: 980992: 48807: Puff stop",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-35-42.767398"
+            },
+            {
+                "message": "5: 981993: 49808: Puff start",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-35-43.774853"
+            },
+            {
+                "message": "5: 982185: 50000: Puff stop, catch block",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-35-43.980002"
+            },
+            {
+                "message": "5: 982187: 50002: Trial has ended",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-35-44.016959"
+            },
+            {
+                "message": "5: 982201: 50024: Cleaning up last trial",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-35-44.058100"
+            },
+            {
+                "message": "6: 982245: 0: Water off via trial flush",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-35-44.102974"
+            },
+            {
+                "message": "6: 982287: 0: Puff stop via trial flush",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-35-44.144026"
+            },
+            {
+                "message": "6: 982330: 0: Positive signal stop via trial flush",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-35-44.197341"
+            },
+            {
+                "message": "6: 982384: 0: Negative signal stop via trial flush",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-35-44.254234"
+            },
+            {
+                "message": "6: 982437: 0: Waiting the inter-trial interval: 252496",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-35-44.311207"
+            },
+            {
+                "message": "6: 1235430: 0: Water off via trial flush",
+                "mouse_id": "testm1",
+                "port": "COM3",
+                "absolute_time": "2023-12-03_22-39-57.730052"
+            },
+            {
+                "message": "6: 1236296: 0: Session has ended",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-39-57.767329"
+            }
+        ],
+        "testm2": [
+            {
+                "message": "0: 0: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-20.122662"
+            },
+            {
+                "message": "0: 101: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-20.126681"
+            },
+            {
+                "message": "0: 201: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-20.130669"
+            },
+            {
+                "message": "0: 302: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-20.134631"
+            },
+            {
+                "message": "0: 403: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-20.136623"
+            },
+            {
+                "message": "0: 503: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-20.201459"
+            },
+            {
+                "message": "0: 604: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-20.303176"
+            },
+            {
+                "message": "0: 705: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-20.405901"
+            },
+            {
+                "message": "0: 805: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-20.504637"
+            },
+            {
+                "message": "0: 906: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-20.606367"
+            },
+            {
+                "message": "0: 1007: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-20.709092"
+            },
+            {
+                "message": "0: 1107: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-20.807838"
+            },
+            {
+                "message": "0: 1209: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-20.909544"
+            },
+            {
+                "message": "0: 1309: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-21.012284"
+            },
+            {
+                "message": "0: 1410: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-21.111021"
+            },
+            {
+                "message": "0: 1511: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-21.212748"
+            },
+            {
+                "message": "0: 1611: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-21.311486"
+            },
+            {
+                "message": "0: 1713: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-21.413212"
+            },
+            {
+                "message": "0: 1813: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-21.515937"
+            },
+            {
+                "message": "0: 1913: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-21.614675"
+            },
+            {
+                "message": "0: 2015: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-21.716403"
+            },
+            {
+                "message": "0: 2115: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-21.819128"
+            },
+            {
+                "message": "0: 2216: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-21.916868"
+            },
+            {
+                "message": "0: 2317: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-22.019593"
+            },
+            {
+                "message": "0: 2417: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-22.118327"
+            },
+            {
+                "message": "0: 2519: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-22.220057"
+            },
+            {
+                "message": "0: 2619: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-22.322782"
+            },
+            {
+                "message": "0: 2720: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-22.421517"
+            },
+            {
+                "message": "0: 2821: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-22.523245"
+            },
+            {
+                "message": "0: 2921: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-22.625972"
+            },
+            {
+                "message": "0: 3022: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-22.723709"
+            },
+            {
+                "message": "0: 3123: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-22.826435"
+            },
+            {
+                "message": "0: 3224: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-22.929161"
+            },
+            {
+                "message": "0: 3324: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-23.026899"
+            },
+            {
+                "message": "0: 3425: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-23.129627"
+            },
+            {
+                "message": "0: 3526: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-23.228362"
+            },
+            {
+                "message": "0: 3627: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-23.330089"
+            },
+            {
+                "message": "0: 3728: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-23.432814"
+            },
+            {
+                "message": "0: 3828: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-23.531552"
+            },
+            {
+                "message": "0: 3929: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-23.633279"
+            },
+            {
+                "message": "0: 4030: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-23.736005"
+            },
+            {
+                "message": "0: 4130: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-23.833743"
+            },
+            {
+                "message": "0: 4232: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-23.936468"
+            },
+            {
+                "message": "0: 4332: 0: Waiting for session to start...",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-24.039194"
+            },
+            {
+                "message": "0: 4933: 0: Session consists of six trial, three CS+, three CS- in the following order",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-24.682474"
+            },
+            {
+                "message": "0: 4960: 0: 0 is CS-, 1 is CS+",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-24.714389"
+            },
+            {
+                "message": "0: 4994: 0: trialTypes: 111000",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-24.751290"
+            },
+            {
+                "message": "0: 5026: 0: BAUD_RATE: 9600",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-24.780214"
+            },
+            {
+                "message": "0: 5057: 0: PIN_AIR_PUFF: 4",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-24.810134"
+            },
+            {
+                "message": "0: 5087: 0: PIN_WATER_SOLENOID: 5",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-24.846037"
+            },
+            {
+                "message": "0: 5124: 0: PIN_TONE_NEGATIVE: 9",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-24.882939"
+            },
+            {
+                "message": "0: 5158: 0: PIN_TONE_POSITIVE: 10",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-24.919841"
+            },
+            {
+                "message": "0: 5195: 0: PIN_BUTTON: 11",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-24.947766"
+            },
+            {
+                "message": "0: 5224: 0: PIN_LICK: 12",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-24.976689"
+            },
+            {
+                "message": "0: 5251: 0: PIN_MOUSE_LED: 3",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-25.005611"
+            },
+            {
+                "message": "0: 5282: 0: PIN_CAMERA: 2",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-25.034534"
+            },
+            {
+                "message": "0: 5310: 0: PIN_SECONDARY: 6",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-25.066448"
+            },
+            {
+                "message": "0: 5342: 0: DEBUGGING: 0",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-25.091383"
+            },
+            {
+                "message": "0: 5368: 0: IS_PRIMARY_RIG: 0",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-25.142248"
+            },
+            {
+                "message": "0: 5401: 0: NUMBER_OF_TRIALS: 6",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-25.179148"
+            },
+            {
+                "message": "0: 5435: 0: INTER_TRIAL_DEBUG_WAIT_INTERVAL: 5000",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-25.213057"
+            },
+            {
+                "message": "0: 5488: 0: TRIAL_DURATION: 50000",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-25.253950"
+            },
+            {
+                "message": "0: 5525: 0: LICK_TIMEOUT: 100",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-25.290849"
+            },
+            {
+                "message": "0: 5557: 0: LICK_COUNT_TIMEOUT: 1000",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-25.320771"
+            },
+            {
+                "message": "0: 5597: 0: WATER_REWARD_AVAILABLE: 1",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-25.361659"
+            },
+            {
+                "message": "0: 5637: 0: WATER_DISPENSE_TIME: 200",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-25.402551"
+            },
+            {
+                "message": "0: 5677: 0: WATER_DISPENSE_ON_NUMBER_LICKS: 2",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-25.447431"
+            },
+            {
+                "message": "0: 5726: 0: WATER_TIMEOUT: 700",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-25.484332"
+            },
+            {
+                "message": "0: 5758: 0: USING_AUDITORY_CUES: 1",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-25.521232"
+            },
+            {
+                "message": "0: 5796: 0: NUMBER_OF_PUFFS: 5",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-25.554145"
+            },
+            {
+                "message": "0: 5829: 0: AIR_PUFF_START_TIME: 45000",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-25.595035"
+            },
+            {
+                "message": "0: 5871: 0: AIR_PUFF_DURATION: 200",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-25.631937"
+            },
+            {
+                "message": "0: 5908: 0: INTER_PUFF_PAUSE_TIME: 1000",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-25.676816"
+            },
+            {
+                "message": "0: 5951: 0: AIR_PUFF_TOTAL_TIME: 5000",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-25.717708"
+            },
+            {
+                "message": "0: 5992: 0: AUDITORY_START: 15000",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-25.750620"
+            },
+            {
+                "message": "0: 6028: 0: AUDITORY_STOP: 35000",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-25.787522"
+            },
+            {
+                "message": "0: 6064: 0: POSITIVE_FREQUENCY: 5000",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-25.828412"
+            },
+            {
+                "message": "0: 6103: 0: POSITIVE_DURATION: 20000",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-25.865314"
+            },
+            {
+                "message": "0: 6142: 0: AUDITORY_BUFFER: 100",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-25.902214"
+            },
+            {
+                "message": "0: 6177: 0: NEGATIVE_FREQUENCY: 2000",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-25.943105"
+            },
+            {
+                "message": "0: 6217: 0: NEGATIVE_PULSE_DURATION: 1000",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-25.987985"
+            },
+            {
+                "message": "0: 6262: 0: NEGATIVE_CYCLE_DURATION: 2000",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-26.033863"
+            },
+            {
+                "message": "0: 6306: 0: Session has started",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-26.066776"
+            },
+            {
+                "message": "0: 6341: 0: Trial has started",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-26.098689"
+            },
+            {
+                "message": "0: 6373: 0: Printing trial parameters",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-26.139580"
+            },
+            {
+                "message": "0: 6414: 0: randomInterTrialInterval: 185064",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-26.185458"
+            },
+            {
+                "message": "0: 6462: 0: currentTrialType: 1",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-19-26.222359"
+            },
+            {
+                "message": "0: 56494: 50001: Trial has ended",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-20-16.261531"
+            },
+            {
+                "message": "0: 56494: 50002: Cleaning up last trial",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-20-16.302424"
+            },
+            {
+                "message": "1: 56507: 0: Water off via trial flush",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-20-16.344310"
+            },
+            {
+                "message": "1: 56548: 0: Puff stop via trial flush",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-20-16.383218"
+            },
+            {
+                "message": "1: 56590: 0: Positive signal stop via trial flush",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-20-16.436064"
+            },
+            {
+                "message": "1: 56643: 0: Negative signal stop via trial flush",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-20-16.489921"
+            },
+            {
+                "message": "1: 56696: 0: Waiting the inter-trial interval: 185064",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-20-16.546776"
+            },
+            {
+                "message": "1: 195209: 0: Water off via trial flush",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-22-35.172727"
+            },
+            {
+                "message": "1: 195210: 0: Trial has started",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-22-35.209628"
+            },
+            {
+                "message": "1: 195221: 0: Printing trial parameters",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-22-35.250518"
+            },
+            {
+                "message": "1: 195264: 0: randomInterTrialInterval: 186649",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-22-35.300386"
+            },
+            {
+                "message": "1: 195313: 0: currentTrialType: 1",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-22-35.336289"
+            },
+            {
+                "message": "1: 245348: 50001: Trial has ended",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-23-25.378546"
+            },
+            {
+                "message": "1: 245349: 50002: Cleaning up last trial",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-23-25.419437"
+            },
+            {
+                "message": "2: 245363: 0: Water off via trial flush",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-23-25.465327"
+            },
+            {
+                "message": "2: 245406: 0: Puff stop via trial flush",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-23-25.506207"
+            },
+            {
+                "message": "2: 245448: 0: Positive signal stop via trial flush",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-23-25.559063"
+            },
+            {
+                "message": "2: 245502: 0: Negative signal stop via trial flush",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-23-25.616908"
+            },
+            {
+                "message": "2: 245557: 0: Waiting the inter-trial interval: 186649",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-23-25.673757"
+            },
+            {
+                "message": "2: 348601: 0: Water off via trial flush",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-25-08.783186"
+            },
+            {
+                "message": "2: 348602: 0: Trial has started",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-25-08.821086"
+            },
+            {
+                "message": "2: 348613: 0: Printing trial parameters",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-25-08.859982"
+            },
+            {
+                "message": "2: 348656: 0: randomInterTrialInterval: 224123",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-25-08.909849"
+            },
+            {
+                "message": "2: 348706: 0: currentTrialType: 1",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-25-08.946748"
+            },
+            {
+                "message": "2: 398740: 50001: Trial has ended",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-25-58.983799"
+            },
+            {
+                "message": "2: 398741: 50002: Cleaning up last trial",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-25-59.028198"
+            },
+            {
+                "message": "3: 398755: 0: Water off via trial flush",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-25-59.073078"
+            },
+            {
+                "message": "3: 398798: 0: Puff stop via trial flush",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-25-59.113970"
+            },
+            {
+                "message": "3: 398840: 0: Positive signal stop via trial flush",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-25-59.167340"
+            },
+            {
+                "message": "3: 398895: 0: Negative signal stop via trial flush",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-25-59.221195"
+            },
+            {
+                "message": "3: 398949: 0: Waiting the inter-trial interval: 224123",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-25-59.282034"
+            },
+            {
+                "message": "3: 576757: 0: Water off via trial flush",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-28-57.262198"
+            },
+            {
+                "message": "3: 576758: 0: Trial has started",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-28-57.294624"
+            },
+            {
+                "message": "3: 576770: 0: Printing trial parameters",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-28-57.339507"
+            },
+            {
+                "message": "3: 576813: 0: randomInterTrialInterval: 129638",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-28-57.387702"
+            },
+            {
+                "message": "3: 576863: 0: currentTrialType: 0",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-28-57.424604"
+            },
+            {
+                "message": "3: 626897: 50001: Trial has ended",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-29-47.463182"
+            },
+            {
+                "message": "3: 626898: 50002: Cleaning up last trial",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-29-47.508062"
+            },
+            {
+                "message": "4: 626913: 0: Water off via trial flush",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-29-47.552943"
+            },
+            {
+                "message": "4: 626956: 0: Puff stop via trial flush",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-29-47.593834"
+            },
+            {
+                "message": "4: 626998: 0: Positive signal stop via trial flush",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-29-47.647689"
+            },
+            {
+                "message": "4: 627052: 0: Negative signal stop via trial flush",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-29-47.700548"
+            },
+            {
+                "message": "4: 627106: 0: Waiting the inter-trial interval: 129638",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-29-47.762383"
+            },
+            {
+                "message": "4: 691923: 0: Water off via trial flush",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-30-52.589360"
+            },
+            {
+                "message": "4: 691924: 0: Trial has started",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-30-52.622273"
+            },
+            {
+                "message": "4: 691936: 0: Printing trial parameters",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-30-52.667153"
+            },
+            {
+                "message": "4: 691979: 0: randomInterTrialInterval: 288282",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-30-52.717023"
+            },
+            {
+                "message": "4: 692028: 0: currentTrialType: 0",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-30-52.753921"
+            },
+            {
+                "message": "4: 742063: 50001: Trial has ended",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-31-42.792459"
+            },
+            {
+                "message": "4: 742064: 50002: Cleaning up last trial",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-31-42.837337"
+            },
+            {
+                "message": "5: 742078: 0: Water off via trial flush",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-31-42.878228"
+            },
+            {
+                "message": "5: 742121: 0: Puff stop via trial flush",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-31-42.923108"
+            },
+            {
+                "message": "5: 742163: 0: Positive signal stop via trial flush",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-31-42.975966"
+            },
+            {
+                "message": "5: 742217: 0: Negative signal stop via trial flush",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-31-43.029002"
+            },
+            {
+                "message": "5: 742272: 0: Waiting the inter-trial interval: 288282",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-31-43.090837"
+            },
+            {
+                "message": "5: 932729: 0: Water off via trial flush",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-34-53.737566"
+            },
+            {
+                "message": "5: 932730: 0: Trial has started",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-34-53.770773"
+            },
+            {
+                "message": "5: 932742: 0: Printing trial parameters",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-34-53.811463"
+            },
+            {
+                "message": "5: 932785: 0: randomInterTrialInterval: 178900",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-34-53.866375"
+            },
+            {
+                "message": "5: 932835: 0: currentTrialType: 0",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-34-53.897311"
+            },
+            {
+                "message": "5: 982870: 50002: Trial has ended",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-35-43.939900"
+            },
+            {
+                "message": "5: 982871: 50003: Cleaning up last trial",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-35-43.984991"
+            },
+            {
+                "message": "6: 982885: 0: Water off via trial flush",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-35-44.026058"
+            },
+            {
+                "message": "6: 982928: 0: Puff stop via trial flush",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-35-44.070938"
+            },
+            {
+                "message": "6: 982970: 0: Positive signal stop via trial flush",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-35-44.124020"
+            },
+            {
+                "message": "6: 983024: 0: Negative signal stop via trial flush",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-35-44.177598"
+            },
+            {
+                "message": "6: 983078: 0: Waiting the inter-trial interval: 178900",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-35-44.234953"
+            },
+            {
+                "message": "6: 1236295: 0: Water off via trial flush",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-39-57.731052"
+            },
+            {
+                "message": "6: 1236296: 0: Session has ended",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-39-57.767329"
+            },
+            {
+                "message": "6: 1236296: 0: Session has ended",
+                "mouse_id": "testm2",
+                "port": "COM4",
+                "absolute_time": "2023-12-03_22-39-57.767329"
+            }
+        ]
+    }
+}

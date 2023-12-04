@@ -2,8 +2,8 @@
 This script parses a JSON file containing behavioral data and extracts relevant information.
 
 The script takes a command-line argument specifying the path to the JSON file to parse.
-It reads the JSON file, extracts the header entries and data entries, and performs the following tasks:
-- Prints the header entries
+It reads the JSON file, extracts the header mouse_data and data mouse_data, and performs the following tasks:
+- Prints the header mouse_data
 - Identifies the start and end times of a session
 - Counts the number of trials and prints the start times of each trial
 - Extracts information for each trial, including session and trial times, message, and absolute time
@@ -17,8 +17,6 @@ author: @gergelyturi
 
 import argparse
 import json
-
-import pandas as pd
 
 
 def main():
@@ -42,12 +40,23 @@ def main():
         data = json.load(f)
 
     header_entries = data.get("header", [])
-    print(header_entries)
-
     data_entries = data.get("data", [])
 
+    mouse_ids = header_entries.get("mouse_ids", [])
+
+    processed_data = {}
+    for mouse_id in mouse_ids:
+        mouse_data = data_entries.get(mouse_id, [])
+        processed_data[mouse_id] = process_mouse_data(mouse_data)
+
+    output_file_name = args.file.split(".")[0] + "_processed.json"
+    with open(output_file_name, "w", encoding="utf-8") as f:
+        json.dump({"header": header_entries, "data": processed_data}, f, indent=4)
+
+
+def process_mouse_data(mouse_data):
     session = {"start": None, "end": None}
-    for sess in data_entries:
+    for sess in mouse_data:
         message = sess.get("message", "")
         if "Session has started" in message:
             parts = message.split(":")
@@ -55,13 +64,14 @@ def main():
             session["start"] = millis
         elif "Session has ended" in message:
             parts = message.split(":")
+            print(parts)
             millis = int(parts[1].strip())
             session["end"] = millis
     print(session)
 
     trials = 0
     millis_list = []
-    for trial in data_entries:
+    for trial in mouse_data:
         message = trial.get("message", "")
         if "Trial has started" in message:
             trials += 1
@@ -74,7 +84,7 @@ def main():
     current_trial = 0
     trials = {}
 
-    for entry in data_entries:
+    for entry in mouse_data:
         message = entry.get("message", "")
         absolute_time = entry.get("absolute_time", "")
 
@@ -98,10 +108,7 @@ def main():
             )
             if "Trial has ended" in message:
                 trial_ended = True
-
-    output_file_name = args.file.split(".")[0] + "_processed.json"
-    with open(output_file_name, "w", encoding="utf-8") as f:
-        json.dump({"header": header_entries, "data": trials}, f, indent=4)
+    return trials
 
 
 if __name__ == "__main__":
