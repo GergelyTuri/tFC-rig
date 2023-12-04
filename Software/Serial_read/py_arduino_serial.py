@@ -93,18 +93,21 @@ def main():
                     }
                     data_list[mouse_id].append(data_json)
                     if end_session_message in data_json.get("message", ""):
+                        end_message = {
+                            "mesage": data,
+                            "absolute_time": datetime.now().strftime(
+                                "%Y-%m-%d_%H-%M-%S.%f"
+                            ),
+                        }
+                        # adding the end session message to all the mice
+                        for mouse_data in data_list.values():
+                            mouse_data.append(end_message)
                         print("Session has ended, closing file and exiting...")
                         session_ended = True
                         break
                 elif data is not None and "error" in data:
                     print(f"Non-JSON data: {data}")
             if session_ended:
-                end_session_message = {
-                    "message": end_session_message,
-                    "absolute_time": datetime.now().strftime("%Y-%m-%d_%H-%M-%S.%f"),
-                }
-                for mouse_data in data_list.values():
-                    mouse_data.append(end_session_message)
                 break  # Exit the while loop
         time.sleep(0.05)
 
