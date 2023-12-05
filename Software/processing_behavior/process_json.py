@@ -49,7 +49,7 @@ def main():
     processed_intertrial_data = {}
     for mouse_id in mouse_ids:
         mouse_data = data_entries.get(mouse_id, [])
-        print_trial_data(mouse_data)
+        session_summary(mouse_data)
         processed_trial_data[mouse_id] = process_trial_data(
             mouse_data, trial_type="trial"
         )
@@ -72,7 +72,8 @@ def main():
         )
 
 
-def print_trial_data(mouse_data):
+def session_summary(mouse_data):
+    # Session information
     session = {"session_start": None, "session_end": None}
     for sess in mouse_data:
         message = sess.get("message", "")
@@ -86,18 +87,22 @@ def print_trial_data(mouse_data):
             session["session_end"] = millis
     print(f"session: {session}")
 
+    # Trial information
     trials = 0
     millis_list = []
     for trial in mouse_data:
         message = trial.get("message", "")
+        port = trial.get("port", "")
         if "Trial has started" in message:
             trials += 1
             parts = message.split(":")
             millis = int(parts[1].strip())
             millis_list.append(millis)
+    print("Port: ", port)
     print("number of trials: ", trials)
     print("trial start times millis values: ", millis_list)
 
+    # Inter-trial information
     inter_trials = 0
     millis_list = []
     for inter_trial in mouse_data:
