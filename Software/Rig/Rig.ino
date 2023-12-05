@@ -276,7 +276,11 @@ void simulateButtonPress() {
   // WARNING: this waits, to simulate a button press signal sent to
   // other rigs. Do not call `simulateButtonPress` during time-
   // sensitive operations!!!
-  delay(SECONDARY_PIN_PAUSE);
+  if (IS_PRIMARY_RIG) {
+    delay(SECONDARY_PIN_PAUSE);
+  } else {
+    delay(SECONDARY_PIN_PAUSE-SECONDARY_RIG_PAUSE_OFFSET);
+  }
   digitalWrite(PIN_SECONDARY, LOW);
 }
 void interTrialIntervalLoop() {
