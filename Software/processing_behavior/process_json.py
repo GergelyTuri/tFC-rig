@@ -43,31 +43,48 @@ def main():
     data_entries = data.get("data", [])
 
     mouse_ids = header_entries.get("mouse_ids", [])
+    print(f"mouse IDs: {mouse_ids}")
 
-    processed_data = {}
+    processed_trial_data = {}
+    processed_intertrial_data = {}
     for mouse_id in mouse_ids:
         mouse_data = data_entries.get(mouse_id, [])
-        processed_data[mouse_id] = process_mouse_data(mouse_data)
+        print_trial_data(mouse_data)
+        processed_trial_data[mouse_id] = process_trial_data(
+            mouse_data, trial_type="trial"
+        )
+        processed_intertrial_data[mouse_id] = process_trial_data(
+            mouse_data, trial_type="intertrial"
+        )
 
     output_file_name = args.file.split(".")[0] + "_processed.json"
     with open(output_file_name, "w", encoding="utf-8") as f:
-        json.dump({"header": header_entries, "data": processed_data}, f, indent=4)
+        json.dump(
+            {
+                "header": header_entries,
+                "data": {
+                    "processed_trial_data": processed_trial_data,
+                    "processed_intertrial_data": processed_intertrial_data,
+                },
+            },
+            f,
+            indent=4,
+        )
 
 
-def process_mouse_data(mouse_data):
-    session = {"start": None, "end": None}
+def print_trial_data(mouse_data):
+    session = {"session_start": None, "session_end": None}
     for sess in mouse_data:
         message = sess.get("message", "")
         if "Session has started" in message:
             parts = message.split(":")
             millis = int(parts[1].strip())
-            session["start"] = millis
+            session["session_start"] = millis
         elif "Session has ended" in message:
             parts = message.split(":")
-            print(parts)
             millis = int(parts[1].strip())
-            session["end"] = millis
-    print(session)
+            session["session_end"] = millis
+    print(f"session: {session}")
 
     trials = 0
     millis_list = []
@@ -81,24 +98,45 @@ def process_mouse_data(mouse_data):
     print("number of trials: ", trials)
     print("trial start times millis values: ", millis_list)
 
+    inter_trials = 0
+    millis_list = []
+    for inter_trial in mouse_data:
+        message = inter_trial.get("message", "")
+        if "Waiting the inter-trial interval" in message:
+            inter_trials += 1
+            parts = message.split(":")
+            millis = int(parts[1].strip())
+            millis_list.append(millis)
+    print("number of inter-trials: ", inter_trials)
+    print("inter-trial start times millis values: ", millis_list)
+
+
+def process_trial_data(mouse_data, trial_type="trial"):
     current_trial = 0
     trials = {}
+
+    if trial_type == "trial":
+        start_message = "Trial has started"
+        end_message = "Trial has ended"
+    elif trial_type == "intertrial":
+        start_message = "Waiting the inter-trial interval"
+        end_message = "Trial has started"
 
     for entry in mouse_data:
         message = entry.get("message", "")
         absolute_time = entry.get("absolute_time", "")
 
-        if "Trial has started" in message:
+        if start_message in message:
             current_trial += 1
             trial_ended = False
-            trials[f"Trial_{current_trial}"] = []
+            trials[f"{trial_type}_{current_trial}"] = []
 
         if current_trial > 0 and not trial_ended:
             parts = message.split(":")
             millis = int(parts[1].strip()) if len(parts) > 1 else None
             trial_millis = int(parts[2].strip()) if len(parts) > 2 else None
             rest_of_message = ":".join(parts[3:]).strip() if len(parts) > 3 else ""
-            trials[f"Trial_{current_trial}"].append(
+            trials[f"{trial_type}_{current_trial}"].append(
                 {
                     "session_millis": millis,
                     "trial_millis": trial_millis,
@@ -106,7 +144,7 @@ def process_mouse_data(mouse_data):
                     "absolute_time": absolute_time,
                 }
             )
-            if "Trial has ended" in message:
+            if end_message in message:
                 trial_ended = True
     return trials
 
