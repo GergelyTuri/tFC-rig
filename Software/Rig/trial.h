@@ -32,6 +32,16 @@ const bool IS_PRIMARY_RIG = true;
 // the pause even if they do not send a secondary signal)
 const long SECONDARY_PIN_PAUSE = 500;
 //
+// --------------------------
+// SECONDARY_RIG_PAUSE_OFFSET
+// [milliseconds]
+// The secondary rig pauses for this many milliseconds less than the
+// primary rig. In theory this is the time it takes for the primary rig
+// to send a signal and the secondary rig to process it (from end to
+// end). In practice we measure the trial markers in the output data
+// and can tweak this accordingly.
+const long SECONDARY_RIG_PAUSE_OFFSET = 250;
+//
 // -----------------------
 // RIG_PERIODIC_RESET_TIME
 // [milliseconds]
