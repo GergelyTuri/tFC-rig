@@ -41,31 +41,30 @@ def main():
 
     header_entries = data.get("header", [])
     data_entries = data.get("data", [])
-
     mouse_ids = header_entries.get("mouse_ids", [])
+
     print(f"mouse IDs: {mouse_ids}")
 
-    processed_trial_data = {}
-    processed_intertrial_data = {}
+    # processed_trial_data = {}
+    # processed_intertrial_data = {}
+    all_mouse_data = {}
     for mouse_id in mouse_ids:
         mouse_data = data_entries.get(mouse_id, [])
-        session_summary(mouse_data)
-        processed_trial_data[mouse_id] = process_trial_data(
-            mouse_data, trial_type="trial"
-        )
-        processed_intertrial_data[mouse_id] = process_trial_data(
-            mouse_data, trial_type="intertrial"
-        )
+        session_info = session_summary(mouse_data)
+        trial_data = process_trial_data(mouse_data, trial_type="trial")
+        intertrial_data = process_trial_data(mouse_data, trial_type="intertrial")
 
+        all_mouse_data[mouse_id] = {
+            "session_info": session_info,
+            "trial_data": trial_data,
+            "intertrial_data": intertrial_data,
+        }
     output_file_name = args.file.split(".")[0] + "_processed.json"
     with open(output_file_name, "w", encoding="utf-8") as f:
         json.dump(
             {
                 "header": header_entries,
-                "data": {
-                    "processed_trial_data": processed_trial_data,
-                    "processed_intertrial_data": processed_intertrial_data,
-                },
+                "data": all_mouse_data,
             },
             f,
             indent=4,
@@ -114,6 +113,7 @@ def session_summary(mouse_data):
             millis_list.append(millis)
     print("number of inter-trials: ", inter_trials)
     print("inter-trial start times millis values: ", millis_list)
+    return session
 
 
 def process_trial_data(mouse_data, trial_type="trial"):
