@@ -1,0 +1,1 @@
+The body chambers were cut using 1/8" plastic sheets.
