@@ -3,7 +3,7 @@
 import logging
 
 import requests
-import urllib3
+import serial
 
 
 class e3VisionCamera:
@@ -42,3 +42,18 @@ class e3VisionCamera:
         except requests.RequestException as e:
             logging.error(f"Error with Camera {self.camera_serial}: {e}")
             return None
+
+
+class triggeredRecording:
+    """A class for handling triggered recordings."""
+
+    @staticmethod
+    def listen_for_ttl_pulse(primary_arduino: str):
+        """Listen for TTL pulse from Arduino."""
+        arduino = serial.Serial(primary_arduino, 9600, timeout=1)
+        while True:
+            if arduino.in_waiting > 0:
+                line = arduino.readline().decode("utf-8").rstrip()
+                if line == "PULSE":  # Check for your specific signal
+                    logging.info("TTL pulse received. Starting recording.")
+                    return
