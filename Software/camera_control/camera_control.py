@@ -1,3 +1,4 @@
+"""Script to record a video for 10 seconds"""
 # import necessary libraries
 import logging
 import time
