@@ -20,7 +20,7 @@
 // [bool]
 // This is the only setting that should need to change when a sketch is
 // uploaded to a primary vs. a secondary rig.
-const bool IS_PRIMARY_RIG = true;
+const bool IS_PRIMARY_RIG = false;
 //
 // -------------------
 // SECONDARY_PIN_PAUSE

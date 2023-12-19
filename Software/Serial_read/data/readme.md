@@ -1,0 +1,1 @@
+The recorded raw behavior files will be saved here. The file name is the name of the mice plus a time stamp. Extesnion is json.
