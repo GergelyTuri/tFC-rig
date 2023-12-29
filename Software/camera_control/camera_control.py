@@ -18,7 +18,6 @@ cam1 = cc.e3VisionCamera("e3v8375")
 cam2 = cc.e3VisionCamera("e3v83c7")
 
 cam1.camera_action("UPDATEMC")
-cam2.camera_action("UPDATEMC")
 time.sleep(5)
 
 cam1.camera_action(
@@ -29,6 +28,7 @@ cam1.camera_action(
     Annotation="Time",
     Segtime="3m",
 )
+
 cam2.camera_action(
     "CONNECT",
     Config="480p15",
@@ -39,7 +39,9 @@ cam2.camera_action(
 )
 
 serial_numbers = [cam1.camera_serial, cam2.camera_serial]
+time.sleep(10)
 cam1.camera_action("RECORDGROUP", SerialGroup=serial_numbers)
+# recording for 5 seconds
 time.sleep(5)
 cam1.camera_action("STOPRECORDGROUP", SerialGroup=serial_numbers)
 

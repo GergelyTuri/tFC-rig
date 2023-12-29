@@ -27,7 +27,7 @@ class e3VisionCamera:
 
         url = f"{self.watchtowerurl}/api/cameras/action"
         logging.info(f"Sending POST request to url {url} with data: {data}")
-        response = requests.post(url, data=data, verify=False, timeout=5)
+        response = requests.post(url, data=data, verify=False, timeout=10)
 
         try:
             response.raise_for_status()
