@@ -3,13 +3,12 @@
 import logging
 
 import requests
-import serial
 
 
 class e3VisionCamera:
     """A class for handling e3Vision cameras."""
 
-    def __init__(self, camera_serial, watchtowerurl="https://127.0.0.1:4343"):
+    def __init__(self, camera_serial, watchtowerurl="https://localhost:4343"):
         """Initialize the camera."""
         self.camera_serial = camera_serial
         self.watchtowerurl = watchtowerurl
@@ -28,17 +27,28 @@ class e3VisionCamera:
 
         url = f"{self.watchtowerurl}/api/cameras/action"
         logging.info(f"Sending POST request to url {url} with data: {data}")
+        response = requests.post(url, data=data, verify=False, timeout=5)
 
         try:
-            response = requests.post(
-                f"{self.watchtowerurl}/api/cameras/action",
-                data=data,
-                verify=False,
-                timeout=5,
-            )
             response.raise_for_status()
             logging.info(f"Action {action} for Camera {self.camera_serial} successful")
             return response
         except requests.RequestException as e:
             logging.error(f"Error with Camera {self.camera_serial}: {e}")
             return None
+
+
+class CameraState:
+    def __init__(self):
+        self.is_connected = False
+        self.is_bound = False
+        self.is_recording = False
+
+    def update_state(self, action, success):
+        if action == "CONNECT" and success:
+            self.is_connected = True
+        elif action == "DISCONNECT":
+            self.is_connected = False
+        elif action == "BIND" and success:
+            self.is_bound = True
+        # ... and so on for other states and actions ...

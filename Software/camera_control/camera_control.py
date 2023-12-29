@@ -1,4 +1,5 @@
-"""Script to record a video for 10 seconds"""
+"""Script to record a video for 10 seconds.
+Simplified version of the script for recording with two cameras."""
 # import necessary libraries
 import logging
 import time
@@ -11,34 +12,38 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 logging.basicConfig(level=logging.INFO)
 
 # this is the IP address of server side of the watchtower
-interface = "169.254.84.40"
+INTERFACE = "169.254.84.40"
 
-cam = cc.e3VisionCamera("e3v8375")
+cam1 = cc.e3VisionCamera("e3v8375")
+cam2 = cc.e3VisionCamera("e3v83c7")
 
-cam.camera_action("DISCONNECT")
-# this may be needed for the first time you run the script
-# TODO: figure out how you can get the current state of the cameras if possible
-cam.camera_action("BIND")
+cam1.camera_action("UPDATEMC")
+cam2.camera_action("UPDATEMC")
+time.sleep(5)
 
-cam.camera_action(
+cam1.camera_action(
     "CONNECT",
     Config="480p15",
     Codec="MJPEG",
-    IFace=interface,
+    IFace=INTERFACE,
     Annotation="Time",
     Segtime="3m",
 )
-# Syncing cameras
-cam.camera_action("UPDATEMC")
+cam2.camera_action(
+    "CONNECT",
+    Config="480p15",
+    Codec="MJPEG",
+    IFace=INTERFACE,
+    Annotation="Time",
+    Segtime="3m",
+)
 
-# Set the cameras to record. These are going to be group operations.
-serial_numbers = [cam.camera_serial]
-cam.camera_action("RECORDGROUP", SerialGroup=serial_numbers)
+serial_numbers = [cam1.camera_serial, cam2.camera_serial]
+cam1.camera_action("RECORDGROUP", SerialGroup=serial_numbers)
+time.sleep(5)
+cam1.camera_action("STOPRECORDGROUP", SerialGroup=serial_numbers)
 
-# Record for 10 seconds
-time.sleep(10)
-
-cam.camera_action("STOPRECORDGROUP", SerialGroup=serial_numbers)
 # set a 2s interval for cleanup
 time.sleep(2)
-cam.camera_action("DISCONNECT")
+cam1.camera_action("DISCONNECT")
+cam2.camera_action("DISCONNECT")
