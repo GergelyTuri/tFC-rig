@@ -55,13 +55,30 @@ def main():
     ap.add_argument(
         "-s1",
         "--secondaryport1",
-        required=True,
+        required=False,
         help="Communication port for the secondary Arduino",
+    )
+    ap.add_argument(
+        "-c1",
+        "--camera1",
+        required=False,
+        help="Camera serial number for the primary camera (e3v8375)",
+    )
+    ap.add_argument(
+        "-c2",
+        "--camera2",
+        required=False,
+        help="Camera serial number for the secondary camera(e3v83c7)",
     )
 
     args = ap.parse_args()
     mouse_ids = args.mouse_ids.split(",")
-    ports = [args.primaryport, args.secondaryport1]
+    ports = [args.primaryport]
+
+    # Add secondary port to the list if provided
+    if args.secondaryport1:
+        ports.append(args.secondaryport1)
+        mouse_ids.append(mouse_ids[1])
 
     if len(mouse_ids) != len(ports):
         raise ValueError(
@@ -80,33 +97,34 @@ def main():
     data_list = {mouse_id: [] for mouse_id in mouse_ids}
 
     # Camera setup:
-    cam1 = cc.e3VisionCamera("e3v8375")
-    cam2 = cc.e3VisionCamera("e3v83c7")
+    if args.camera1 is not None:
+        cam1 = cc.e3VisionCamera(args.camera1)
+        # need to sync the primary camera here:
+        cam1.camera_action("UPDATEMC")
+        # connect the camera
+        cam1.camera_action(
+            "CONNECT",
+            Config="480p15",
+            Codec="MJPEG",
+            IFace=INTERFACE,
+            Annotation="Time",
+            Segtime="3m",
+        )
+        serial_numbers = [cam1.camera_serial]
+    if args.camera2 is not None:
+        cam2 = cc.e3VisionCamera(args.camera2)
+        # connect the camera
+        cam2.camera_action(
+            "CONNECT",
+            Config="480p15",
+            Codec="MJPEG",
+            IFace=INTERFACE,
+            Annotation="Time",
+            Segtime="3m",
+        )
+        serial_numbers.append(cam2.camera_serial)
 
-    # need to sync the primary camera here:
-    cam1.camera_action("UPDATEMC")
     time.sleep(5)
-
-    # connect to the cameras
-    cam1.camera_action(
-        "CONNECT",
-        Config="480p15",
-        Codec="MJPEG",
-        IFace=INTERFACE,
-        Annotation="Time",
-        Segtime="3m",
-    )
-
-    cam2.camera_action(
-        "CONNECT",
-        Config="480p15",
-        Codec="MJPEG",
-        IFace=INTERFACE,
-        Annotation="Time",
-        Segtime="3m",
-    )
-
-    serial_numbers = [cam1.camera_serial, cam2.camera_serial]
 
     header = {
         "mouse_ids": mouse_ids,
@@ -114,15 +132,19 @@ def main():
         "secondary_port": args.secondaryport1,
         "mouse_port_assignment": dict(zip(mouse_ids, ports)),
         "Start_time": formatted_date_time,
-        "primary_camera_serial": cam1.camera_serial,
-        "secondary_camera_serial": cam2.camera_serial,
     }
+    if args.camera1 is not None:
+        header["camera1"] = cam1.camera_serial
+    if args.camera2 is not None:
+        header["camera2"] = cam2.camera_serial
+
     # Initialize serial communication
     comms = {mouse_id: sc(port, 9600) for mouse_id, port in zip(mouse_ids, ports)}
     time.sleep(10)
 
     try:
-        cam1.camera_action("RECORDGROUP", SerialGroup=serial_numbers)
+        if args.camera1 is not None:
+            cam1.camera_action("RECORDGROUP", SerialGroup=serial_numbers)
         while True:
             for mouse_id, comm in comms.items():
                 data = comm.read()
@@ -153,9 +175,13 @@ def main():
                 elif data is not None and "error" in data:
                     print(f"Non-JSON data: {data}")
             if session_ended:
-                cam1.camera_action("STOPRECORDGROUP", SerialGroup=serial_numbers)
-                cam1.camera_action("DISCONNECT")
-                cam2.camera_action("DISCONNECT")
+                for comm in comms.values():
+                    comm.close()
+                if args.camera1 is not None:
+                    cam1.camera_action("STOPRECORDGROUP", SerialGroup=serial_numbers)
+                    cam1.camera_action("DISCONNECT")
+                    if args.camera2 is not None:
+                        cam2.camera_action("DISCONNECT")
                 break  # Exit the while loop
         time.sleep(2)
 
@@ -173,6 +199,8 @@ def main():
     with open(join("data", file_name), "w", encoding="utf-8") as f:
         json.dump({"header": header, "data": data_list}, f, indent=4)
         print(f"Data saved to {file_name}")
+    # Time for cleaning up
+    time.sleep(2)
 
 
 if __name__ == "__main__":
