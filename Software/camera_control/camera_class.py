@@ -39,12 +39,29 @@ class e3VisionCamera:
 
 
 class CameraState:
+    """
+    Represents the state of a camera.
+
+    Attributes:
+        is_connected (bool): Indicates whether the camera is connected.
+        is_bound (bool): Indicates whether the camera is bound.
+        is_recording (bool): Indicates whether the camera is currently recording.
+    """
+
     def __init__(self):
         self.is_connected = False
         self.is_bound = False
         self.is_recording = False
 
     def update_state(self, action, success):
+        """
+        Updates the camera state based on the given action and success status.
+        * 12/29/2023 not tested, not used at the moment *
+
+        Args:
+            action (str): The action performed on the camera.
+            success (bool): Indicates whether the action was successful.
+        """
         if action == "CONNECT" and success:
             self.is_connected = True
         elif action == "DISCONNECT":

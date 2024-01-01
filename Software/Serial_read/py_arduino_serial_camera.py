@@ -15,12 +15,23 @@ Example:
 
 import argparse
 import json
+import logging
+import sys
 import time
 from datetime import datetime
 from os.path import join
 
 import serial
 from serial_comm import SerialComm as sc
+
+sys.path.append("c:/Users/Gergo_PC/Documents/code/tFC-rig/Software/camera_control")
+
+import camera_class as cc
+import urllib3
+
+# (optional) Disable the "insecure requests" warning for https certs
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+logging.basicConfig(level=logging.INFO)
 
 
 def main():
@@ -41,7 +52,6 @@ def main():
         required=True,
         help="Communication port for the primary Arduino",
     )
-    # TODO: make this argument optional
     ap.add_argument(
         "-s1",
         "--secondaryport1",
@@ -59,6 +69,8 @@ def main():
         )
 
     # Global variables
+    # this is the IP address of server side of the watchtower
+    INTERFACE = "169.254.84.40"
     current_date_time = datetime.now()
     formatted_date_time = current_date_time.strftime("%Y-%m-%d_%H-%M-%S")
     end_session_message = "Session has ended"
@@ -67,18 +79,50 @@ def main():
 
     data_list = {mouse_id: [] for mouse_id in mouse_ids}
 
+    # Camera setup:
+    cam1 = cc.e3VisionCamera("e3v8375")
+    cam2 = cc.e3VisionCamera("e3v83c7")
+
+    # need to sync the primary camera here:
+    cam1.camera_action("UPDATEMC")
+    time.sleep(5)
+
+    # connect to the cameras
+    cam1.camera_action(
+        "CONNECT",
+        Config="480p15",
+        Codec="MJPEG",
+        IFace=INTERFACE,
+        Annotation="Time",
+        Segtime="3m",
+    )
+
+    cam2.camera_action(
+        "CONNECT",
+        Config="480p15",
+        Codec="MJPEG",
+        IFace=INTERFACE,
+        Annotation="Time",
+        Segtime="3m",
+    )
+
+    serial_numbers = [cam1.camera_serial, cam2.camera_serial]
+
     header = {
         "mouse_ids": mouse_ids,
         "primary_port": args.primaryport,
         "secondary_port": args.secondaryport1,
         "mouse_port_assignment": dict(zip(mouse_ids, ports)),
         "Start_time": formatted_date_time,
+        "primary_camera_serial": cam1.camera_serial,
+        "secondary_camera_serial": cam2.camera_serial,
     }
     # Initialize serial communication
     comms = {mouse_id: sc(port, 9600) for mouse_id, port in zip(mouse_ids, ports)}
-    time.sleep(2)
+    time.sleep(10)
 
     try:
+        cam1.camera_action("RECORDGROUP", SerialGroup=serial_numbers)
         while True:
             for mouse_id, comm in comms.items():
                 data = comm.read()
@@ -109,8 +153,11 @@ def main():
                 elif data is not None and "error" in data:
                     print(f"Non-JSON data: {data}")
             if session_ended:
+                cam1.camera_action("STOPRECORDGROUP", SerialGroup=serial_numbers)
+                cam1.camera_action("DISCONNECT")
+                cam2.camera_action("DISCONNECT")
                 break  # Exit the while loop
-        time.sleep(0.05)
+        time.sleep(2)
 
     except serial.SerialException as e:
         print(f"Serial port error: {e}")

@@ -1,5 +1,11 @@
-"""Script to record a video for 10 seconds.
-Simplified version of the script for recording with two cameras."""
+"""
+Script to record a video for a few seconds with two cameras.
+The browser interface should be open and set up:
+  * Cameras are connected, scanned, bound
+  * Stream with networks is set up to Ethernet
+  * Primary control camera is set up as the first camera pugged in.
+  * Cameras are set to stand by
+"""
 # import necessary libraries
 import logging
 import time
@@ -17,9 +23,11 @@ INTERFACE = "169.254.84.40"
 cam1 = cc.e3VisionCamera("e3v8375")
 cam2 = cc.e3VisionCamera("e3v83c7")
 
+# need to sync the primary camera here:
 cam1.camera_action("UPDATEMC")
 time.sleep(5)
 
+# connect to the cameras
 cam1.camera_action(
     "CONNECT",
     Config="480p15",
