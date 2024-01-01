@@ -7581,7 +7581,7 @@
                 "absolute_time": "2023-12-04_16-36-02.831403"
             },
             {
-                "mesage": "6: 1041085: 0: Session has ended",
+                "message": "6: 1041085: 0: Session has ended",
                 "absolute_time": "2023-12-04_16-36-02.831403"
             }
         ],
@@ -12069,7 +12069,7 @@
                 "absolute_time": "2023-12-04_16-36-02.800424"
             },
             {
-                "mesage": "6: 1041085: 0: Session has ended",
+                "message": "6: 1041085: 0: Session has ended",
                 "absolute_time": "2023-12-04_16-36-02.831403"
             }
         ]

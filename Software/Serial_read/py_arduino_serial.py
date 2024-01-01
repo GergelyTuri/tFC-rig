@@ -45,13 +45,18 @@ def main():
     ap.add_argument(
         "-s1",
         "--secondaryport1",
-        required=True,
-        help="Communication port for the secondary Arduino",
+        required=False,
+        help="Communication port for the secondary Arduino (optional)",
     )
 
     args = ap.parse_args()
     mouse_ids = args.mouse_ids.split(",")
-    ports = [args.primaryport, args.secondaryport1]
+    ports = [args.primaryport]
+
+    # Add secondary port to the list if provided
+    if args.secondaryport1:
+        ports.append(args.secondaryport1)
+        mouse_ids.append(mouse_ids[1])  # Add an identifier for the secondary mouse
 
     if len(mouse_ids) != len(ports):
         raise ValueError(
@@ -95,7 +100,7 @@ def main():
                     data_list[mouse_id].append(data_json)
                     if end_session_message in data_json.get("message", ""):
                         end_message = {
-                            "mesage": data,
+                            "message": data,
                             "absolute_time": datetime.now().strftime(
                                 "%Y-%m-%d_%H-%M-%S.%f"
                             ),
@@ -109,8 +114,9 @@ def main():
                 elif data is not None and "error" in data:
                     print(f"Non-JSON data: {data}")
             if session_ended:
+                for comm in comms.values():
+                    comm.close()
                 break  # Exit the while loop
-        time.sleep(0.05)
 
     except serial.SerialException as e:
         print(f"Serial port error: {e}")
@@ -126,6 +132,8 @@ def main():
     with open(join("data", file_name), "w", encoding="utf-8") as f:
         json.dump({"header": header, "data": data_list}, f, indent=4)
         print(f"Data saved to {file_name}")
+    # Time for cleaning up
+    time.sleep(2)
 
 
 if __name__ == "__main__":
