@@ -7,27 +7,29 @@ reads data from the serial ports and appends it to a data list. When a specific 
 message is received, the script stops reading data, saves the data to a JSON file, and exits.
 
 Usage:
-    python py_arduino_serial.py -ids <mouse_ids> -p <primaryport> -s1 <secondaryport1>
+    python -m Software.Serial_read.py_arduino_serial_camera -ids <mouse_ids>
+      -p <primary arduino's port> -s1 <secondary arduino's port>
+      -c1 <camera1's serial number> -c2 <camera2's serial number> 
+    
 
 Example:
-    python py_arduino_serial.py -ids mouse1,mouse2 -p COM3 -s1 COM4
+    python -m Software.Serial_read.py_arduino_serial_camera -ids m1 -p COM6
 """
 
 import argparse
 import json
 import logging
-import sys
 import time
 from datetime import datetime
 from os.path import join
+from pathlib import Path
 
 import serial
-from serial_comm import SerialComm as sc
-
-sys.path.append("c:/Users/Gergo_PC/Documents/code/tFC-rig/Software/camera_control")
-
-import camera_class as cc
 import urllib3
+
+from ..camera_control import camera_class as cc
+from .serial_comm import SerialComm as sc
+from .serial_comm import VisualEnhancemnets as ve
 
 # (optional) Disable the "insecure requests" warning for https certs
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -68,7 +70,7 @@ def main():
         "-c2",
         "--camera2",
         required=False,
-        help="Camera serial number for the secondary camera(e3v83c7)",
+        help="Camera serial number for the secondary camera (e3v83c7)",
     )
 
     args = ap.parse_args()
@@ -78,7 +80,6 @@ def main():
     # Add secondary port to the list if provided
     if args.secondaryport1:
         ports.append(args.secondaryport1)
-        mouse_ids.append(mouse_ids[1])
 
     if len(mouse_ids) != len(ports):
         raise ValueError(
@@ -87,12 +88,15 @@ def main():
 
     # Global variables
     # this is the IP address of server side of the watchtower
-    INTERFACE = "169.254.84.40"
+    INTERFACE = "172.29.96.1"
+    script_path = Path(__file__).resolve().parent
+    data_path = script_path / "data"
     current_date_time = datetime.now()
     formatted_date_time = current_date_time.strftime("%Y-%m-%d_%H-%M-%S")
     end_session_message = "Session has ended"
     session_ended = False  # Flag to indicate the end of the session
     file_name = "_".join(mouse_ids) + f"_{formatted_date_time}.json"
+    file_path = data_path / file_name
 
     data_list = {mouse_id: [] for mouse_id in mouse_ids}
 
@@ -124,7 +128,7 @@ def main():
         )
         serial_numbers.append(cam2.camera_serial)
 
-    time.sleep(5)
+    ve.progress_bar(5)
 
     header = {
         "mouse_ids": mouse_ids,
@@ -140,7 +144,7 @@ def main():
 
     # Initialize serial communication
     comms = {mouse_id: sc(port, 9600) for mouse_id, port in zip(mouse_ids, ports)}
-    time.sleep(10)
+    ve.progress_bar(10)
 
     try:
         if args.camera1 is not None:
@@ -195,10 +199,18 @@ def main():
         for mouse_data in data_list.values():
             mouse_data.append(keyboard_interrupt)
         print("KeyboardInterrupt detected. Saving data to file...")
+        for comm in comms.values():
+            comm.close()
+        print("Closing serial ports and stopping camera recording...")
+        if args.camera1 is not None:
+            cam1.camera_action("STOPRECORDGROUP", SerialGroup=serial_numbers)
+            cam1.camera_action("DISCONNECT")
+            if args.camera2 is not None:
+                cam2.camera_action("DISCONNECT")
 
-    with open(join("data", file_name), "w", encoding="utf-8") as f:
+    with file_path.open("w", encoding="utf-8") as f:
         json.dump({"header": header, "data": data_list}, f, indent=4)
-        print(f"Data saved to {file_name}")
+        print(f"Data saved to {file_path}")
     # Time for cleaning up
     time.sleep(2)
 

@@ -2,8 +2,10 @@
 maintainer: @gergelyturi"""
 import json
 import logging
+import time
 
 import serial
+from tqdm import tqdm
 
 
 class SerialComm:
@@ -117,3 +119,10 @@ class SerialComm:
                 if "Session has started" in line:
                     logging.info("TTL received")
                     return True
+
+
+class VisualEnhancemnets:
+    @staticmethod
+    def progress_bar(seconds):
+        for i in tqdm(range(seconds), desc="Processing", unit="s", ncols=100):
+            time.sleep(1)

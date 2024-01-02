@@ -41,7 +41,7 @@ def main():
         required=True,
         help="Communication port for the primary Arduino",
     )
-    # TODO: make this argument optional
+
     ap.add_argument(
         "-s1",
         "--secondaryport1",
@@ -56,7 +56,6 @@ def main():
     # Add secondary port to the list if provided
     if args.secondaryport1:
         ports.append(args.secondaryport1)
-        mouse_ids.append(mouse_ids[1])  # Add an identifier for the secondary mouse
 
     if len(mouse_ids) != len(ports):
         raise ValueError(

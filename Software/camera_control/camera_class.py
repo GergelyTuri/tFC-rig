@@ -40,6 +40,7 @@ class e3VisionCamera:
 
 class CameraState:
     """
+    * 12/29/2023 not tested, not used at the moment *
     Represents the state of a camera.
 
     Attributes:
@@ -56,7 +57,6 @@ class CameraState:
     def update_state(self, action, success):
         """
         Updates the camera state based on the given action and success status.
-        * 12/29/2023 not tested, not used at the moment *
 
         Args:
             action (str): The action performed on the camera.
