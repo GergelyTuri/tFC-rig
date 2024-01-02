@@ -1,9 +1,11 @@
 """Module for serial communication with Arduino.
 maintainer: @gergelyturi"""
 import json
+import logging
 import time
 
 import serial
+from tqdm import tqdm
 
 
 class SerialComm:
@@ -104,3 +106,23 @@ class SerialComm:
         bool: True if the serial connection is open, False otherwise.
         """
         return self.ser.is_open if self.ser else False
+
+    def listen_for_ttl_pulse(self):
+        """Listen for TTL pulse from Arduino."""
+        logging.info("Listening for TTL pulse...")
+        while True:
+            # print(f"Waiting for TTL pulse on port {self.port}...")
+            line = self.read()
+            print(f"Received: {line}")
+            if line is not None:
+                logging.info(f"Received: {line}")
+                if "Session has started" in line:
+                    logging.info("TTL received")
+                    return True
+
+
+class VisualEnhancemnets:
+    @staticmethod
+    def progress_bar(seconds):
+        for i in tqdm(range(seconds), desc="Processing", unit="s", ncols=100):
+            time.sleep(1)

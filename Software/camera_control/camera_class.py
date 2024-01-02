@@ -3,13 +3,12 @@
 import logging
 
 import requests
-import urllib3
 
 
 class e3VisionCamera:
     """A class for handling e3Vision cameras."""
 
-    def __init__(self, camera_serial, watchtowerurl="https://127.0.0.1:4343"):
+    def __init__(self, camera_serial, watchtowerurl="https://localhost:4343"):
         """Initialize the camera."""
         self.camera_serial = camera_serial
         self.watchtowerurl = watchtowerurl
@@ -28,17 +27,45 @@ class e3VisionCamera:
 
         url = f"{self.watchtowerurl}/api/cameras/action"
         logging.info(f"Sending POST request to url {url} with data: {data}")
+        response = requests.post(url, data=data, verify=False, timeout=10)
 
         try:
-            response = requests.post(
-                f"{self.watchtowerurl}/api/cameras/action",
-                data=data,
-                verify=False,
-                timeout=5,
-            )
             response.raise_for_status()
             logging.info(f"Action {action} for Camera {self.camera_serial} successful")
             return response
         except requests.RequestException as e:
             logging.error(f"Error with Camera {self.camera_serial}: {e}")
             return None
+
+
+class CameraState:
+    """
+    * 12/29/2023 not tested, not used at the moment *
+    Represents the state of a camera.
+
+    Attributes:
+        is_connected (bool): Indicates whether the camera is connected.
+        is_bound (bool): Indicates whether the camera is bound.
+        is_recording (bool): Indicates whether the camera is currently recording.
+    """
+
+    def __init__(self):
+        self.is_connected = False
+        self.is_bound = False
+        self.is_recording = False
+
+    def update_state(self, action, success):
+        """
+        Updates the camera state based on the given action and success status.
+
+        Args:
+            action (str): The action performed on the camera.
+            success (bool): Indicates whether the action was successful.
+        """
+        if action == "CONNECT" and success:
+            self.is_connected = True
+        elif action == "DISCONNECT":
+            self.is_connected = False
+        elif action == "BIND" and success:
+            self.is_bound = True
+        # ... and so on for other states and actions ...
