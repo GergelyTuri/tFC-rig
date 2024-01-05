@@ -1,5 +1,5 @@
 """
-Basic script to test camera recording.
+Test script to use one camera for recording.
 * 12/28/2023 should be able to record with a single camera.
   The broswer interface is set as the following:
    - scanned for cameras

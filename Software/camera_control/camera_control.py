@@ -1,5 +1,5 @@
 """
-Script to record a video for a few seconds with two cameras.
+Tests script to record a video for a few seconds with two cameras.
 The browser interface should be open and set up:
   * Cameras are connected, scanned, bound
   * Stream with networks is set up to Ethernet

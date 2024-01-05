@@ -1,15 +1,35 @@
-Pyhton script to read serial data from the Arduino and save it to a file.
+# Pyhton scripts for data collection
 
-The main script is `py_arduino_serial.py` should be run in the command line with the following command:
+## Overview
+
+This folder contains two scripts which can perform data collection. The `py_arduino_serial.py` script is the one of main scripts which could be used if camera recording is not needed. The `py_arduino_serial_camera.py` script is a script which can be used when the White Matter cameras are connected to the recording setup and video footage is needed. The headers of these scripts also contain instructions on how to use them.
+
+## Installation and usage
+
+### Installation
+
+1. A new Anaconda environment should be created with the packages listed in the `requirements.txt` file. The environment can be created with the following command:
+
+### Usage
+
+#### Behavior recording without camera
+
+1. Open an Anaconda terminal, activate the environment and navigate to the `Software/Serial_read` folder.
+2. Run the following command for further instructions:
+
 ```bash
-python py_arduino_serial.py -id mouse_id -c COM_port
+python py_arduino_serial.py -h
 ```
-where `mouse_id` is the ID of the mouse, `COM_port` is the COM port number of the Arduino.
-The files will be saved in this folder for now. 
 
-Use the `environment.yml` file located in this directory to create a conda environment with the required packages.
-The main package is `pyserial`, which was installed with pip.
+#### Behavior recording with camera
 
-TODO:
-* python script to parse the json files. 
-* look into whehter the arduio code can be stopped by the python script when `KeyboardInterrupt` is raised.
+1. Open an Anaconda terminal, activate the environment and navigate to the `Software/Serial_read` folder.
+2. Run the following command for further instructions:
+
+```bash
+python py_arduino_serial_camera.py -h
+```
+
+### Data
+
+Data is saved in JSON format. The data is saved in a folder named `data` in the same directory as the script. The data is saved in a subfolder named. 

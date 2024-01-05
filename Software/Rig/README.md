@@ -2,12 +2,6 @@
 
 Upload `Rig.ino` to the Arduino. This is the main program that runs the rig.
 
-TODO:
-
-* Let's reset the arduino every time before the session starts to make sure everything is in a good state. see [this](https://arduinogetstarted.com/faq/how-to-reset-arduino-by-programming)
-this does not seem to work. I think i don't get the logic. it resets the arduino but then it does not run the setup function again. i also tried an implementation based on [watchdog timer](https://chat.openai.com/share/15c3ecfc-6d2a-4661-86cb-448098e0bf0f) but that did not work either. it resets the arduino but then it does not run the setup function again. Maybe using the reset pin would work. 
-* let's also stop running the script when `KeyboardInterrupt` is raised in the  `py_arduion_serial.py` script. 
-
 ## Rig Operation
 
 The rig Arduino sketch works with the following stages:
@@ -45,6 +39,7 @@ Follow these steps to configure multiple boards:
 1. Setup the hardware on the secondary rig. There is no need to connect the button, speakers, or air puff. The pinout can be exactly the same, noting that the `PIN_SECONDARY` is an input pin during setup rather than an output pin
 1. Upload the latest working rig sketch to the primary rig. Be sure to set `IS_PRIMARY_RIG` to `true` and be sure that all other trial parameters are set as desired based on whether the session is a training session or an experiment, and based on the trial design as discussed elsewhere
 1. Upload the latest working rig sketch to the primary rig. Be sure to set `IS_PRIMARY_RIG` to `false`. All other settings should be identical
+1. Connect the primary rig to the secondary rig(s) using the `PIN_SECONDARY` pin. This pin should be connected to the `PIN_SECONDARY` pin on the secondary rig(s) 
 
 ### Maximum Session Length
 
@@ -99,3 +94,16 @@ When the conditions for water dispensation are met, a water timeout counter star
 #### Further Attenuation
 
 The software running the rig can be modified to further prevent or attenuate the availability of the water reward, but the above parameters are considered sufficient at this time.
+
+### Using the Rig for Experiments
+
+#### First time setup
+
+1. Set up the rigs as described above and connect the Arduio(s) to the computer running the data collection software.
+1. Create a new Anaconda environment and install the dependencies listed in `requirements.txt`.
+1. Activate the environment and the rig is ready to be used.
+
+#### Running the rig
+
+1. Open an Anaconda terminal, activate the environment and navigate to the `Software/Serial_read` folder.
+1. Read the instructions in the `README.md` file in the `Serial_read` folder. Currently there are two scripts which can perform data collection. The `py_arduino_serial.py` script is the one of main scripts which could be used if camera recording is not needed. The `py_arduino_serial_camera.py` script is a script which can be used when the White Matter cameras are connected to the recording setup and video footage is needed. The headers of these scripts also contain instructions on how to use them.
