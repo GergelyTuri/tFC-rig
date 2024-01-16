@@ -89,6 +89,7 @@ def main():
     # Global variables
     # this is the IP address of server side of the watchtower
     INTERFACE = "172.29.96.1"
+    # data path
     script_path = Path(__file__).resolve().parent
     data_path = script_path / "data"
     current_date_time = datetime.now()
