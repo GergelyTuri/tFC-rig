@@ -1,0 +1,4 @@
+# Packaged installed via pip:
+pyserial
+tqdm
+
