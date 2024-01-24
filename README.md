@@ -1,4 +1,4 @@
-# tFC-rig
+# Open source trace fear conditioning apparatus for rodents
 
 ## Project Description
 
