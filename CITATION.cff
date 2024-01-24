@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this repo, please cite it as below."
+authors:
+  - family-names: Gergely
+    given-names: Turi
+    orcid: https://orcid.org/0000-0001-5651-9459
+  - family-names: Payne-Rogers
+    given-names: Colin
+    orcid: 
+  - family-names: Shi
+    given-names: Yuecheng
+    orcid: 
+title: "Trace fear conditioining apparatus for rodents"
+version: 1.0
+identifiers:
+  - type:
+    value: 
+date-released: 2024-01-24
+repository-code: "https://github.com/GergelyTuri/tFC-rig"
