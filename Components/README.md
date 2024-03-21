@@ -1,3 +1,3 @@
 # Components
 
-This folder contains 3d printable parts.
+This folder contains 3D printable parts.
