@@ -1,10 +1,12 @@
-# Arduino sketch for performing trace-fear conditioning.
+# Arduino Sketch for Performing Trace-Fear Conditioning
 
 Graphical representation of the trace-fear conditioning protocol:
 
 ![Trace-fear conditioning protocol](./figs/tf_protocol.PNG)
 
-### The arduino controlls the following components:
+### Hardware Components
+
+The Arduino controls the following components:
 
 - 2 speakers which play two different tones (`CS+` and `CS-`)
 - One water solenoid valve which delivers a water drop throughout the trial
@@ -13,7 +15,7 @@ Graphical representation of the trace-fear conditioning protocol:
 
 ### The arduino records the following events:
 
-- Times the mouse lickes the lickometer
+- Times the mouse licks the lickometer
 
 The trials make up blocks. 
 One block consists of 3 trials of `CS+` and 3 trials of `CS-` in random order with random inter trial intervals (ITIs) between them.

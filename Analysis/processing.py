@@ -1,4 +1,4 @@
-"""This is a class for helper fuctions for processing behavior data.
+"""This is a class for helper functions for processing behavior data.
 11/28/23 adding header info to the class"""
 
 import json
@@ -183,6 +183,6 @@ class Processing:
 
         # Adjust layout to prevent overlapping
         plt.tight_layout()
-        plt.subplots_adjust(top=0.9)  # Adjust as needed for suptitle
+        plt.subplots_adjust(top=0.9)  # Adjust as needed for subtitle
 
         return fig, axes
