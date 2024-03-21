@@ -1,4 +1,3 @@
-# this environment file does not work for Windows.
 name: cued-fc
 channels:
   - conda-forge
@@ -11,5 +10,5 @@ dependencies:
   - pandas
   - numpy 
   - pip:      
-      - pyserial==3.5
-      - tqdm==4.66.1
+    - pyserial==3.5
+    - tqdm==4.66.1
