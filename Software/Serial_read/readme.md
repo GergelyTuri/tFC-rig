@@ -14,7 +14,7 @@ Before proceeding with the installation, ensure you have the following prerequis
 
 * Git: Needed to clone the repository from GitHub.
 * Conda: Used to create and manage the project environment. You can use either Anaconda or Miniconda. If you don't have Conda installed, you can download it from the official Conda website.
-* arduino-cli: Needed to update arduino files. This can be downloaded here: https://arduino.github.io/arduino-cli/0.35/installation/
+* Arduino-cli: Needed to update arduino files. This can be downloaded here: https://arduino.github.io/arduino-cli/0.35/installation/
 
 ### Installation Steps
 
@@ -40,8 +40,7 @@ First, clone the repository containing the project to your local machine. Open a
     conda activate cued-fc
     ```
     
-4. Arduino-cli
-Install at https://arduino.github.io/arduino-cli/0.35/installation/. 
+4. Install Arduino-cli at https://arduino.github.io/arduino-cli/0.35/installation/. 
 install Arduino CLI to a directory already in your PATH or add the Arduino CLI installation path to your PATH environment variable. This ensures your system will be able to detect and use it.
 
 
