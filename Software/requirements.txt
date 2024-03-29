@@ -1,4 +1,4 @@
 # Packaged installed via pip:
 pyserial
 tqdm
-
+PyQt6
