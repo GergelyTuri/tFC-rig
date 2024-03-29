@@ -41,7 +41,7 @@ First, clone the repository containing the project to your local machine. Open a
     ```
     
 4. Install Arduino-cli at https://arduino.github.io/arduino-cli/0.35/installation/. 
-install Arduino CLI to a directory already in your PATH or add the Arduino CLI installation path to your PATH environment variable. This ensures your system will be able to detect and use it.
+Install it in a directory already in your PATH or add the Arduino CLI installation path to your PATH environment variable. This ensures your system will be able to detect and use it.
 
 
 ## Usage
