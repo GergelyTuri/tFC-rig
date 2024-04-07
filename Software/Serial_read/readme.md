@@ -43,6 +43,18 @@ First, clone the repository containing the project to your local machine. Open a
 4. Install Arduino-cli at https://arduino.github.io/arduino-cli/0.35/installation/. 
 Install it in a directory already in your PATH or add the Arduino CLI installation path to your PATH environment variable. This ensures your system will be able to detect and use it.
 
+Environment Variables
+Windows:
+a. Go to your  windows search bar at the bottom of the screen and look up "Edit the system environment variables"
+b. Click "Environment variables", then click edit "Path" variable under "user variables". 
+c. Simply add the path to your arduino-cli software, save, and restart your vscode.
+
+Mac:
+a. Edit one of these files: ~/.bashrc or ~/.bash_profile.
+b. Enter the file with nano ~/.bashrc, or through your file explorer
+c. either add this new line or append the new path to your PATH variable:
+            export PATH="{arduino-cli path}"
+d. Save the changes (in nano this is ctrl-0, then hit enter) and restart vscode
 
 ## Usage
 
