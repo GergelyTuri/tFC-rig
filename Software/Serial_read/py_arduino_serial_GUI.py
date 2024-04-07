@@ -205,7 +205,7 @@ class Window(QWidget):
     
 
     def validateFields(self):
-        pattern = r"^[a-zA-Z]+_\d+\s*$"
+        pattern = r"^[a-zA-Z]+_\d+$"
 
         if self.primary_mouse_id.text() == '' or self.primary_port.text() == '':
             QMessageBox.warning(self, "Warning", "Mouse ID and Primary Port fields must be set!")
