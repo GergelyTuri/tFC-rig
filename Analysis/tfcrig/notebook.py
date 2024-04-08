@@ -2,6 +2,7 @@ import builtins
 import os
 from dataclasses import dataclass
 from datetime import datetime
+from pprint import pprint
 
 from google.colab import drive
 from IPython.display import HTML, display
@@ -23,6 +24,7 @@ class Notebook:
     def setup(self) -> None:
         self._mount_google_drive()
         self._patch_print_for_timestamped_print()
+        self._enable_text_wrap_in_colab_output()
 
     def _mount_google_drive(self) -> None:
         """
@@ -53,17 +55,18 @@ class Notebook:
         notebook-like environment to confirm when an analysis had last
         been run.
         """
+        def tprint(*args, **kwargs):
+            t = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            pprint(f">{t}:", *args, **kwargs)
+
         if str(builtins.print).split(" ")[1] != "tprint":
-            builtin_print = builtins.print
-
-            def tprint(*args, **kwargs):
-                t = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                builtin_print(f">{t}:", *args, **kwargs)
-
             builtins.print = tprint
 
     def _enable_text_wrap_in_colab_output(self) -> None:
-
+        """
+        Registers a `css` event before the execution of a cell in
+        Google Colaboratory, so that text output is wrapped
+        """
         def set_css():
             display(
                 HTML(
