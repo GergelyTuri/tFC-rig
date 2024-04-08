@@ -2,7 +2,6 @@ import builtins
 import os
 from dataclasses import dataclass
 from datetime import datetime
-from pprint import pprint
 
 from google.colab import drive
 from IPython.display import HTML, display
@@ -55,9 +54,11 @@ class Notebook:
         notebook-like environment to confirm when an analysis had last
         been run.
         """
+        builtin_print = builtins.print
+
         def tprint(*args, **kwargs):
             t = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            pprint(f">{t}:", *args, **kwargs)
+            builtin_print(f">{t}:", *args, **kwargs)
 
         if str(builtins.print).split(" ")[1] != "tprint":
             builtins.print = tprint
