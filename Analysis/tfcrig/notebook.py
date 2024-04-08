@@ -1,5 +1,7 @@
+import builtins
 import os
 from dataclasses import dataclass
+from datetime import datetime
 
 from google.colab import drive
 
@@ -19,6 +21,7 @@ class Notebook:
 
     def setup(self) -> None:
         self._mount_google_drive()
+        self._patch_print_for_timestamped_print()
 
     def _mount_google_drive(self) -> None:
         """
@@ -41,3 +44,19 @@ class Notebook:
             raise Exception(
                 f"Data folder '{self.data_root}' is not available!!!",
             )
+
+    def _patch_print_for_timestamped_print(self) -> None:
+        """
+        Overwrites the builtin Python `print` function with one that
+        timestamps each printed messages. This is useful in a Jupyter-
+        notebook-like environment to confirm when an analysis had last
+        been run.
+        """
+        if str(builtins.print).split(" ")[1] != "tprint":
+            builtin_print = builtins.print
+
+            def tprint(*args, **kwargs):
+                t = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                builtin_print(f"{t}:", *args, **kwargs)
+
+            builtins.print = tprint
