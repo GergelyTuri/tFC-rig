@@ -63,6 +63,7 @@ class Notebook:
             builtins.print = tprint
 
     def _enable_text_wrap_in_colab_output(self) -> None:
+
         def set_css():
             display(
                 HTML(
@@ -75,4 +76,5 @@ class Notebook:
                     '''
                 )
             )
-            get_ipython().events.register('pre_run_cell', set_css)
+
+        get_ipython().events.register('pre_run_cell', set_css)
