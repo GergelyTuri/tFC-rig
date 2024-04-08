@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from datetime import datetime
 
 from google.colab import drive
+from IPython.display import HTML, display
 
 @dataclass
 class Notebook:
@@ -57,6 +58,21 @@ class Notebook:
 
             def tprint(*args, **kwargs):
                 t = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                builtin_print(f"{t}:", *args, **kwargs)
+                builtin_print(f">{t}:", *args, **kwargs)
 
             builtins.print = tprint
+
+    def _enable_text_wrap_in_colab_output(self) -> None:
+        def set_css():
+            display(
+                HTML(
+                    '''
+                    <style>
+                        pre {
+                            white-space: pre-wrap;
+                        }
+                    </style>
+                    '''
+                )
+            )
+            get_ipython().events.register('pre_run_cell', set_css)
