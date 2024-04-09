@@ -2,7 +2,13 @@ import subprocess, json, re
 
 class UpdateSketch:
     def __init__(self, params: dict, primary_port: str):
-        """Set file paths"""
+        """
+        Initialize UpdateSketch object with parameters and primary port.
+
+        Args:
+            params (dict): Dictionary containing parameters.
+            primary_port (str): Primary port for uploading sketches.
+        """
         self.sketch_path = "Software/Rig/Rig.ino"
         self.default_params_path = "Software/Rig/trial_default.h"
         self.params_path = "Software/Rig/trial.h"
@@ -12,7 +18,11 @@ class UpdateSketch:
         self.out = []
         self.has_error = False
         
+
     def write_and_compile_ino(self):
+        """
+        Write parameters to .ino file, compile, and upload it to the rig.
+        """
         output = subprocess.run(["arduino-cli", "board", "list", "--format", "json"], capture_output=True, text=True)
         boards_info = json.loads(output.stdout)
 
@@ -66,8 +76,10 @@ class UpdateSketch:
         return self.out
 
 
-    # Write to Rig.ino to update params
-    def update_params(self):        
+    def update_params(self): 
+        """
+        Update parameters in the .ino file.
+        """       
         try:
             with open(self.default_params_path, "r") as file:
                 param_content = file.read()

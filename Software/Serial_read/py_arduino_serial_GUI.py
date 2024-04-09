@@ -1,41 +1,13 @@
 """
-Arguments for script
-Required args:
--ids: mouse_ids
--p: primary port
+Python script to launch GUI for experiments. Takes in user arguments and runs py_arduino_serial_camera.py
 
-Optional args:
--s1: secondary port 1
--c1: camera1
--c2: camera2
+This script reads data from inputs in PyQt GUI, then calls a subprocess to call camera script.
+User also has the option to edit trial parameters. These trial parameter fields are pre-filled with default values.
+It then feeds the output in a output dialog window. User may choose to end experiment early and collect data.
 
-Editable Trial parameters (can be found in Software/Rig/trial.h):
-
-NUMBER_OF_TRIALS
-MIN_ITI
-MAX_ITI
-TRIAL_DURATION
-POST_LAST_TRIAL_INTERVAL
-
-Water reward parameters:
-
-WATER_REWARD_AVAILABLE
-USING_AUDITORY_CUES
-USING_AIR_PUFFS
-AIR_PUFF_DURATION
-AIR_PUFF_START_TIME
-AUDITORY_START
-AUDITORY_STOP
-REWARD_TYPE
-
-WATER_DISPENSE_ON_NUMBER_LICKS
-WATER_DISPENSE_TIME
-WATER_TIMEOUT
-
-LICK_TIMEOUT
-LICK_COUNT_TIMEOUT
-
-
+Usage:
+    python -m Software.Serial_read.py_arduino_serial_GUI
+    
 """
 
 from PyQt6.QtWidgets import QApplication, QVBoxLayout, QWidget, QLabel, QPushButton, QLineEdit, QSpinBox, QAbstractSpinBox, QFormLayout, QGroupBox, QMessageBox, QTextEdit, QDialog, QCheckBox, QScrollArea, QComboBox
@@ -54,6 +26,12 @@ REWARD2 = "5% Sugar Water"
 DEBUG = False
 
 class OutputDialog(QDialog):
+    """
+    QDialog window for displaying output of experiment process.
+
+    Attributes:
+        process_thread (QThread): Thread for the process.
+    """
     def __init__(self, process_thread, parent=None):
         super().__init__(parent)
         
@@ -72,12 +50,27 @@ class OutputDialog(QDialog):
         layout.addWidget(stop_button)
 
     def update_output(self, output):
+        """
+        Update the output text edit by appending output.
+
+        Args:
+            output (str): Output to append to current output.
+        """
         try:
             self.output_text_edit.append(output)
         except KeyboardInterrupt:
             print("KeyboardInterrupt detected.")
 
 class ProcessThread(QThread):
+    """
+    Thread for running a subprocess.
+
+    Attributes:
+        output_updated (pyqtSignal): Signal emitted when output is updated.
+        command (str): Command to run.
+        process (subprocess.Popen): Process object.
+    """
+
     output_updated = pyqtSignal(str)
 
     def __init__(self, command):
@@ -103,6 +96,17 @@ class ProcessThread(QThread):
                 self.process.send_signal(signal.SIGINT)
 
 class SpinBox(QSpinBox):
+    """
+    Subclass of QSpinBox with disabled scrolling.
+
+    Attributes:
+        layout (QFormLayout): Layout to add the spin box to.
+        text (str): Text label for the spin box.
+        default (int): Default value. Defaults to 1.
+        step (int): Step size. Defaults to 10.
+        min (int): Minimum value. Defaults to 1.
+        max (int): Maximum value. Defaults to 1000000.
+    """
     def __init__(self, layout: QFormLayout, text: str, default = 1, step = 10, min = 1, max=1000000):
         super().__init__()
         self.wheelEvent = lambda event: None  # Disables scrolling in boxes
@@ -113,18 +117,35 @@ class SpinBox(QSpinBox):
         layout.addRow(QLabel(text), self)
 
 class CheckBox(QCheckBox):
+    """
+    Subclass of QCheckBox.
+
+    Attributes:
+        layout (QFormLayout): Layout to add the check box to.
+        text (str): Text label for the check box.
+    """
     def __init__(self, layout: QFormLayout, text: str):
         super().__init__(text)
         self.setCheckState(Qt.CheckState.Checked)
         layout.addRow(self)
 
 class LineEdit(QLineEdit):
+    """
+    Subclass of QLineEdit.
+
+    Attributes:
+        layout (QFormLayout): Layout to add the line edit to.
+        text (str): Text label for the line edit.
+    """
     def __init__(self, layout: QFormLayout, text: str):
         super().__init__()
         layout.addRow(QLabel(text), self)
 
 
 class Window(QWidget):
+    """
+    Main window for the experiment GUI.
+    """
     def __init__(self):
         super().__init__()
         
@@ -205,6 +226,9 @@ class Window(QWidget):
     
 
     def validateFields(self):
+        """
+        Validate input fields before starting the experiment.
+        """
         pattern = r"^[a-zA-Z]+_\d+$"
 
         if self.primary_mouse_id.text() == '' or self.primary_port.text() == '':
@@ -256,7 +280,11 @@ class Window(QWidget):
                 QMessageBox.critical(self, "Error: ", str(e))
 
 
-    def submit(self):        
+    def submit(self):    
+        """
+        Updates the sketch with new trial parameters
+        Then starts the experiment by calling subprocess of experiment script.
+        """    
         p_mouse_id = self.primary_mouse_id.text()
         s_mouse_id = f',{self.secondary_mouse_id.text()}' if self.secondary_mouse_id.text() else ''
         p = f' -p {self.primary_port.text()}'
@@ -280,7 +308,14 @@ class Window(QWidget):
         except KeyboardInterrupt:
             print("KeyboardInterrupt detected.")
 
+
     def get_ino_params(self):
+        """
+        Get parameters for the .ino file. Check trial.h for more info on these parameters.
+
+        Returns:
+            dict: Dictionary containing parameters.
+        """
         params = {
             "NUMBER_OF_TRIALS": self.num_trials.value(), 
             "MIN_ITI": self.min_iti.value(), 
