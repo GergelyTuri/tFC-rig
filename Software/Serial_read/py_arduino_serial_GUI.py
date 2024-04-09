@@ -266,7 +266,7 @@ class Window(QWidget):
 
         params = self.get_ino_params()
         updater = UpdateSketch(params, self.primary_port.text())
-        updater_out = updater.writeAndCompileIno()
+        updater_out = updater.write_and_compile_ino()
 
         command = f"python -m Software.Serial_read.py_arduino_serial_camera -ids {p_mouse_id}{s_mouse_id}{p}{s1}{c1}{c2}"
         print(command)

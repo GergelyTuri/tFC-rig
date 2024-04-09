@@ -10,7 +10,6 @@ dependencies:
   - setuptools
   - pandas
   - numpy 
-  - arduino-cli=0.35.3
   - pip:      
       - pyserial==3.5
       - tqdm==4.66.1

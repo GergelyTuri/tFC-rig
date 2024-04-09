@@ -12,7 +12,7 @@ class UpdateSketch:
         self.out = []
         self.has_error = False
         
-    def writeAndCompileIno(self):
+    def write_and_compile_ino(self):
         output = subprocess.run(["arduino-cli", "board", "list", "--format", "json"], capture_output=True, text=True)
         boards_info = json.loads(output.stdout)
 
@@ -24,7 +24,7 @@ class UpdateSketch:
 
                 # update parameters in .ino file
                 self.params["IS_PRIMARY_RIG"] = com == self.primary
-                self.updateParams()
+                self.update_params()
                 
                 # Check if platform is installed. If not, install it
                 platform = ":".join(fqbn.split(":")[:-1])
@@ -67,7 +67,7 @@ class UpdateSketch:
 
 
     # Write to Rig.ino to update params
-    def updateParams(self):        
+    def update_params(self):        
         try:
             with open(self.default_params_path, "r") as file:
                 param_content = file.read()

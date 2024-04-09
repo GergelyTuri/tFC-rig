@@ -58,7 +58,7 @@ d. Save the changes (in nano this is ctrl-0, then hit enter) and restart vscode
 
 ## Usage
 
-#### GUI
+### GUI
 
 1. Open an Anaconda terminal, activate the environment and navigate to the `tFC-rig` folder.
 2. Run the following command to activate the GUI. 
