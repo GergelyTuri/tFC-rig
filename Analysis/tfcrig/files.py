@@ -1,12 +1,9 @@
-import logging
 import os
 import re
 
 from dataclasses import dataclass
 
 from tfcrig.notebook import builtin_print
-
-logger = logging.getLogger(__name__)
 
 DATETIME_REGEX = r"\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}"
 """
@@ -56,7 +53,7 @@ class RigFiles:
         corrections are made here (yet)
         """
         builtin_print("")
-        logger.info("Checking data file names for consistency!")
+        print("Checking data file names for consistency!")
 
         data_files = set()
         close_data_files = set()
@@ -94,12 +91,12 @@ class RigFiles:
 
         # Print a wrap-up of the output
         if data_files:
-            logger.info("Correctly named data files:")
+            print("Correctly named data files:")
             for f in data_files:
                 builtin_print(f"  {f}")
         if close_data_files:
-            logger.info("Potential data files, incorrectly named:")
+            print("Potential data files, incorrectly named:")
             for f in close_data_files:
                 builtin_print(f"  {f}")
         else:
-            logger.info("No potential bad data files found!")
+            print("No potential bad data files found!")
