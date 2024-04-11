@@ -102,6 +102,10 @@ class Notebook:
                 return super().format(record)
 
         root_logger = logging.getLogger()
+        # Remove all existing handlers
+        for handler in root_logger.handlers[:]:
+            root_logger.removeHandler(handler)
+
         handler = logging.StreamHandler()
         handler.setFormatter(TimestampedFormatter('>%(custom_time)s: %(message)s'))
         root_logger.addHandler(handler)
