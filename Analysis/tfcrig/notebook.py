@@ -1,4 +1,5 @@
 import builtins
+import logging
 import os
 from dataclasses import dataclass
 from datetime import datetime
@@ -11,7 +12,12 @@ class Notebook:
     """
     Serves as a container for metadata about the Google Colaboratory
     notebook from which an analysis is being conducted (from which an
-    instance of the analysis pipeline is being run)
+    instance of the analysis pipeline is being run). Executing the
+    notebook setup should enable other `tfcrig` analysis code to be
+    written and executed in an environment-agnostic way. That is, such
+    that it does not need to know about Google Drive as the _specific_
+    execution environment, enabling the code to be run in other
+    contexts.
     """
 
     file_root: str = "/content"
@@ -23,6 +29,7 @@ class Notebook:
     def setup(self) -> None:
         self._mount_google_drive()
         self._patch_print_for_timestamped_print()
+        self._configure_timestamped_logging()
         self._enable_text_wrap_in_colab_output()
 
     def _mount_google_drive(self) -> None:
@@ -82,3 +89,20 @@ class Notebook:
             )
 
         get_ipython().events.register('pre_run_cell', set_css)
+
+    def _configure_timestamped_logging(self) -> None:
+        """
+        Configures the root `logging` logger to print a timestamp when
+        any child logger prints a message
+        """
+
+        class TimestampedFormatter(logging.Formatter):
+            def format(self, record):
+                record.custom_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                return super().format(record)
+
+        root_logger = logging.getLogger()
+        handler = logging.StreamHandler()
+        handler.setFormatter(TimestampedFormatter('>%(custom_time)s: %(message)s'))
+        root_logger.addHandler(handler)
+        root_logger.setLevel(logging.INFO)
