@@ -1,4 +1,35 @@
+import logging
+import os
+import re
+
 from dataclasses import dataclass
+
+from tfcrig.notebook import builtin_print
+
+logger = logging.getLogger(__name__)
+
+DATETIME_REGEX = r"\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}"
+"""
+Regex matching for a datetime of the format `YYYY-MM-DD_HH-MM-SS` which
+is included in the file names generated during data collection
+"""
+
+
+def extract_exp_mouse_pairs(exp_mouse_blob: str) -> list[str]:
+    """
+    Define a recursive function that helps extract sets of
+    `{experiment_id}_{mouse_id}_` from a file name. It accepts the
+    front portion of a session file name and returns a list of
+    these sets
+    """
+    pattern = r"\d+[_-]\d+[_-]"
+    string_match = re.search(pattern, exp_mouse_blob)
+
+    if string_match:
+        first_pair = string_match.group()
+        rest_of_string = exp_mouse_blob[string_match.end():]
+        return [first_pair] + extract_exp_mouse_pairs(rest_of_string)
+    return []
 
 
 @dataclass
@@ -12,5 +43,63 @@ class RigFiles:
     data_root: str = "/gdrive/Shareddrives/Turi_lab/Data/aging_project/"
     dry_run: bool = True
 
-    def clean(self) -> None:
-        pass
+    def check(self) -> None:
+        """
+        Performs a set of checks. The `clean` public method on this
+        class would, when applicable, fix what these checks discover
+        """
+        self._are_data_files_named_correctly()
+
+    def _are_data_files_named_correctly(self) -> None:
+        """
+        Crawls the entire data root directory and checks file names. No
+        corrections are made here (yet)
+        """
+        builtin_print("")
+        logger.info("Checking data file names for consistency!")
+
+        data_files = set()
+        close_data_files = set()
+        for root, _, files in os.walk(self.data_root):
+          for file_name in files:
+                if not file_name.endswith(".json"):
+                    # Only walk for JSON files
+                    continue
+                if not re.search(DATETIME_REGEX, file_name):
+                    # JSON files contain a specific date-time blob
+                    continue
+                if (
+                    file_name.endswith("_processed.json")
+                    or file_name.endswith("_analyzed.json")
+                ):
+                    # Other types of analysis process the data a certain way.
+                    # This analysis may, too, but for now skip these.
+                    continue
+
+                file_name_parts = re.split(DATETIME_REGEX, file_name)
+                exp_mouse_pairs = extract_exp_mouse_pairs(file_name_parts[0])
+                if (
+                    not exp_mouse_pairs
+                    or any("-" in mouse_id for mouse_id in exp_mouse_pairs)
+                ):
+                    # Some JSON files are named incorrectly, or they contain
+                    # the correct date-time string but no information on the
+                    # experiment or mouse
+                    close_data_files.add(os.path.join(root, file_name))
+                    continue
+
+                # These should be good.
+                # But, check them!
+                data_files.add(os.path.join(root, file_name))
+
+        # Print a wrap-up of the output
+        if data_files:
+            logger.info("Correctly named data files:")
+            for f in data_files:
+                builtin_print(f"  {f}")
+        if close_data_files:
+            logger.info("Potential data files, incorrectly named:")
+            for f in close_data_files:
+                builtin_print(f"  {f}")
+        else:
+            logger.info("No potential bad data files found!")

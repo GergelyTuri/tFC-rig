@@ -7,6 +7,11 @@ from datetime import datetime
 from google.colab import drive
 from IPython.display import HTML, display
 
+# This is replaced in a Notebook with a timestamped print, but it can
+# be interesting to have access to it
+builtin_print = builtins.print
+
+
 @dataclass
 class Notebook:
     """
@@ -61,8 +66,6 @@ class Notebook:
         notebook-like environment to confirm when an analysis had last
         been run.
         """
-        builtin_print = builtins.print
-
         def tprint(*args, **kwargs):
             t = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             builtin_print(f">{t}:", *args, **kwargs)
