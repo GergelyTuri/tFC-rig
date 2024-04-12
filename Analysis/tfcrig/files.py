@@ -47,6 +47,15 @@ class RigFiles:
         """
         self._are_data_files_named_correctly()
 
+    def clean(self) -> None:
+        """
+        Runs through a set of ways to clean the data. If `dry_run` is
+        `True` it will only print out what it _would_ have cleaned,
+        which can be useful as a safety check before modifying any
+        data
+        """
+        self._rename_some_bad_file_name_patterns()
+
     def _are_data_files_named_correctly(self) -> None:
         """
         Crawls the entire data root directory and checks file names. No
@@ -100,3 +109,64 @@ class RigFiles:
                 builtin_print(f"  {f}")
         else:
             print("No potential bad data files found!")
+
+    def _rename_some_bad_file_name_patterns(self) -> None:
+        count_found = 0
+        count_fixed = 0
+        dry_run = True
+        for root, _, files in os.walk(self.data_root):
+            for file_name in files:
+                if not file_name.endswith(".json"):
+                    # Only walk for JSON files
+                    continue
+                if not re.search(DATETIME_REGEX, file_name):
+                    # JSON files contain a specific date-time blob
+                    continue
+
+                file_name_parts = re.split(DATETIME_REGEX, file_name)
+                exp_mouse_blob = file_name_parts[0]
+                exp_mouse_pairs = extract_exp_mouse_pairs(exp_mouse_blob)
+                if (
+                    exp_mouse_pairs
+                    and all("-" not in mouse_id for mouse_id in exp_mouse_pairs)
+                ):
+                    # This is a good file name. Skip it
+                    continue
+                count_found += 1
+
+                bad_file = os.path.join(root, file_name)
+                better_file = ""
+
+                # Remove the `mouse_` prefix from some files
+                prefix = "mouse_"
+                if file_name.startswith(prefix):
+                    better_file = os.path.join(root, file_name.split(prefix)[-1])
+
+                # The `exp_mouse_blob` may accidentally have a `-` instead of `_`
+                bad_char = "-"
+                if bad_char in exp_mouse_blob:
+                    rest_of_name = file_name.split(exp_mouse_blob)[-1]
+                    exp_mouse_blob = exp_mouse_blob.replace("-", "_")
+                    better_file_name = exp_mouse_blob + rest_of_name
+                    better_file = os.path.join(root, better_file_name)
+
+                # Continue if we did not find a way to define a better file
+                if not better_file:
+                    continue
+                count_fixed += 1
+
+                if dry_run:
+                    print("Bad file found.")
+                    builtin_print("  Would rename:")
+                    builtin_print(f"    {bad_file}")
+                    builtin_print("  To:")
+                    builtin_print(f"    {better_file}")
+                else:
+                    os.rename(bad_file, better_file)
+
+        if not count_found:
+            print("Found no bad file names!")
+        elif count_found == count_fixed:
+            print("Fixed every bad file name we found!")
+        else:
+            print(f"Found {count_found} bad file names, fixed {count_fixed}!")
