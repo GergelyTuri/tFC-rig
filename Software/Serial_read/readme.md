@@ -14,6 +14,7 @@ Before proceeding with the installation, ensure you have the following prerequis
 
 * Git: Needed to clone the repository from GitHub.
 * Conda: Used to create and manage the project environment. You can use either Anaconda or Miniconda. If you don't have Conda installed, you can download it from the official Conda website.
+* Arduino-cli: Needed to update arduino files. This can be downloaded here: https://arduino.github.io/arduino-cli/0.35/installation/
 
 ### Installation Steps
 
@@ -38,12 +39,39 @@ First, clone the repository containing the project to your local machine. Open a
     ```bash
     conda activate cued-fc
     ```
+    
+4. Install Arduino-cli at https://arduino.github.io/arduino-cli/0.35/installation/. 
+Install it in a directory already in your PATH or add the Arduino CLI installation path to your PATH environment variable. This ensures your system will be able to detect and use it.
+
+Environment Variables
+Windows:
+a. Go to your  windows search bar at the bottom of the screen and look up "Edit the system environment variables"
+b. Click "Environment variables", then click edit "Path" variable under "user variables". 
+c. Simply add the path to your arduino-cli software, save, and restart your vscode.
+
+Mac:
+a. Edit one of these files: ~/.bashrc or ~/.bash_profile.
+b. Enter the file with nano ~/.bashrc, or through your file explorer
+c. either add this new line or append the new path to your PATH variable:
+            export PATH="{arduino-cli path}"
+d. Save the changes (in nano this is ctrl-0, then hit enter) and restart vscode
 
 ## Usage
 
+### GUI
+
+1. Open an Anaconda terminal, activate the environment and navigate to the `tFC-rig` folder.
+2. Run the following command to activate the GUI. 
+
+```bash
+python -m Software.Serial_read.py_arduino_serial_GUI
+```
+This will run the `py_arduino_serial_camera` script (behavior recording with camera) when you submit
+
+
 ### Behavior recording without camera
 
-1. Open an Anaconda terminal, activate the environment and navigate to the `Software/Serial_read` folder.
+1. Open an Anaconda terminal, activate the environment with "conda activate condaenv" and navigate to the `Software/Serial_read` folder. (View conda envs with "conda info --envs" and verify installed packages with "conda list")
 2. Run the following command for further instructions:
 
     ```bash
@@ -52,12 +80,13 @@ First, clone the repository containing the project to your local machine. Open a
 
 ### Behavior recording with camera
 
-1. Open an Anaconda terminal, activate the environment and navigate to the `Software/Serial_read` folder.
+1. Open an Anaconda terminal, activate the environment and navigate to the `tFC-rig` folder.
 2. Run the following command for further instructions:
 
     ```bash
-    python py_arduino_serial_camera.py -h
+    python -m Software.Serial_read.py_arduino_serial_camera.py -h
     ```
+
 
 ## Data
 

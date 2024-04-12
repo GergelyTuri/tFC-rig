@@ -69,3 +69,21 @@ class CameraState:
         elif action == "BIND" and success:
             self.is_bound = True
         # ... and so on for other states and actions ...
+            
+def checkCam(cam_input):
+    INTERFACE = "172.29.96.1"
+    if cam_input:
+        try:
+            cam = e3VisionCamera(cam_input)
+            cam.camera_action("UPDATEMC")
+            cam.camera_action(
+                "CONNECT",
+                Config="480p15",
+                Codec="MJPEG",
+                IFace=INTERFACE,
+                Annotation="Time",
+                Segtime="3m",
+            )
+            cam.camera_action("DISCONNECT")
+        except Exception as e:
+            raise Exception(f"Issue connecting to camera {cam_input}:\n\n{str(e)}")

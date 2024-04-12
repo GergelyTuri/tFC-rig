@@ -368,7 +368,7 @@ void printSessionParameters() {
   // Add variables defined in `trial.h` or `rig.h` (or other) here.
   // That way, everything that defines the trial is recorded in case an
   // issue comes up later in the analysis
-  print("Session consists of six trial, three CS+, three CS- in the following order");
+  Serial.println("Session consists of " + String(NUMBER_OF_TRIALS) + " trials, (originally three CS+, three CS-) in the following order");
   print("0 is CS-, 1 is CS+");
   vprint("trialTypes", trialTypes);
 
