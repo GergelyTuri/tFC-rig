@@ -56,6 +56,13 @@ class RigFiles:
         """
         self._are_data_files_named_correctly()
 
+    def prep(self) -> None:
+        """
+        Prep the data directory for cleaning. This at least means
+        making a `raw` copy of the data
+        """
+        pass
+
     def clean(self) -> None:
         """
         Runs through a set of ways to clean the data. If `dry_run` is
@@ -64,6 +71,7 @@ class RigFiles:
         data
         """
         self._rename_some_bad_file_name_patterns()
+        self._rename_date_directories()
 
     @staticmethod
     def reformat_date_in_directory(directory: str) -> str:
