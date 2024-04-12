@@ -1,5 +1,7 @@
+import json
 import os
 import re
+from copy import deepcopy
 
 from dataclasses import dataclass
 
@@ -72,6 +74,7 @@ class RigFiles:
         """
         self._rename_some_bad_file_name_patterns()
         self._rename_date_directories()
+        self._examine_and_fix_typos_in_data_files()
 
     @staticmethod
     def reformat_date_in_directory(directory: str) -> str:
@@ -255,3 +258,102 @@ class RigFiles:
 
         if not count:
             print("Found no bad directory names!")
+
+    def _examine_and_fix_typos_in_data_files(self) -> None:
+        """
+        Correct some typos in the data
+        """
+        builtin_print("")
+        print("Fixing some incorrect data, be careful!")
+
+        count = 0
+        for root, _, files in os.walk(self.data_root):
+            for file_name in files:
+                # Data files contain a specific date-time blob
+                if not re.search(DATETIME_REGEX, file_name):
+                    continue
+
+                # Data files have the format:
+                #
+                #     {exp_mouse_blob}_{datetime}.json
+                #
+                file_name_parts = re.split(DATETIME_REGEX, file_name)
+                if file_name_parts[-1] != ".json":
+                    continue
+
+                need_to_fix_data = False
+                file_name_parts = re.split(DATETIME_REGEX, file_name)
+                exp_mouse_pairs = extract_exp_mouse_pairs(file_name_parts[0])
+                mouse_ids = [e[0:-1] for e in exp_mouse_pairs]
+
+                file_path = os.path.join(root, file_name)
+                with open(file_path, 'r') as f:
+                    data = json.load(f)
+
+                # Some old files, or perhaps any experiment with only a single mouse,
+                # has a `mouse_id` header value when they should all be `mouse_ids`
+                if "mouse_id" in data["header"]:
+                    mouse_id = data["header"]["mouse_id"]
+                    del data["header"]["mouse_id"]
+                    data["header"]["mouse_ids"] = [mouse_id]
+                    need_to_fix_data = True
+
+                # Some mouse IDs have the incorrect format, either by starting with
+                # `mouse_` or by containing "-" instead of "_"
+                mouse_ids = []
+                for mouse_id in data["header"]["mouse_ids"]:
+                    modify_mouse_id = False
+                    original_mouse_id = deepcopy(mouse_id)
+
+                    # Fix ID that starts with `mouse_`
+                    if mouse_id.startswith("mouse_"):
+                        mouse_id = mouse_id.split("mouse_")[-1]
+                        modify_mouse_id = True
+
+                    # Fix ID that contains `-`
+                    if "-" in mouse_id:
+                        mouse_id = mouse_id.replace("-", "_")
+                        modify_mouse_id = True
+
+                    # Fix every instance of the mouse ID. This does assume the ID is unique
+                    # within the JSON blob
+                    if modify_mouse_id:
+                        data_str = json.dumps(data)
+                        data_str = data_str.replace(f'"{original_mouse_id}"', f'"{mouse_id}"')
+                        data = json.loads(data_str)
+                        need_to_fix_data = True
+
+                    mouse_ids.append(mouse_id)
+
+                # Now we have the correct `mouse_ids`, we check the format of `data`, it
+                # should map to a dictionary per `mouse_id`, but if there is only one
+                # `mouse_id` we need to modify it
+                if (
+                    len(data["header"]["mouse_ids"]) == 1
+                    and isinstance(data["data"], list)
+                ):
+                    data["data"] = {
+                        data["header"]["mouse_ids"][0]: data["data"]
+                    }
+                    need_to_fix_data = True
+
+                # Sometimes, we include a `mesage` key instead of `message`, it isn't
+                # clear from a data analysis perspective why
+                data_str = json.dumps(data)
+                if '"mesage"' in data_str:
+                    data_str = data_str.replace('"mesage"', '"message"')
+                    data = json.loads(data_str)
+                    need_to_fix_data = True
+                del data_str
+
+                # Fix the data
+                if need_to_fix_data and self.dry_run:
+                    print(f"Need to fix '{file_path}'")
+                    print(data)
+                    count += 1
+                elif need_to_fix_data:
+                    with open(file_path, 'w') as f:
+                        json.dump(data, f, indent=4)
+
+        if count == 0:
+            print(f"Did not need to fix any files!")
