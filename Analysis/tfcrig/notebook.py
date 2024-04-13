@@ -122,7 +122,7 @@ class Notebook:
         of any cell, to set a max height
         """
         def set_output_height_for_all_cells():
-            script = r"google.colab.output.setIframeHeight(0, true, maxHeight: 200);"
+            script = r"google.colab.output.setIframeHeight(0, true, {maxHeight: 200});"
             output.eval_js(script)
 
         get_ipython().events.register('pre_run_cell', set_output_height_for_all_cells)
