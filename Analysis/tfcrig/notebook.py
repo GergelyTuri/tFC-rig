@@ -4,7 +4,8 @@ import os
 from dataclasses import dataclass
 from datetime import datetime
 
-from google.colab import drive
+from google.colab import drive, output
+from IPython.core.getipython import get_ipython
 from IPython.display import HTML, display
 
 # This is replaced in a Notebook with a timestamped print, but it can
@@ -113,3 +114,14 @@ class Notebook:
         handler.setFormatter(TimestampedFormatter('>%(custom_time)s: %(message)s'))
         root_logger.addHandler(handler)
         root_logger.setLevel(logging.INFO)
+
+    def _set_output_height_all_cells(self) -> None:
+        """
+        Registers an even that executes JavaScript before the execution
+        of any cell, to set a max height
+        """
+        def set_output_height_for_all_cells():
+            script = r"google.colab.output.setIframeHeight(0, true, maxHeight: 200);"
+            output.eval_js(script)
+
+        get_ipython().events.register('pre_run_cell', set_output_height_for_all_cells)
