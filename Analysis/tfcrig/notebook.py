@@ -37,6 +37,7 @@ class Notebook:
         self._patch_print_for_timestamped_print()
         self._configure_timestamped_logging()
         self._enable_text_wrap_in_colab_output()
+        self._set_output_height_all_cells()
 
     def _mount_google_drive(self) -> None:
         """
