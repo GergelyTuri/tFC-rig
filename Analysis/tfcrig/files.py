@@ -1,6 +1,18 @@
+"""Check, prep, and clean files prior to running an analysis.
+
+The `files` module interacts with the data folders and files, with
+public methods `check`, `prep`, `clean` that prepare the data for an
+analysis. These methods were developed specific to the original data
+collection efforts, and therefore reflect the types of mistakes common
+at that time. The `RigFiles` class should be setup with `dry_run` set
+to `True` prior to actually modifying data to ensure the changes it
+will make are safe and expected.
+"""
+
 import json
 import os
 import re
+import shutil
 from copy import deepcopy
 
 from dataclasses import dataclass
@@ -63,7 +75,7 @@ class RigFiles:
         Prep the data directory for cleaning. This at least means
         making a `raw` copy of the data
         """
-        pass
+        self._make_a_copy_of_raw_data()
 
     def clean(self) -> None:
         """
@@ -155,6 +167,40 @@ class RigFiles:
                 builtin_print(f"  {f}")
         else:
             print("No potential bad data files found!")
+
+    def _make_a_copy_of_raw_data(self) -> None:
+        """
+        Given a data directory, make a copy of each JSON file in the
+        directory, as long as:
+
+            - The file does not end with `_raw.json`
+            - The file does not already have a copy
+
+        """
+        builtin_print("")
+        print("Creating copies of raw data files!")
+
+        for root, _, files in os.walk(self.data_root):
+            for file in files:
+                full_file = os.path.join(root, file)
+
+                # Skip files that are not JSON
+                if not full_file.endswith(".json"):
+                    continue
+
+                # Skip raw files
+                if full_file.endswith("_raw.json"):
+                    continue
+
+                # Define the raw file path and see if _it_ exists
+                file_parts = file.split(".")
+                raw_full_file = os.path.join(root, file_parts[0] + "_raw.json")
+                if os.path.exists(raw_full_file):
+                    print(full_file)
+                    continue
+
+                # Make a copy of the file
+                shutil.copy(full_file, raw_full_file)
 
     def _rename_some_bad_file_name_patterns(self) -> None:
         builtin_print("")
