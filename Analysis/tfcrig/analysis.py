@@ -298,6 +298,14 @@ class Analysis:
         - Features
 
     """
+    # TODO: investigate if performance becomes an issue
+    #
+    #   - Extracting features into data frames, and not concatenating all
+    #     data from all mice/sessions
+    #   - At either point, storing processed data
+    #
+    # TODO: message folks about the files with mismatched mouse IDs
+    #
 
     def __init__(self, *, data_root: str) -> None:
         self.data_root = data_root
@@ -317,11 +325,20 @@ class Analysis:
                         data_frames.append(data)
         self.data = pd.concat(data_frames).reset_index(drop=True)
 
-        # TODO: investigate for performance
-        #
-        #   - Extracting features into data frames, and not concatenating all
-        #     data from all mice/sessions
-        #   - At either point, storing processed data
-        #
-        # TODO: message folks about the files with mismatched mouse IDs
-        #
+    def info(self) -> None:
+        """
+        Write some useful meta data about the analysis that can be used
+        as a sanity check
+        """
+        self.data.info()
+
+        print("Unique data categories:")
+        builtin_print(f'- mouse_id: {self.data["mouse_id"].unique()}')
+        builtin_print(f'- is_session: {self.data["is_session"].unique()}')
+        builtin_print(f'- trial_type: {self.data["trial_type"].unique()}')
+        builtin_print(f'- trial: {self.data["trial"].unique()}')
+        builtin_print(f'- is_trial: {self.data["is_trial"].unique()}')
+        builtin_print(f'- lick: {self.data["lick"].unique()}')
+        builtin_print(f'- negative_signal: {self.data["negative_signal"].unique()}')
+        builtin_print(f'- positive_signal: {self.data["positive_signal"].unique()}')
+        builtin_print(f'- water: {self.data["water"].unique()}')
