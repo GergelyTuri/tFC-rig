@@ -196,10 +196,10 @@ class RigFiles:
                 file_parts = file.split(".")
                 raw_full_file = os.path.join(root, file_parts[0] + "_raw.json")
                 if os.path.exists(raw_full_file):
-                    print(full_file)
                     continue
 
                 # Make a copy of the file
+                print(f"Created a copy of {full_file}")
                 shutil.copy(full_file, raw_full_file)
 
     def _rename_some_bad_file_name_patterns(self) -> None:
