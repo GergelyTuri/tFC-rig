@@ -307,7 +307,7 @@ class Analysis:
 
         # Likewise, extract features from all of the data
         data_frames = []
-        for root, _, files in os.walk(DATA_ROOT):
+        for root, _, files in os.walk(self.data_root):
             for file in files:
                 if is_data_file(file):
                     data = get_data_features_from_data_file(
