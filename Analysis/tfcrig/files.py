@@ -180,6 +180,7 @@ class RigFiles:
         builtin_print("")
         print("Creating copies of raw data files!")
 
+        count = 0
         for root, _, files in os.walk(self.data_root):
             for file in files:
                 full_file = os.path.join(root, file)
@@ -201,6 +202,9 @@ class RigFiles:
                 # Make a copy of the file
                 print(f"Created a copy of {full_file}")
                 shutil.copy(full_file, raw_full_file)
+                count += 1
+        if not count:
+            print(f"No copies created!")
 
     def _rename_some_bad_file_name_patterns(self) -> None:
         builtin_print("")

@@ -4,7 +4,9 @@ import re
 from datetime import datetime
 from typing import Optional
 
+import matplotlib.pyplot as plt
 import pandas as pd
+import seaborn as sns
 
 from tfcrig.files import DATETIME_REGEX
 from tfcrig.notebook import builtin_print
@@ -247,7 +249,7 @@ def extract_features_from_session_data(
     return pd.DataFrame(parsed_data)
 
 
-def get_data_features_from_data_file(full_file: str) -> pd.DataFrame:
+def get_data_features_from_data_file(full_file: str) -> tuple[list, pd.DataFrame]:
     """
     Assuming that:
 
@@ -283,9 +285,57 @@ def get_data_features_from_data_file(full_file: str) -> pd.DataFrame:
         if not df.empty:
             data_frames.append(df)
 
-    if data_frames:
-        return pd.concat(data_frames).reset_index(drop=True)
-    return pd.DataFrame()
+    # Files can contain multiple mouse/session pairs. Extract features
+    # from each data frame (pair)
+    data_features = []
+    if not data_frames:
+        return (data_features, pd.DataFrame())
+    for df in data_frames:
+        total_licks = df["lick"].sum()
+
+        # Total licks by trial type, only during trial
+        dft = df[df["is_trial"] == 1]
+        total_licks_in_trial = dft["lick"].sum()
+        df0 = df[df["trial_type"] == 0]
+        df0 = df0[df0["is_trial"] == 1]
+        total_licks_type_0 = df0["lick"].sum()
+        df1 = df[df["trial_type"] == 1]
+        df1 = df1[df1["is_trial"] == 1]
+        total_licks_type_1 = df1["lick"].sum()
+
+        # Total licks, water is on
+        df_water = df[df["water"] == 1]
+        total_licks_water_on = df_water["lick"].sum()
+        df_water_t0 = df[df["water"] == 1]
+        df_water_t0 = df_water_t0[df_water_t0["is_trial"] == 1]
+        df_water_t0 = df_water_t0[df_water_t0["trial_type"] == 0]
+        total_licks_water_on_type_0 = df_water_t0["lick"].sum()
+        df_water_t1 = df[df["water"] == 1]
+        df_water_t1 = df_water_t1[df_water_t1["is_trial"] == 1]
+        df_water_t1 = df_water_t1[df_water_t1["trial_type"] == 1]
+        total_licks_water_on_type_1 = df_water_t1["lick"].sum()
+
+        # It might be useful to clean these up
+        data_features.append(
+            {
+                "mouse_id": df["mouse_id"].iloc[0],
+                "session_id": df["session_id"].iloc[0],
+                "total_licks": total_licks,
+                "total_licks_in_trial": total_licks_in_trial,
+                "z_total_licks_in_trial": total_licks_in_trial/total_licks,
+                "total_licks_type_0": total_licks_type_0,
+                "z_total_licks_type_0": total_licks_type_0/total_licks,
+                "total_licks_type_1": total_licks_type_1,
+                "z_total_licks_type_1": total_licks_type_1/total_licks,
+                "total_licks_water_on": total_licks_water_on,
+                "total_licks_water_on_type_0": total_licks_water_on_type_0,
+                "total_licks_water_on_type_1": total_licks_water_on_type_1,
+            }
+        )
+    return (
+        data_features,
+        pd.concat(data_frames).reset_index(drop=True),
+    )
 
 
 class Analysis:
@@ -314,16 +364,22 @@ class Analysis:
         self.mouse_ids = get_mouse_ids(self.data_root)
 
         # Likewise, extract features from all of the data
+        features = []
         data_frames = []
         for root, _, files in os.walk(self.data_root):
             for file in files:
                 if is_data_file(file):
-                    data = get_data_features_from_data_file(
+                    f_features, f_data_frames = get_data_features_from_data_file(
                         os.path.join(root, file)
                     )
-                    if not data.empty:
-                        data_frames.append(data)
+                    features += f_features
+                    if not f_data_frames.empty:
+                        data_frames.append(f_data_frames)
+        self.df = pd.DataFrame(features)
+        self.df = self.df.sort_values(by=["session_id", "mouse_id"])
         self.data = pd.concat(data_frames).reset_index(drop=True)
+        # TODO: we have this, which should be all features.
+        # How to plot?
 
     def info(self) -> None:
         """
@@ -342,3 +398,69 @@ class Analysis:
         builtin_print(f'- negative_signal: {self.data["negative_signal"].unique()}')
         builtin_print(f'- positive_signal: {self.data["positive_signal"].unique()}')
         builtin_print(f'- water: {self.data["water"].unique()}')
+
+    def summarize_licks_per_session(
+        self,
+        mouse_ids: list=[],
+        min_session=0,
+    ):
+        if not mouse_ids:
+            mouse_ids = self.mouse_ids
+
+        df = self.df.sort_values(by=["session_id", "mouse_id"])
+        df = df[df["mouse_id"].isin(mouse_ids)]
+        df = df[df["session_id"] > min_session]
+        df = df[
+            [
+                "mouse_id",
+                "session_id",
+                "z_total_licks_type_0",
+                "z_total_licks_type_1",
+            ]
+        ]
+
+        # Accounts for trial type
+        df = df.rename(
+            columns={
+                "z_total_licks_type_0": "type0",
+                "z_total_licks_type_1": "type1",
+            },
+        )
+        df = df.melt(
+            id_vars=["mouse_id", "session_id"],
+            value_vars=["type0", "type1"],
+            var_name="Type",
+            value_name="Licks",
+        )
+
+        g = sns.FacetGrid(
+            df,
+            col="mouse_id",
+            col_wrap=2,
+            sharex=False,
+            sharey=False,
+            height=4,
+            aspect=1,
+        )
+        g.map_dataframe(
+            sns.barplot,
+            x="session_id",
+            y="Licks",
+            hue="Type",
+            errorbar=None,
+        )
+        g.add_legend(title="Lick Type")
+
+        for ax in g.axes:
+            if ax in g.axes[:-2]:
+                ax.set_xticklabels("")
+            else:
+                ax.set_xticklabels(ax.get_xticklabels(), rotation=90)
+
+        g.set_axis_labels("", "Total Licks")
+        g.set_titles("Mouse: {col_name}")
+
+        suptitle = "Total Licks Over Time by Mouse"
+
+        plt.suptitle(suptitle, y=1.05)
+        plt.show()
