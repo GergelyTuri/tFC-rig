@@ -182,6 +182,7 @@ class Window(QWidget):
         trialSettingsLayout = QFormLayout()
 
         self.num_trials = SpinBox(trialSettingsLayout, "Number of trials", 6, step=1, min=1, max=6)
+        self.is_training = CheckBox(trialSettingsLayout, "Is training session?")
         self.min_iti = SpinBox(trialSettingsLayout, "Minimum iti duration", 60000, step=1000)
         self.max_iti = SpinBox(trialSettingsLayout, "Maximum iti duration", 300000, step=1000)
         self.trial_duration = SpinBox(trialSettingsLayout, "Trial duration", 50000, step=1000)
@@ -317,7 +318,8 @@ class Window(QWidget):
             dict: Dictionary containing parameters.
         """
         params = {
-            "NUMBER_OF_TRIALS": self.num_trials.value(), 
+            "NUMBER_OF_TRIALS": self.num_trials.value(),
+            "IS_TRAINING": self.is_training.value(),
             "MIN_ITI": self.min_iti.value(), 
             "MAX_ITI": self.max_iti.value(), 
             "TRIAL_DURATION": self.trial_duration.value(),

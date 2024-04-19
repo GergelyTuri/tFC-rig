@@ -372,7 +372,7 @@ void printSessionParameters() {
   print("0 is CS-, 1 is CS+");
   vprint("trialTypes", trialTypes);
 
-  // print("Printing Adrduino or rig parameters");
+  // print("Printing Arduino or rig parameters");
   vprint("BAUD_RATE", BAUD_RATE);
   vprint("PIN_AIR_PUFF", PIN_AIR_PUFF);
   vprint("PIN_WATER_SOLENOID", PIN_WATER_SOLENOID);
@@ -388,6 +388,7 @@ void printSessionParameters() {
   vprint("DEBUGGING", DEBUGGING);
   vprint("IS_PRIMARY_RIG", IS_PRIMARY_RIG);
   vprint("NUMBER_OF_TRIALS", NUMBER_OF_TRIALS);
+  vprint("IS_TRAINING", IS_TRAINING);
   vprint("INTER_TRIAL_DEBUG_WAIT_INTERVAL", INTER_TRIAL_DEBUG_WAIT_INTERVAL);
   vprint("TRIAL_DURATION", TRIAL_DURATION);
   vprint("LICK_TIMEOUT", LICK_TIMEOUT);
