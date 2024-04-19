@@ -329,7 +329,9 @@ def get_data_features_from_data_file(full_file: str) -> tuple[list, pd.DataFrame
                 "z_total_licks_type_1": total_licks_type_1/total_licks,
                 "total_licks_water_on": total_licks_water_on,
                 "total_licks_water_on_type_0": total_licks_water_on_type_0,
+                "z_total_licks_water_on_type_0": total_licks_water_on_type_0/total_licks_water_on,
                 "total_licks_water_on_type_1": total_licks_water_on_type_1,
+                "z_total_licks_water_on_type_1": total_licks_water_on_type_1/total_licks_water_on,
             }
         )
     return (
