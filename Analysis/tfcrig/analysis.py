@@ -403,6 +403,7 @@ class Analysis:
         self,
         mouse_ids: list=[],
         min_session=0,
+        water_on=False,
     ):
         if not mouse_ids:
             mouse_ids = self.mouse_ids
@@ -410,22 +411,40 @@ class Analysis:
         df = self.df.sort_values(by=["session_id", "mouse_id"])
         df = df[df["mouse_id"].isin(mouse_ids)]
         df = df[df["session_id"] > min_session]
-        df = df[
-            [
-                "mouse_id",
-                "session_id",
-                "z_total_licks_type_0",
-                "z_total_licks_type_1",
+
+        # Some filtering options
+        if water_on:
+            df = df[
+                [
+                    "mouse_id",
+                    "session_id",
+                    "z_total_licks_water_on_type_0",
+                    "z_total_licks_water_on_type_1",
+                ]
             ]
-        ]
+            df = df.rename(
+                columns={
+                    "z_total_licks_water_on_type_0": "type0",
+                    "z_total_licks_water_on_type_1": "type1",
+                },
+            )
+        else:
+            df = df[
+                [
+                    "mouse_id",
+                    "session_id",
+                    "z_total_licks_type_0",
+                    "z_total_licks_type_1",
+                ]
+            ]
+            df = df.rename(
+                columns={
+                    "z_total_licks_type_0": "type0",
+                    "z_total_licks_type_1": "type1",
+                },
+            )
 
         # Accounts for trial type
-        df = df.rename(
-            columns={
-                "z_total_licks_type_0": "type0",
-                "z_total_licks_type_1": "type1",
-            },
-        )
         df = df.melt(
             id_vars=["mouse_id", "session_id"],
             value_vars=["type0", "type1"],
