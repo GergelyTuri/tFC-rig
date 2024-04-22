@@ -16,7 +16,7 @@ const int DEBUG_TEST_SECONDARY = false;
 
 // Trial settings
 const int NUMBER_OF_TRIALS = 6;
-const bool IS_TRAINING = false
+const bool IS_TRAINING = false;
 const long MIN_ITI = 60000;
 const long MAX_ITI = 300000;
 const long TRIAL_DURATION = 50000;

@@ -128,7 +128,7 @@ const int NUMBER_OF_TRIALS = 6;
 // For a given session, is this a training session (mouse is getting
 // habituated to the rig) or a "real" session (one of pre-learning, 
 // learning, post-learning)?
-const bool IS_TRAINING = false
+const bool IS_TRAINING = false;
 //
 // -------
 // MIN_ITI

@@ -124,9 +124,12 @@ class CheckBox(QCheckBox):
         layout (QFormLayout): Layout to add the check box to.
         text (str): Text label for the check box.
     """
-    def __init__(self, layout: QFormLayout, text: str):
+    def __init__(self, layout: QFormLayout, text: str, checked: bool):
         super().__init__(text)
-        self.setCheckState(Qt.CheckState.Checked)
+        if checked:
+            self.setCheckState(Qt.CheckState.Checked)
+        else:
+            self.setCheckState(Qt.CheckState.Unchecked)
         layout.addRow(self)
 
 class LineEdit(QLineEdit):
@@ -319,7 +322,7 @@ class Window(QWidget):
         """
         params = {
             "NUMBER_OF_TRIALS": self.num_trials.value(),
-            "IS_TRAINING": self.is_training.value(),
+            "IS_TRAINING": self.is_training.checkState() == Qt.CheckState.Checked,
             "MIN_ITI": self.min_iti.value(), 
             "MAX_ITI": self.max_iti.value(), 
             "TRIAL_DURATION": self.trial_duration.value(),
