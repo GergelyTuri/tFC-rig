@@ -229,7 +229,7 @@ class Window(QWidget):
         """
         Validate input fields before starting the experiment.
         """
-        pattern = r"^[a-zA-Z]+_\d+$"
+        pattern = r"^[a-zA-Z0-9]+_\d+$"
 
         if self.primary_mouse_id.text() == '' or self.primary_port.text() == '':
             QMessageBox.warning(self, "Warning", "Mouse ID and Primary Port fields must be set!")

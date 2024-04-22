@@ -2,3 +2,4 @@
 pyserial
 tqdm
 PyQt6
+requests
