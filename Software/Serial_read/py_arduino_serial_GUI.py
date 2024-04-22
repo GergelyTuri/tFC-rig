@@ -124,9 +124,12 @@ class CheckBox(QCheckBox):
         layout (QFormLayout): Layout to add the check box to.
         text (str): Text label for the check box.
     """
-    def __init__(self, layout: QFormLayout, text: str):
+    def __init__(self, layout: QFormLayout, text: str, checked: bool):
         super().__init__(text)
-        self.setCheckState(Qt.CheckState.Checked)
+        if checked:
+            self.setCheckState(Qt.CheckState.Checked)
+        else:
+            self.setCheckState(Qt.CheckState.Unchecked)
         layout.addRow(self)
 
 class LineEdit(QLineEdit):
@@ -182,6 +185,11 @@ class Window(QWidget):
         trialSettingsLayout = QFormLayout()
 
         self.num_trials = SpinBox(trialSettingsLayout, "Number of trials", 6, step=1, min=1, max=6)
+        self.is_training = CheckBox(
+            layout=trialSettingsLayout,
+            text="Is training session?",
+            checked=False,
+        )
         self.min_iti = SpinBox(trialSettingsLayout, "Minimum iti duration", 60000, step=1000)
         self.max_iti = SpinBox(trialSettingsLayout, "Maximum iti duration", 300000, step=1000)
         self.trial_duration = SpinBox(trialSettingsLayout, "Trial duration", 50000, step=1000)
@@ -317,7 +325,8 @@ class Window(QWidget):
             dict: Dictionary containing parameters.
         """
         params = {
-            "NUMBER_OF_TRIALS": self.num_trials.value(), 
+            "NUMBER_OF_TRIALS": self.num_trials.value(),
+            "IS_TRAINING": self.is_training.checkState() == Qt.CheckState.Checked,
             "MIN_ITI": self.min_iti.value(), 
             "MAX_ITI": self.max_iti.value(), 
             "TRIAL_DURATION": self.trial_duration.value(),
