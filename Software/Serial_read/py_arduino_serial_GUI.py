@@ -124,7 +124,7 @@ class CheckBox(QCheckBox):
         layout (QFormLayout): Layout to add the check box to.
         text (str): Text label for the check box.
     """
-    def __init__(self, layout: QFormLayout, text: str, checked: bool):
+    def __init__(self, layout: QFormLayout, text: str, checked: bool=True):
         super().__init__(text)
         if checked:
             self.setCheckState(Qt.CheckState.Checked)
