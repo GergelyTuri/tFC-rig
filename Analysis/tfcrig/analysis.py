@@ -648,8 +648,8 @@ class Analysis:
                 """
                 Gets the tail of sessions and gives them an index
                 """
-                x = x.sort_values('session_id').tail(tail_length)
-                x['session_id'] = range(1, tail_length + 1)
+                x = x.sort_values("session_id").tail(tail_length)
+                x["session_id"] = range(1, tail_length + 1)
                 return x
             df = df.groupby(
                 "mouse_id"
@@ -689,10 +689,10 @@ class Analysis:
         # Plots average learning rate across mice for the last set of sessions
         mean_learning_rate = df.mean(axis=0)
         plt.figure(figsize=(8, 6))
-        plt.plot(mean_learning_rate.index, mean_learning_rate.values, marker='o', linestyle='-')
-        plt.title('Average Learning Rate Across Mice')
-        plt.xlabel('Session ID')
-        plt.ylabel('Average Learning Rate')
+        plt.plot(mean_learning_rate.index, mean_learning_rate.values, marker="o", linestyle="-")
+        plt.title("Average Learning Rate Across Mice")
+        plt.xlabel("Session ID")
+        plt.ylabel("Average Learning Rate")
         plt.grid(True)
         plt.xticks(range(1, len(mean_learning_rate.index) + 1))
         plt.show()
