@@ -203,6 +203,17 @@ def extract_features_from_session_data(
                 builtin_print(f" - File: {file_name}")
                 return pd.DataFrame()
 
+        # Get all trial types, check for balance. Note that if an
+        # imbalance is intentional, this will print false positive
+        # error messages
+        if "trialTypes" in msg:
+            trial_types = msg.split(msg_delimiter)[1]
+            if trial_types.count("0") != trial_types.count("1"):
+                if print_bad_data_blobs:
+                    print(f"Unbalanced trial types in: '{msg}'!!!")
+                    builtin_print(f" - File: {file_name}")
+                continue
+
         # Check for lick
         lick = 0
         if msg == "Lick":
