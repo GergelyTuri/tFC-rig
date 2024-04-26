@@ -260,7 +260,10 @@ def extract_features_from_session_data(
     return pd.DataFrame(parsed_data)
 
 
-def get_data_features_from_data_file(full_file: str) -> tuple[list, pd.DataFrame]:
+def get_data_features_from_data_file(
+    full_file: str,
+    verbose: bool = False,
+) -> tuple[list, pd.DataFrame]:
     """
     Assuming that:
 
@@ -292,6 +295,7 @@ def get_data_features_from_data_file(full_file: str) -> tuple[list, pd.DataFrame
             mouse_id=mouse_id,
             session_id=session_id,
             file_name=file_name,
+            print_bad_data_blobs=verbose,
         )
         if not df.empty:
             data_frames.append(df)
@@ -370,8 +374,9 @@ class Analysis:
     # TODO: message folks about the files with mismatched mouse IDs
     #
 
-    def __init__(self, *, data_root: str) -> None:
+    def __init__(self, *, data_root: str, verbose: bool=False) -> None:
         self.data_root = data_root
+        self.verbose = verbose
 
         # From the entire data root directory, get the set of mouse IDs
         self.mouse_ids = get_mouse_ids(self.data_root)
@@ -383,7 +388,8 @@ class Analysis:
             for file in files:
                 if is_data_file(file):
                     f_features, f_data_frames = get_data_features_from_data_file(
-                        os.path.join(root, file)
+                        full_file=os.path.join(root, file),
+                        verbose=self.verbose,
                     )
                     features += f_features
                     if not f_data_frames.empty:
