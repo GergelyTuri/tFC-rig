@@ -5,6 +5,7 @@ from datetime import datetime
 from typing import Optional
 
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 import seaborn as sns
 
@@ -64,6 +65,10 @@ def datetime_to_session_id(date_time: datetime) -> int:
     return int(date_time.strftime("%Y%m%d%H%M%S"))
 
 
+def datetime_to_day_of_week(date_time: datetime) -> str:
+    return date_time.weekday()
+
+
 def get_mouse_ids(data_root: str) -> set[Optional[str]]:
     """
     Given the path to the root of the data directory, return a set of mouse
@@ -120,6 +125,11 @@ def extract_features_from_session_data(
     """
     parsed_data = []
     msg_delimiter = ": "
+
+    # Include day of week in data
+    day_of_week = datetime_to_day_of_week(
+        get_datetime_from_file_path(file_name),
+    )
 
     # Parsing these variables (this data) assumes the messages are ordered
     # by time, and checks for certain markers in the data. It uses `{0, 1}`
@@ -242,6 +252,7 @@ def extract_features_from_session_data(
             {
                 "mouse_id": mouse_id,
                 "session_id": session_id,
+                "day_of_week": day_of_week,
                 "absolute_time": absolute_datetime,
                 "trial": trial,
                 "session_time": t_sesh,
@@ -340,7 +351,7 @@ def get_data_features_from_data_file(
         # Defining learning rate as the ratio of licks in trial type0 to
         # licks in trial type1. Air puffs are delivered in type1 and as
         # the mouse learns type1 licks should go down (type0 up)
-        z_learning_rate = z_total_licks_type_1/z_total_licks_type_0
+        z_learning_rate = z_total_licks_type_0/z_total_licks_type_1
         z_learning_rate_reward = z_total_licks_water_on_type_0/z_total_licks_water_on_type_1
 
         # It might be useful to clean these up
@@ -439,7 +450,7 @@ class Analysis:
         min_session: int=0,
         water_on: bool=False,
         tail_length: Optional[int]=None,
-    ):
+    ) -> None:
         """
         Creates a bar plot showing licks per session and for each mouse.
 
