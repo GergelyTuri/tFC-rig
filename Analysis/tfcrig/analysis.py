@@ -421,9 +421,22 @@ class Analysis:
     def summarize_licks_per_session(
         self,
         mouse_ids: list=[],
-        min_session=0,
-        water_on=False,
+        min_session: int=0,
+        water_on: bool=False,
+        tail_length: Optional[int]=None,
     ):
+        """
+        Creates a bar plot showing licks per session and for each mouse.
+
+        Args:
+            mouse_ids: The set of mice to plot
+            min_session: Filter sessions lower than this value
+            water_on: Set to `True` to only consider licks when water
+                reward is available
+            tail_length: Set to an integer to only graph a tail of
+                sessions with this length, e.g. set to `12` to only
+                show the last 12 sessions
+        """
         if not mouse_ids:
             mouse_ids = self.mouse_ids
 
@@ -461,6 +474,16 @@ class Analysis:
                     "z_total_licks_type_0": "type0",
                     "z_total_licks_type_1": "type1",
                 },
+            )
+
+        # Get a tail of sessions
+        if tail_length:
+            df = df.groupby(
+                "mouse_id"
+            ).apply(
+                lambda x: x.sort_values("session_id").tail(tail_length)
+            ).reset_index(
+                drop=True
             )
 
         # Accounts for trial type
