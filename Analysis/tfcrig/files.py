@@ -15,8 +15,6 @@ import re
 import shutil
 from copy import deepcopy
 
-from dataclasses import dataclass
-
 from tfcrig.notebook import builtin_print
 
 DATETIME_REGEX = r"\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}"
@@ -47,7 +45,7 @@ def extract_exp_mouse_pairs(exp_mouse_blob: str) -> list[str]:
 
     if string_match:
         first_pair = string_match.group()
-        rest_of_string = exp_mouse_blob[string_match.end():]
+        rest_of_string = exp_mouse_blob[string_match.end() :]
         return [first_pair] + extract_exp_mouse_pairs(rest_of_string)
     return []
 
@@ -125,16 +123,15 @@ class RigFiles:
         data_files = set()
         close_data_files = set()
         for root, _, files in os.walk(self.data_root):
-          for file_name in files:
+            for file_name in files:
                 if not file_name.endswith(".json"):
                     # Only walk for JSON files
                     continue
                 if not re.search(DATETIME_REGEX, file_name):
                     # JSON files contain a specific date-time blob
                     continue
-                if (
-                    file_name.endswith("_processed.json")
-                    or file_name.endswith("_analyzed.json")
+                if file_name.endswith("_processed.json") or file_name.endswith(
+                    "_analyzed.json"
                 ):
                     # Other types of analysis process the data a certain way.
                     # This analysis may, too, but for now skip these.
@@ -142,9 +139,8 @@ class RigFiles:
 
                 file_name_parts = re.split(DATETIME_REGEX, file_name)
                 exp_mouse_pairs = extract_exp_mouse_pairs(file_name_parts[0])
-                if (
-                    not exp_mouse_pairs
-                    or any("-" in mouse_id for mouse_id in exp_mouse_pairs)
+                if not exp_mouse_pairs or any(
+                    "-" in mouse_id for mouse_id in exp_mouse_pairs
                 ):
                     # Some JSON files are named incorrectly, or they contain
                     # the correct date-time string but no information on the
@@ -207,6 +203,22 @@ class RigFiles:
             print(f"No copies created!")
 
     def _rename_some_bad_file_name_patterns(self) -> None:
+        """
+        Renames files with incorrect naming patterns.
+
+        This method walks through the directory specified by `self.data_root` and renames files that have incorrect
+        naming patterns. It looks for files with the extension ".json" and a specific date-time blob in their names.
+        If the file name does not meet the expected pattern, it is renamed according to certain rules.
+
+        The method keeps track of the number of files found and the number of files fixed. It also supports a dry run
+        mode where it prints the renaming actions without actually renaming the files.
+
+        Args:
+            None
+
+        Returns:
+            None
+        """
         builtin_print("")
         print("Renaming some incorrectly named files!")
 
@@ -225,9 +237,8 @@ class RigFiles:
                 file_name_parts = re.split(DATETIME_REGEX, file_name)
                 exp_mouse_blob = file_name_parts[0]
                 exp_mouse_pairs = extract_exp_mouse_pairs(exp_mouse_blob)
-                if (
-                    exp_mouse_pairs
-                    and all("-" not in mouse_id for mouse_id in exp_mouse_pairs)
+                if exp_mouse_pairs and all(
+                    "-" not in mouse_id for mouse_id in exp_mouse_pairs
                 ):
                     # This is a good file name. Skip it
                     continue
@@ -296,7 +307,9 @@ class RigFiles:
                 count += 1
 
                 bad_path = os.path.join(root, directory)
-                better_path = os.path.join(root, self.reformat_date_in_directory(directory))
+                better_path = os.path.join(
+                    root, self.reformat_date_in_directory(directory)
+                )
                 if self.dry_run:
                     print("Bad directory found.")
                     builtin_print("  Would rename:")
@@ -337,7 +350,7 @@ class RigFiles:
                 mouse_ids = [e[0:-1] for e in exp_mouse_pairs]
 
                 file_path = os.path.join(root, file_name)
-                with open(file_path, 'r') as f:
+                with open(file_path, "r") as f:
                     data = json.load(f)
 
                 # Some old files, or perhaps any experiment with only a single mouse,
@@ -369,7 +382,9 @@ class RigFiles:
                     # within the JSON blob
                     if modify_mouse_id:
                         data_str = json.dumps(data)
-                        data_str = data_str.replace(f'"{original_mouse_id}"', f'"{mouse_id}"')
+                        data_str = data_str.replace(
+                            f'"{original_mouse_id}"', f'"{mouse_id}"'
+                        )
                         data = json.loads(data_str)
                         need_to_fix_data = True
 
@@ -378,13 +393,10 @@ class RigFiles:
                 # Now we have the correct `mouse_ids`, we check the format of `data`, it
                 # should map to a dictionary per `mouse_id`, but if there is only one
                 # `mouse_id` we need to modify it
-                if (
-                    len(data["header"]["mouse_ids"]) == 1
-                    and isinstance(data["data"], list)
+                if len(data["header"]["mouse_ids"]) == 1 and isinstance(
+                    data["data"], list
                 ):
-                    data["data"] = {
-                        data["header"]["mouse_ids"][0]: data["data"]
-                    }
+                    data["data"] = {data["header"]["mouse_ids"][0]: data["data"]}
                     need_to_fix_data = True
 
                 # Sometimes, we include a `mesage` key instead of `message`, it isn't
@@ -402,7 +414,7 @@ class RigFiles:
                     print(data)
                     count += 1
                 elif need_to_fix_data:
-                    with open(file_path, 'w') as f:
+                    with open(file_path, "w") as f:
                         json.dump(data, f, indent=4)
 
         if count == 0:
