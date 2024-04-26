@@ -1,7 +1,7 @@
 import subprocess, json, re
 
 class UpdateSketch:
-    def __init__(self, params: dict, primary_port: str):
+    def __init__(self, params: dict, primary_port: str, ports: list[str]):
         """
         Initialize UpdateSketch object with parameters and primary port.
 
@@ -15,6 +15,7 @@ class UpdateSketch:
 
         self.params = params
         self.primary = primary_port
+        self.ports = ports
         self.out = []
         self.has_error = False
         
@@ -23,13 +24,17 @@ class UpdateSketch:
         """
         Write parameters to .ino file, compile, and upload it to the rig.
         """
-        output = subprocess.run(["arduino-cli", "board", "list", "--format", "json"], capture_output=True, text=True)
-        boards_info = json.loads(output.stdout)
+        
 
         # Loop through list of boards
-        for board in boards_info:
-            try:
+        try:
+            output = subprocess.run(["arduino-cli", "board", "list", "--format", "json"], capture_output=True, text=True)
+            boards_info = json.loads(output.stdout)
+            
+            for board in boards_info:
                 com = board['port']['label']
+                if com not in self.ports:
+                    continue
                 fqbn = board['matching_boards'][0]['fqbn']
 
                 # update parameters in .ino file
@@ -49,7 +54,6 @@ class UpdateSketch:
                 compile_command = ["arduino-cli", "compile", "-b", fqbn, self.sketch_path]
                 upload_command = ["arduino-cli", "upload", self.sketch_path, "-p", com, "-b", fqbn]
         
-                
                 compile_result = subprocess.run(compile_command, capture_output=True, text=True)
                 upload_result = subprocess.run(upload_command, capture_output=True, text=True)
 
@@ -65,12 +69,13 @@ class UpdateSketch:
                     self.out.append(f"Sketch compiled and uploaded successfully for {com}!\n")
                     self.has_error = False
 
-            except Exception as e:
-                self.out.append('Error: ', e)
-                self.has_error = True
+        except Exception as e:
+            err_str = f'Error: {e}'
+            self.out.append(err_str)
+            self.has_error = True
             
-            if self.has_error:
-                self.out.append("Running without updated parameters...\n")
+        if self.has_error:
+            self.out.append("Running without updated parameters...\n")
 
         print(self.out)
         return self.out

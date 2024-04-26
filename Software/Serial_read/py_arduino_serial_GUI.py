@@ -301,7 +301,9 @@ class Window(QWidget):
         c2 = f' -c2 {self.cam_2.text()}' if self.cam_2.text() else ''
 
         params = self.get_ino_params()
-        updater = UpdateSketch(params, self.primary_port.text())
+        ports = [self.primary_port.text()]
+        if self.secondary_port.text(): ports.append(self.secondary_port.text())
+        updater = UpdateSketch(params, self.primary_port.text(), ports)
         updater_out = updater.write_and_compile_ino()
 
         command = f"python -m Software.Serial_read.py_arduino_serial_camera -ids {p_mouse_id}{s_mouse_id}{p}{s1}{c1}{c2}"
