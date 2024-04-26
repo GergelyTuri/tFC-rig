@@ -330,6 +330,19 @@ def get_data_features_from_data_file(
         df_water_t1 = df_water_t1[df_water_t1["trial_type"] == 1]
         total_licks_water_on_type_1 = df_water_t1["lick"].sum()
 
+        # Some math
+        z_total_licks_in_trial = total_licks_in_trial/total_licks
+        z_total_licks_type_0 = total_licks_type_0/total_licks
+        z_total_licks_type_1 = total_licks_type_1/total_licks
+        z_total_licks_water_on_type_0 = total_licks_water_on_type_0/total_licks_water_on
+        z_total_licks_water_on_type_1 = total_licks_water_on_type_1/total_licks_water_on
+
+        # Defining learning rate as the ratio of licks in trial type0 to
+        # licks in trial type1. Air puffs are delivered in type1 and as
+        # the mouse learns type1 licks should go down (type0 up)
+        z_learning_rate = z_total_licks_type_1/z_total_licks_type_0
+        z_learning_rate_reward = z_total_licks_water_on_type_0/z_total_licks_water_on_type_1
+
         # It might be useful to clean these up
         data_features.append(
             {
@@ -337,16 +350,18 @@ def get_data_features_from_data_file(
                 "session_id": df["session_id"].iloc[0],
                 "total_licks": total_licks,
                 "total_licks_in_trial": total_licks_in_trial,
-                "z_total_licks_in_trial": total_licks_in_trial/total_licks,
+                "z_total_licks_in_trial": z_total_licks_in_trial,
                 "total_licks_type_0": total_licks_type_0,
-                "z_total_licks_type_0": total_licks_type_0/total_licks,
+                "z_total_licks_type_0": z_total_licks_type_0,
                 "total_licks_type_1": total_licks_type_1,
-                "z_total_licks_type_1": total_licks_type_1/total_licks,
+                "z_total_licks_type_1": z_total_licks_type_1,
                 "total_licks_water_on": total_licks_water_on,
                 "total_licks_water_on_type_0": total_licks_water_on_type_0,
-                "z_total_licks_water_on_type_0": total_licks_water_on_type_0/total_licks_water_on,
+                "z_total_licks_water_on_type_0": z_total_licks_water_on_type_0,
                 "total_licks_water_on_type_1": total_licks_water_on_type_1,
-                "z_total_licks_water_on_type_1": total_licks_water_on_type_1/total_licks_water_on,
+                "z_total_licks_water_on_type_1": z_total_licks_water_on_type_1,
+                "z_learning_rate": z_learning_rate,
+                "z_learning_rate_reward": z_learning_rate_reward,
             }
         )
     return (
