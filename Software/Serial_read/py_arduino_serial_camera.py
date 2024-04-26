@@ -26,6 +26,7 @@ from pathlib import Path
 
 import serial
 import urllib3
+import sys
 
 from ..camera_control import camera_class as cc
 from .serial_comm import SerialComm as sc
@@ -179,6 +180,7 @@ def main():
                         break
                 elif data is not None and "error" in data:
                     print(f"Non-JSON data: {data}")
+                sys.stdout.flush()
             if session_ended:
                 for comm in comms.values():
                     comm.close()
@@ -192,6 +194,7 @@ def main():
 
     except serial.SerialException as e:
         print(f"Serial port error: {e}")
+        sys.stdout.flush()
     except KeyboardInterrupt:
         keyboard_interrupt = {
             "message": "KeyboardInterrupt",
@@ -200,9 +203,11 @@ def main():
         for mouse_data in data_list.values():
             mouse_data.append(keyboard_interrupt)
         print("KeyboardInterrupt detected. Saving data to file...")
+        sys.stdout.flush()
         for comm in comms.values():
             comm.close()
         print("Closing serial ports and stopping camera recording...")
+        sys.stdout.flush()
         if args.camera1 is not None:
             cam1.camera_action("STOPRECORDGROUP", SerialGroup=serial_numbers)
             cam1.camera_action("DISCONNECT")

@@ -123,6 +123,13 @@ const int DEBUG_TEST_SECONDARY = false;
 // developed for a session consisting of six trials
 const int NUMBER_OF_TRIALS = 6;
 //
+// -----------
+// IS_TRAINING
+// For a given session, is this a training session (mouse is getting
+// habituated to the rig) or a "real" session (one of pre-learning, 
+// learning, post-learning)?
+const bool IS_TRAINING = false;
+//
 // -------
 // MIN_ITI
 // [milliseconds]
