@@ -360,6 +360,7 @@ def get_data_features_from_data_file(
             {
                 "mouse_id": df["mouse_id"].iloc[0],
                 "session_id": df["session_id"].iloc[0],
+                "day_of_week": df["day_of_week"].iloc[0],
                 "total_licks": total_licks,
                 "total_licks_in_trial": total_licks_in_trial,
                 "z_total_licks_in_trial": z_total_licks_in_trial,
@@ -436,6 +437,7 @@ class Analysis:
 
         print("Unique data categories:")
         builtin_print(f'- mouse_id: {self.data["mouse_id"].unique()}')
+        builtin_print(f'- day_of_week: {self.data["day_of_week"].unique()}')
         builtin_print(f'- is_session: {self.data["is_session"].unique()}')
         builtin_print(f'- trial_type: {self.data["trial_type"].unique()}')
         builtin_print(f'- trial: {self.data["trial"].unique()}')
