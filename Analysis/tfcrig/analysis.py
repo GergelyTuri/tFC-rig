@@ -1,3 +1,4 @@
+import calendar
 import json
 import os
 import re
@@ -66,7 +67,7 @@ def datetime_to_session_id(date_time: datetime) -> int:
 
 
 def datetime_to_day_of_week(date_time: datetime) -> str:
-    return date_time.weekday()
+    return calendar.day_name[date_time.weekday()]
 
 
 def get_mouse_ids(data_root: str) -> set[Optional[str]]:
