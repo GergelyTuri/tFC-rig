@@ -594,3 +594,105 @@ class Analysis:
 
         plt.suptitle(suptitle, y=1.05)
         plt.show()
+
+    def learning_rate_heat_map(
+        self,
+        mouse_ids: list=[],
+        min_session: int=0,
+        water_on: bool=False,
+        tail_length: Optional[int]=None,
+    ) -> None:
+        # TODO: Need to align on the air puff day, which should be
+        # Wednesday, which should be ... 7 and 8 in the current plot?
+        # Can get this from the Cohort Info, may consider adding
+        # it to the rig output
+
+        if not mouse_ids:
+            mouse_ids = self.mouse_ids
+
+        df = self.df.sort_values(by=["session_id", "mouse_id"])
+        df = df[df["mouse_id"].isin(mouse_ids)]
+        df = df[df["session_id"] > min_session]
+
+        # Some filtering options
+        if water_on:
+            df = df[
+                [
+                    "mouse_id",
+                    "session_id",
+                    "z_learning_rate",
+                ]
+            ]
+            df = df.rename(
+                columns={
+                    "z_learning_rate": "learning_rate",
+                },
+            )
+        else:
+            df = df[
+                [
+                    "mouse_id",
+                    "session_id",
+                    "z_learning_rate_reward",
+                ]
+            ]
+            df = df.rename(
+                columns={
+                    "z_learning_rate_reward": "learning_rate",
+                },
+            )
+
+        # Get a tail of sessions
+        if tail_length:
+            def process_group(x):
+                """
+                Gets the tail of sessions and gives them an index
+                """
+                x = x.sort_values('session_id').tail(tail_length)
+                x['session_id'] = range(1, tail_length + 1)
+                return x
+            df = df.groupby(
+                "mouse_id"
+            ).apply(
+                process_group
+            ).reset_index(
+                drop=True
+            )
+
+        # This section does a bit of additional work with the learning
+        # rate. It takes the log and replaces inf, -inf, nan values with
+        # the max, min, and 0 values of the data frame
+        df["learning_rate"] = np.log(df["learning_rate"])
+        df = df.pivot(
+            index="mouse_id", columns="session_id", values="learning_rate"
+        )
+        max_value = df.replace(np.inf, np.nan).max().max()
+        min_value = df.replace(-1*np.inf, np.nan).min().min()
+        df.replace(np.inf, max_value, inplace=True)
+        df.replace(-1*np.inf, min_value, inplace=True)
+        df.replace(np.nan, 0, inplace=True)
+        vmin, vmax = df.min().min(), df.max().max()
+
+        # Create the heatmap using Seaborn
+        plt.figure(figsize=(10, 6))  # You can adjust the size to fit your needs
+        sns.heatmap(
+            df,
+            annot=False,
+            cmap="coolwarm",
+            linewidths=0.5,
+            vmin=vmin,
+            vmax=vmax,
+        )
+        plt.title("Learning Rate Heatmap")
+        plt.show()
+
+        # Plots average learning rate across mice for the last set of sessions
+        mean_learning_rate = df.mean(axis=0)
+        plt.figure(figsize=(8, 6))
+        plt.plot(mean_learning_rate.index, mean_learning_rate.values, marker='o', linestyle='-')
+        plt.title('Average Learning Rate Across Mice')
+        plt.xlabel('Session ID')
+        plt.ylabel('Average Learning Rate')
+        plt.grid(True)
+        plt.xticks(range(1, len(mean_learning_rate.index) + 1))
+        plt.show()
