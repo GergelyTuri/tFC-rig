@@ -14,6 +14,7 @@ import os
 import re
 import shutil
 from copy import deepcopy
+from dataclasses import dataclass
 
 from tfcrig.notebook import builtin_print
 
