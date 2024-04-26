@@ -144,6 +144,10 @@ def extract_features_from_session_data(
     water = 0
     previous_time = raw_data[0]["absolute_time"]
 
+    # Some trial parameters we will try to extract
+    air_puff_start_time = -1
+    air_puff_stop_time = -1
+
     # Some data integrity checks, we may want to skip data and mark sessions as
     # invalid if these fails.
     #
@@ -225,10 +229,31 @@ def extract_features_from_session_data(
                     builtin_print(f" - File: {file_name}")
                 continue
 
+        # Check for some trial parameters
+        if "AIR_PUFF_START_TIME" in msg:
+            air_puff_start_time = int(msg.split(msg_delimiter)[1])
+        if "AIR_PUFF_TOTAL_TIME" in msg:
+            air_puff_stop_time = air_puff_start_time + int(msg.split(msg_delimiter)[1])
+
         # Check for lick
         lick = 0
         if msg == "Lick":
             lick = 1
+
+        # Check for an "air puff lick"
+        # An "air puff lick" is a lick that occurs when air puffing is
+        # occurring, which is determined based on trial time and air
+        # puff parameters
+        puffed_lick = 0
+        if air_puff_start_time > 0 and air_puff_stop_time > 0:
+            # We are in a part of the trial where these parameters have
+            # been determined, given that we initialize them as `-1`
+            if (
+                msg == "Lick" and
+                t_trial >= air_puff_start_time and
+                t_trial <= air_puff_stop_time
+            ):
+                puffed_lick = 1
 
         # Negative signal
         if "Negative signal start" in msg:
@@ -263,6 +288,7 @@ def extract_features_from_session_data(
                 "is_trial": is_trial,
                 "trial_type": trial_type,
                 "lick": lick,
+                "puffed_lick": puffed_lick,
                 "negative_signal": negative_signal,
                 "positive_signal": positive_signal,
                 "water": water,
@@ -319,6 +345,7 @@ def get_data_features_from_data_file(
         return (data_features, pd.DataFrame())
     for df in data_frames:
         total_licks = df["lick"].sum()
+        total_puffed_licks = df["puffed_lick"].sum()
 
         # Total licks by trial type, only during trial
         dft = df[df["is_trial"] == 1]
@@ -348,12 +375,17 @@ def get_data_features_from_data_file(
         z_total_licks_type_1 = total_licks_type_1/total_licks
         z_total_licks_water_on_type_0 = total_licks_water_on_type_0/total_licks_water_on
         z_total_licks_water_on_type_1 = total_licks_water_on_type_1/total_licks_water_on
+        # Puffed
+        z_total_puffed_licks_type_0 = total_puffed_licks_type_0/total_puffed_licks
+        z_total_puffed_licks_type_1 = total_puffed_licks_type_1/total_puffed_licks
+        z_total_puffed_licks_water_on_type_0 = total_puffed_licks_water_on_type_0/total_puffed_licks_water_on
+        z_total_puffed_licks_water_on_type_1 = total_puffed_licks_water_on_type_1/total_puffed_licks_water_on
 
-        # Defining learning rate as the ratio of licks in trial type0 to
+        # Defining learning rate as the ratio of puffed licks in trial type0 to
         # licks in trial type1. Air puffs are delivered in type1 and as
         # the mouse learns type1 licks should go down (type0 up)
-        z_learning_rate = z_total_licks_type_0/z_total_licks_type_1
-        z_learning_rate_reward = z_total_licks_water_on_type_0/z_total_licks_water_on_type_1
+        z_learning_rate = z_total_puffed_licks_type_0/z_total_puffed_licks_type_1
+        z_learning_rate_reward = z_total_puffed_licks_water_on_type_0/z_total_puffed_licks_water_on_type_1
 
         # It might be useful to clean these up
         data_features.append(
