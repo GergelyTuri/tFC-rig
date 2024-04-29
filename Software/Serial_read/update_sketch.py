@@ -1,7 +1,7 @@
 import subprocess, json, re
 
 class UpdateSketch:
-    def __init__(self, params: dict, primary_port: str, ports: list[str]):
+    def __init__(self, params: dict, primary_port: str, ports):
         """
         Initialize UpdateSketch object with parameters and primary port.
 
