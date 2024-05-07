@@ -148,6 +148,7 @@ def extract_features_from_session_data(
     air_puff_start_time = -1
     air_puff_stop_time = -1
     air_puff_total_time = -1
+    first_puff_started = 0
 
     # Some data integrity checks, we may want to skip data and mark sessions as
     # invalid if these fails.
@@ -242,6 +243,10 @@ def extract_features_from_session_data(
         if msg == "Lick":
             lick = 1
 
+        # Check for puff start
+        if msg == "Puff start":
+            first_puff_started = 1
+
         # Check for an "air puff lick"
         # An "air puff lick" is a lick that occurs when air puffing is
         # occurring, which is determined based on trial time and air
@@ -252,9 +257,9 @@ def extract_features_from_session_data(
             # been determined, given that we initialize them as `-1`
             if (
                 lick and
+                first_puff_started and
                 t_trial >= air_puff_start_time and
-                t_trial <= air_puff_stop_time and
-                trial_type == 1
+                t_trial <= air_puff_stop_time
             ):
                 puffed_lick = 1
 
