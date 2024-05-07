@@ -792,6 +792,6 @@ class Analysis:
         p = 2 * (1 - stats.t.cdf(abs(t), dof))
 
         if p < alpha:
-            print(f"P-value {p} is less than {alpha}, significance!")
+            print(f"P-value {round(p, 2)} is less than {alpha}, significance!")
         else:
-            print(f"P-value {p} is greater than alpha {alpha}, x and y are the same.")
+            print(f"P-value {round(p, 2)} is greater than alpha {alpha}, x and y are the same.")
