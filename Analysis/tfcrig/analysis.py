@@ -491,6 +491,18 @@ class Analysis:
         builtin_print(f'- negative_signal: {self.data["negative_signal"].unique()}')
         builtin_print(f'- positive_signal: {self.data["positive_signal"].unique()}')
         builtin_print(f'- water: {self.data["water"].unique()}')
+        builtin_print("")
+        print("Value counts:")
+        builtin_print(f'- mouse_id: {self.data["mouse_id"].value_counts()}')
+        builtin_print(f'- day_of_week: {self.data["day_of_week"].value_counts()}')
+        builtin_print(f'- is_session: {self.data["is_session"].value_counts()}')
+        builtin_print(f'- trial_type: {self.data["trial_type"].value_counts()}')
+        builtin_print(f'- trial: {self.data["trial"].value_counts()}')
+        builtin_print(f'- is_trial: {self.data["is_trial"].value_counts()}')
+        builtin_print(f'- lick: {self.data["lick"].value_counts()}')
+        builtin_print(f'- negative_signal: {self.data["negative_signal"].value_counts()}')
+        builtin_print(f'- positive_signal: {self.data["positive_signal"].value_counts()}')
+        builtin_print(f'- water: {self.data["water"].value_counts()}')
 
     def summarize_licks_per_session(
         self,
