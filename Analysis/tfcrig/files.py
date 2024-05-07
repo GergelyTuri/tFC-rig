@@ -412,7 +412,6 @@ class RigFiles:
                 # Fix the data
                 if need_to_fix_data and self.dry_run:
                     print(f"Need to fix '{file_path}'")
-                    print(data)
                     count += 1
                 elif need_to_fix_data:
                     with open(file_path, "w") as f:
