@@ -251,7 +251,7 @@ def extract_features_from_session_data(
             # We are in a part of the trial where these parameters have
             # been determined, given that we initialize them as `-1`
             if (
-                msg == "Lick" and
+                lick and
                 t_trial >= air_puff_start_time and
                 t_trial <= air_puff_stop_time
             ):
@@ -404,7 +404,9 @@ def get_data_features_from_data_file(
                 "session_id": df["session_id"].iloc[0],
                 "day_of_week": df["day_of_week"].iloc[0],
                 "total_licks": total_licks,
+                "total_puffed_licks": total_puffed_licks,
                 "total_licks_in_trial": total_licks_in_trial,
+                "total_puffed_licks_in_trial": total_puffed_licks_in_trial,
                 "z_total_licks_in_trial": z_total_licks_in_trial,
                 "z_total_puffed_licks_in_trial": z_total_puffed_licks_in_trial,
                 "total_licks_type_0": total_licks_type_0,
