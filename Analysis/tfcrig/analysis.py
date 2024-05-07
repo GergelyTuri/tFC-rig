@@ -758,20 +758,18 @@ class Analysis:
             learn.replace(-1*np.inf, min_value, inplace=True)
             learn.replace(np.nan, 0, inplace=True)
 
-        # See if we can put each sesion learning rate into one of two buckets,
+        # See if we can put each session learning rate into one of two buckets,
         # one pre-learning and one post-learning
         pre_learning_rates = set()
         post_learning_rates = set()
         for mouse_id in learn.index:
             for session_id in learn.columns:
-                # print(f"{mouse_id}: {session_id}: {learn.at[mouse_id, session_id]}")
                 session_date = session_id.date()
                 learning_rate = learn.at[mouse_id, session_id]
                 if learning_rate == 0.0 or pd.isna(learning_rate):
                     continue
 
                 for puff_day in puff_map[mouse_id]:
-                    # print(f"{session_id}, {puff_day}: {(session_date - puff_date).days}")
                     puff_date = puff_day.date()
                     puff_nearness = (session_date - puff_date).days
                     if puff_nearness in [-2, -1]:
