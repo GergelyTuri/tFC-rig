@@ -702,39 +702,24 @@ class Analysis:
         self,
         *,
         puff_map: dict,
-        water_on: bool=False,
         natural_logarithm: bool=False,
         drop_bad_rows: bool=True,
+        metric_of_interest: str="z_learning_rate",
     ) -> None:
         learn = self.df.sort_values(by=["session_id", "mouse_id"])
         learn = learn[learn["mouse_id"].isin(list(puff_map.keys()))]
-
-        if water_on:
-            learn = learn[
-                [
-                    "mouse_id",
-                    "session_id",
-                    "z_learning_rate",
-                ]
+        learn = learn[
+            [
+                "mouse_id",
+                "session_id",
+                metric_of_interest,
             ]
-            learn = learn.rename(
-                columns={
-                    "z_learning_rate": "learning_rate",
-                },
-            )
-        else:
-            learn = learn[
-                [
-                    "mouse_id",
-                    "session_id",
-                    "z_learning_rate_reward",
-                ]
-            ]
-            learn = learn.rename(
-                columns={
-                    "z_learning_rate_reward": "learning_rate",
-                },
-            )
+        ]
+        learn = learn.rename(
+            columns={
+                metric_of_interest: "learning_rate",
+            },
+        )
 
         # Use a date time for comparison with puff map
         learn["session_id"] = pd.to_datetime(learn["session_id"], format="%Y%m%d%H%M%S")
