@@ -8,6 +8,7 @@ from typing import Optional
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import scipy.stats as stats
 import seaborn as sns
 
 from tfcrig.files import DATETIME_REGEX
@@ -128,9 +129,8 @@ def extract_features_from_session_data(
     msg_delimiter = ": "
 
     # Include day of week in data
-    day_of_week = datetime_to_day_of_week(
-        get_datetime_from_file_path(file_name),
-    )
+    date_time = get_datetime_from_file_path(file_name)
+    day_of_week = datetime_to_day_of_week(date_time)
 
     # Parsing these variables (this data) assumes the messages are ordered
     # by time, and checks for certain markers in the data. It uses `{0, 1}`
@@ -278,6 +278,7 @@ def extract_features_from_session_data(
             {
                 "mouse_id": mouse_id,
                 "session_id": session_id,
+                "date": date_time,
                 "day_of_week": day_of_week,
                 "absolute_time": absolute_datetime,
                 "trial": trial,
@@ -696,3 +697,103 @@ class Analysis:
         plt.grid(True)
         plt.xticks(range(1, len(mean_learning_rate.index) + 1))
         plt.show()
+
+    def determine_significance(
+        self,
+        *,
+        puff_map: dict,
+        water_on: bool=False,
+        natural_logarithm: bool=False,
+        drop_bad_rows: bool=True,
+    ) -> None:
+        learn = self.df.sort_values(by=["session_id", "mouse_id"])
+        learn = learn[learn["mouse_id"].isin(list(puff_map.keys()))]
+
+        if water_on:
+            learn = learn[
+                [
+                    "mouse_id",
+                    "session_id",
+                    "z_learning_rate",
+                ]
+            ]
+            learn = learn.rename(
+                columns={
+                    "z_learning_rate": "learning_rate",
+                },
+            )
+        else:
+            learn = learn[
+                [
+                    "mouse_id",
+                    "session_id",
+                    "z_learning_rate_reward",
+                ]
+            ]
+            learn = learn.rename(
+                columns={
+                    "z_learning_rate_reward": "learning_rate",
+                },
+            )
+
+        # Use a date time for comparison with puff map
+        learn["session_id"] = pd.to_datetime(learn["session_id"], format="%Y%m%d%H%M%S")
+
+        # Data transformation options
+        if natural_logarithm:
+            learn["learning_rate"] = np.log(learn["learning_rate"])
+
+        if drop_bad_rows:
+            learn = learn.replace([np.inf, -np.inf], np.nan).dropna()
+            learn = learn.pivot(
+                index="mouse_id", columns="session_id", values="learning_rate"
+            )
+        else:
+            learn = learn.pivot(
+                index="mouse_id", columns="session_id", values="learning_rate"
+            )
+            max_value = learn.replace(np.inf, np.nan).max().max()
+            min_value = learn.replace(-1*np.inf, np.nan).min().min()
+            learn.replace(np.inf, max_value, inplace=True)
+            learn.replace(-1*np.inf, min_value, inplace=True)
+            learn.replace(np.nan, 0, inplace=True)
+
+        # See if we can put each sesion learning rate into one of two buckets,
+        # one pre-learning and one post-learning
+        pre_learning_rates = set()
+        post_learning_rates = set()
+        for mouse_id in learn.index:
+            for session_id in learn.columns:
+                # print(f"{mouse_id}: {session_id}: {learn.at[mouse_id, session_id]}")
+                session_date = session_id.date()
+                learning_rate = learn.at[mouse_id, session_id]
+                if learning_rate == 0.0 or pd.isna(learning_rate):
+                    continue
+
+                for puff_day in puff_map[mouse_id]:
+                    # print(f"{session_id}, {puff_day}: {(session_date - puff_date).days}")
+                    puff_date = puff_day.date()
+                    puff_nearness = (session_date - puff_date).days
+                    if puff_nearness in [-2, -1]:
+                        pre_learning_rates.add(learning_rate)
+                    if puff_nearness in [1, 2]:
+                        post_learning_rates.add(learning_rate)
+
+        alpha = 0.05
+        x = list(pre_learning_rates)
+        y = list(post_learning_rates)
+        nx = len(x)
+        ny = len(y)
+        print(f"Found {nx} pre-learning sessions, {ny} post-learning")
+        mu_x = np.mean(x)
+        mu_y = np.mean(y)
+        sx = np.std(x, ddof=1)
+        sy = np.std(y, ddof=1)
+        t = (mu_x-mu_y)/np.sqrt(sx*sx/nx+sy*sy/ny)
+        dof = nx+ny-2
+        p = 2 * (1 - stats.t.cdf(abs(t), dof))
+
+        if p < alpha:
+            print(f"P-value {p} is less than {alpha}, significance!")
+        else:
+            print(f"P-value {p} is greater than alpha {alpha}, x and y are the same.")

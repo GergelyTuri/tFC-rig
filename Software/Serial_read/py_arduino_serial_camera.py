@@ -167,7 +167,7 @@ def main():
                     data_list[mouse_id].append(data_json)
                     if end_session_message in data_json.get("message", ""):
                         end_message = {
-                            "mesage": data,
+                            "message": data,
                             "absolute_time": datetime.now().strftime(
                                 "%Y-%m-%d_%H-%M-%S.%f"
                             ),
