@@ -363,22 +363,26 @@ def get_data_features_from_data_file(
         df0 = df[df["trial_type"] == 0]
         df0 = df0[df0["is_trial"] == 1]
         total_licks_type_0 = df0["lick"].sum()
+        total_puffed_licks_type_0 = df0["puffed_lick"].sum()
         df1 = df[df["trial_type"] == 1]
         df1 = df1[df1["is_trial"] == 1]
         total_licks_type_1 = df1["lick"].sum()
+        total_puffed_licks_type_1 = df1["puffed_lick"].sum()
 
         # Total licks, water is on
         df_water = df[df["water"] == 1]
         total_licks_water_on = df_water["lick"].sum()
-        # total_puffed_licks_water_on = df_water["puffed_lick"].sum()
+        total_puffed_licks_water_on = df_water["puffed_lick"].sum()
         df_water_t0 = df[df["water"] == 1]
         df_water_t0 = df_water_t0[df_water_t0["is_trial"] == 1]
         df_water_t0 = df_water_t0[df_water_t0["trial_type"] == 0]
         total_licks_water_on_type_0 = df_water_t0["lick"].sum()
+        total_puffed_licks_water_on_type_0 = df_water_t0["puffed_lick"].sum()
         df_water_t1 = df[df["water"] == 1]
         df_water_t1 = df_water_t1[df_water_t1["is_trial"] == 1]
         df_water_t1 = df_water_t1[df_water_t1["trial_type"] == 1]
         total_licks_water_on_type_1 = df_water_t1["lick"].sum()
+        total_puffed_licks_water_on_type_1 = df_water_t1["puffed_lick"].sum()
 
         # Some math
         z_total_licks_in_trial = total_licks_in_trial/total_licks
@@ -388,12 +392,16 @@ def get_data_features_from_data_file(
         z_total_licks_water_on_type_1 = total_licks_water_on_type_1/total_licks_water_on
         # Puffed
         z_total_puffed_licks_in_trial = total_puffed_licks_in_trial/total_puffed_licks
+        z_total_puffed_licks_type_0 = total_puffed_licks_type_0/total_puffed_licks
+        z_total_puffed_licks_type_1 = total_puffed_licks_type_1/total_puffed_licks
+        z_total_puffed_licks_water_on_type_0 = total_puffed_licks_water_on_type_0/total_puffed_licks_water_on
+        z_total_puffed_licks_water_on_type_1 = total_puffed_licks_water_on_type_1/total_puffed_licks_water_on
 
-        # Defining learning rate as the ratio of licks in trial type0 to
+        # Defining learning rate as the ratio of puffed licks in trial type0 to
         # licks in trial type1. Air puffs are delivered in type1 and as
         # the mouse learns type1 licks should go down (type0 up)
-        z_learning_rate = z_total_licks_type_0/z_total_licks_type_1
-        z_learning_rate_reward = z_total_licks_water_on_type_0/z_total_licks_water_on_type_1
+        z_learning_rate = z_total_puffed_licks_type_0/z_total_puffed_licks_type_1
+        z_learning_rate_reward = z_total_puffed_licks_water_on_type_0/z_total_puffed_licks_water_on_type_1
 
         # It might be useful to clean these up
         data_features.append(
@@ -409,13 +417,17 @@ def get_data_features_from_data_file(
                 "z_total_puffed_licks_in_trial": z_total_puffed_licks_in_trial,
                 "total_licks_type_0": total_licks_type_0,
                 "z_total_licks_type_0": z_total_licks_type_0,
+                "z_total_puffed_licks_type_0": z_total_puffed_licks_type_0,
                 "total_licks_type_1": total_licks_type_1,
                 "z_total_licks_type_1": z_total_licks_type_1,
+                "z_total_puffed_licks_type_1": z_total_puffed_licks_type_1,
                 "total_licks_water_on": total_licks_water_on,
                 "total_licks_water_on_type_0": total_licks_water_on_type_0,
                 "z_total_licks_water_on_type_0": z_total_licks_water_on_type_0,
+                "z_total_puffed_licks_water_on_type_0": z_total_puffed_licks_water_on_type_0,
                 "total_licks_water_on_type_1": total_licks_water_on_type_1,
                 "z_total_licks_water_on_type_1": z_total_licks_water_on_type_1,
+                "z_total_puffed_licks_water_on_type_1": z_total_puffed_licks_water_on_type_1,
                 "z_learning_rate": z_learning_rate,
                 "z_learning_rate_reward": z_learning_rate_reward,
             }
