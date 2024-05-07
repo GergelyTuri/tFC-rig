@@ -346,6 +346,7 @@ class RigFiles:
                     continue
 
                 need_to_fix_data = False
+                need_to_fix_msg = ""
                 file_name_parts = re.split(DATETIME_REGEX, file_name)
                 exp_mouse_pairs = extract_exp_mouse_pairs(file_name_parts[0])
                 mouse_ids = [e[0:-1] for e in exp_mouse_pairs]
@@ -360,6 +361,7 @@ class RigFiles:
                     mouse_id = data["header"]["mouse_id"]
                     del data["header"]["mouse_id"]
                     data["header"]["mouse_ids"] = [mouse_id]
+                    need_to_fix_msg = "'mouse_id' in header"
                     need_to_fix_data = True
 
                 # Some mouse IDs have the incorrect format, either by starting with
@@ -387,6 +389,7 @@ class RigFiles:
                             f'"{original_mouse_id}"', f'"{mouse_id}"'
                         )
                         data = json.loads(data_str)
+                        need_to_fix_msg = "'mouse_id' format is bad"
                         need_to_fix_data = True
 
                     mouse_ids.append(mouse_id)
@@ -398,6 +401,7 @@ class RigFiles:
                     data["data"], list
                 ):
                     data["data"] = {data["header"]["mouse_ids"][0]: data["data"]}
+                    need_to_fix_msg = "single mouse 'data' modification"
                     need_to_fix_data = True
 
                 # Sometimes, we include a `mesage` key instead of `message`, it isn't
@@ -406,12 +410,14 @@ class RigFiles:
                 if '"mesage"' in data_str:
                     data_str = data_str.replace('"mesage"', '"message"')
                     data = json.loads(data_str)
+                    need_to_fix_msg = "'mesage' in data"
                     need_to_fix_data = True
                 del data_str
 
                 # Fix the data
                 if need_to_fix_data and self.dry_run:
                     print(f"Need to fix '{file_path}'")
+                    builtin_print(f"- Reason: {need_to_fix_msg}")
                     count += 1
                 elif need_to_fix_data:
                     with open(file_path, "w") as f:
