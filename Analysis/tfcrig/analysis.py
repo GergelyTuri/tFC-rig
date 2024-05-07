@@ -147,6 +147,7 @@ def extract_features_from_session_data(
     # Some trial parameters we will try to extract
     air_puff_start_time = -1
     air_puff_stop_time = -1
+    air_puff_total_time = -1
 
     # Some data integrity checks, we may want to skip data and mark sessions as
     # invalid if these fails.
@@ -233,7 +234,8 @@ def extract_features_from_session_data(
         if "AIR_PUFF_START_TIME" in msg:
             air_puff_start_time = int(msg.split(msg_delimiter)[1])
         if "AIR_PUFF_TOTAL_TIME" in msg:
-            air_puff_stop_time = air_puff_start_time + int(msg.split(msg_delimiter)[1])
+            air_puff_total_time = int(msg.split(msg_delimiter)[1])
+            air_puff_stop_time = air_puff_start_time + air_puff_total_time
 
         # Check for lick
         lick = 0
@@ -407,13 +409,17 @@ def get_data_features_from_data_file(
                 "z_total_puffed_licks_in_trial": z_total_puffed_licks_in_trial,
                 "total_licks_type_0": total_licks_type_0,
                 "z_total_licks_type_0": z_total_licks_type_0,
+                "z_total_puffed_licks_type_0": z_total_puffed_licks_type_0,
                 "total_licks_type_1": total_licks_type_1,
                 "z_total_licks_type_1": z_total_licks_type_1,
+                "z_total_puffed_licks_type_1": z_total_puffed_licks_type_1,
                 "total_licks_water_on": total_licks_water_on,
                 "total_licks_water_on_type_0": total_licks_water_on_type_0,
                 "z_total_licks_water_on_type_0": z_total_licks_water_on_type_0,
+                "z_total_puffed_licks_water_on_type_0": z_total_puffed_licks_water_on_type_0,
                 "total_licks_water_on_type_1": total_licks_water_on_type_1,
                 "z_total_licks_water_on_type_1": z_total_licks_water_on_type_1,
+                "z_total_puffed_licks_water_on_type_1": z_total_puffed_licks_water_on_type_1,
                 "z_learning_rate": z_learning_rate,
                 "z_learning_rate_reward": z_learning_rate_reward,
             }
@@ -466,8 +472,6 @@ class Analysis:
         self.df = pd.DataFrame(features)
         self.df = self.df.sort_values(by=["session_id", "mouse_id"])
         self.data = pd.concat(data_frames).reset_index(drop=True)
-        # TODO: we have this, which should be all features.
-        # How to plot?
 
     def info(self) -> None:
         """
@@ -708,6 +712,7 @@ class Analysis:
     ) -> None:
         learn = self.df.sort_values(by=["session_id", "mouse_id"])
         learn = learn[learn["mouse_id"].isin(list(puff_map.keys()))]
+        print(f"Exploring significance between pre- and post-learning for '{metric_of_interest}'")
         learn = learn[
             [
                 "mouse_id",
