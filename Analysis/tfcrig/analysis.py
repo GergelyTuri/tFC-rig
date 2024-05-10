@@ -789,7 +789,9 @@ class Analysis:
 
         alpha = 0.05
         x = list(pre_learning_rates)
+        print(f"Pre-learning rates: {x}")
         y = list(post_learning_rates)
+        print(f"Post-learning rates: {y}")
         nx = len(x)
         ny = len(y)
         print(f"Found {nx} pre-learning sessions, {ny} post-learning")
