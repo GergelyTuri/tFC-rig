@@ -8,6 +8,7 @@ from typing import Optional
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import scipy.stats as stats
 import seaborn as sns
 
 from tfcrig.files import DATETIME_REGEX
@@ -128,9 +129,8 @@ def extract_features_from_session_data(
     msg_delimiter = ": "
 
     # Include day of week in data
-    day_of_week = datetime_to_day_of_week(
-        get_datetime_from_file_path(file_name),
-    )
+    date_time = get_datetime_from_file_path(file_name)
+    day_of_week = datetime_to_day_of_week(date_time)
 
     # Parsing these variables (this data) assumes the messages are ordered
     # by time, and checks for certain markers in the data. It uses `{0, 1}`
@@ -147,6 +147,8 @@ def extract_features_from_session_data(
     # Some trial parameters we will try to extract
     air_puff_start_time = -1
     air_puff_stop_time = -1
+    air_puff_total_time = -1
+    first_puff_started = 0
 
     # Some data integrity checks, we may want to skip data and mark sessions as
     # invalid if these fails.
@@ -233,12 +235,17 @@ def extract_features_from_session_data(
         if "AIR_PUFF_START_TIME" in msg:
             air_puff_start_time = int(msg.split(msg_delimiter)[1])
         if "AIR_PUFF_TOTAL_TIME" in msg:
-            air_puff_stop_time = air_puff_start_time + int(msg.split(msg_delimiter)[1])
+            air_puff_total_time = int(msg.split(msg_delimiter)[1])
+            air_puff_stop_time = air_puff_start_time + air_puff_total_time
 
         # Check for lick
         lick = 0
         if msg == "Lick":
             lick = 1
+
+        # Check for puff start
+        if msg == "Puff start":
+            first_puff_started = 1
 
         # Check for an "air puff lick"
         # An "air puff lick" is a lick that occurs when air puffing is
@@ -249,7 +256,8 @@ def extract_features_from_session_data(
             # We are in a part of the trial where these parameters have
             # been determined, given that we initialize them as `-1`
             if (
-                msg == "Lick" and
+                lick and
+                first_puff_started and
                 t_trial >= air_puff_start_time and
                 t_trial <= air_puff_stop_time
             ):
@@ -278,6 +286,7 @@ def extract_features_from_session_data(
             {
                 "mouse_id": mouse_id,
                 "session_id": session_id,
+                "date": date_time,
                 "day_of_week": day_of_week,
                 "absolute_time": absolute_datetime,
                 "trial": trial,
@@ -401,18 +410,24 @@ def get_data_features_from_data_file(
                 "session_id": df["session_id"].iloc[0],
                 "day_of_week": df["day_of_week"].iloc[0],
                 "total_licks": total_licks,
+                "total_puffed_licks": total_puffed_licks,
                 "total_licks_in_trial": total_licks_in_trial,
+                "total_puffed_licks_in_trial": total_puffed_licks_in_trial,
                 "z_total_licks_in_trial": z_total_licks_in_trial,
                 "z_total_puffed_licks_in_trial": z_total_puffed_licks_in_trial,
                 "total_licks_type_0": total_licks_type_0,
                 "z_total_licks_type_0": z_total_licks_type_0,
+                "z_total_puffed_licks_type_0": z_total_puffed_licks_type_0,
                 "total_licks_type_1": total_licks_type_1,
                 "z_total_licks_type_1": z_total_licks_type_1,
+                "z_total_puffed_licks_type_1": z_total_puffed_licks_type_1,
                 "total_licks_water_on": total_licks_water_on,
                 "total_licks_water_on_type_0": total_licks_water_on_type_0,
                 "z_total_licks_water_on_type_0": z_total_licks_water_on_type_0,
+                "z_total_puffed_licks_water_on_type_0": z_total_puffed_licks_water_on_type_0,
                 "total_licks_water_on_type_1": total_licks_water_on_type_1,
                 "z_total_licks_water_on_type_1": z_total_licks_water_on_type_1,
+                "z_total_puffed_licks_water_on_type_1": z_total_puffed_licks_water_on_type_1,
                 "z_learning_rate": z_learning_rate,
                 "z_learning_rate_reward": z_learning_rate_reward,
             }
@@ -465,27 +480,37 @@ class Analysis:
         self.df = pd.DataFrame(features)
         self.df = self.df.sort_values(by=["session_id", "mouse_id"])
         self.data = pd.concat(data_frames).reset_index(drop=True)
-        # TODO: we have this, which should be all features.
-        # How to plot?
 
-    def info(self) -> None:
+    def info(self, df: pd.DataFrame) -> None:
         """
         Write some useful meta data about the analysis that can be used
         as a sanity check
         """
-        self.data.info()
+        df.info()
 
         print("Unique data categories:")
-        builtin_print(f'- mouse_id: {self.data["mouse_id"].unique()}')
-        builtin_print(f'- day_of_week: {self.data["day_of_week"].unique()}')
-        builtin_print(f'- is_session: {self.data["is_session"].unique()}')
-        builtin_print(f'- trial_type: {self.data["trial_type"].unique()}')
-        builtin_print(f'- trial: {self.data["trial"].unique()}')
-        builtin_print(f'- is_trial: {self.data["is_trial"].unique()}')
-        builtin_print(f'- lick: {self.data["lick"].unique()}')
-        builtin_print(f'- negative_signal: {self.data["negative_signal"].unique()}')
-        builtin_print(f'- positive_signal: {self.data["positive_signal"].unique()}')
-        builtin_print(f'- water: {self.data["water"].unique()}')
+        builtin_print(f'- mouse_id: {df["mouse_id"].unique()}')
+        builtin_print(f'- day_of_week: {df["day_of_week"].unique()}')
+        builtin_print(f'- is_session: {df["is_session"].unique()}')
+        builtin_print(f'- trial_type: {df["trial_type"].unique()}')
+        builtin_print(f'- trial: {df["trial"].unique()}')
+        builtin_print(f'- is_trial: {df["is_trial"].unique()}')
+        builtin_print(f'- lick: {df["lick"].unique()}')
+        builtin_print(f'- negative_signal: {df["negative_signal"].unique()}')
+        builtin_print(f'- positive_signal: {df["positive_signal"].unique()}')
+        builtin_print(f'- water: {df["water"].unique()}')
+        builtin_print("")
+        print("Value counts:")
+        builtin_print(f'- mouse_id: {df["mouse_id"].value_counts()}')
+        builtin_print(f'- day_of_week: {df["day_of_week"].value_counts()}')
+        builtin_print(f'- is_session: {df["is_session"].value_counts()}')
+        builtin_print(f'- trial_type: {df["trial_type"].value_counts()}')
+        builtin_print(f'- trial: {df["trial"].value_counts()}')
+        builtin_print(f'- is_trial: {df["is_trial"].value_counts()}')
+        builtin_print(f'- lick: {df["lick"].value_counts()}')
+        builtin_print(f'- negative_signal: {df["negative_signal"].value_counts()}')
+        builtin_print(f'- positive_signal: {df["positive_signal"].value_counts()}')
+        builtin_print(f'- water: {df["water"].value_counts()}')
 
     def summarize_licks_per_session(
         self,
@@ -696,3 +721,89 @@ class Analysis:
         plt.grid(True)
         plt.xticks(range(1, len(mean_learning_rate.index) + 1))
         plt.show()
+
+    def determine_significance(
+        self,
+        *,
+        puff_map: dict,
+        natural_logarithm: bool=False,
+        drop_bad_rows: bool=True,
+        metric_of_interest: str="z_learning_rate",
+    ) -> None:
+        learn = self.df.sort_values(by=["session_id", "mouse_id"])
+        learn = learn[learn["mouse_id"].isin(list(puff_map.keys()))]
+        print(f"Exploring significance between pre- and post-learning for '{metric_of_interest}'")
+        learn = learn[
+            [
+                "mouse_id",
+                "session_id",
+                metric_of_interest,
+            ]
+        ]
+        learn = learn.rename(
+            columns={
+                metric_of_interest: "learning_rate",
+            },
+        )
+
+        # Use a date time for comparison with puff map
+        learn["session_id"] = pd.to_datetime(learn["session_id"], format="%Y%m%d%H%M%S")
+
+        # Data transformation options
+        if natural_logarithm:
+            learn["learning_rate"] = np.log(learn["learning_rate"])
+
+        if drop_bad_rows:
+            learn = learn.replace([np.inf, -np.inf], np.nan).dropna()
+            learn = learn.pivot(
+                index="mouse_id", columns="session_id", values="learning_rate"
+            )
+        else:
+            learn = learn.pivot(
+                index="mouse_id", columns="session_id", values="learning_rate"
+            )
+            max_value = learn.replace(np.inf, np.nan).max().max()
+            min_value = learn.replace(-1*np.inf, np.nan).min().min()
+            learn.replace(np.inf, max_value, inplace=True)
+            learn.replace(-1*np.inf, min_value, inplace=True)
+            learn.replace(np.nan, 0, inplace=True)
+
+        # See if we can put each session learning rate into one of two buckets,
+        # one pre-learning and one post-learning
+        pre_learning_rates = set()
+        post_learning_rates = set()
+        for mouse_id in learn.index:
+            for session_id in learn.columns:
+                session_date = session_id.date()
+                learning_rate = learn.at[mouse_id, session_id]
+                if learning_rate == 0.0 or pd.isna(learning_rate):
+                    continue
+
+                for puff_day in puff_map[mouse_id]:
+                    puff_date = puff_day.date()
+                    puff_nearness = (session_date - puff_date).days
+                    if puff_nearness in [-2, -1]:
+                        pre_learning_rates.add(learning_rate)
+                    if puff_nearness in [1, 2]:
+                        post_learning_rates.add(learning_rate)
+
+        alpha = 0.05
+        x = list(pre_learning_rates)
+        y = list(post_learning_rates)
+        nx = len(x)
+        ny = len(y)
+        print(f"Found {nx} pre-learning sessions, {ny} post-learning")
+        print(f"Pre-learning rates: {[round(xi, 3) for xi in x]}")
+        print(f"Post-learning rates: {[round(yi, 3) for yi in y]}")
+        mu_x = np.mean(x)
+        mu_y = np.mean(y)
+        sx = np.std(x, ddof=1)
+        sy = np.std(y, ddof=1)
+        t = (mu_x-mu_y)/np.sqrt(sx*sx/nx+sy*sy/ny)
+        dof = nx+ny-2
+        p = 2 * (1 - stats.t.cdf(abs(t), dof))
+
+        if p < alpha:
+            print(f"P-value {round(p, 2)} is less than {alpha}, significance!")
+        else:
+            print(f"P-value {round(p, 2)} is greater than alpha {alpha}, x and y are the same.")
