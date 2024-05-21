@@ -211,6 +211,7 @@ def extract_features_from_session_data(
             is_trial = 1
         if trial_end_msg in msg:
             is_trial = 0
+            trial_type = -1
 
         # Get trial type
         if "currentTrialType" in msg:
@@ -490,6 +491,7 @@ class Analysis:
 
         print("Unique data categories:")
         builtin_print(f'- mouse_id: {df["mouse_id"].unique()}')
+        builtin_print(f'- session_id: {df["session_id"].unique()}')
         builtin_print(f'- day_of_week: {df["day_of_week"].unique()}')
         builtin_print(f'- is_session: {df["is_session"].unique()}')
         builtin_print(f'- trial_type: {df["trial_type"].unique()}')
@@ -502,6 +504,7 @@ class Analysis:
         builtin_print("")
         print("Value counts:")
         builtin_print(f'- mouse_id: {df["mouse_id"].value_counts()}')
+        builtin_print(f'- session_id: {df["session_id"].value_counts()}')
         builtin_print(f'- day_of_week: {df["day_of_week"].value_counts()}')
         builtin_print(f'- is_session: {df["is_session"].value_counts()}')
         builtin_print(f'- trial_type: {df["trial_type"].value_counts()}')
