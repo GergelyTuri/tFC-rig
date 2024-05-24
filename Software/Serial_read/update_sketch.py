@@ -10,7 +10,6 @@ class UpdateSketch:
             primary_port (str): Primary port for uploading sketches.
         """
         self.sketch_path = "Software/Rig/Rig.ino"
-        self.default_params_path = "Software/Rig/trial_default.h"
         self.params_path = "Software/Rig/trial.h"
 
         self.params = params
@@ -86,7 +85,7 @@ class UpdateSketch:
         Update parameters in the .ino file.
         """       
         try:
-            with open(self.default_params_path, "r") as file:
+            with open(self.params_path, "r") as file:
                 param_content = file.read()
 
             for param, value in self.params.items():
