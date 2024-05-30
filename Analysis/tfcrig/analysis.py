@@ -859,6 +859,7 @@ class Analysis:
     def interactive(self):
         display(
             widgets.interactive(
+                self.interactive_session_display,
                 mouse_id=self.mouse_id_widget,
                 session_id=self.session_id_widget,
                 plot_region=self.plot_region_widget,
