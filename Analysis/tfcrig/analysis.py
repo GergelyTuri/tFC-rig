@@ -859,16 +859,16 @@ class Analysis:
     def interactive(self):
         display(
             widgets.interactive(
-                self.interactive_session_display,
-                data=self.data,
                 mouse_id=self.mouse_id_widget,
                 session_id=self.session_id_widget,
                 plot_region=self.plot_region_widget,
+                data=widgets.fixed(self.data),
             ),
         )
 
+    @staticmethod
     def interactive_session_display(
-        self,
+        data: pd.DataFrame,
         mouse_id: str,
         session_id: str,
         plot_region: str,
@@ -885,7 +885,7 @@ class Analysis:
         session_id = session_id.replace("-", "").replace("T", "").replace(":", "")
 
         # Filter the analysis data
-        df = self.data
+        df = data
         df = df[df["mouse_id"] == mouse_id]
         df.loc[:, "session_id"] = df["session_id"].astype(str)
         df = df[df["session_id"].str.startswith(session_id)].copy()
