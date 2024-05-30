@@ -12,5 +12,5 @@ dependencies:
   - pip:      
     - pyserial==3.5
     - tqdm==4.66.1
-    - PyQt6==6.6.1
+    - PyQt6
     - requests

@@ -285,7 +285,7 @@ class Window(QWidget):
             except serial.SerialException as e:
                 QMessageBox.critical(self, "Error", "Issue connecting to port: \n\n" + str(e))
             except Exception as e:
-                QMessageBox.critical(self, "Error: ", str(e))
+                QMessageBox.critical(self, "Error", str(e))
 
 
     def submit(self):    
