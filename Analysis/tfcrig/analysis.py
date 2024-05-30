@@ -502,7 +502,7 @@ class Analysis:
 
         # Session plotting hooks
         self.mouse_id_widget = widgets.Dropdown(
-            options=sorted(list(analysis.data["mouse_id"].unique())),
+            options=sorted(list(self.data["mouse_id"].unique())),
             description="Mouse ID:",
             disabled=False,
         )
