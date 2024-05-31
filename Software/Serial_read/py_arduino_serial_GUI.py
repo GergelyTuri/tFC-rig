@@ -10,139 +10,19 @@ Usage:
     
 """
 
-from PyQt6.QtWidgets import QApplication, QVBoxLayout, QWidget, QLabel, QPushButton, QLineEdit, QSpinBox, QAbstractSpinBox, QFormLayout, QGroupBox, QMessageBox, QTextEdit, QDialog, QCheckBox, QScrollArea, QComboBox
+from PyQt6.QtWidgets import QApplication, QVBoxLayout, QWidget, QPushButton, QFormLayout, QGroupBox, QMessageBox, QScrollArea, QComboBox
 from PyQt6.QtGui import QIcon, QPixmap
-from PyQt6.QtCore import QThread, pyqtSignal, Qt
+from PyQt6.QtCore import Qt
 from ..camera_control import camera_class as cc
 from .serial_comm import SerialComm as sc
 from .update_sketch import UpdateSketch
-import serial, subprocess
-import sys, os, signal
-import re
+from .output_dialog_plot import OutputDialogPlot, ProcessThread, SpinBox, CheckBox, LineEdit
+import sys, serial, re
 import serial.tools.list_ports
 
 REWARD1 = "Water"
 REWARD2 = "5% Sugar Water"
 DEBUG = False
-
-class OutputDialog(QDialog):
-    """
-    QDialog window for displaying output of experiment process.
-
-    Attributes:
-        process_thread (QThread): Thread for the process.
-    """
-    def __init__(self, process_thread, parent=None):
-        super().__init__(parent)
-        
-        self.process_thread = process_thread
-        self.setWindowTitle("Output")
-        layout = QVBoxLayout()
-        self.setLayout(layout)
-        self.resize(750, 300)
-
-        self.output_text_edit = QTextEdit()
-        self.output_text_edit.setReadOnly(True)
-        layout.addWidget(self.output_text_edit)
-
-        stop_button = QPushButton("Stop and collect data")
-        stop_button.clicked.connect(self.process_thread.stop_process)
-        layout.addWidget(stop_button)
-
-    def update_output(self, output):
-        """
-        Update the output text edit by appending output.
-
-        Args:
-            output (str): Output to append to current output.
-        """
-        try:
-            self.output_text_edit.append(output)
-        except KeyboardInterrupt:
-            print("KeyboardInterrupt detected.")
-
-class ProcessThread(QThread):
-    """
-    Thread for running a subprocess.
-
-    Attributes:
-        output_updated (pyqtSignal): Signal emitted when output is updated.
-        command (str): Command to run.
-        process (subprocess.Popen): Process object.
-    """
-
-    output_updated = pyqtSignal(str)
-
-    def __init__(self, command):
-        super().__init__()
-        self.command = command
-
-    def run(self):
-        try:
-            self.process = subprocess.Popen(self.command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1)
-
-            for line in iter(self.process.stdout.readline, ''):
-                self.output_updated.emit(line.strip())
-            self.process.wait()
-        except Exception as e:
-            self.output_updated.emit(str(e))
-    
-    def stop_process(self):
-        if self.process:
-            print("Interrupting experiment")
-            if os.name == 'nt':  # Windows
-                self.process.send_signal(signal.CTRL_C_EVENT)
-            else:
-                self.process.send_signal(signal.SIGINT)
-
-class SpinBox(QSpinBox):
-    """
-    Subclass of QSpinBox with disabled scrolling.
-
-    Attributes:
-        layout (QFormLayout): Layout to add the spin box to.
-        text (str): Text label for the spin box.
-        default (int): Default value. Defaults to 1.
-        step (int): Step size. Defaults to 10.
-        min (int): Minimum value. Defaults to 1.
-        max (int): Maximum value. Defaults to 1000000.
-    """
-    def __init__(self, layout: QFormLayout, text: str, default = 1, step = 10, min = 1, max=1000000):
-        super().__init__()
-        self.wheelEvent = lambda event: None  # Disables scrolling in boxes
-        # spinBox.setButtonSymbols(QAbstractSpinBox.ButtonSymbols.NoButtons)  # Disables arrow buttons
-        self.setRange(min, max)
-        self.setSingleStep(step)
-        self.setValue(default)
-        layout.addRow(QLabel(text), self)
-
-class CheckBox(QCheckBox):
-    """
-    Subclass of QCheckBox.
-
-    Attributes:
-        layout (QFormLayout): Layout to add the check box to.
-        text (str): Text label for the check box.
-    """
-    def __init__(self, layout: QFormLayout, text: str, checked: bool=True):
-        super().__init__(text)
-        if checked:
-            self.setCheckState(Qt.CheckState.Checked)
-        else:
-            self.setCheckState(Qt.CheckState.Unchecked)
-        layout.addRow(self)
-
-class LineEdit(QLineEdit):
-    """
-    Subclass of QLineEdit.
-
-    Attributes:
-        layout (QFormLayout): Layout to add the line edit to.
-        text (str): Text label for the line edit.
-    """
-    def __init__(self, layout: QFormLayout, text: str):
-        super().__init__()
-        layout.addRow(QLabel(text), self)
 
 
 class Window(QWidget):
@@ -290,8 +170,7 @@ class Window(QWidget):
 
     def submit(self):    
         """
-        Updates the sketch with new trial parameters
-        Then starts the experiment by calling subprocess of experiment script.
+        Starts the experiment by calling subprocess of experiment script.
         """    
         p_mouse_id = self.primary_mouse_id.text()
         s_mouse_id = f',{self.secondary_mouse_id.text()}' if self.secondary_mouse_id.text() else ''
@@ -300,24 +179,72 @@ class Window(QWidget):
         c1 = f' -c1 {self.cam_1.text()}' if self.cam_1.text() else ''
         c2 = f' -c2 {self.cam_2.text()}' if self.cam_2.text() else ''
 
-        params = self.get_ino_params()
-        ports = [self.primary_port.text()]
-        if self.secondary_port.text(): ports.append(self.secondary_port.text())
-        updater = UpdateSketch(params, self.primary_port.text(), ports)
-        updater_out = updater.write_and_compile_ino()
-
         command = f"python -m Software.Serial_read.py_arduino_serial_camera -ids {p_mouse_id}{s_mouse_id}{p}{s1}{c1}{c2}"
-        print(command)
         process_thread = ProcessThread(command)
-        dialog = OutputDialog(process_thread, self)
-        for out in updater_out: dialog.update_output(out)
+        dialog = OutputDialogPlot(process_thread, self)
+
+        self.update_sketch(dialog)
+
         process_thread.output_updated.connect(dialog.update_output)
         process_thread.start()
+        print(command)
         try:
             dialog.exec()
         except KeyboardInterrupt:
             print("KeyboardInterrupt detected.")
 
+        
+    def update_sketch(self, dialog: OutputDialogPlot):
+        """
+        Updates sketch if there are new trial parameters.
+        """
+        setting_has_changed = self.check_all_changes()
+        if setting_has_changed:
+            params = self.get_ino_params()
+            ports = [self.primary_port.text()]
+            if self.secondary_port.text(): ports.append(self.secondary_port.text())
+            updater = UpdateSketch(params, self.primary_port.text(), ports)
+            updater_out = updater.write_and_compile_ino()
+
+            for out in updater_out: dialog.update_output(out)
+            
+
+    def check_all_changes(self):
+        """
+        Checks if any settings have been changed.
+
+        Returns:
+            Boolean indicating if there are any new changes.
+        """
+        fields = [
+            self.num_trials,
+            self.is_training,
+            self.min_iti,
+            self.max_iti,
+            self.trial_duration,
+            self.post_trial_duration,
+            self.water_enabled,
+            self.aud_air_enabled,
+            self.air_enabled,
+            self.air_puff_duration,
+            self.air_puff_start_time,
+            self.auditory_start,
+            self.auditory_stop,
+            self.water_disp_num_licks,
+            self.water_disp_time,
+            self.water_timeout,
+            self.lick_timeout,
+            self.lick_count_timeout
+        ]
+        changed = [field.changed for field in fields]
+
+        if any(changed):
+            for field in fields:
+                field.changed = False
+                field.set_initial()
+            return True
+        return False
+        
 
     def get_ino_params(self):
         """

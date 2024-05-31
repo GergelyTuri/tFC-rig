@@ -1,0 +1,3065 @@
+{
+    "header": {
+        "mouse_ids": [
+            "m12_1",
+            "m12_2"
+        ],
+        "primary_port": "COM3",
+        "secondary_port": "COM4",
+        "mouse_port_assignment": {
+            "m12_1": "COM3",
+            "m12_2": "COM4"
+        },
+        "Start_time": "2024-04-22_18-28-31"
+    },
+    "data": {
+        "m12_1": [
+            {
+                "message": "0: 0: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.175478"
+            },
+            {
+                "message": "0: 100: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.182471"
+            },
+            {
+                "message": "0: 201: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.186458"
+            },
+            {
+                "message": "0: 302: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.190442"
+            },
+            {
+                "message": "0: 402: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.193439"
+            },
+            {
+                "message": "0: 502: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.197433"
+            },
+            {
+                "message": "0: 604: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.200420"
+            },
+            {
+                "message": "0: 704: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.204406"
+            },
+            {
+                "message": "0: 804: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.208392"
+            },
+            {
+                "message": "0: 905: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.212384"
+            },
+            {
+                "message": "0: 1006: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.215377"
+            },
+            {
+                "message": "0: 1106: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.218369"
+            },
+            {
+                "message": "0: 1207: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.222354"
+            },
+            {
+                "message": "0: 1308: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.225361"
+            },
+            {
+                "message": "0: 1409: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.228771"
+            },
+            {
+                "message": "0: 1509: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.232919"
+            },
+            {
+                "message": "0: 1609: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.236209"
+            },
+            {
+                "message": "0: 1711: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.240213"
+            },
+            {
+                "message": "0: 1811: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.244206"
+            },
+            {
+                "message": "0: 1911: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.248204"
+            },
+            {
+                "message": "0: 2013: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.252188"
+            },
+            {
+                "message": "0: 2113: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.255184"
+            },
+            {
+                "message": "0: 2213: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.259695"
+            },
+            {
+                "message": "0: 2315: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.263685"
+            },
+            {
+                "message": "0: 2415: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.267678"
+            },
+            {
+                "message": "0: 2515: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.271664"
+            },
+            {
+                "message": "0: 2616: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.274656"
+            },
+            {
+                "message": "0: 2717: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.278645"
+            },
+            {
+                "message": "0: 2818: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.282638"
+            },
+            {
+                "message": "0: 2918: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.286625"
+            },
+            {
+                "message": "0: 3019: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.290613"
+            },
+            {
+                "message": "0: 3120: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.294602"
+            },
+            {
+                "message": "0: 3220: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.298598"
+            },
+            {
+                "message": "0: 3321: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.301586"
+            },
+            {
+                "message": "0: 3422: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.304577"
+            },
+            {
+                "message": "0: 3522: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.306572"
+            },
+            {
+                "message": "0: 3622: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.309561"
+            },
+            {
+                "message": "0: 3724: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.311555"
+            },
+            {
+                "message": "0: 3824: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.313550"
+            },
+            {
+                "message": "0: 3924: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.315547"
+            },
+            {
+                "message": "0: 4026: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.317570"
+            },
+            {
+                "message": "0: 4126: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.319536"
+            },
+            {
+                "message": "0: 4227: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.321530"
+            },
+            {
+                "message": "0: 4328: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.322528"
+            },
+            {
+                "message": "0: 4428: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.324522"
+            },
+            {
+                "message": "0: 4529: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.325519"
+            },
+            {
+                "message": "0: 4629: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.327514"
+            },
+            {
+                "message": "0: 4730: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.328511"
+            },
+            {
+                "message": "0: 4831: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.329508"
+            },
+            {
+                "message": "0: 4931: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.330504"
+            },
+            {
+                "message": "0: 5032: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.331501"
+            },
+            {
+                "message": "0: 5133: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.333496"
+            },
+            {
+                "message": "0: 5233: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.334493"
+            },
+            {
+                "message": "0: 5335: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.335491"
+            },
+            {
+                "message": "0: 5435: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.336488"
+            },
+            {
+                "message": "0: 5535: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.337485"
+            },
+            {
+                "message": "0: 5636: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.338482"
+            },
+            {
+                "message": "0: 5737: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.339480"
+            },
+            {
+                "message": "0: 5837: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.340477"
+            },
+            {
+                "message": "0: 5938: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.341476"
+            },
+            {
+                "message": "0: 6039: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.342475"
+            },
+            {
+                "message": "0: 6139: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.343473"
+            },
+            {
+                "message": "0: 6240: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.343473"
+            },
+            {
+                "message": "0: 6341: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.344472"
+            },
+            {
+                "message": "0: 6441: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.345480"
+            },
+            {
+                "message": "0: 6542: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.346464"
+            },
+            {
+                "message": "0: 6642: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.347462"
+            },
+            {
+                "message": "0: 6744: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.348459"
+            },
+            {
+                "message": "0: 6844: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.348459"
+            },
+            {
+                "message": "0: 6944: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.349457"
+            },
+            {
+                "message": "0: 7046: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.350454"
+            },
+            {
+                "message": "0: 7146: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.351451"
+            },
+            {
+                "message": "0: 7246: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.352448"
+            },
+            {
+                "message": "0: 7348: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.353446"
+            },
+            {
+                "message": "0: 7448: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.353446"
+            },
+            {
+                "message": "0: 7548: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.354444"
+            },
+            {
+                "message": "0: 7649: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.355446"
+            },
+            {
+                "message": "0: 7750: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.355446"
+            },
+            {
+                "message": "0: 7851: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.356953"
+            },
+            {
+                "message": "0: 7951: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.357953"
+            },
+            {
+                "message": "0: 8052: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.358949"
+            },
+            {
+                "message": "0: 8153: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.358949"
+            },
+            {
+                "message": "0: 8253: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.359947"
+            },
+            {
+                "message": "0: 8354: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.360944"
+            },
+            {
+                "message": "0: 8455: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.361941"
+            },
+            {
+                "message": "0: 8555: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.361941"
+            },
+            {
+                "message": "0: 8655: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.404087"
+            },
+            {
+                "message": "0: 8757: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.505640"
+            },
+            {
+                "message": "0: 8857: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.607676"
+            },
+            {
+                "message": "0: 8957: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.707278"
+            },
+            {
+                "message": "0: 9059: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.808588"
+            },
+            {
+                "message": "0: 9159: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-46.907153"
+            },
+            {
+                "message": "0: 9260: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-47.009383"
+            },
+            {
+                "message": "0: 9361: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-47.107289"
+            },
+            {
+                "message": "0: 9461: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-47.211186"
+            },
+            {
+                "message": "0: 9562: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-47.312762"
+            },
+            {
+                "message": "0: 9662: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-47.410402"
+            },
+            {
+                "message": "0: 9763: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-47.513325"
+            },
+            {
+                "message": "0: 9864: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-47.611738"
+            },
+            {
+                "message": "0: 9964: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-47.713573"
+            },
+            {
+                "message": "0: 10065: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-47.816459"
+            },
+            {
+                "message": "0: 10166: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-47.915502"
+            },
+            {
+                "message": "0: 10266: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-48.016765"
+            },
+            {
+                "message": "0: 10368: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-48.115581"
+            },
+            {
+                "message": "0: 10468: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-48.217759"
+            },
+            {
+                "message": "0: 10568: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-48.319446"
+            },
+            {
+                "message": "0: 10670: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-48.418625"
+            },
+            {
+                "message": "0: 10770: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-48.520960"
+            },
+            {
+                "message": "0: 10870: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-48.620232"
+            },
+            {
+                "message": "0: 10972: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-48.721482"
+            },
+            {
+                "message": "0: 11072: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-48.820451"
+            },
+            {
+                "message": "0: 11172: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-48.923225"
+            },
+            {
+                "message": "0: 11274: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-49.024028"
+            },
+            {
+                "message": "0: 11374: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-49.123793"
+            },
+            {
+                "message": "0: 11474: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-49.224523"
+            },
+            {
+                "message": "0: 11576: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-49.323423"
+            },
+            {
+                "message": "0: 11676: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-49.426560"
+            },
+            {
+                "message": "0: 11777: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-49.524138"
+            },
+            {
+                "message": "0: 11878: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-49.627706"
+            },
+            {
+                "message": "0: 11978: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-49.728038"
+            },
+            {
+                "message": "0: 12079: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-49.827212"
+            },
+            {
+                "message": "0: 12180: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-49.930764"
+            },
+            {
+                "message": "0: 12280: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-50.028150"
+            },
+            {
+                "message": "0: 12382: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-50.130295"
+            },
+            {
+                "message": "0: 12482: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-50.232488"
+            },
+            {
+                "message": "0: 12582: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-50.330763"
+            },
+            {
+                "message": "0: 12684: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-50.432647"
+            },
+            {
+                "message": "0: 12784: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-50.531869"
+            },
+            {
+                "message": "0: 12884: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-50.634269"
+            },
+            {
+                "message": "0: 12986: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-50.733004"
+            },
+            {
+                "message": "0: 13086: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-50.834715"
+            },
+            {
+                "message": "0: 13187: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-50.937125"
+            },
+            {
+                "message": "0: 13288: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-51.035652"
+            },
+            {
+                "message": "0: 13388: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-51.137858"
+            },
+            {
+                "message": "0: 13489: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-51.236916"
+            },
+            {
+                "message": "0: 13590: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-51.339550"
+            },
+            {
+                "message": "0: 13690: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-51.437055"
+            },
+            {
+                "message": "0: 13791: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-51.540327"
+            },
+            {
+                "message": "0: 13892: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-51.641663"
+            },
+            {
+                "message": "0: 13992: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-51.739660"
+            },
+            {
+                "message": "0: 14093: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-51.842377"
+            },
+            {
+                "message": "0: 14194: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-51.940440"
+            },
+            {
+                "message": "0: 14295: 0: Waiting for session to start...",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-52.042665"
+            },
+            {
+                "message": "Session consists of 5 trials, (originally three CS+, three CS-) in the following order",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-52.687388"
+            },
+            {
+                "message": "0: 14922: 0: 0 is CS-, 1 is CS+",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-52.723244"
+            },
+            {
+                "message": "0: 14957: 0: trialTypes: 010101",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-52.756012"
+            },
+            {
+                "message": "0: 14991: 0: BAUD_RATE: 9600",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-52.788390"
+            },
+            {
+                "message": "0: 15023: 0: PIN_AIR_PUFF: 4",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-52.817588"
+            },
+            {
+                "message": "0: 15053: 0: PIN_WATER_SOLENOID: 5",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-52.854127"
+            },
+            {
+                "message": "0: 15091: 0: PIN_TONE_NEGATIVE: 9",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-52.892006"
+            },
+            {
+                "message": "0: 15127: 0: PIN_TONE_POSITIVE: 10",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-52.927785"
+            },
+            {
+                "message": "0: 15165: 0: PIN_BUTTON: 11",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-52.960930"
+            },
+            {
+                "message": "0: 15195: 0: PIN_LICK: 12",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-52.988451"
+            },
+            {
+                "message": "0: 15223: 0: PIN_MOUSE_LED: 3",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-53.019005"
+            },
+            {
+                "message": "0: 15255: 0: PIN_CAMERA: 2",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-53.051745"
+            },
+            {
+                "message": "0: 15285: 0: PIN_SECONDARY: 6",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-53.080489"
+            },
+            {
+                "message": "0: 15316: 0: DEBUGGING: 0",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-53.107961"
+            },
+            {
+                "message": "0: 15344: 0: IS_PRIMARY_RIG: 1",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-53.140592"
+            },
+            {
+                "message": "0: 15378: 0: NUMBER_OF_TRIALS: 5",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-53.177565"
+            },
+            {
+                "message": "0: 15413: 0: IS_TRAINING: 1",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-53.206236"
+            },
+            {
+                "message": "0: 15443: 0: INTER_TRIAL_DEBUG_WAIT_INTERVAL: 5000",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-53.263655"
+            },
+            {
+                "message": "0: 15498: 0: TRIAL_DURATION: 50000",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-53.300417"
+            },
+            {
+                "message": "0: 15535: 0: LICK_TIMEOUT: 90",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-53.332946"
+            },
+            {
+                "message": "0: 15567: 0: LICK_COUNT_TIMEOUT: 1000",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-53.374137"
+            },
+            {
+                "message": "0: 15607: 0: WATER_REWARD_AVAILABLE: 1",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-53.414903"
+            },
+            {
+                "message": "0: 15649: 0: WATER_DISPENSE_TIME: 200",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-53.456363"
+            },
+            {
+                "message": "0: 15690: 0: WATER_DISPENSE_ON_NUMBER_LICKS: 2",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-53.504957"
+            },
+            {
+                "message": "0: 15739: 0: WATER_TIMEOUT: 700",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-53.537876"
+            },
+            {
+                "message": "0: 15774: 0: USING_AUDITORY_CUES: 0",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-53.579784"
+            },
+            {
+                "message": "0: 15812: 0: AIR_PUFF_START_TIME: 45000",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-53.619879"
+            },
+            {
+                "message": "0: 15855: 0: AIR_PUFF_DURATION: 200",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-53.657216"
+            },
+            {
+                "message": "0: 15894: 0: INTER_PUFF_PAUSE_TIME: 1000",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-53.702015"
+            },
+            {
+                "message": "0: 15937: 0: AIR_PUFF_TOTAL_TIME: 5000",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-53.743184"
+            },
+            {
+                "message": "0: 15979: 0: AUDITORY_START: 15000",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-53.779591"
+            },
+            {
+                "message": "0: 16017: 0: AUDITORY_STOP: 35000",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-53.816216"
+            },
+            {
+                "message": "0: 16053: 0: POSITIVE_FREQUENCY: 5000",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-53.856939"
+            },
+            {
+                "message": "0: 16094: 0: POSITIVE_DURATION: 20000",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-53.899499"
+            },
+            {
+                "message": "0: 16134: 0: AUDITORY_BUFFER: 100",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-53.936404"
+            },
+            {
+                "message": "0: 16171: 0: NEGATIVE_FREQUENCY: 2000",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-53.976833"
+            },
+            {
+                "message": "0: 16210: 0: NEGATIVE_PULSE_DURATION: 1000",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-54.021463"
+            },
+            {
+                "message": "0: 16257: 0: NEGATIVE_CYCLE_DURATION: 2000",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-54.067145"
+            },
+            {
+                "message": "0: 16303: 0: Session has started",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-54.103664"
+            },
+            {
+                "message": "0: 16337: 0: Trial has started",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-54.136839"
+            },
+            {
+                "message": "0: 16371: 0: Printing trial parameters",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-54.177321"
+            },
+            {
+                "message": "0: 16413: 0: randomInterTrialInterval: 260775",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-54.225515"
+            },
+            {
+                "message": "0: 16461: 0: currentTrialType: 0",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-54.262206"
+            },
+            {
+                "message": "0: 19578: 3084: Lick",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-57.301908"
+            },
+            {
+                "message": "0: 19578: 3085: Resetting lick count",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-57.338969"
+            },
+            {
+                "message": "0: 19670: 3176: Lick",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-57.392079"
+            },
+            {
+                "message": "0: 19761: 3267: Lick",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-57.482280"
+            },
+            {
+                "message": "0: 19761: 3267: Water on",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-57.510879"
+            },
+            {
+                "message": "0: 19912: 3418: Lick",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-57.633607"
+            },
+            {
+                "message": "0: 19962: 3468: Water off",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-57.687055"
+            },
+            {
+                "message": "0: 20003: 3509: Lick",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-57.723272"
+            },
+            {
+                "message": "0: 20094: 3600: Lick",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-57.813546"
+            },
+            {
+                "message": "0: 20185: 3691: Lick",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-57.904234"
+            },
+            {
+                "message": "0: 20276: 3782: Lick",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-57.997514"
+            },
+            {
+                "message": "0: 20367: 3873: Lick",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-58.088109"
+            },
+            {
+                "message": "0: 20458: 3964: Lick",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-58.178391"
+            },
+            {
+                "message": "0: 20462: 3968: Water on",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-58.207313"
+            },
+            {
+                "message": "0: 20663: 4169: Water off",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-58.387158"
+            },
+            {
+                "message": "0: 21459: 4965: Resetting lick count",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-28-59.198327"
+            },
+            {
+                "message": "0: 24983: 8490: Lick",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-29-02.703529"
+            },
+            {
+                "message": "0: 24984: 8490: Resetting lick count",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-29-02.744420"
+            },
+            {
+                "message": "0: 25074: 8580: Lick",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-29-02.794373"
+            },
+            {
+                "message": "0: 25165: 8671: Lick",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-29-02.884651"
+            },
+            {
+                "message": "0: 25165: 8671: Water on",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-29-02.912538"
+            },
+            {
+                "message": "0: 25256: 8762: Lick",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-29-02.974106"
+            },
+            {
+                "message": "0: 25347: 8853: Lick",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-29-03.064033"
+            },
+            {
+                "message": "0: 25366: 8872: Water off",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-29-03.093196"
+            },
+            {
+                "message": "0: 26348: 9854: Resetting lick count",
+                "mouse_id": "m12_1",
+                "port": "COM3",
+                "absolute_time": "2024-04-22_18-29-04.084022"
+            },
+            {
+                "message": "KeyboardInterrupt",
+                "absolute_time": "2024-04-22_18-29-17.578247"
+            }
+        ],
+        "m12_2": [
+            {
+                "message": "Session consists of 5 trials, (originally three CS+, three CS-) in the following order",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.180467"
+            },
+            {
+                "message": "0: 277: 0: 0 is CS-, 1 is CS+",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.184462"
+            },
+            {
+                "message": "0: 309: 0: trialTypes: 110001",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.188452"
+            },
+            {
+                "message": "0: 342: 0: BAUD_RATE: 9600",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.191448"
+            },
+            {
+                "message": "0: 370: 0: PIN_AIR_PUFF: 4",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.195430"
+            },
+            {
+                "message": "0: 400: 0: PIN_WATER_SOLENOID: 5",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.198426"
+            },
+            {
+                "message": "0: 435: 0: PIN_TONE_NEGATIVE: 9",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.202415"
+            },
+            {
+                "message": "0: 470: 0: PIN_TONE_POSITIVE: 10",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.206397"
+            },
+            {
+                "message": "0: 504: 0: PIN_BUTTON: 11",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.210385"
+            },
+            {
+                "message": "0: 533: 0: PIN_LICK: 12",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.213381"
+            },
+            {
+                "message": "0: 559: 0: PIN_MOUSE_LED: 3",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.216374"
+            },
+            {
+                "message": "0: 589: 0: PIN_CAMERA: 2",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.220358"
+            },
+            {
+                "message": "0: 616: 0: PIN_SECONDARY: 6",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.223350"
+            },
+            {
+                "message": "0: 646: 0: DEBUGGING: 0",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.226795"
+            },
+            {
+                "message": "0: 672: 0: IS_PRIMARY_RIG: 0",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.230881"
+            },
+            {
+                "message": "0: 703: 0: NUMBER_OF_TRIALS: 5",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.233933"
+            },
+            {
+                "message": "0: 737: 0: IS_TRAINING: 1",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.237217"
+            },
+            {
+                "message": "0: 764: 0: INTER_TRIAL_DEBUG_WAIT_INTERVAL: 5000",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.242213"
+            },
+            {
+                "message": "0: 817: 0: TRIAL_DURATION: 50000",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.245211"
+            },
+            {
+                "message": "0: 851: 0: LICK_TIMEOUT: 90",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.249199"
+            },
+            {
+                "message": "0: 882: 0: LICK_COUNT_TIMEOUT: 1000",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.253185"
+            },
+            {
+                "message": "0: 921: 0: WATER_REWARD_AVAILABLE: 1",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.257701"
+            },
+            {
+                "message": "0: 960: 0: WATER_DISPENSE_TIME: 200",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.261691"
+            },
+            {
+                "message": "0: 999: 0: WATER_DISPENSE_ON_NUMBER_LICKS: 2",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.265688"
+            },
+            {
+                "message": "0: 1046: 0: WATER_TIMEOUT: 700",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.269695"
+            },
+            {
+                "message": "0: 1080: 0: USING_AUDITORY_CUES: 0",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.272693"
+            },
+            {
+                "message": "0: 1117: 0: AIR_PUFF_START_TIME: 45000",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.276651"
+            },
+            {
+                "message": "0: 1159: 0: AIR_PUFF_DURATION: 200",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.280655"
+            },
+            {
+                "message": "0: 1197: 0: INTER_PUFF_PAUSE_TIME: 1000",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.284630"
+            },
+            {
+                "message": "0: 1239: 0: AIR_PUFF_TOTAL_TIME: 5000",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.288619"
+            },
+            {
+                "message": "0: 1280: 0: AUDITORY_START: 15000",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.292608"
+            },
+            {
+                "message": "0: 1315: 0: AUDITORY_STOP: 35000",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.295600"
+            },
+            {
+                "message": "0: 1351: 0: POSITIVE_FREQUENCY: 5000",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.300585"
+            },
+            {
+                "message": "0: 1391: 0: POSITIVE_DURATION: 20000",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.302583"
+            },
+            {
+                "message": "0: 1430: 0: AUDITORY_BUFFER: 100",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.305580"
+            },
+            {
+                "message": "0: 1466: 0: NEGATIVE_FREQUENCY: 2000",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.308564"
+            },
+            {
+                "message": "0: 1505: 0: NEGATIVE_PULSE_DURATION: 1000",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.310557"
+            },
+            {
+                "message": "0: 1550: 0: NEGATIVE_CYCLE_DURATION: 2000",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.312553"
+            },
+            {
+                "message": "0: 1595: 0: Session has started",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.314552"
+            },
+            {
+                "message": "0: 1629: 0: Trial has started",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.316557"
+            },
+            {
+                "message": "0: 1661: 0: Printing trial parameters",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.318539"
+            },
+            {
+                "message": "0: 1701: 0: randomInterTrialInterval: 201441",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.320535"
+            },
+            {
+                "message": "0: 1750: 0: currentTrialType: 1",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.322528"
+            },
+            {
+                "message": "0: 5549: 3769: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.323523"
+            },
+            {
+                "message": "0: 5549: 3769: Resetting lick count",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.325519"
+            },
+            {
+                "message": "0: 5639: 3859: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.326516"
+            },
+            {
+                "message": "0: 5730: 3950: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.327514"
+            },
+            {
+                "message": "0: 5730: 3950: Water on",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.328511"
+            },
+            {
+                "message": "0: 5821: 4041: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.330504"
+            },
+            {
+                "message": "0: 5912: 4132: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.331501"
+            },
+            {
+                "message": "0: 5931: 4151: Water off",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.332498"
+            },
+            {
+                "message": "0: 6003: 4223: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.333496"
+            },
+            {
+                "message": "0: 6094: 4314: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.334493"
+            },
+            {
+                "message": "0: 6185: 4405: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.335491"
+            },
+            {
+                "message": "0: 6276: 4496: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.336488"
+            },
+            {
+                "message": "0: 6367: 4587: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.337485"
+            },
+            {
+                "message": "0: 6431: 4651: Water on",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.338482"
+            },
+            {
+                "message": "0: 6458: 4678: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.339480"
+            },
+            {
+                "message": "0: 6549: 4769: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.340477"
+            },
+            {
+                "message": "0: 6632: 4852: Water off",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.341476"
+            },
+            {
+                "message": "0: 6640: 4860: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.342475"
+            },
+            {
+                "message": "0: 6731: 4951: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.343473"
+            },
+            {
+                "message": "0: 6822: 5042: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.344472"
+            },
+            {
+                "message": "0: 6913: 5133: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.344472"
+            },
+            {
+                "message": "0: 7004: 5224: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.345480"
+            },
+            {
+                "message": "0: 7095: 5315: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.346464"
+            },
+            {
+                "message": "0: 7132: 5352: Water on",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.347462"
+            },
+            {
+                "message": "0: 7186: 5406: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.348459"
+            },
+            {
+                "message": "0: 7277: 5497: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.349457"
+            },
+            {
+                "message": "0: 7333: 5553: Water off",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.350454"
+            },
+            {
+                "message": "0: 7368: 5588: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.350454"
+            },
+            {
+                "message": "0: 7459: 5679: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.351451"
+            },
+            {
+                "message": "0: 7550: 5770: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.352448"
+            },
+            {
+                "message": "0: 7641: 5861: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.353446"
+            },
+            {
+                "message": "0: 7732: 5952: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.354444"
+            },
+            {
+                "message": "0: 7823: 6043: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.355446"
+            },
+            {
+                "message": "0: 7833: 6053: Water on",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.355446"
+            },
+            {
+                "message": "0: 7914: 6134: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.356953"
+            },
+            {
+                "message": "0: 8005: 6225: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.356953"
+            },
+            {
+                "message": "0: 8034: 6254: Water off",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.357953"
+            },
+            {
+                "message": "0: 8096: 6316: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.358949"
+            },
+            {
+                "message": "0: 8187: 6407: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.359947"
+            },
+            {
+                "message": "0: 8278: 6498: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.359947"
+            },
+            {
+                "message": "0: 8369: 6589: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-46.360944"
+            },
+            {
+                "message": "0: 9370: 7590: Resetting lick count",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-47.090083"
+            },
+            {
+                "message": "0: 9600: 7820: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-47.312762"
+            },
+            {
+                "message": "0: 9601: 7821: Resetting lick count",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-47.344938"
+            },
+            {
+                "message": "0: 9691: 7911: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-47.412417"
+            },
+            {
+                "message": "0: 9782: 8002: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-47.487989"
+            },
+            {
+                "message": "0: 9782: 8002: Water on",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-47.514341"
+            },
+            {
+                "message": "0: 9873: 8093: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-47.577522"
+            },
+            {
+                "message": "0: 9964: 8184: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-47.667834"
+            },
+            {
+                "message": "0: 9984: 8204: Water off",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-47.695734"
+            },
+            {
+                "message": "0: 10055: 8275: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-47.760936"
+            },
+            {
+                "message": "0: 10146: 8366: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-47.851593"
+            },
+            {
+                "message": "0: 10237: 8457: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-47.941612"
+            },
+            {
+                "message": "0: 10328: 8548: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-48.031927"
+            },
+            {
+                "message": "0: 10419: 8639: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-48.125485"
+            },
+            {
+                "message": "0: 10483: 8703: Water on",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-48.191883"
+            },
+            {
+                "message": "0: 10510: 8730: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-48.218773"
+            },
+            {
+                "message": "0: 10601: 8821: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-48.320415"
+            },
+            {
+                "message": "0: 10684: 8904: Water off",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-48.396061"
+            },
+            {
+                "message": "0: 10692: 8912: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-48.418625"
+            },
+            {
+                "message": "0: 10783: 9003: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-48.490821"
+            },
+            {
+                "message": "0: 10874: 9094: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-48.581410"
+            },
+            {
+                "message": "0: 10966: 9186: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-48.671090"
+            },
+            {
+                "message": "0: 11057: 9277: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-48.764769"
+            },
+            {
+                "message": "0: 11148: 9368: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-48.855949"
+            },
+            {
+                "message": "0: 11184: 9404: Water on",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-48.895984"
+            },
+            {
+                "message": "0: 11239: 9459: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-48.945638"
+            },
+            {
+                "message": "0: 11330: 9550: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-49.035739"
+            },
+            {
+                "message": "0: 11385: 9605: Water off",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-49.097312"
+            },
+            {
+                "message": "0: 11421: 9641: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-49.129582"
+            },
+            {
+                "message": "0: 11512: 9732: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-49.226520"
+            },
+            {
+                "message": "0: 11603: 9823: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-49.323423"
+            },
+            {
+                "message": "0: 11694: 9914: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-49.426560"
+            },
+            {
+                "message": "0: 11785: 10005: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-49.495005"
+            },
+            {
+                "message": "0: 11876: 10096: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-49.584396"
+            },
+            {
+                "message": "0: 11885: 10105: Water on",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-49.627706"
+            },
+            {
+                "message": "0: 11967: 10187: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-49.674582"
+            },
+            {
+                "message": "0: 12058: 10278: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-49.768064"
+            },
+            {
+                "message": "0: 12086: 10306: Water off",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-49.801736"
+            },
+            {
+                "message": "0: 12149: 10369: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-49.858689"
+            },
+            {
+                "message": "0: 12240: 10460: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-49.949481"
+            },
+            {
+                "message": "0: 12331: 10551: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-50.039109"
+            },
+            {
+                "message": "0: 12422: 10642: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-50.131805"
+            },
+            {
+                "message": "0: 12513: 10733: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-50.234485"
+            },
+            {
+                "message": "0: 12587: 10807: Water on",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-50.300843"
+            },
+            {
+                "message": "0: 12604: 10824: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-50.332755"
+            },
+            {
+                "message": "0: 12695: 10915: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-50.403099"
+            },
+            {
+                "message": "0: 12786: 11006: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-50.496959"
+            },
+            {
+                "message": "0: 12788: 11008: Water off",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-50.531869"
+            },
+            {
+                "message": "0: 12877: 11097: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-50.587796"
+            },
+            {
+                "message": "0: 12968: 11188: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-50.678752"
+            },
+            {
+                "message": "0: 13059: 11279: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-50.768729"
+            },
+            {
+                "message": "0: 13150: 11370: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-50.858048"
+            },
+            {
+                "message": "0: 13241: 11461: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-50.952489"
+            },
+            {
+                "message": "0: 13288: 11508: Water on",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-51.001631"
+            },
+            {
+                "message": "0: 13332: 11552: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-51.042645"
+            },
+            {
+                "message": "0: 13423: 11643: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-51.137858"
+            },
+            {
+                "message": "0: 13489: 11709: Water off",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-51.205845"
+            },
+            {
+                "message": "0: 13514: 11734: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-51.236916"
+            },
+            {
+                "message": "0: 13605: 11825: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-51.339550"
+            },
+            {
+                "message": "0: 13696: 11916: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-51.408157"
+            },
+            {
+                "message": "0: 13787: 12007: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-51.497039"
+            },
+            {
+                "message": "0: 13878: 12098: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-51.587405"
+            },
+            {
+                "message": "0: 13969: 12189: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-51.681621"
+            },
+            {
+                "message": "0: 13989: 12209: Water on",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-51.709747"
+            },
+            {
+                "message": "0: 14060: 12280: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-51.771116"
+            },
+            {
+                "message": "0: 14151: 12371: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-51.861270"
+            },
+            {
+                "message": "0: 14190: 12410: Water off",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-51.906518"
+            },
+            {
+                "message": "0: 14242: 12462: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-51.955375"
+            },
+            {
+                "message": "0: 14333: 12553: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-52.046163"
+            },
+            {
+                "message": "0: 14424: 12644: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-52.135480"
+            },
+            {
+                "message": "0: 14515: 12735: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-52.225998"
+            },
+            {
+                "message": "0: 14606: 12826: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-52.316078"
+            },
+            {
+                "message": "0: 14690: 12910: Water on",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-52.407349"
+            },
+            {
+                "message": "0: 14697: 12917: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-52.431177"
+            },
+            {
+                "message": "0: 14788: 13008: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-52.500760"
+            },
+            {
+                "message": "0: 14879: 13099: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-52.590637"
+            },
+            {
+                "message": "0: 14891: 13111: Water off",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-52.619488"
+            },
+            {
+                "message": "0: 14970: 13190: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-52.687388"
+            },
+            {
+                "message": "0: 15062: 13282: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-52.774523"
+            },
+            {
+                "message": "0: 15153: 13373: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-52.865561"
+            },
+            {
+                "message": "0: 15244: 13464: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-52.960930"
+            },
+            {
+                "message": "0: 15335: 13555: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-53.051745"
+            },
+            {
+                "message": "0: 15391: 13611: Water on",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-53.106602"
+            },
+            {
+                "message": "0: 15426: 13646: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-53.140592"
+            },
+            {
+                "message": "0: 15517: 13737: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-53.230628"
+            },
+            {
+                "message": "0: 15592: 13812: Water off",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-53.312511"
+            },
+            {
+                "message": "0: 15608: 13828: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-53.336105"
+            },
+            {
+                "message": "0: 15699: 13919: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-53.415909"
+            },
+            {
+                "message": "0: 15790: 14010: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-53.504957"
+            },
+            {
+                "message": "0: 15881: 14101: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-53.594956"
+            },
+            {
+                "message": "0: 15972: 14192: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-53.702015"
+            },
+            {
+                "message": "0: 16063: 14283: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-53.780601"
+            },
+            {
+                "message": "0: 16092: 14312: Water on",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-53.811199"
+            },
+            {
+                "message": "0: 16154: 14374: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-53.868778"
+            },
+            {
+                "message": "0: 16245: 14465: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-53.977860"
+            },
+            {
+                "message": "0: 16293: 14513: Water off",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-54.023477"
+            },
+            {
+                "message": "0: 16336: 14556: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-54.068168"
+            },
+            {
+                "message": "0: 17337: 15557: Resetting lick count",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-28-55.068882"
+            },
+            {
+                "message": "0: 26118: 24338: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-03.845574"
+            },
+            {
+                "message": "0: 26118: 24338: Resetting lick count",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-03.883104"
+            },
+            {
+                "message": "0: 26208: 24428: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-03.936237"
+            },
+            {
+                "message": "0: 26299: 24519: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-04.026488"
+            },
+            {
+                "message": "0: 26299: 24520: Water on",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-04.054325"
+            },
+            {
+                "message": "0: 26390: 24610: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-04.115942"
+            },
+            {
+                "message": "0: 26481: 24701: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-04.205732"
+            },
+            {
+                "message": "0: 26500: 24720: Water off",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-04.239033"
+            },
+            {
+                "message": "0: 26572: 24792: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-04.300343"
+            },
+            {
+                "message": "0: 26663: 24883: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-04.390423"
+            },
+            {
+                "message": "0: 26754: 24974: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-04.480730"
+            },
+            {
+                "message": "0: 26845: 25065: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-04.570948"
+            },
+            {
+                "message": "0: 26936: 25156: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-04.664483"
+            },
+            {
+                "message": "0: 27000: 25220: Water on",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-04.729840"
+            },
+            {
+                "message": "0: 27027: 25247: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-04.755108"
+            },
+            {
+                "message": "0: 27118: 25338: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-04.844386"
+            },
+            {
+                "message": "0: 27201: 25421: Water off",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-04.934669"
+            },
+            {
+                "message": "0: 27209: 25429: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-04.955614"
+            },
+            {
+                "message": "0: 27300: 25520: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-05.028939"
+            },
+            {
+                "message": "0: 27392: 25612: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-05.119212"
+            },
+            {
+                "message": "0: 27483: 25703: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-05.209507"
+            },
+            {
+                "message": "0: 27574: 25794: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-05.299678"
+            },
+            {
+                "message": "0: 27665: 25885: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-05.393949"
+            },
+            {
+                "message": "0: 27701: 25921: Water on",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-05.435060"
+            },
+            {
+                "message": "0: 27756: 25976: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-05.483630"
+            },
+            {
+                "message": "0: 27847: 26067: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-05.574210"
+            },
+            {
+                "message": "0: 27902: 26122: Water off",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-05.635174"
+            },
+            {
+                "message": "0: 27938: 26158: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-05.668422"
+            },
+            {
+                "message": "0: 28029: 26249: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-05.758539"
+            },
+            {
+                "message": "0: 28120: 26340: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-05.848651"
+            },
+            {
+                "message": "0: 28211: 26431: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-05.938854"
+            },
+            {
+                "message": "0: 28302: 26522: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-06.028305"
+            },
+            {
+                "message": "0: 28393: 26613: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-06.122492"
+            },
+            {
+                "message": "0: 28402: 26622: Water on",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-06.151756"
+            },
+            {
+                "message": "0: 28484: 26704: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-06.213187"
+            },
+            {
+                "message": "0: 28575: 26795: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-06.302813"
+            },
+            {
+                "message": "0: 28603: 26823: Water off",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-06.335461"
+            },
+            {
+                "message": "0: 28666: 26886: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-06.397052"
+            },
+            {
+                "message": "0: 28758: 26978: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-06.486544"
+            },
+            {
+                "message": "0: 28849: 27069: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-06.577595"
+            },
+            {
+                "message": "0: 28940: 27160: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-06.667844"
+            },
+            {
+                "message": "0: 29031: 27251: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-06.761597"
+            },
+            {
+                "message": "0: 29103: 27323: Water on",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-06.835064"
+            },
+            {
+                "message": "0: 29122: 27342: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-06.860565"
+            },
+            {
+                "message": "0: 29213: 27433: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-06.942646"
+            },
+            {
+                "message": "0: 29304: 27524: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-07.035807"
+            },
+            {
+                "message": "0: 29304: 27525: Water off",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-07.065050"
+            },
+            {
+                "message": "0: 29395: 27615: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-07.126268"
+            },
+            {
+                "message": "0: 29486: 27706: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-07.216054"
+            },
+            {
+                "message": "0: 29577: 27797: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-07.306571"
+            },
+            {
+                "message": "0: 29668: 27888: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-07.396650"
+            },
+            {
+                "message": "0: 29759: 27979: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-07.490946"
+            },
+            {
+                "message": "0: 29804: 28024: Water on",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-07.539953"
+            },
+            {
+                "message": "0: 29850: 28070: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-07.580866"
+            },
+            {
+                "message": "0: 29941: 28161: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-07.671532"
+            },
+            {
+                "message": "0: 30005: 28225: Water off",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-07.741200"
+            },
+            {
+                "message": "0: 30032: 28252: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-07.765267"
+            },
+            {
+                "message": "0: 30123: 28343: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-07.855534"
+            },
+            {
+                "message": "0: 30214: 28434: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-07.945544"
+            },
+            {
+                "message": "0: 30305: 28525: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-08.036039"
+            },
+            {
+                "message": "0: 30396: 28616: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-08.126271"
+            },
+            {
+                "message": "0: 30487: 28707: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-08.220015"
+            },
+            {
+                "message": "0: 30505: 28725: Water on",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-08.248377"
+            },
+            {
+                "message": "0: 30578: 28798: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-08.310576"
+            },
+            {
+                "message": "0: 30669: 28889: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-08.400796"
+            },
+            {
+                "message": "0: 30706: 28926: Water off",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-08.441389"
+            },
+            {
+                "message": "0: 30760: 28980: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-08.490303"
+            },
+            {
+                "message": "0: 30851: 29071: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-08.584755"
+            },
+            {
+                "message": "0: 30942: 29162: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-08.675304"
+            },
+            {
+                "message": "0: 31033: 29253: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-08.765035"
+            },
+            {
+                "message": "0: 31124: 29344: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-08.855056"
+            },
+            {
+                "message": "0: 31206: 29426: Water on",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-08.941499"
+            },
+            {
+                "message": "0: 31215: 29435: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-08.965590"
+            },
+            {
+                "message": "0: 31306: 29526: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-09.039672"
+            },
+            {
+                "message": "0: 31397: 29617: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-09.129351"
+            },
+            {
+                "message": "0: 31407: 29627: Water off",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-09.158651"
+            },
+            {
+                "message": "0: 31488: 29708: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-09.219335"
+            },
+            {
+                "message": "0: 31579: 29799: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-09.309473"
+            },
+            {
+                "message": "0: 31670: 29890: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-09.404075"
+            },
+            {
+                "message": "0: 31761: 29981: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-09.493539"
+            },
+            {
+                "message": "0: 31852: 30072: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-09.584303"
+            },
+            {
+                "message": "0: 31907: 30127: Water on",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-09.645662"
+            },
+            {
+                "message": "0: 31943: 30163: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-09.678743"
+            },
+            {
+                "message": "0: 32034: 30254: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-09.768763"
+            },
+            {
+                "message": "0: 32108: 30328: Water off",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-09.846790"
+            },
+            {
+                "message": "0: 32125: 30345: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-09.870673"
+            },
+            {
+                "message": "0: 32216: 30436: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-09.948720"
+            },
+            {
+                "message": "0: 32307: 30527: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-10.039218"
+            },
+            {
+                "message": "0: 32398: 30618: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-10.133462"
+            },
+            {
+                "message": "0: 32489: 30709: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-10.223024"
+            },
+            {
+                "message": "0: 32580: 30800: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-10.312844"
+            },
+            {
+                "message": "0: 32608: 30828: Water on",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-10.346278"
+            },
+            {
+                "message": "0: 32671: 30891: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-10.407834"
+            },
+            {
+                "message": "0: 32762: 30982: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-10.497742"
+            },
+            {
+                "message": "0: 32809: 31029: Water off",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-10.550373"
+            },
+            {
+                "message": "0: 32854: 31074: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-10.587045"
+            },
+            {
+                "message": "0: 32945: 31165: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-10.677738"
+            },
+            {
+                "message": "0: 33036: 31256: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-10.771756"
+            },
+            {
+                "message": "0: 33127: 31347: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-10.861922"
+            },
+            {
+                "message": "0: 33218: 31438: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-10.952201"
+            },
+            {
+                "message": "0: 33309: 31529: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-11.046005"
+            },
+            {
+                "message": "0: 33309: 31530: Water on",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-11.071101"
+            },
+            {
+                "message": "0: 33400: 31620: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-11.136463"
+            },
+            {
+                "message": "0: 33491: 31711: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-11.226225"
+            },
+            {
+                "message": "0: 33510: 31730: Water off",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-11.255565"
+            },
+            {
+                "message": "0: 33582: 31802: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-11.316728"
+            },
+            {
+                "message": "0: 33673: 31893: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-11.406629"
+            },
+            {
+                "message": "0: 33764: 31984: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-11.500255"
+            },
+            {
+                "message": "0: 33855: 32075: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-11.590024"
+            },
+            {
+                "message": "0: 33946: 32166: Lick",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-11.680504"
+            },
+            {
+                "message": "0: 34010: 32230: Water on",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-11.750517"
+            },
+            {
+                "message": "0: 34211: 32431: Water off",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-11.951632"
+            },
+            {
+                "message": "0: 34947: 33167: Resetting lick count",
+                "mouse_id": "m12_2",
+                "port": "COM4",
+                "absolute_time": "2024-04-22_18-29-12.700680"
+            },
+            {
+                "message": "KeyboardInterrupt",
+                "absolute_time": "2024-04-22_18-29-17.578247"
+            }
+        ]
+    }
+}

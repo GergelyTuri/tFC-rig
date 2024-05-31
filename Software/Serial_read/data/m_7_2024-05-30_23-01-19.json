@@ -1,0 +1,1005 @@
+{
+    "header": {
+        "mouse_ids": [
+            "m_7"
+        ],
+        "primary_port": "COM3",
+        "secondary_port": null,
+        "mouse_port_assignment": {
+            "m_7": "COM3"
+        },
+        "Start_time": "2024-05-30_23-01-19"
+    },
+    "data": {
+        "m_7": [
+            {
+                "message": "0: 0: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.003983"
+            },
+            {
+                "message": "0: 100: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.003983"
+            },
+            {
+                "message": "0: 201: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.003983"
+            },
+            {
+                "message": "0: 302: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.004979"
+            },
+            {
+                "message": "0: 402: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.004979"
+            },
+            {
+                "message": "0: 503: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.005976"
+            },
+            {
+                "message": "0: 604: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.005976"
+            },
+            {
+                "message": "0: 704: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.005976"
+            },
+            {
+                "message": "0: 804: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.006973"
+            },
+            {
+                "message": "0: 906: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.006973"
+            },
+            {
+                "message": "0: 1006: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.007970"
+            },
+            {
+                "message": "0: 1106: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.007970"
+            },
+            {
+                "message": "0: 1207: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.008967"
+            },
+            {
+                "message": "0: 1308: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.008967"
+            },
+            {
+                "message": "0: 1409: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.009965"
+            },
+            {
+                "message": "0: 1509: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.009965"
+            },
+            {
+                "message": "0: 1610: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.010963"
+            },
+            {
+                "message": "0: 1711: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.010963"
+            },
+            {
+                "message": "0: 1811: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.011960"
+            },
+            {
+                "message": "0: 1911: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.011960"
+            },
+            {
+                "message": "0: 2013: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.012957"
+            },
+            {
+                "message": "0: 2113: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.012957"
+            },
+            {
+                "message": "0: 2213: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.012957"
+            },
+            {
+                "message": "0: 2315: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.013954"
+            },
+            {
+                "message": "0: 2415: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.013954"
+            },
+            {
+                "message": "0: 2515: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.014952"
+            },
+            {
+                "message": "0: 2617: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.014952"
+            },
+            {
+                "message": "0: 2717: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.014952"
+            },
+            {
+                "message": "0: 2818: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.015949"
+            },
+            {
+                "message": "0: 2918: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.015949"
+            },
+            {
+                "message": "0: 3019: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.016946"
+            },
+            {
+                "message": "0: 3120: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.016946"
+            },
+            {
+                "message": "0: 3220: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.016946"
+            },
+            {
+                "message": "0: 3321: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.017944"
+            },
+            {
+                "message": "0: 3422: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.017944"
+            },
+            {
+                "message": "0: 3522: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.018941"
+            },
+            {
+                "message": "0: 3623: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.018941"
+            },
+            {
+                "message": "0: 3724: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.019939"
+            },
+            {
+                "message": "0: 3824: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.019939"
+            },
+            {
+                "message": "0: 3924: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.019939"
+            },
+            {
+                "message": "0: 4026: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.020936"
+            },
+            {
+                "message": "0: 4126: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.020936"
+            },
+            {
+                "message": "0: 4227: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.021933"
+            },
+            {
+                "message": "0: 4328: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.021933"
+            },
+            {
+                "message": "0: 4428: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.021933"
+            },
+            {
+                "message": "0: 4529: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.022931"
+            },
+            {
+                "message": "0: 4630: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.023928"
+            },
+            {
+                "message": "0: 4730: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.023928"
+            },
+            {
+                "message": "0: 4831: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.024925"
+            },
+            {
+                "message": "0: 4931: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.024925"
+            },
+            {
+                "message": "0: 5032: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.025923"
+            },
+            {
+                "message": "0: 5133: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.025923"
+            },
+            {
+                "message": "0: 5233: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.026920"
+            },
+            {
+                "message": "0: 5335: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.026920"
+            },
+            {
+                "message": "0: 5435: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.026920"
+            },
+            {
+                "message": "0: 5535: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.027917"
+            },
+            {
+                "message": "0: 5637: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.027917"
+            },
+            {
+                "message": "0: 5737: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.028914"
+            },
+            {
+                "message": "0: 5837: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.028914"
+            },
+            {
+                "message": "0: 5938: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.028914"
+            },
+            {
+                "message": "0: 6039: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.029912"
+            },
+            {
+                "message": "0: 6139: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.029912"
+            },
+            {
+                "message": "0: 6240: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.030909"
+            },
+            {
+                "message": "0: 6341: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.030909"
+            },
+            {
+                "message": "0: 6441: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.030909"
+            },
+            {
+                "message": "0: 6542: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.031906"
+            },
+            {
+                "message": "0: 6643: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.031906"
+            },
+            {
+                "message": "0: 6744: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.032904"
+            },
+            {
+                "message": "0: 6844: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.032904"
+            },
+            {
+                "message": "0: 6944: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.033901"
+            },
+            {
+                "message": "0: 7046: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.033901"
+            },
+            {
+                "message": "0: 7146: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.034898"
+            },
+            {
+                "message": "0: 7246: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.034898"
+            },
+            {
+                "message": "0: 7348: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.034898"
+            },
+            {
+                "message": "0: 7448: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.035896"
+            },
+            {
+                "message": "0: 7548: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.035896"
+            },
+            {
+                "message": "0: 7650: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.036893"
+            },
+            {
+                "message": "0: 7750: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.036893"
+            },
+            {
+                "message": "0: 7851: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.036893"
+            },
+            {
+                "message": "0: 7951: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.037892"
+            },
+            {
+                "message": "0: 8052: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.037892"
+            },
+            {
+                "message": "0: 8153: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.038890"
+            },
+            {
+                "message": "0: 8253: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.038890"
+            },
+            {
+                "message": "0: 8354: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.039887"
+            },
+            {
+                "message": "0: 8455: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.064906"
+            },
+            {
+                "message": "0: 8555: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.163959"
+            },
+            {
+                "message": "0: 8656: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.265601"
+            },
+            {
+                "message": "0: 8757: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.363876"
+            },
+            {
+                "message": "0: 8857: 0: Waiting for session to start...",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-35.467044"
+            },
+            {
+                "message": "Session consists of 6 trials, (originally three CS+, three CS-) in the following order",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-36.113406"
+            },
+            {
+                "message": "0: 9485: 0: 0 is CS-, 1 is CS+",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-36.146670"
+            },
+            {
+                "message": "0: 9519: 0: trialTypes: 000111",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-36.179332"
+            },
+            {
+                "message": "0: 9551: 0: BAUD_RATE: 9600",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-36.207325"
+            },
+            {
+                "message": "0: 9582: 0: PIN_AIR_PUFF: 4",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-36.240301"
+            },
+            {
+                "message": "0: 9612: 0: PIN_WATER_SOLENOID: 5",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-36.273652"
+            },
+            {
+                "message": "0: 9649: 0: PIN_TONE_NEGATIVE: 9",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-36.308656"
+            },
+            {
+                "message": "0: 9683: 0: PIN_TONE_POSITIVE: 10",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-36.346221"
+            },
+            {
+                "message": "0: 9720: 0: PIN_BUTTON: 11",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-36.375517"
+            },
+            {
+                "message": "0: 9749: 0: PIN_LICK: 12",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-36.404920"
+            },
+            {
+                "message": "0: 9777: 0: PIN_MOUSE_LED: 3",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-36.433753"
+            },
+            {
+                "message": "0: 9807: 0: PIN_CAMERA: 2",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-36.462381"
+            },
+            {
+                "message": "0: 9835: 0: PIN_SECONDARY: 6",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-36.493396"
+            },
+            {
+                "message": "0: 9867: 0: DEBUGGING: 0",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-36.518337"
+            },
+            {
+                "message": "0: 9893: 0: IS_PRIMARY_RIG: 1",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-36.551711"
+            },
+            {
+                "message": "0: 9926: 0: NUMBER_OF_TRIALS: 6",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-36.587890"
+            },
+            {
+                "message": "0: 9960: 0: IS_TRAINING: 0",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-36.618005"
+            },
+            {
+                "message": "0: 9990: 0: INTER_TRIAL_DEBUG_WAIT_INTERVAL: 5000",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-36.670454"
+            },
+            {
+                "message": "0: 10043: 0: TRIAL_DURATION: 50000",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-36.707465"
+            },
+            {
+                "message": "0: 10080: 0: LICK_TIMEOUT: 100",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-36.740471"
+            },
+            {
+                "message": "0: 10114: 0: LICK_COUNT_TIMEOUT: 1000",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-36.780891"
+            },
+            {
+                "message": "0: 10153: 0: WATER_REWARD_AVAILABLE: 1",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-36.821892"
+            },
+            {
+                "message": "0: 10195: 0: WATER_DISPENSE_TIME: 200",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-36.862319"
+            },
+            {
+                "message": "0: 10235: 0: WATER_DISPENSE_ON_NUMBER_LICKS: 2",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-36.911476"
+            },
+            {
+                "message": "0: 10286: 0: WATER_TIMEOUT: 700",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-36.945560"
+            },
+            {
+                "message": "0: 10320: 0: USING_AUDITORY_CUES: 1",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-36.986759"
+            },
+            {
+                "message": "0: 10358: 0: AIR_PUFF_START_TIME: 45000",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-37.026799"
+            },
+            {
+                "message": "0: 10401: 0: AIR_PUFF_DURATION: 200",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-37.068275"
+            },
+            {
+                "message": "0: 10440: 0: INTER_PUFF_PAUSE_TIME: 1000",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-37.108772"
+            },
+            {
+                "message": "0: 10483: 0: AIR_PUFF_TOTAL_TIME: 5000",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-37.150536"
+            },
+            {
+                "message": "0: 10525: 0: AUDITORY_START: 15000",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-37.191414"
+            },
+            {
+                "message": "0: 10562: 0: AUDITORY_STOP: 35000",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-37.222645"
+            },
+            {
+                "message": "0: 10599: 0: POSITIVE_FREQUENCY: 5000",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-37.264297"
+            },
+            {
+                "message": "0: 10640: 0: POSITIVE_DURATION: 20000",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-37.305307"
+            },
+            {
+                "message": "0: 10680: 0: AUDITORY_BUFFER: 100",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-37.341475"
+            },
+            {
+                "message": "0: 10717: 0: NEGATIVE_FREQUENCY: 2000",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-37.384051"
+            },
+            {
+                "message": "0: 10757: 0: NEGATIVE_PULSE_DURATION: 1000",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-37.428719"
+            },
+            {
+                "message": "0: 10803: 0: NEGATIVE_CYCLE_DURATION: 2000",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-37.473167"
+            },
+            {
+                "message": "0: 10849: 0: Session has started",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-37.509940"
+            },
+            {
+                "message": "0: 10884: 0: Trial has started",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-37.542557"
+            },
+            {
+                "message": "0: 10917: 0: Printing trial parameters",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-37.583415"
+            },
+            {
+                "message": "0: 10958: 0: randomInterTrialInterval: 137975",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-37.632937"
+            },
+            {
+                "message": "0: 11008: 0: currentTrialType: 0",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-37.669826"
+            },
+            {
+                "message": "0: 13528: 2488: Lick",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-40.110898"
+            },
+            {
+                "message": "0: 13528: 2489: Resetting lick count",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-40.151941"
+            },
+            {
+                "message": "0: 13629: 2589: Lick",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-40.213473"
+            },
+            {
+                "message": "0: 14630: 3590: Resetting lick count",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-41.233101"
+            },
+            {
+                "message": "0: 16764: 5724: Lick",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-43.346656"
+            },
+            {
+                "message": "0: 16765: 5725: Resetting lick count",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-43.387689"
+            },
+            {
+                "message": "0: 16980: 5940: Lick",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-43.563839"
+            },
+            {
+                "message": "0: 17198: 6158: Lick",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-43.780993"
+            },
+            {
+                "message": "0: 17199: 6159: Water on",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-43.808601"
+            },
+            {
+                "message": "0: 17384: 6344: Lick",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-43.969822"
+            },
+            {
+                "message": "0: 17400: 6360: Water off",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-43.997930"
+            },
+            {
+                "message": "0: 17485: 6445: Lick",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-44.067261"
+            },
+            {
+                "message": "0: 17659: 6620: Lick",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-44.244232"
+            },
+            {
+                "message": "0: 18660: 7620: Resetting lick count",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-45.259308"
+            },
+            {
+                "message": "0: 20162: 9122: Lick",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-46.746212"
+            },
+            {
+                "message": "0: 20162: 9122: Resetting lick count",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-46.787207"
+            },
+            {
+                "message": "0: 20262: 9222: Lick",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-46.844412"
+            },
+            {
+                "message": "0: 20363: 9323: Lick",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-46.946987"
+            },
+            {
+                "message": "0: 20363: 9324: Water on",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-46.971191"
+            },
+            {
+                "message": "0: 20464: 9424: Lick",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-47.049195"
+            },
+            {
+                "message": "0: 20564: 9524: Water off",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-47.151696"
+            },
+            {
+                "message": "0: 20566: 9526: Lick",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-47.176109"
+            },
+            {
+                "message": "0: 20667: 9627: Lick",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-47.249835"
+            },
+            {
+                "message": "0: 20768: 9728: Lick",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-47.352426"
+            },
+            {
+                "message": "0: 20869: 9829: Lick",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-47.450725"
+            },
+            {
+                "message": "0: 20970: 9930: Lick",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-47.553070"
+            },
+            {
+                "message": "0: 21064: 10024: Water on",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-47.651192"
+            },
+            {
+                "message": "0: 21071: 10031: Lick",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-47.675809"
+            },
+            {
+                "message": "0: 21265: 10225: Water off",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-47.856427"
+            },
+            {
+                "message": "0: 22072: 11032: Resetting lick count",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-48.671613"
+            },
+            {
+                "message": "0: 26041: 15001: Negative signal start",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-52.644123"
+            },
+            {
+                "message": "0: 27042: 16002: Negative signal stop",
+                "mouse_id": "m_7",
+                "port": "COM3",
+                "absolute_time": "2024-05-30_23-01-53.643440"
+            },
+            {
+                "message": "KeyboardInterrupt",
+                "absolute_time": "2024-05-30_23-01-53.853914"
+            }
+        ]
+    }
+}
