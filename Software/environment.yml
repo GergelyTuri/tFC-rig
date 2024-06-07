@@ -7,10 +7,12 @@ dependencies:
   - pip
   - python=3.8
   - setuptools
-  - pandas
   - numpy 
   - pip:      
     - pyserial==3.5
     - tqdm==4.66.1
     - PyQt6
     - requests
+    - reportlab
+    - pandas
+    - matplotlib

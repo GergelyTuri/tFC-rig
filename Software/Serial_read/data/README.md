@@ -1,1 +1,2 @@
-The recorded raw behavior files will be saved here. The file name is the name of the mice plus a time stamp. Extesnion is json.
+The recorded raw behavior files will be saved here. The file name is the name of the mice plus a time stamp. Extension is json.
+Pdf reports detailing experiment parameters and a plot will also be saved here.
