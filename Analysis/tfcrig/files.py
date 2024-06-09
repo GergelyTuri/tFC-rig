@@ -33,6 +33,8 @@ BAD_DATE_REGEX_2 = r"(\d{1,2})[_](\d{1,2})[_](\d{2,4})"
 Possible date format in Google Drive folder names
 """
 
+FILENAME_REGEX = DATETIME_REGEX + r".json"
+
 
 def extract_exp_mouse_pairs(exp_mouse_blob: str) -> list[str]:
     """
@@ -186,8 +188,10 @@ class RigFiles:
                 if not full_file.endswith(".json"):
                     continue
 
-                # Skip raw files
-                if full_file.endswith("_raw.json"):
+                # Skip raw files, and a couple of other file patterns
+                # generated in the past
+                is_data_file = re.search(FILENAME_REGEX, full_file)
+                if not is_data_file:
                     continue
 
                 # Define the raw file path and see if _it_ exists
