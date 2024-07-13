@@ -1,9 +1,13 @@
 from PyQt6.QtWidgets import QDialog, QVBoxLayout, QTextEdit, QPushButton, QLineEdit, QSpinBox, QFormLayout, QLabel, QCheckBox
 from PyQt6.QtCore import QThread, pyqtSignal, Qt, QTimer
+import matplotlib
+matplotlib.use('QtAgg')
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
+import matplotlib.pyplot as plt
 import pandas as pd
-import os, signal, subprocess, datetime
+from datetime import datetime
+import os, signal, subprocess
 
 class ProcessThread(QThread):
     """
@@ -85,6 +89,21 @@ class OutputDialogPlot(QDialog):
         self.timer.timeout.connect(self.update_plot)
         self.timer.start()
 
+    def update_plot(self):
+        """
+        Update the live plot with the latest data.
+        """
+        if self.started: 
+            self.update_licks(licks = 0)
+            
+        self.ax.clear()
+        self.ax.grid(True)
+        self.ax.plot(self.licks_data["Time"].values, self.licks_data["Licks"].values, marker='.', linestyle='-')
+        self.ax.set_xlabel("Time (s)")
+        self.ax.set_ylabel("Lick rate (licks/s)")
+        self.ax.set_title("Licks Over Time")
+        self.canvas.draw()
+
     def update_output(self, output):
         """
         Update the output text edit by appending output.
@@ -96,25 +115,11 @@ class OutputDialogPlot(QDialog):
             self.output_text_edit.append(output)
             if "Session consists of" in output:
                 self.started = True
-                self.start_time = datetime.datetime.now()
+                self.start_time = datetime.now()
             if "Lick" in output:
                 self.update_licks()
         except KeyboardInterrupt:
             print("KeyboardInterrupt detected.")
-
-    def update_plot(self):
-        """
-        Update the live plot with the latest data.
-        """
-        if self.started: 
-            self.update_licks(licks = 0)
-            
-        self.ax.clear()
-        self.ax.plot(self.licks_data["Time"].values, self.licks_data["Licks"].values, marker='o', linestyle='-')
-        self.ax.set_xlabel("Time (s)")
-        self.ax.set_ylabel("Lick rate (licks/s)")
-        self.ax.set_title("Licks Over Time")
-        self.canvas.draw()
 
     def update_licks(self, licks=1):
         """
@@ -123,7 +128,7 @@ class OutputDialogPlot(QDialog):
         Args:
             licks (int): Number of licks to add.
         """
-        current_time = int((datetime.datetime.now() - self.start_time).total_seconds())  # Calculate elapsed time
+        current_time = int((datetime.now() - self.start_time).total_seconds())  # Calculate elapsed time
         if current_time in self.licks_data["Time"].values:
             self.licks_data.loc[self.licks_data["Time"] == current_time, "Licks"] += licks
         else:

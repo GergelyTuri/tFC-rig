@@ -1,27 +1,24 @@
 import subprocess, json, re
+from .constants import SKETCH_PATH, PARAMS_PATH
 
 class UpdateSketch:
-    def __init__(self, params: dict, primary_port: str, ports):
+    def __init__(self):
         """
         Initialize UpdateSketch object with parameters and primary port.
 
-        Args:
-            params (dict): Dictionary containing parameters.
-            primary_port (str): Primary port for uploading sketches.
         """
-        self.sketch_path = "Software/Rig/Rig.ino"
-        self.params_path = "Software/Rig/trial.h"
-
-        self.params = params
-        self.primary = primary_port
-        self.ports = ports
         self.out = []
         self.has_error = False
         
 
-    def write_and_compile_ino(self):
+    def write_and_compile_ino(self, params: dict, primary_port: str, ports):
         """
         Write parameters to .ino file, compile, and upload it to the rig.
+
+        Args:
+            params (dict): Dictionary containing parameters.
+            primary_port (str): Primary port for uploading sketches.
+
         """
         
 
@@ -32,13 +29,13 @@ class UpdateSketch:
             
             for board in boards_info:
                 com = board['port']['label']
-                if com not in self.ports:
+                if com not in ports:
                     continue
                 fqbn = board['matching_boards'][0]['fqbn']
 
                 # update parameters in .ino file
-                self.params["IS_PRIMARY_RIG"] = com == self.primary
-                self.update_params()
+                params["IS_PRIMARY_RIG"] = com == primary_port
+                self.update_params(params)
                 
                 # Check if platform is installed. If not, install it
                 platform = ":".join(fqbn.split(":")[:-1])
@@ -50,8 +47,8 @@ class UpdateSketch:
                     install_result = subprocess.run(install_command)
                 
                 # Compile and upload .ino file to rig
-                compile_command = ["arduino-cli", "compile", "-b", fqbn, self.sketch_path]
-                upload_command = ["arduino-cli", "upload", self.sketch_path, "-p", com, "-b", fqbn]
+                compile_command = ["arduino-cli", "compile", "-b", fqbn, SKETCH_PATH]
+                upload_command = ["arduino-cli", "upload", SKETCH_PATH, "-p", com, "-b", fqbn]
         
                 compile_result = subprocess.run(compile_command, capture_output=True, text=True)
                 upload_result = subprocess.run(upload_command, capture_output=True, text=True)
@@ -80,22 +77,22 @@ class UpdateSketch:
         return self.out
 
 
-    def update_params(self): 
+    def update_params(self, params: dict): 
         """
         Update parameters in the .ino file.
         """       
         try:
-            with open(self.params_path, "r") as file:
+            with open(PARAMS_PATH, "r") as file:
                 param_content = file.read()
 
-            for param, value in self.params.items():
+            for param, value in params.items():
 
                 pattern = re.compile(rf"({re.escape(param)}\s*=\s*)(\".*?\"|\d+|true|false);")
                 param_content = re.sub(pattern, rf"\g<1>{value};", param_content)
                 param_content = param_content.replace("True", "true")
                 param_content = param_content.replace("False", "false")
 
-            with open(self.params_path, "w") as file:
+            with open(PARAMS_PATH, "w") as file:
                 file.write(param_content)
                 
         except Exception as e:

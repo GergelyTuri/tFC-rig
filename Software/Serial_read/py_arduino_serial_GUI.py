@@ -13,10 +13,11 @@ Usage:
 from PyQt6.QtWidgets import QApplication, QVBoxLayout, QWidget, QPushButton, QFormLayout, QGroupBox, QMessageBox, QScrollArea, QComboBox
 from PyQt6.QtGui import QIcon, QPixmap
 from PyQt6.QtCore import Qt
+from .constants import PARAMS_PATH
 from ..camera_control import camera_class as cc
 from .serial_comm import SerialComm as sc
 from .update_sketch import UpdateSketch
-from .output_dialog_plot import OutputDialogPlot, ProcessThread, SpinBox, CheckBox, LineEdit
+from .utils import OutputDialogPlot, ProcessThread, SpinBox, CheckBox, LineEdit
 import sys, serial, re
 import serial.tools.list_ports
 
@@ -198,53 +199,46 @@ class Window(QWidget):
         """
         Updates sketch if there are new trial parameters.
         """
-        setting_has_changed = self.check_all_changes()
-        if setting_has_changed:
+        if self.params_has_changed():
             params = self.get_ino_params()
             ports = [self.primary_port.text()]
             if self.secondary_port.text(): ports.append(self.secondary_port.text())
-            updater = UpdateSketch(params, self.primary_port.text(), ports)
-            updater_out = updater.write_and_compile_ino()
+            updater = UpdateSketch()
+            updater_out = updater.write_and_compile_ino(params, self.primary_port.text(), ports)
 
             for out in updater_out: dialog.update_output(out)
             
 
-    def check_all_changes(self):
+    def params_has_changed(self):
         """
-        Checks if any settings have been changed.
+        Reads the header file and compares to GUI values to check if there are any param changes.
 
         Returns:
             Boolean indicating if there are any new changes.
         """
-        fields = [
-            self.num_trials,
-            self.is_training,
-            self.min_iti,
-            self.max_iti,
-            self.trial_duration,
-            self.post_trial_duration,
-            self.water_enabled,
-            self.aud_air_enabled,
-            self.air_enabled,
-            self.air_puff_duration,
-            self.air_puff_start_time,
-            self.auditory_start,
-            self.auditory_stop,
-            self.water_disp_num_licks,
-            self.water_disp_time,
-            self.water_timeout,
-            self.lick_timeout,
-            self.lick_count_timeout
-        ]
-        changed = [field.changed for field in fields]
 
-        if any(changed):
-            for field in fields:
-                field.changed = False
-                field.set_initial()
-            return True
+        with open(PARAMS_PATH, 'r') as file:
+            content = file.read()
+
+        pattern = r'const\s+(\w+)\s+(\w+)\s*=\s*([^;]+);'
+        header_fields = re.findall(pattern, content)
+        header_dict = {var_name: value for _, var_name, value in header_fields}
+
+        gui_fields = self.get_ino_params()
+
+        for field_name, gui_value in gui_fields.items():
+            if field_name in header_dict:
+                header_value = header_dict[field_name]
+
+                if isinstance(gui_value, bool):
+                    header_value = header_value.lower() == 'true'
+                else:
+                    gui_type = type(gui_value)
+                    header_value = gui_type(header_value)
+
+                if gui_value != header_value:
+                    return True
         return False
-        
 
     def get_ino_params(self):
         """
