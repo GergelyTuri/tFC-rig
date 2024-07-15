@@ -12,21 +12,23 @@ def simple_lick_plot(df):
     TODO: Replace with better plot from Analysis and sync with live plot
 
     """
+    df['lick'] = df['message'].str.contains('Lick', case=True, regex=False)
     df['absolute_time'] = pd.to_datetime(df['absolute_time'], format='%Y-%m-%d_%H-%M-%S.%f')
-    df['elapsed_time'] = (df['absolute_time'] - df['absolute_time'].min()).dt.total_seconds()
+    session_index = df.index[df['message'].str.contains("Session consists of")].min()
+    df['Time (s)'] = (df['absolute_time'] - df.loc[session_index, 'absolute_time']).dt.total_seconds().astype(int)
+    df = df.loc[session_index:]
 
-    df['lick'] = df['message'].apply(lambda x: 'Lick' in x)
-    lick_df = df[df['lick']]
 
-    lick_df.set_index(pd.to_timedelta(lick_df['elapsed_time'], unit='s'), inplace=True)
-    lick_df
+    licks_per_second = df.groupby('Time (s)')['lick'].sum().reset_index()
+    print(licks_per_second)
 
-    lick_rate = lick_df['lick'].resample('S').sum()
+    complete_time_range = pd.DataFrame({'Time (s)': range(licks_per_second['Time (s)'].min(), licks_per_second['Time (s)'].max() + 1)})
 
-    lick_rate
+    licks_per_second = complete_time_range.merge(licks_per_second, on='Time (s)', how='left').fillna(0)
+    licks_per_second['lick'] = licks_per_second['lick'].astype(int)
 
     fig = plt.figure(figsize=(10, 5))
-    plt.plot(lick_rate.index, lick_rate.values, marker='.', linestyle='-')
+    plt.plot(licks_per_second["Time (s)"], licks_per_second["lick"], marker='.', linestyle='-')
     plt.xlabel('Time (s)')
     plt.ylabel('Lick Rate (licks/s)')
     plt.title('Lick Rate Over Time')
