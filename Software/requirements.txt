@@ -3,3 +3,6 @@ pyserial
 tqdm
 PyQt6
 requests
+reportlab
+matplotlib
+pandas

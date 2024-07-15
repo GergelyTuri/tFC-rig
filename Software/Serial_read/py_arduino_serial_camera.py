@@ -31,6 +31,7 @@ import sys
 from ..camera_control import camera_class as cc
 from .serial_comm import SerialComm as sc
 from .serial_comm import VisualEnhancemnets as ve
+from .generate_pdf import generate_pdf
 
 # (optional) Disable the "insecure requests" warning for https certs
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -214,6 +215,7 @@ def main():
             if args.camera2 is not None:
                 cam2.camera_action("DISCONNECT")
 
+    generate_pdf(file_path, header, data_list)
     with file_path.open("w", encoding="utf-8") as f:
         json.dump({"header": header, "data": data_list}, f, indent=4)
         print(f"Data saved to {file_path}")
