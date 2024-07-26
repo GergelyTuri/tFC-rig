@@ -39,7 +39,7 @@ Follow these steps to configure multiple boards:
 1. Setup the hardware on the secondary rig. There is no need to connect the button, speakers, or air puff. The pinout can be exactly the same, noting that the `PIN_SECONDARY` is an input pin during setup rather than an output pin
 1. Upload the latest working rig sketch to the primary rig. Be sure to set `IS_PRIMARY_RIG` to `true` and be sure that all other trial parameters are set as desired based on whether the session is a training session or an experiment, and based on the trial design as discussed elsewhere
 1. Upload the latest working rig sketch to the primary rig. Be sure to set `IS_PRIMARY_RIG` to `false`. All other settings should be identical
-1. Connect the primary rig to the secondary rig(s) using the `PIN_SECONDARY` pin. This pin should be connected to the `PIN_SECONDARY` pin on the secondary rig(s) 
+1. Connect the primary rig to the secondary rig(s) using the `PIN_SECONDARY` pin. This pin should be connected to the `PIN_SECONDARY` pin on the secondary rig(s)
 
 ### Maximum Session Length
 
