@@ -686,15 +686,15 @@ void vprint (char* x, char* y) {
   print(s);
 }
 
-void vprint(const char* x, const int* y, int size) {
+void vprint(char* x, int y[], int size) {
   char s[100];  // Buffer for string
-  char temp[50];  // Buffer for int elements in array
+  char temp[4];  // Buffer for int elements in array
 
   sprintf(s, "%s: ", x);
 
   for (int i = 0; i < size; ++i) {
-      sprintf(temp, "%d", y[i]);  // Convert integer to string
-      strcat(s, temp);  // Append the number to the result string
+    sprintf(temp, "%d", y[i]);
+    strcat(s, temp);
   }
   print(s);
 }

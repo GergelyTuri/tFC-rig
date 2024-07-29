@@ -207,6 +207,9 @@ class ComboBox(QComboBox):
         if default:
             self.setCurrentText(default)
         layout.addRow(QLabel(text), self)
+        
+    def wheelEvent(self, event):                                # Disable scrolling
+        event.ignore()
 
 class LineEdit(QLineEdit):
     """

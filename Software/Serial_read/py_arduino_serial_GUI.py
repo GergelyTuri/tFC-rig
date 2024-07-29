@@ -230,6 +230,8 @@ class Window(QWidget):
 
                 if isinstance(gui_value, bool):
                     header_value = header_value.lower() == 'true'
+                elif isinstance(gui_value, str):
+                    header_value = header_value[1:-1]
                 else:
                     gui_type = type(gui_value)
                     header_value = gui_type(header_value)
