@@ -47,6 +47,7 @@
  */
 #include "rig.h"
 #include "trial.h"
+#include "utils.h"
 
 long rigStartTime = __LONG_MAX__;
 bool sessionHasStarted = false;
@@ -54,8 +55,14 @@ long sessionStartTime = __LONG_MAX__;
 bool sessionHasEnded = false;
 long sessionEndTime = 0;
 
-char trialTypes[] = "000111";
-int currentTrialType = 0;
+int trialTypes[NUMBER_OF_TRIALS + 1];
+int currentTrialType;
+int trialTypeArrSize = sizeof(trialTypeStrings) / sizeof(trialTypeStrings[0]);
+int trialType1Idx = getArrayIndex(TRIAL_TYPE_1, trialTypeStrings, trialTypeArrSize);
+int trialType2Idx = getArrayIndex(TRIAL_TYPE_2, trialTypeStrings, trialTypeArrSize);
+
+// char trialTypes[] = "000111";
+// const char* currentTrialType = trialTypes[0];
 long randomInterTrialInterval = 0;
 
 int currentTrial = 0;
@@ -116,6 +123,17 @@ void setup() {
   // Note that 0 is CS-, 1 is CS+. This uses Fisher-Yates shuffle. Note
   // that this assumes there are `6` trials and would not fully randomize
   // the trials otherwise
+  int half = NUMBER_OF_TRIALS / 2;
+  
+  for (int i = 0; i < half; ++i) {
+    trialTypes[i] = trialType1Idx;
+  }
+  for (int i = half; i < NUMBER_OF_TRIALS; ++i) {
+    trialTypes[i] = trialType2Idx;
+  }
+  trialTypes[NUMBER_OF_TRIALS] = '\0';
+  currentTrialType = trialTypes[0];
+
   for (int i = NUMBER_OF_TRIALS-1; i > 0; --i) {
     int j = random (0, i+1);
     char temp = trialTypes[i];
@@ -165,13 +183,13 @@ void loop() {
           checkWater();
         }
         if (USING_AUDITORY_CUES && IS_PRIMARY_RIG) {
-          if (currentTrialType == 1) {
-            if (USING_AIR_PUFFS) {
+          if (trialTypeObjects[currentTrialType]->airpuff) {
               checkAir();
-            }
-            checkPositiveSignal();
+          }
+          if (trialTypeObjects[currentTrialType]->signal == 1) {
+              checkPositiveSignal();
           } else {
-            checkNegativeSignal();
+              checkNegativeSignal();
           }
         }
 
@@ -368,9 +386,9 @@ void printSessionParameters() {
   // Add variables defined in `trial.h` or `rig.h` (or other) here.
   // That way, everything that defines the trial is recorded in case an
   // issue comes up later in the analysis
-  Serial.println("Session consists of " + String(NUMBER_OF_TRIALS) + " trials, (originally three CS+, three CS-) in the following order");
-  print("0 is CS-, 1 is CS+");
-  vprint("trialTypes", trialTypes);
+  Serial.println("Session consists of " + String(NUMBER_OF_TRIALS) + " trials, in the following order");
+  print(String(trialType1Idx) + " is "+ String(TRIAL_TYPE_1) + ", " + String(trialType2Idx) + " is " + String(TRIAL_TYPE_2));
+  vprint("trialTypes", trialTypes, NUMBER_OF_TRIALS);
 
   // print("Printing Arduino or rig parameters");
   vprint("BAUD_RATE", BAUD_RATE);
@@ -439,7 +457,8 @@ void trialStart() {
   // This strange subtraction is due to casting a char to an int,
   // where the char takes on its ASCII value but we subtract the ASCII
   // value of zero to give us the true numeric
-  currentTrialType = trialTypes[currentTrial] - 48;
+  // currentTrialType = trialTypes[currentTrial] - 48;
+  currentTrialType = trialTypes[currentTrial];
   vprint("currentTrialType", currentTrialType);
 
   trialStartTime = millis();
@@ -664,5 +683,18 @@ void vprint (char* x, long y) {
 void vprint (char* x, char* y) {
   char s[50];
   sprintf(s, "%s: %s", x, y);
+  print(s);
+}
+
+void vprint(const char* x, const int* y, int size) {
+  char s[100];  // Buffer for string
+  char temp[50];  // Buffer for int elements in array
+
+  sprintf(s, "%s: ", x);
+
+  for (int i = 0; i < size; ++i) {
+      sprintf(temp, "%d", y[i]);  // Convert integer to string
+      strcat(s, temp);  // Append the number to the result string
+  }
   print(s);
 }

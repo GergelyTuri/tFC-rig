@@ -18,10 +18,7 @@ def simple_lick_plot(df):
     df['Time (s)'] = (df['absolute_time'] - df.loc[session_index, 'absolute_time']).dt.total_seconds().astype(int)
     df = df.loc[session_index:]
 
-
     licks_per_second = df.groupby('Time (s)')['lick'].sum().reset_index()
-    print(licks_per_second)
-
     complete_time_range = pd.DataFrame({'Time (s)': range(licks_per_second['Time (s)'].min(), licks_per_second['Time (s)'].max() + 1)})
 
     licks_per_second = complete_time_range.merge(licks_per_second, on='Time (s)', how='left').fillna(0)
@@ -85,7 +82,6 @@ def generate_pdf(file_path, header, data_list):
     story.append(Spacer(1, 12))
 
     for mouse_id, events in data_list.items():
-        print('events: ', events)
         story.append(Paragraph("Mouse ID: {}".format(mouse_id), styles['Heading4']))
         for param in get_trial_settings(events):
             story.append(Paragraph(param, styles['Normal']))

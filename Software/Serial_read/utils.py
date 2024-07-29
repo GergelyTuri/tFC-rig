@@ -1,10 +1,9 @@
-from PyQt6.QtWidgets import QDialog, QVBoxLayout, QTextEdit, QPushButton, QLineEdit, QSpinBox, QFormLayout, QLabel, QCheckBox
+from PyQt6.QtWidgets import QDialog, QVBoxLayout, QTextEdit, QPushButton, QLineEdit, QSpinBox, QFormLayout, QLabel, QCheckBox, QComboBox
 from PyQt6.QtCore import QThread, pyqtSignal, Qt, QTimer
 import matplotlib
 matplotlib.use('QtAgg')
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-import matplotlib.pyplot as plt
 import pandas as pd
 from datetime import datetime
 import os, signal, subprocess
@@ -28,10 +27,10 @@ class ProcessThread(QThread):
     def run(self):
         try:
             self.process = subprocess.Popen(self.command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1)
-
-            for line in iter(self.process.stdout.readline, ''):
-                self.output_updated.emit(line.strip())
-            self.process.wait()
+            if self.process.stdout:
+                for line in iter(self.process.stdout.readline, ''):
+                    self.output_updated.emit(line.strip())
+                self.process.wait()
         except Exception as e:
             self.output_updated.emit(str(e))
     
@@ -81,7 +80,7 @@ class OutputDialogPlot(QDialog):
         
         self.licks_data = pd.DataFrame(columns=["Time", "Licks"])
         self.started = False
-        self.start_time = 0
+        self.start_time = datetime.now()
 
         # Timer for updating the plot
         self.timer = QTimer(self)
@@ -98,7 +97,9 @@ class OutputDialogPlot(QDialog):
             
         self.ax.clear()
         self.ax.grid(True)
-        self.ax.plot(self.licks_data["Time"].values, self.licks_data["Licks"].values, marker='.', linestyle='-')
+        time_values = self.licks_data["Time"].to_numpy()
+        licks_values = self.licks_data["Licks"].to_numpy()
+        self.ax.plot(time_values, licks_values, marker='.', linestyle='-')
         self.ax.set_xlabel("Time (s)")
         self.ax.set_ylabel("Lick rate (licks/s)")
         self.ax.set_title("Licks Over Time")
@@ -155,14 +156,16 @@ class SpinBox(QSpinBox):
     def __init__(self, layout: QFormLayout, text: str, default = 1, step = 10, min = 1, max=1000000):
         super().__init__()
         self.changed = False
-        self.wheelEvent = lambda event: None  # Disables scrolling in boxes
-        # spinBox.setButtonSymbols(QAbstractSpinBox.ButtonSymbols.NoButtons)  # Disables arrow buttons
+        # self.setButtonSymbols(QAbstractSpinBox.ButtonSymbols.NoButtons)  # Disables arrow buttons
         self.setRange(min, max)
         self.setSingleStep(step)
         self.setValue(default)
         self.set_initial()
         self.valueChanged.connect(self.check_changes)
         layout.addRow(QLabel(text), self)
+    
+    def wheelEvent(self, event):                                # Disable scrolling
+        event.ignore()
     
     def check_changes(self):
         self.changed = (self.value() != self.initial_value)
@@ -195,6 +198,15 @@ class CheckBox(QCheckBox):
 
     def set_initial(self):
         self.initial_value = self.checkState()
+
+class ComboBox(QComboBox):
+    def __init__(self, layout: QFormLayout, text: str, items: list[str], default = None):
+        super().__init__()
+        for item in items:
+            self.addItem(item)
+        if default:
+            self.setCurrentText(default)
+        layout.addRow(QLabel(text), self)
 
 class LineEdit(QLineEdit):
     """

@@ -21,14 +21,14 @@ class UpdateSketch:
 
         """
         
-
         # Loop through list of boards
         try:
             output = subprocess.run(["arduino-cli", "board", "list", "--format", "json"], capture_output=True, text=True)
             boards_info = json.loads(output.stdout)
-            
+            # After updating arduino-cli use: boards_info['detected_ports']:
             for board in boards_info:
                 com = board['port']['label']
+                com = com.replace('/cu.', '/tty.')      # Needed for macOS
                 if com not in ports:
                     continue
                 fqbn = board['matching_boards'][0]['fqbn']
@@ -41,8 +41,8 @@ class UpdateSketch:
                 platform = ":".join(fqbn.split(":")[:-1])
                 output = subprocess.run(["arduino-cli", "core", "list", "--format", "json"], capture_output=True, text=True)
                 cores_info = json.loads(output.stdout)
-                platforms_list = [core["id"] for core in cores_info]
-                if platform not in platforms_list:
+                # TODO: After updating arduino-cli uses cores_info['platforms']
+                if cores_info is None or platform not in [core["id"] for core in cores_info]:
                     install_command = ["arduino-cli", "core", "install", platform]
                     install_result = subprocess.run(install_command)
                 
@@ -86,15 +86,17 @@ class UpdateSketch:
                 param_content = file.read()
 
             for param, value in params.items():
+                if isinstance(value, str):
+                    value = f"\"{value}\""  # Ensure the value is surrounded by double quotes
+                elif isinstance(value, bool):
+                    value = str(value).lower()  
 
                 pattern = re.compile(rf"({re.escape(param)}\s*=\s*)(\".*?\"|\d+|true|false);")
                 param_content = re.sub(pattern, rf"\g<1>{value};", param_content)
-                param_content = param_content.replace("True", "true")
-                param_content = param_content.replace("False", "false")
 
             with open(PARAMS_PATH, "w") as file:
                 file.write(param_content)
                 
         except Exception as e:
-            self.out.append('Error: ', e)
+            self.out.append(f'Error: {e}')
             self.has_error = True
