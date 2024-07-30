@@ -16,6 +16,8 @@ const int DEBUG_TEST_SECONDARY = false;
 
 // Trial settings
 const int NUMBER_OF_TRIALS = 6;
+const char TRIAL_TYPE_1[] = "no_puff_CS-";
+const char TRIAL_TYPE_2[] = "puff_CS+";
 const bool IS_TRAINING = false;
 const long MIN_ITI = 60000;
 const long MAX_ITI = 300000;

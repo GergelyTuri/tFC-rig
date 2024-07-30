@@ -10,20 +10,15 @@ Usage:
     
 """
 
-from PyQt6.QtWidgets import QApplication, QVBoxLayout, QWidget, QPushButton, QFormLayout, QGroupBox, QMessageBox, QScrollArea, QComboBox
+from PyQt6.QtWidgets import QApplication, QVBoxLayout, QWidget, QPushButton, QFormLayout, QGroupBox, QMessageBox, QScrollArea, QComboBox, QGridLayout
 from PyQt6.QtGui import QIcon, QPixmap
 from PyQt6.QtCore import Qt
-from .constants import PARAMS_PATH
+from .constants import NO_PUFF_NEGATIVE, PARAMS_PATH, PUFF_POSITIVE, TRIAL_CLASSES
 from ..camera_control import camera_class as cc
 from .serial_comm import SerialComm as sc
 from .update_sketch import UpdateSketch
-from .utils import OutputDialogPlot, ProcessThread, SpinBox, CheckBox, LineEdit
+from .utils import ComboBox, OutputDialogPlot, ProcessThread, SpinBox, CheckBox, LineEdit
 import sys, serial, re
-import serial.tools.list_ports
-
-REWARD1 = "Water"
-REWARD2 = "5% Sugar Water"
-DEBUG = False
 
 
 class Window(QWidget):
@@ -65,12 +60,15 @@ class Window(QWidget):
         trailSettingsGroupBox = QGroupBox("Trial Settings")
         trialSettingsLayout = QFormLayout()
 
-        self.num_trials = SpinBox(trialSettingsLayout, "Number of trials", 6, step=1, min=1, max=6)
+        self.num_trials = SpinBox(trialSettingsLayout, "Number of trials", 6, step=1, min=1, max=16)
         self.is_training = CheckBox(
             layout=trialSettingsLayout,
             text="Is training session?",
             checked=False,
         )
+        # Trial Types
+        self.trial_type_1 = ComboBox(trialSettingsLayout, 'Trial Type 1', TRIAL_CLASSES, NO_PUFF_NEGATIVE)
+        self.trial_type_2 = ComboBox(trialSettingsLayout, 'Trial Type 2', TRIAL_CLASSES, PUFF_POSITIVE)
         self.min_iti = SpinBox(trialSettingsLayout, "Minimum iti duration", 60000, step=1000)
         self.max_iti = SpinBox(trialSettingsLayout, "Maximum iti duration", 300000, step=1000)
         self.trial_duration = SpinBox(trialSettingsLayout, "Trial duration", 50000, step=1000)
@@ -220,18 +218,20 @@ class Window(QWidget):
         with open(PARAMS_PATH, 'r') as file:
             content = file.read()
 
-        pattern = r'const\s+(\w+)\s+(\w+)\s*=\s*([^;]+);'
+        pattern = r'const\s+(\w+\*?)\s+(\w+)(\[\])?\s*=\s*([^;]+);'
         header_fields = re.findall(pattern, content)
-        header_dict = {var_name: value for _, var_name, value in header_fields}
+        header_params = {var_name: value for _, var_name, _, value in header_fields}
 
-        gui_fields = self.get_ino_params()
+        gui_params = self.get_ino_params()
 
-        for field_name, gui_value in gui_fields.items():
-            if field_name in header_dict:
-                header_value = header_dict[field_name]
+        for gui_field, gui_value in gui_params.items():
+            if gui_field in header_params:
+                header_value = header_params[gui_field]
 
                 if isinstance(gui_value, bool):
                     header_value = header_value.lower() == 'true'
+                elif isinstance(gui_value, str):
+                    header_value = header_value[1:-1]
                 else:
                     gui_type = type(gui_value)
                     header_value = gui_type(header_value)
@@ -250,8 +250,10 @@ class Window(QWidget):
         params = {
             "NUMBER_OF_TRIALS": self.num_trials.value(),
             "IS_TRAINING": self.is_training.checkState() == Qt.CheckState.Checked,
-            "MIN_ITI": self.min_iti.value(), 
-            "MAX_ITI": self.max_iti.value(), 
+            "TRIAL_TYPE_1": self.trial_type_1.currentText(),
+            "TRIAL_TYPE_2": self.trial_type_2.currentText(),
+            "MIN_ITI": self.min_iti.value(),
+            "MAX_ITI": self.max_iti.value(),
             "TRIAL_DURATION": self.trial_duration.value(),
             "POST_LAST_TRIAL_INTERVAL": self.post_trial_duration.value(),
             "WATER_REWARD_AVAILABLE": self.water_enabled.checkState() == Qt.CheckState.Checked,

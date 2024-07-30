@@ -56,6 +56,14 @@ c. either add this new line or append the new path to your PATH variable:
             export PATH="{arduino-cli path}"
 d. Save the changes (in nano this is ctrl-0, then hit enter) and restart vscode
 
+If the sketch fails to update, test if the package can detect your connected board with:
+```arduino-cli board list --format json
+```
+If given an error you may have to update the package with:
+```arduino-cli update
+arduino-cli core update-index
+```
+
 ## Usage
 
 ### GUI
