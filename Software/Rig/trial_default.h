@@ -132,8 +132,8 @@ const int NUMBER_OF_TRIALS = 6;
 // puff_CS+: positive signal with airpuff
 // no_puff_CS-: negative signal (no airpuff)
 // no_puff_CS+: positive signal (no airpuff)
-const char* TRIAL_TYPE_1 = "no_puff_CS-";
-const char* TRIAL_TYPE_2 = "puff_CS-";
+const char TRIAL_TYPE_1[] = "no_puff_CS-";
+const char TRIAL_TYPE_2[] = "puff_CS+";
 //
 // -----------
 // IS_TRAINING
