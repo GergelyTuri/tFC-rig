@@ -12,6 +12,27 @@ int getArrayIndex(const char* trialType, const char** arr, int size) {
     return -1;  // Return -1 if string not found
 }
 
+void intArrayToString(const int* arr, int size, char* result, int resultSize){
+    if (resultSize <= size) {
+        // Ensure result buffer is large enough
+        return;  // Or handle the error appropriately
+    }
+
+    // Initialize an empty string to store the result
+    // result[0] = '\0';
+
+    // Temporary buffer to hold each integer as a string
+    char temp[12];
+
+    for (int i = 0; i < size; ++i) {
+        // Convert each integer to a string and append it to the result
+        // sprintf(temp, "%d", arr[i]);
+        // strcat(result, temp);
+        snprintf(temp, sizeof(temp), "%d", arr[i]);
+        strncat(result, temp, resultSize - strlen(result) - 1);
+    }
+}
+
 class TrialType {
 public:
     bool airpuff; // 0 = CS-, 1 = CS+
@@ -32,7 +53,7 @@ const TrialType* trialTypeObjects[] = {
     &NO_PUFF_POSITIVE  // ID 3
 };
 
-const char* trialTypeStrings[] = {
+const char* trialTypeStringIdx[] = {
     "no_puff_CS-",  // ID 0
     "puff_CS+",      // ID 1
     "no_puff_CS+",  // ID 2

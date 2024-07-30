@@ -55,11 +55,12 @@ long sessionStartTime = __LONG_MAX__;
 bool sessionHasEnded = false;
 long sessionEndTime = 0;
 
-int trialTypes[NUMBER_OF_TRIALS + 1];
+int trialTypes[NUMBER_OF_TRIALS];
+char trialTypesString[NUMBER_OF_TRIALS*2+1] = "";
 int currentTrialType;
-int trialTypeArrSize = sizeof(trialTypeStrings) / sizeof(trialTypeStrings[0]);
-int trialType1Idx = getArrayIndex(TRIAL_TYPE_1, trialTypeStrings, trialTypeArrSize);
-int trialType2Idx = getArrayIndex(TRIAL_TYPE_2, trialTypeStrings, trialTypeArrSize);
+int trialTypeStringIdxSize = sizeof(trialTypeStringIdx) / sizeof(trialTypeStringIdx[0]);
+int trialType1Idx = getArrayIndex(TRIAL_TYPE_1, trialTypeStringIdx, trialTypeStringIdxSize);
+int trialType2Idx = getArrayIndex(TRIAL_TYPE_2, trialTypeStringIdx, trialTypeStringIdxSize);
 
 // char trialTypes[] = "000111";
 // const char* currentTrialType = trialTypes[0];
@@ -131,7 +132,6 @@ void setup() {
   for (int i = half; i < NUMBER_OF_TRIALS; ++i) {
     trialTypes[i] = trialType2Idx;
   }
-  trialTypes[NUMBER_OF_TRIALS] = '\0';
   currentTrialType = trialTypes[0];
 
   for (int i = NUMBER_OF_TRIALS-1; i > 0; --i) {
@@ -140,6 +140,8 @@ void setup() {
     trialTypes[i] = trialTypes[j];
     trialTypes[j] = temp;
   }
+  // intArrayToString(trialTypes, NUMBER_OF_TRIALS, trialTypesString); 
+  intArrayToString(trialTypes, NUMBER_OF_TRIALS, trialTypesString, sizeof(trialTypesString));
 
   // Keeps track of the rig start time. This should be close to 0 since
   // `millis` starts when the rig starts, but is tracked separately for
@@ -388,7 +390,9 @@ void printSessionParameters() {
   // issue comes up later in the analysis
   Serial.println("Session consists of " + String(NUMBER_OF_TRIALS) + " trials, in the following order");
   print(String(trialType1Idx) + " is "+ String(TRIAL_TYPE_1) + ", " + String(trialType2Idx) + " is " + String(TRIAL_TYPE_2));
-  vprint("trialTypes", trialTypes, NUMBER_OF_TRIALS);
+  // vprint("trialTypes", trialTypes, NUMBER_OF_TRIALS);
+  // vprint("trialTypes", trialTypesString);
+  print(trialTypesString);
 
   // print("Printing Arduino or rig parameters");
   vprint("BAUD_RATE", BAUD_RATE);
@@ -686,15 +690,15 @@ void vprint (char* x, char* y) {
   print(s);
 }
 
-void vprint(char* x, int y[], int size) {
-  char s[100];  // Buffer for string
-  char temp[4];  // Buffer for int elements in array
+// void vprint(char* x, int y[], int size) {
+//   char s[100];  // Buffer for string
+//   char temp[4];  // Buffer for int elements in array
 
-  sprintf(s, "%s: ", x);
+//   sprintf(s, "%s: ", x);
 
-  for (int i = 0; i < size; ++i) {
-    sprintf(temp, "%d", y[i]);
-    strcat(s, temp);
-  }
-  print(s);
-}
+//   for (int i = 0; i < size; ++i) {
+//     sprintf(temp, "%d", y[i]);
+//     strcat(s, temp);
+//   }
+//   print(s);
+// }

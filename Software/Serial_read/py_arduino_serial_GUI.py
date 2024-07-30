@@ -60,7 +60,7 @@ class Window(QWidget):
         trailSettingsGroupBox = QGroupBox("Trial Settings")
         trialSettingsLayout = QFormLayout()
 
-        self.num_trials = SpinBox(trialSettingsLayout, "Number of trials", 6, step=1, min=1, max=50)
+        self.num_trials = SpinBox(trialSettingsLayout, "Number of trials", 6, step=1, min=1, max=16)
         self.is_training = CheckBox(
             layout=trialSettingsLayout,
             text="Is training session?",
@@ -218,9 +218,9 @@ class Window(QWidget):
         with open(PARAMS_PATH, 'r') as file:
             content = file.read()
 
-        pattern = r'const\s+(\w+\*?)\s+(\w+)\s*=\s*([^;]+);'
+        pattern = r'const\s+(\w+\*?)\s+(\w+)(\[\])?\s*=\s*([^;]+);'
         header_fields = re.findall(pattern, content)
-        header_params = {var_name: value for _, var_name, value in header_fields}
+        header_params = {var_name: value for _, var_name, _, value in header_fields}
 
         gui_params = self.get_ino_params()
 
