@@ -91,7 +91,7 @@ class UpdateSketch:
                 elif isinstance(value, bool):
                     value = str(value).lower()  
 
-                pattern = re.compile(rf"({re.escape(param)}\s*=\s*)(\".*?\"|\d+|true|false);")
+                pattern = re.compile(rf"({re.escape(param)}(\[\])?\s*=\s*)(\".*?\"|\d+|true|false);")
                 param_content = re.sub(pattern, rf"\g<1>{value};", param_content)
 
             with open(PARAMS_PATH, "w") as file:

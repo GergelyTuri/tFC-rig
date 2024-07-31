@@ -56,17 +56,15 @@ bool sessionHasEnded = false;
 long sessionEndTime = 0;
 
 int trialTypes[NUMBER_OF_TRIALS];
-char trialTypesString[NUMBER_OF_TRIALS*2+1] = "";
+char trialTypesString[NUMBER_OF_TRIALS+1];
 int currentTrialType;
 int trialTypeStringIdxSize = sizeof(trialTypeStringIdx) / sizeof(trialTypeStringIdx[0]);
 int trialType1Idx = getArrayIndex(TRIAL_TYPE_1, trialTypeStringIdx, trialTypeStringIdxSize);
 int trialType2Idx = getArrayIndex(TRIAL_TYPE_2, trialTypeStringIdx, trialTypeStringIdxSize);
 
-// char trialTypes[] = "000111";
-// const char* currentTrialType = trialTypes[0];
 long randomInterTrialInterval = 0;
 
-int currentTrial = 0;
+int currentTrial;
 bool trialHasStarted = false;
 long trialStartTime = __LONG_MAX__;
 bool trialHasEnded = false;
@@ -120,7 +118,7 @@ void setup() {
   // reading from a disconnected pin.
   randomSeed(analogRead(0));
 
-  // Each session is a random permutation of {CS-, CS-, CS-, CS+, CS+, CS+}.
+  // Each session is a random permutation of the trial types (ex: {CS-, CS-, CS-, CS+, CS+, CS+}).
   // Note that 0 is CS-, 1 is CS+. This uses Fisher-Yates shuffle. Note
   // that this assumes there are `6` trials and would not fully randomize
   // the trials otherwise
@@ -136,12 +134,11 @@ void setup() {
 
   for (int i = NUMBER_OF_TRIALS-1; i > 0; --i) {
     int j = random (0, i+1);
-    char temp = trialTypes[i];
+    int temp = trialTypes[i];
     trialTypes[i] = trialTypes[j];
     trialTypes[j] = temp;
   }
-  // intArrayToString(trialTypes, NUMBER_OF_TRIALS, trialTypesString); 
-  intArrayToString(trialTypes, NUMBER_OF_TRIALS, trialTypesString, sizeof(trialTypesString));
+  intArrayToString(trialTypes, NUMBER_OF_TRIALS, trialTypesString); 
 
   // Keeps track of the rig start time. This should be close to 0 since
   // `millis` starts when the rig starts, but is tracked separately for
@@ -188,10 +185,12 @@ void loop() {
           if (trialTypeObjects[currentTrialType]->airpuff) {
               checkAir();
           }
-          if (trialTypeObjects[currentTrialType]->signal == 1) {
+          if (trialTypeObjects[currentTrialType]->hasSignal==1){
+            if (trialTypeObjects[currentTrialType]->signal == 1) {
               checkPositiveSignal();
-          } else {
+            } else {
               checkNegativeSignal();
+            }
           }
         }
 
@@ -388,10 +387,12 @@ void printSessionParameters() {
   // Add variables defined in `trial.h` or `rig.h` (or other) here.
   // That way, everything that defines the trial is recorded in case an
   // issue comes up later in the analysis
-  Serial.println("Session consists of " + String(NUMBER_OF_TRIALS) + " trials, in the following order");
-  print(String(trialType1Idx) + " is "+ String(TRIAL_TYPE_1) + ", " + String(trialType2Idx) + " is " + String(TRIAL_TYPE_2));
-  // vprint("trialTypes", trialTypes, NUMBER_OF_TRIALS);
-  // vprint("trialTypes", trialTypesString);
+
+  print("Session consists of:");
+  vprint("NUMBER_OF_TRIALS", NUMBER_OF_TRIALS);
+  vprint(TRIAL_TYPE_1, trialType1Idx);
+  vprint(TRIAL_TYPE_2, trialType2Idx);
+  print("trialTypes:");
   print(trialTypesString);
 
   // print("Printing Arduino or rig parameters");
@@ -689,16 +690,3 @@ void vprint (char* x, char* y) {
   sprintf(s, "%s: %s", x, y);
   print(s);
 }
-
-// void vprint(char* x, int y[], int size) {
-//   char s[100];  // Buffer for string
-//   char temp[4];  // Buffer for int elements in array
-
-//   sprintf(s, "%s: ", x);
-
-//   for (int i = 0; i < size; ++i) {
-//     sprintf(temp, "%d", y[i]);
-//     strcat(s, temp);
-//   }
-//   print(s);
-// }

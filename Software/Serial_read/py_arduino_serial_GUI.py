@@ -60,7 +60,7 @@ class Window(QWidget):
         trailSettingsGroupBox = QGroupBox("Trial Settings")
         trialSettingsLayout = QFormLayout()
 
-        self.num_trials = SpinBox(trialSettingsLayout, "Number of trials", 6, step=1, min=1, max=16)
+        self.num_trials = SpinBox(trialSettingsLayout, "Number of trials", 6, step=1, min=1, max=30)
         self.is_training = CheckBox(
             layout=trialSettingsLayout,
             text="Is training session?",
