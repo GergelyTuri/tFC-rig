@@ -42,8 +42,8 @@ const TrialType NO_PUFF_NO_SIGNAL(true, 0, 0);
 const TrialType* trialTypeObjects[] = {
     &NO_PUFF_NEGATIVE,  // ID 0
     &PUFF_POSITIVE,    // ID 1
-    &PUFF_NEGATIVE,    // ID 2
-    &NO_PUFF_POSITIVE,  // ID 3
+    &NO_PUFF_POSITIVE,  // ID 2
+    &PUFF_NEGATIVE,     // ID 3
     &NO_PUFF_NO_SIGNAL // ID 4
 };
 
