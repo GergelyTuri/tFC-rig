@@ -182,7 +182,7 @@ void loop() {
           checkWater();
         }
         if (USING_AUDITORY_CUES && IS_PRIMARY_RIG) {
-          if (trialTypeObjects[currentTrialType]->airpuff) {
+          if (trialTypeObjects[currentTrialType]->airpuff==true) {
               checkAir();
           }
           if (trialTypeObjects[currentTrialType]->hasSignal==1){
@@ -549,26 +549,28 @@ void flushLickMetaData() {
  *
  */
 void checkAir() {
-  bool isPuffing = digitalRead(PIN_AIR_PUFF);
-  long currentTime = millis();
-  long trialTime = currentTime - trialStartTime;
-  if ((trialTime >= AIR_PUFF_START_TIME) && (trialTime < AIR_PUFF_TOTAL_TIME + AIR_PUFF_START_TIME)) {
-    if (!isPuffing && ((currentTime - puffStopTime) > INTER_PUFF_PAUSE_TIME)) {
-      digitalWrite(PIN_AIR_PUFF, HIGH);
-      print("Puff start");
-      puffStartTime = currentTime;
-    }
-    if (isPuffing && ((currentTime - puffStartTime) > AIR_PUFF_DURATION)) {
-      digitalWrite(PIN_AIR_PUFF, LOW);
-      print("Puff stop");
-      puffStopTime = currentTime;
-    }
-  } else {
-    // Makes sure we are not puffing
-    if (isPuffing) {
-      digitalWrite(PIN_AIR_PUFF, LOW);
-      print("Puff stop, catch block");
-      puffStopTime = currentTime;
+  if (USING_AIR_PUFFS){
+    bool isPuffing = digitalRead(PIN_AIR_PUFF);
+    long currentTime = millis();
+    long trialTime = currentTime - trialStartTime;
+    if ((trialTime >= AIR_PUFF_START_TIME) && (trialTime < AIR_PUFF_TOTAL_TIME + AIR_PUFF_START_TIME)) {
+      if (!isPuffing && ((currentTime - puffStopTime) > INTER_PUFF_PAUSE_TIME)) {
+        digitalWrite(PIN_AIR_PUFF, HIGH);
+        print("Puff start");
+        puffStartTime = currentTime;
+      }
+      if (isPuffing && ((currentTime - puffStartTime) > AIR_PUFF_DURATION)) {
+        digitalWrite(PIN_AIR_PUFF, LOW);
+        print("Puff stop");
+        puffStopTime = currentTime;
+      }
+    } else {
+      // Makes sure we are not puffing
+      if (isPuffing) {
+        digitalWrite(PIN_AIR_PUFF, LOW);
+        print("Puff stop, catch block");
+        puffStopTime = currentTime;
+      }
     }
   }
 }

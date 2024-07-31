@@ -200,7 +200,7 @@ class CheckBox(QCheckBox):
         self.initial_value = self.checkState()
 
 class ComboBox(QComboBox):
-    def __init__(self, layout: QFormLayout, text: str, items: list[str], default = None):
+    def __init__(self, layout: QFormLayout, text: str, items, default = None):
         super().__init__()
         for item in items:
             self.addItem(item)
