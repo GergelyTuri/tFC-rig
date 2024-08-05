@@ -2,6 +2,7 @@ import calendar
 import json
 import os
 import re
+import warnings
 from datetime import datetime
 from typing import Optional
 
@@ -16,6 +17,12 @@ from IPython.display import display
 
 from tfcrig.files import DATETIME_REGEX
 from tfcrig.notebook import builtin_print
+
+
+WARN_SCALAR_DIVIDE = [
+    "invalid value encountered in scalar divide",
+    "divide by zero encountered in scalar divide",
+]
 
 
 def extract_exp_mouse_pairs(exp_mouse_blob: str) -> list[str]:
@@ -87,6 +94,26 @@ def int_session_id_to_date_string(session_id: int) -> str:
     minute = session_id[10:12]
     second = session_id[12:14]
     return f"{year}-{month}-{day}T{hour}:{minute}:{second}"
+
+
+def scalar_divide(a: np.int64, b: np.int64) -> np.int64:
+    """
+    Divide two scalars, a numerator `a` and denominator `b`, without printing a
+    `RuntimeWarning` if we divide by zero
+    """
+    with warnings.catch_warnings(record=True) as w:
+        c = a / b
+
+    if len(w) > 0:
+        warning = w[0]
+        if (
+            not issubclass(warning.category, RuntimeWarning) or
+            str(warning.message) not in WARN_SCALAR_DIVIDE
+        ):
+            # Raises an exception for other warnings
+            raise Exception(warning.message)
+
+    return c
 
 
 def get_mouse_ids(data_root: str) -> set[Optional[str]]:
@@ -414,23 +441,59 @@ def get_data_features_from_data_file(
         total_puffed_licks_water_on_type_1 = df_water_t1["puffed_lick"].sum()
 
         # Some math
-        z_total_licks_in_trial = total_licks_in_trial/total_licks
-        z_total_licks_type_0 = total_licks_type_0/total_licks
-        z_total_licks_type_1 = total_licks_type_1/total_licks
-        z_total_licks_water_on_type_0 = total_licks_water_on_type_0/total_licks_water_on
-        z_total_licks_water_on_type_1 = total_licks_water_on_type_1/total_licks_water_on
-        # Puffed
-        z_total_puffed_licks_in_trial = total_puffed_licks_in_trial/total_puffed_licks
-        z_total_puffed_licks_type_0 = total_puffed_licks_type_0/total_puffed_licks
-        z_total_puffed_licks_type_1 = total_puffed_licks_type_1/total_puffed_licks
-        z_total_puffed_licks_water_on_type_0 = total_puffed_licks_water_on_type_0/total_puffed_licks_water_on
-        z_total_puffed_licks_water_on_type_1 = total_puffed_licks_water_on_type_1/total_puffed_licks_water_on
+        z_total_licks_in_trial = scalar_divide(
+            total_licks_in_trial,
+            total_licks,
+        )
+        z_total_licks_type_0 = scalar_divide(
+            total_licks_type_0,
+            total_licks,
+        )
+        z_total_licks_type_1 = scalar_divide(
+            total_licks_type_1,
+            total_licks,
+        )
+        z_total_licks_water_on_type_0 = scalar_divide(
+            total_licks_water_on_type_0,
+            total_licks_water_on,
+        )
+        z_total_licks_water_on_type_1 = scalar_divide(
+            total_licks_water_on_type_1,
+            total_licks_water_on,
+        )
+        # Puffed math
+        z_total_puffed_licks_in_trial = scalar_divide(
+            total_puffed_licks_in_trial,
+            total_puffed_licks,
+        )
+        z_total_puffed_licks_type_0 = scalar_divide(
+            total_puffed_licks_type_0,
+            total_puffed_licks,
+        )
+        z_total_puffed_licks_type_1 = scalar_divide(
+            total_puffed_licks_type_1,
+            total_puffed_licks,
+        )
+        z_total_puffed_licks_water_on_type_0 = scalar_divide(
+            total_puffed_licks_water_on_type_0,
+            total_puffed_licks_water_on,
+        )
+        z_total_puffed_licks_water_on_type_1 = scalar_divide(
+            total_puffed_licks_water_on_type_1,
+            total_puffed_licks_water_on,
+        )
 
         # Defining learning rate as the ratio of puffed licks in trial type0 to
         # licks in trial type1. Air puffs are delivered in type1 and as
         # the mouse learns type1 licks should go down (type0 up)
-        z_learning_rate = z_total_puffed_licks_type_0/z_total_puffed_licks_type_1
-        z_learning_rate_reward = z_total_puffed_licks_water_on_type_0/z_total_puffed_licks_water_on_type_1
+        z_learning_rate = scalar_divide(
+            z_total_puffed_licks_type_0,
+            z_total_puffed_licks_type_1,
+        )
+        z_learning_rate_reward = scalar_divide(
+            z_total_puffed_licks_water_on_type_0,
+            z_total_puffed_licks_water_on_type_1,
+        )
 
         # It might be useful to clean these up
         data_features.append(
