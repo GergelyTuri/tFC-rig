@@ -63,6 +63,7 @@ class RigFiles:
 
     data_root: str = "/gdrive/Shareddrives/Turi_lab/Data/aging_project/"
     dry_run: bool = True
+    verbose: bool = False
 
     def check(self) -> None:
         """
@@ -156,7 +157,7 @@ class RigFiles:
                 data_files.add(os.path.join(root, file_name))
 
         # Print a wrap-up of the output
-        if data_files:
+        if data_files and self.verbose:
             print("Correctly named data files:")
             for f in data_files:
                 builtin_print(f"  {f}")
@@ -417,6 +418,51 @@ class RigFiles:
                     need_to_fix_msg = "'mesage' in data"
                     need_to_fix_data = True
                 del data_str
+
+                # Fix individual data blobs.
+                # This is based on the output from setting up the analysis
+                def is_good_data_blob(gui_msg: str) -> bool:
+                    # The GUI message itself can be bad
+                    try:
+                        rig_msg = gui_msg["message"].strip()
+                    except KeyError as e:
+                        if "KeyboardInterrupt" in gui_msg:
+                            return False
+                        raise e
+
+                    # Is the message not formatted properly?
+                    n_chunks = len(rig_msg.split(":"))
+                    if n_chunks in [4, 5]:
+                        return True
+
+                    # Removes at least some known bad messages
+                    if rig_msg == "KeyboardInterrupt":
+                        # Keyboard interrupts appear as a rig message
+                        return False
+                    if rig_msg[-10::] in "Waiting for session to start...":
+                        # For some reason, portions of this message appear in
+                        # the data often
+                        return False
+                    if "Waiting for session to start..." in rig_msg:
+                        # Might be the same weirdness as above
+                        return False
+                    if rig_msg in "Your session has ended, but a sketch cannot stop Arduino.":
+                        # Something the rig prints that we can ignore
+                        return False
+                    if "Session consists of " in rig_msg:
+                        # Known non-conforming string
+                        return False
+                    print(f"RIG MSG: {rig_msg}")
+                    return True
+
+                for mouse_id in list(data["data"].keys()):
+                    mouse_data = data["data"][mouse_id]
+                    mouse_data = [
+                        blob
+                        for blob in mouse_data
+                        if not is_good_data_blob(blob)
+                    ]
+                    data["data"][mouse_id] = mouse_data
 
                 # Fix the data
                 if need_to_fix_data and self.dry_run:
