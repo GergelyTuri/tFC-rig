@@ -193,6 +193,7 @@ def extract_features_from_session_data(
         builtin_print(f"    - File: {file_name}")
         return pd.DataFrame()
 
+    check_next_trial_types_message = False
     for data_blob in raw_data:
         # Parse the JSON message
         try:
@@ -234,7 +235,7 @@ def extract_features_from_session_data(
         # Get trial type
         if "currentTrialType" in msg:
             trial_type = int(msg.split(msg_delimiter)[1])
-            if trial_type not in [0, 1]:
+            if trial_type not in [0, 1, 2, 3, 4]:
                 print(f"Invalid trial type in: '{msg}'!!!")
                 builtin_print(f" - File: {file_name}")
                 return pd.DataFrame()
@@ -242,8 +243,17 @@ def extract_features_from_session_data(
         # Get all trial types, check for balance. Note that if an
         # imbalance is intentional, this will print false positive
         # error messages
-        if "trialTypes" in msg:
-            trial_types = msg.split(msg_delimiter)[1]
+        if "trialTypes" in msg or check_next_trial_types_message:
+            if check_next_trial_types_message:
+                trial_types = msg.split(msg_delimiter)[0]
+            else:
+                try:
+                    trial_types = msg.split(msg_delimiter)[1]
+                except IndexError:
+                    # Sometimes we aren't printing `trialTypes` together with
+                    # its value
+                    check_next_trial_types_message = True
+                    continue
             if trial_types.count("0") != trial_types.count("1"):
                 if print_bad_data_blobs:
                     print(f"Unbalanced trial types in: '{msg}'!!!")
