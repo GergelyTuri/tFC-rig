@@ -4,7 +4,7 @@ import os
 import re
 import warnings
 from datetime import datetime
-from typing import Optional
+from typing import Any, Optional
 
 import ipywidgets as widgets
 import matplotlib.patches as mpatches
@@ -23,6 +23,14 @@ WARN_SCALAR_DIVIDE = [
     "invalid value encountered in scalar divide",
     "divide by zero encountered in scalar divide",
 ]
+
+
+def dict_contains_other_values(d: dict, types: tuple[Any]) -> bool:
+    invalid_items = []
+    for key, value in d.items():
+        if not isinstance(value, types):
+            return True
+    return False
 
 
 def extract_exp_mouse_pairs(exp_mouse_blob: str) -> list[str]:
@@ -206,9 +214,8 @@ def extract_features_from_session_data(
         session_start_msg not in data_str
         or session_end_msg not in data_str
     ):
-        print("Session either does not start or does not end!!!")
-        builtin_print(f"    - File: {file_name}")
-        return pd.DataFrame()
+        raise ValueError("Session either does not start or does not end!!!")
+
     # Check trial start and ends (every trial that starts, ends)
     is_trial = 0
     trial_start_msg = "Trial has started"
@@ -216,9 +223,7 @@ def extract_features_from_session_data(
     n_trial_starts = data_str.count(trial_start_msg)
     n_trial_ends = data_str.count(trial_end_msg)
     if n_trial_starts != n_trial_ends:
-        print(f"Trial start, end mismatch!!!")
-        builtin_print(f"    - File: {file_name}")
-        return pd.DataFrame()
+        raise ValueError(f"Trial start, end mismatch!!!")
 
     check_next_trial_types_message = False
     for data_blob in raw_data:
@@ -231,10 +236,7 @@ def extract_features_from_session_data(
             t_trial = int(split_data[2])
             msg = msg_delimiter.join(split_data[3::])
         except (KeyError, ValueError):
-            if print_bad_data_blobs:
-                print(f"Bad data found in '{file_name}', skipping!")
-                builtin_print(f"    - Bad data blob: {data_blob}")
-            continue
+            raise ValueError(f"Bad data blob found: {data_blob}")
 
         # Confirm that absolute time moves forward
         if absolute_time < previous_time:
@@ -263,9 +265,7 @@ def extract_features_from_session_data(
         if "currentTrialType" in msg:
             trial_type = int(msg.split(msg_delimiter)[1])
             if trial_type not in [0, 1, 2, 3, 4]:
-                print(f"Invalid trial type in: '{msg}'!!!")
-                builtin_print(f" - File: {file_name}")
-                return pd.DataFrame()
+                raise ValueError(f"Invalid trial type in: '{msg}'!!!")
 
         # Get all trial types, check for balance. Note that if an
         # imbalance is intentional, this will print false positive
@@ -282,10 +282,7 @@ def extract_features_from_session_data(
                     check_next_trial_types_message = True
                     continue
             if trial_types.count("0") != trial_types.count("1"):
-                if print_bad_data_blobs:
-                    print(f"Unbalanced trial types in: '{msg}'!!!")
-                    builtin_print(f" - File: {file_name}")
-                continue
+                raise ValueError(f"Unbalanced trial types in: '{msg}'!!!")
 
         # Check for some trial parameters
         if "AIR_PUFF_START_TIME" in msg:
@@ -387,12 +384,9 @@ def get_data_features_from_data_file(
                 json_data = json.load(f)
             raw_data = json_data["data"][mouse_id]
         except KeyError:
-            # We choose to fail loudly, but continue
-            print(
-                f"This file name does not match its 'mouse_ids': {full_file}"
+            raise ValueError(
+                f"File name does not match its 'mouse_ids': {full_file}"
             )
-            print(f'Keys: {json_data["data"].keys()}')
-            continue
         df = extract_features_from_session_data(
             raw_data=raw_data,
             mouse_id=mouse_id,
@@ -496,34 +490,35 @@ def get_data_features_from_data_file(
         )
 
         # It might be useful to clean these up
-        data_features.append(
-            {
-                "mouse_id": df["mouse_id"].iloc[0],
-                "session_id": df["session_id"].iloc[0],
-                "day_of_week": df["day_of_week"].iloc[0],
-                "total_licks": total_licks,
-                "total_puffed_licks": total_puffed_licks,
-                "total_licks_in_trial": total_licks_in_trial,
-                "total_puffed_licks_in_trial": total_puffed_licks_in_trial,
-                "z_total_licks_in_trial": z_total_licks_in_trial,
-                "z_total_puffed_licks_in_trial": z_total_puffed_licks_in_trial,
-                "total_licks_type_0": total_licks_type_0,
-                "z_total_licks_type_0": z_total_licks_type_0,
-                "z_total_puffed_licks_type_0": z_total_puffed_licks_type_0,
-                "total_licks_type_1": total_licks_type_1,
-                "z_total_licks_type_1": z_total_licks_type_1,
-                "z_total_puffed_licks_type_1": z_total_puffed_licks_type_1,
-                "total_licks_water_on": total_licks_water_on,
-                "total_licks_water_on_type_0": total_licks_water_on_type_0,
-                "z_total_licks_water_on_type_0": z_total_licks_water_on_type_0,
-                "z_total_puffed_licks_water_on_type_0": z_total_puffed_licks_water_on_type_0,
-                "total_licks_water_on_type_1": total_licks_water_on_type_1,
-                "z_total_licks_water_on_type_1": z_total_licks_water_on_type_1,
-                "z_total_puffed_licks_water_on_type_1": z_total_puffed_licks_water_on_type_1,
-                "z_learning_rate": z_learning_rate,
-                "z_learning_rate_reward": z_learning_rate_reward,
-            }
-        )
+        features_dict = {
+            "mouse_id": df["mouse_id"].iloc[0],
+            "session_id": df["session_id"].iloc[0],
+            "day_of_week": df["day_of_week"].iloc[0],
+            "total_licks": total_licks,
+            "total_puffed_licks": total_puffed_licks,
+            "total_licks_in_trial": total_licks_in_trial,
+            "total_puffed_licks_in_trial": total_puffed_licks_in_trial,
+            "z_total_licks_in_trial": z_total_licks_in_trial,
+            "z_total_puffed_licks_in_trial": z_total_puffed_licks_in_trial,
+            "total_licks_type_0": total_licks_type_0,
+            "z_total_licks_type_0": z_total_licks_type_0,
+            "z_total_puffed_licks_type_0": z_total_puffed_licks_type_0,
+            "total_licks_type_1": total_licks_type_1,
+            "z_total_licks_type_1": z_total_licks_type_1,
+            "z_total_puffed_licks_type_1": z_total_puffed_licks_type_1,
+            "total_licks_water_on": total_licks_water_on,
+            "total_licks_water_on_type_0": total_licks_water_on_type_0,
+            "z_total_licks_water_on_type_0": z_total_licks_water_on_type_0,
+            "z_total_puffed_licks_water_on_type_0": z_total_puffed_licks_water_on_type_0,
+            "total_licks_water_on_type_1": total_licks_water_on_type_1,
+            "z_total_licks_water_on_type_1": z_total_licks_water_on_type_1,
+            "z_total_puffed_licks_water_on_type_1": z_total_puffed_licks_water_on_type_1,
+            "z_learning_rate": z_learning_rate,
+            "z_learning_rate_reward": z_learning_rate_reward,
+        }
+        if dict_contains_other_values(features_dict, (np.generic, str)):
+            raise ValueError("File contains invalid features")
+        data_features.append(features_dict)
     return (
         data_features,
         pd.concat(data_frames).reset_index(drop=True),
@@ -553,6 +548,9 @@ class Analysis:
         self.data_root = data_root
         self.verbose = verbose
 
+        # Keep track of per-file errors
+        self.file_errors = {}
+
         # From the entire data root directory, get the set of mouse IDs
         self.mouse_ids = get_mouse_ids(self.data_root)
 
@@ -561,17 +559,36 @@ class Analysis:
         data_frames = []
         for root, _, files in os.walk(self.data_root):
             for file in files:
-                if is_data_file(file):
+                if not is_data_file(file):
+                    continue
+
+                # Try to extract features.
+                # Keep track of errors we raise above, to be printed later.
+                try:
                     f_features, f_data_frames = get_data_features_from_data_file(
                         full_file=os.path.join(root, file),
                         verbose=self.verbose,
                     )
-                    features += f_features
-                    if not f_data_frames.empty:
-                        data_frames.append(f_data_frames)
+                except ValueError as e:
+                    error = str(e)
+                    if error not in self.file_errors:
+                        self.file_errors[error] = [file]
+                    else:
+                        self.file_errors[error].append(file)
+                    continue
+
+                features += f_features
+                if not f_data_frames.empty:
+                    data_frames.append(f_data_frames)
         self.df = pd.DataFrame(features)
         self.df = self.df.sort_values(by=["session_id", "mouse_id"])
         self.data = pd.concat(data_frames).reset_index(drop=True)
+
+        # Print errors we found
+        for error, files in self.file_errors.items():
+            print(error)
+            for file in sorted(files):
+                builtin_print(f" - {file}")
 
         # Session plotting hooks
         self.mouse_id_widget = widgets.Dropdown(
