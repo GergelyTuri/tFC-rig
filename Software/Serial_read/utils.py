@@ -114,7 +114,7 @@ class OutputDialogPlot(QDialog):
         """
         try:
             self.output_text_edit.append(output)
-            if "Session consists of" in output:
+            if "Session has started" in output:
                 self.started = True
                 self.start_time = datetime.now()
             if "Lick" in output:
