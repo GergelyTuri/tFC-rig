@@ -481,13 +481,15 @@ class RigFiles:
                         need_to_fix_msg = "Bad data blob removed"
 
                 # Fix the data
-                if need_to_fix_data and self.dry_run:
-                    print(f"Need to fix '{file_path}'")
+                if need_to_fix_data:
+                    print(f"Fixing '{file_path}'")
                     builtin_print(f"- Reason: {need_to_fix_msg}")
                     count += 1
-                elif need_to_fix_data:
-                    with open(file_path, "w") as f:
-                        json.dump(data, f, indent=4)
+                    if not self.dry_run:
+                        with open(file_path, "w") as f:
+                            json.dump(data, f, indent=4)
 
         if count == 0:
-            print(f"Did not need to fix any files!")
+            print("Did not need to fix any files!")
+        else:
+            print(f"Fixed {count} files!")
