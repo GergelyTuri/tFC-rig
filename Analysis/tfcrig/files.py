@@ -478,6 +478,7 @@ class RigFiles:
                         ]
                     if diff:
                         need_to_fix_data = True
+                        need_to_fix_msg = "Bad data blob removed"
 
                 # Fix the data
                 if need_to_fix_data and self.dry_run:
