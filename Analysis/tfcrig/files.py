@@ -421,7 +421,7 @@ class RigFiles:
 
                 # Fix individual data blobs.
                 # This is based on the output from setting up the analysis
-                def is_good_data_blob(gui_msg: str) -> bool:
+                def is_good_data_blob(gui_msg: dict) -> bool:
                     # The GUI message itself can be bad
                     try:
                         rig_msg = gui_msg["message"].strip()
@@ -431,8 +431,23 @@ class RigFiles:
                         raise e
 
                     # Is the message not formatted properly?
-                    n_chunks = len(rig_msg.split(":"))
-                    if n_chunks in [4, 5]:
+                    split_msg = rig_msg.split(": ")
+                    n_chunks = len(split_msg)
+                    if n_chunks not in [4, 5]:
+                        return False
+                    try:
+                        split_ints = [
+                            int(split_msg[0]),
+                            int(split_msg[1]),
+                            int(split_msg[2]),
+                        ]
+                    except ValueError:
+                        # The first three message parts are integers
+                        return False
+
+                    # Known good messages that can be false positives for the
+                    # below known bad
+                    if split_msg[3] == "Waiting for session to start...":
                         return True
 
                     # Removes at least some known bad messages
@@ -452,7 +467,7 @@ class RigFiles:
                     if "Session consists of " in rig_msg:
                         # Known non-conforming string
                         return False
-                    print(f"RIG MSG: {rig_msg}")
+
                     return True
 
                 for mouse_id in list(data["data"].keys()):
