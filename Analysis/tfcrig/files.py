@@ -456,13 +456,13 @@ class RigFiles:
                     return True
 
                 for mouse_id in list(data["data"].keys()):
-                    mouse_data = data["data"][mouse_id]
-                    mouse_data = [
+                    original_mouse_data = data["data"][mouse_id]
+                    new_mouse_data = [
                         blob
-                        for blob in mouse_data
-                        if not is_good_data_blob(blob)
+                        for blob in original_mouse_data
+                        if is_good_data_blob(blob)
                     ]
-                    data["data"][mouse_id] = mouse_data
+                    data["data"][mouse_id] = new_mouse_data
 
                 # Fix the data
                 if need_to_fix_data and self.dry_run:
