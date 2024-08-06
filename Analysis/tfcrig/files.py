@@ -464,6 +464,21 @@ class RigFiles:
                     ]
                     data["data"][mouse_id] = new_mouse_data
 
+                    try:
+                        diff = [
+                            x["message"]
+                            for x in original_mouse_data
+                            if x not in new_mouse_data
+                        ]
+                    except Exception:
+                        diff = [
+                            x
+                            for x in original_mouse_data
+                            if x not in new_mouse_data
+                        ]
+                    if diff:
+                        need_to_fix_data = True
+
                 # Fix the data
                 if need_to_fix_data and self.dry_run:
                     print(f"Need to fix '{file_path}'")
