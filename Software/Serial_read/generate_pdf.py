@@ -5,6 +5,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import FigureCanvasPdf
 import io
+from .constants import START_STRING
 
 def simple_lick_plot(df):
     """
@@ -14,7 +15,7 @@ def simple_lick_plot(df):
     """
     df['lick'] = df['message'].str.contains('Lick', case=True, regex=False)
     df['absolute_time'] = pd.to_datetime(df['absolute_time'], format='%Y-%m-%d_%H-%M-%S.%f')
-    session_index = df.index[df['message'].str.contains("Session consists of")].min()
+    session_index = df.index[df['message'].str.contains(START_STRING)].min()
     df['Time (s)'] = (df['absolute_time'] - df.loc[session_index, 'absolute_time']).dt.total_seconds().astype(int)
     df = df.loc[session_index:]
 
