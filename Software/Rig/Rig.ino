@@ -673,6 +673,10 @@ void print(String x) {
   prePrint();
   Serial.println(x);
 }
+void print(char* x) {
+  prePrint();
+  Serial.println(x);
+}
 void vprint (char* x, int y) {
   char s[50];
   sprintf(s, "%s: %d", x, y);
@@ -681,6 +685,11 @@ void vprint (char* x, int y) {
 void vprint (char* x, long y) {
   char s[50];
   sprintf(s, "%s: %ld", x, y);
+  print(s);
+}
+void vprint (char* x, String y) {
+  char s[50];
+  sprintf(s, "%s: %s", x, y);
   print(s);
 }
 void vprint (char* x, char* y) {
