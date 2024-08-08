@@ -1,5 +1,6 @@
 SKETCH_PATH = "Software/Rig/Rig.ino"
 PARAMS_PATH = "Software/Rig/trial.h"
+START_STRING = "Session has started"
 
 NO_PUFF_NEGATIVE = 'no_puff_CS-'
 PUFF_POSITIVE = 'puff_CS+'
