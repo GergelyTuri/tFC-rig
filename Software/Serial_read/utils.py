@@ -7,6 +7,7 @@ from matplotlib.figure import Figure
 import pandas as pd
 from datetime import datetime
 import os, signal, subprocess
+from .constants import START_STRING
 
 class ProcessThread(QThread):
     """
@@ -114,7 +115,7 @@ class OutputDialogPlot(QDialog):
         """
         try:
             self.output_text_edit.append(output)
-            if "Session consists of" in output:
+            if START_STRING in output:
                 self.started = True
                 self.start_time = datetime.now()
             if "Lick" in output:

@@ -56,11 +56,11 @@ bool sessionHasEnded = false;
 long sessionEndTime = 0;
 
 int trialTypes[NUMBER_OF_TRIALS];
-char trialTypesString[NUMBER_OF_TRIALS+1];
+char trialTypesChar[NUMBER_OF_TRIALS+1];
 int currentTrialType;
-int trialTypeStringIdxSize = sizeof(trialTypeStringIdx) / sizeof(trialTypeStringIdx[0]);
-int trialType1Idx = getArrayIndex(TRIAL_TYPE_1, trialTypeStringIdx, trialTypeStringIdxSize);
-int trialType2Idx = getArrayIndex(TRIAL_TYPE_2, trialTypeStringIdx, trialTypeStringIdxSize);
+int trialTypesCharIdxSize = sizeof(trialTypesCharIdx) / sizeof(trialTypesCharIdx[0]);
+int trialType1Idx = getArrayIndex(TRIAL_TYPE_1, trialTypesCharIdx, trialTypesCharIdxSize);
+int trialType2Idx = getArrayIndex(TRIAL_TYPE_2, trialTypesCharIdx, trialTypesCharIdxSize);
 
 long randomInterTrialInterval = 0;
 
@@ -118,27 +118,24 @@ void setup() {
   // reading from a disconnected pin.
   randomSeed(analogRead(0));
 
-  // Each session is a random permutation of the trial types (ex: {CS-, CS-, CS-, CS+, CS+, CS+}).
-  // Note that 0 is CS-, 1 is CS+. This uses Fisher-Yates shuffle. Note
-  // that this assumes there are `6` trials and would not fully randomize
-  // the trials otherwise
-  int half = NUMBER_OF_TRIALS / 2;
-  
-  for (int i = 0; i < half; ++i) {
+  // Each session is a random permutation of the trial types (ex: {CS-, CS-, CS-, CS+, CS+, CS+}
+  // in the case that there are `6` trials).
+  // Note that 0 is CS-, 1 is CS+.
+  for (int i = 0; i < NUMBER_OF_TRIALS / 2; ++i) {
     trialTypes[i] = trialType1Idx;
   }
-  for (int i = half; i < NUMBER_OF_TRIALS; ++i) {
+  for (int i = NUMBER_OF_TRIALS / 2; i < NUMBER_OF_TRIALS; ++i) {
     trialTypes[i] = trialType2Idx;
   }
   currentTrialType = trialTypes[0];
-
+  // This uses Fisher-Yates shuffle to randomize the trial types
   for (int i = NUMBER_OF_TRIALS-1; i > 0; --i) {
     int j = random (0, i+1);
     int temp = trialTypes[i];
     trialTypes[i] = trialTypes[j];
     trialTypes[j] = temp;
   }
-  intArrayToString(trialTypes, NUMBER_OF_TRIALS, trialTypesString); 
+  intArrayToChar(trialTypes, NUMBER_OF_TRIALS, trialTypesChar);
 
   // Keeps track of the rig start time. This should be close to 0 since
   // `millis` starts when the rig starts, but is tracked separately for
@@ -388,12 +385,11 @@ void printSessionParameters() {
   // That way, everything that defines the trial is recorded in case an
   // issue comes up later in the analysis
 
-  print("Session consists of:");
+  // print("Session consists of:");
   vprint("NUMBER_OF_TRIALS", NUMBER_OF_TRIALS);
   vprint(TRIAL_TYPE_1, trialType1Idx);
   vprint(TRIAL_TYPE_2, trialType2Idx);
-  print("trialTypes:");
-  print(trialTypesString);
+  vprint("trialTypesChar", trialTypesChar);
 
   // print("Printing Arduino or rig parameters");
   vprint("BAUD_RATE", BAUD_RATE);
@@ -677,6 +673,10 @@ void print(String x) {
   prePrint();
   Serial.println(x);
 }
+void print(char* x) {
+  prePrint();
+  Serial.println(x);
+}
 void vprint (char* x, int y) {
   char s[50];
   sprintf(s, "%s: %d", x, y);
@@ -685,6 +685,11 @@ void vprint (char* x, int y) {
 void vprint (char* x, long y) {
   char s[50];
   sprintf(s, "%s: %ld", x, y);
+  print(s);
+}
+void vprint (char* x, String y) {
+  char s[50];
+  sprintf(s, "%s: %s", x, y);
   print(s);
 }
 void vprint (char* x, char* y) {
