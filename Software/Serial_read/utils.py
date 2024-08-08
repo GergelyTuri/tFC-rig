@@ -129,7 +129,7 @@ class OutputDialogPlot(QDialog):
         """
         try:
             self.output_text_edit.append(output)
-
+            
             if START_STRING in output:
                 if self.primary_mouse_id in output:
                     self.started = True
@@ -144,6 +144,7 @@ class OutputDialogPlot(QDialog):
                     self.update_licks(primary=True)
                 else:
                     self.update_licks(primary=False)
+
         except KeyboardInterrupt:
             print("KeyboardInterrupt detected.")
 

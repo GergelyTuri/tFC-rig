@@ -5,11 +5,14 @@ import re
 from datetime import datetime
 from typing import Optional
 
+import ipywidgets as widgets
+import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import scipy.stats as stats
 import seaborn as sns
+from IPython.display import display
 
 from tfcrig.files import DATETIME_REGEX
 from tfcrig.notebook import builtin_print
@@ -69,6 +72,21 @@ def datetime_to_session_id(date_time: datetime) -> int:
 
 def datetime_to_day_of_week(date_time: datetime) -> str:
     return calendar.day_name[date_time.weekday()]
+
+
+def int_session_id_to_date_string(session_id: int) -> str:
+    """
+    Input is a session ID integer representing a `YYYYMMDDHHMMSS` date,
+    output is a date string `YYYY-MM-DDTHH:MM:SS`
+    """
+    session_id = str(session_id)
+    year = session_id[0:4]
+    month = session_id[4:6]
+    day = session_id[6:8]
+    hour = session_id[8:10]
+    minute = session_id[10:12]
+    second = session_id[12:14]
+    return f"{year}-{month}-{day}T{hour}:{minute}:{second}"
 
 
 def get_mouse_ids(data_root: str) -> set[Optional[str]]:
@@ -211,6 +229,7 @@ def extract_features_from_session_data(
             is_trial = 1
         if trial_end_msg in msg:
             is_trial = 0
+            trial_type = -1
 
         # Get trial type
         if "currentTrialType" in msg:
@@ -481,6 +500,24 @@ class Analysis:
         self.df = self.df.sort_values(by=["session_id", "mouse_id"])
         self.data = pd.concat(data_frames).reset_index(drop=True)
 
+        # Session plotting hooks
+        self.mouse_id_widget = widgets.Dropdown(
+            options=sorted(list(self.data["mouse_id"].unique())),
+            description="Mouse ID:",
+            disabled=False,
+        )
+        self.session_id_widget = widgets.Dropdown(
+            description="Session ID:",
+            disabled=False,
+        )
+        self.plot_region_widget = widgets.Dropdown(
+            options=["trial_type", "is_trial"],
+            description="Plot Region:",
+            disabled=False,
+        )
+        self.mouse_id_widget.observe(self.update_session_id_options, names="value")
+        self.update_session_id_options()
+
     def info(self, df: pd.DataFrame) -> None:
         """
         Write some useful meta data about the analysis that can be used
@@ -490,6 +527,7 @@ class Analysis:
 
         print("Unique data categories:")
         builtin_print(f'- mouse_id: {df["mouse_id"].unique()}')
+        builtin_print(f'- session_id: {df["session_id"].unique()}')
         builtin_print(f'- day_of_week: {df["day_of_week"].unique()}')
         builtin_print(f'- is_session: {df["is_session"].unique()}')
         builtin_print(f'- trial_type: {df["trial_type"].unique()}')
@@ -502,6 +540,7 @@ class Analysis:
         builtin_print("")
         print("Value counts:")
         builtin_print(f'- mouse_id: {df["mouse_id"].value_counts()}')
+        builtin_print(f'- session_id: {df["session_id"].value_counts()}')
         builtin_print(f'- day_of_week: {df["day_of_week"].value_counts()}')
         builtin_print(f'- is_session: {df["is_session"].value_counts()}')
         builtin_print(f'- trial_type: {df["trial_type"].value_counts()}')
@@ -807,3 +846,164 @@ class Analysis:
             print(f"P-value {round(p, 2)} is less than {alpha}, significance!")
         else:
             print(f"P-value {round(p, 2)} is greater than alpha {alpha}, x and y are the same.")
+
+    def update_session_id_options(self, *args, **kwargs) -> None:
+        selected_mouse_id = self.mouse_id_widget.value
+        session_ids = [
+            int_session_id_to_date_string(d)
+            for d in self.data[self.data["mouse_id"] == selected_mouse_id]["session_id"].unique()
+        ]
+        session_ids = sorted(list(set(session_ids)))
+        self.session_id_widget.options = session_ids
+
+    def interactive(self):
+        display(
+            widgets.interactive(
+                self.interactive_session_display,
+                mouse_id=self.mouse_id_widget,
+                session_id=self.session_id_widget,
+                plot_region=self.plot_region_widget,
+                data=widgets.fixed(self.data),
+            ),
+        )
+
+    @staticmethod
+    def interactive_session_display(
+        data: pd.DataFrame,
+        mouse_id: str,
+        session_id: str,
+        plot_region: str,
+    ) -> None:
+        """Plots the given session data
+
+        Args:
+            data: A Pandas `DataFrame` for the current analysis
+            mouse_id: A string mouse ID
+            session_id: A date-time string for the current session
+            plot_region: Which region will the analysis plot?
+        """
+        date_id = session_id
+        session_id = session_id.replace("-", "").replace("T", "").replace(":", "")
+
+        # Filter the analysis data
+        df = data
+        df = df[df["mouse_id"] == mouse_id]
+        df.loc[:, "session_id"] = df["session_id"].astype(str)
+        df = df[df["session_id"].str.startswith(session_id)].copy()
+
+        # Some data cleaning prior to plotting:
+        #
+        #   - Only consider once the session has started
+        #   - Sort by session time
+        #   - Add a `time` (based on session time) index for calculation
+        #
+        df = df[df["session_time"] > 0]
+        df["session_time"] = df["session_time"] / 1000 / 60  # [min]
+        df = df.sort_values(by="session_time")
+        df = df[df["is_session"] == 1]
+        df["time"] = pd.to_datetime(df["session_time"], unit="m")
+        df.set_index("time", inplace=True)
+
+        # Lick frequency calculation
+        # The `window` is 1000ms (1s) in `session_time`
+        df["lick_rate"] = df["lick"].rolling(window="1s", min_periods=1, center=True).sum()
+        plt.figure(figsize=(15, 5))
+
+        # Add background colors for whether it is a trial
+        if plot_region == "is_trial":
+            regions = []
+            current_type = df["is_trial"].iloc[0]
+            start_time = df["session_time"].iloc[0]
+            for i in range(1, len(df)):
+                if df["is_trial"].iloc[i] != current_type:
+                    end_time = df["session_time"].iloc[i - 1]
+                    regions.append((start_time, end_time, current_type))
+                    start_time = df["session_time"].iloc[i]
+                    current_type = df["is_trial"].iloc[i]
+            end_time = df["session_time"].iloc[-1]
+            regions.append((start_time, end_time, current_type))
+            ax = plt.gca()
+            for start_time, end_time, is_trial in regions:
+                if is_trial == 0:
+                    color = "lightgrey"
+                elif is_trial == 1:
+                    color = "lightblue"
+                ax.axvspan(start_time, end_time, facecolor=color, alpha=0.5)
+            legend_patches = [
+                mpatches.Patch(color="lightgrey", alpha=0.5, label="I.T.I."),
+                mpatches.Patch(color="lightblue", alpha=0.5, label="Trial"),
+            ]
+
+        # Add background colors for different trial types
+        if plot_region == "trial_type":
+            regions = []
+            current_type = df["trial_type"].iloc[0]
+            start_time = df["session_time"].iloc[0]
+            for i in range(1, len(df)):
+                if df["trial_type"].iloc[i] != current_type:
+                    end_time = df["session_time"].iloc[i - 1]
+                    regions.append((start_time, end_time, current_type))
+                    start_time = df["session_time"].iloc[i]
+                    current_type = df["trial_type"].iloc[i]
+            end_time = df["session_time"].iloc[-1]
+            regions.append((start_time, end_time, current_type))
+            ax = plt.gca()
+            for start_time, end_time, trial_type in regions:
+                if trial_type == -1:
+                    color = "lightgrey"
+                elif trial_type == 0:
+                    color = "lightcoral"
+                elif trial_type == 1:
+                    color = "lightblue"
+                ax.axvspan(start_time, end_time, facecolor=color, alpha=0.5)
+            legend_patches = [
+                mpatches.Patch(color="lightgrey", alpha=0.5, label="I.T.I."),
+                mpatches.Patch(color="lightcoral", alpha=0.5, label="Trial Type 0"),
+                mpatches.Patch(color="lightblue", alpha=0.5, label="Trial Type 1"),
+            ]
+
+        plt.plot(
+            df["session_time"],
+            df["lick_rate"],
+            label="Lick Rate",
+            color="black",
+            marker=".",
+            linewidth=1,
+        )
+        plt.xlabel("Session Time [min]")
+        plt.ylabel("Lick Rate [lick/s]")
+        plt.title(f"Mouse: '{mouse_id}', Session: '{date_id}'")
+        plt.legend(
+            handles=legend_patches + [
+                plt.Line2D([0], [0], color="black", label="Lick Rate")
+            ],
+            framealpha=1,
+        )
+        plt.grid(True)
+        plt.show()
+
+        trials = [0, 1, 2, 3, 4, 5]
+        fig, axes = plt.subplots(nrows=3, ncols=2, figsize=(15, 10))
+        axes = axes.flatten()
+        for trial in trials:
+            trial_data = df[df["trial"] == trial]
+            ax = axes[trial]
+            ax.plot(
+                trial_data["trial_time"],
+                trial_data["lick_rate"],
+                label="Lick Rate",
+                color="black",
+                marker=".",
+                linewidth=1,
+            )
+            ax.set_xlabel("Trial Time [ms]")
+            ax.set_ylabel("Lick Rate [lick/s]")
+            ax.set_title(f"Trial: {trial+1}")
+            if trial == 0:
+                ax.legend(
+                    handles=[plt.Line2D([0], [0], color="black", label="Lick Rate")],
+                    framealpha=1,
+                )
+            ax.grid(True)
+        plt.tight_layout()
+        plt.show()

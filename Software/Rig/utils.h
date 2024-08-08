@@ -12,7 +12,7 @@ int getArrayIndex(const char* trialType, const char** arr, int size) {
     return -1;  // Return -1 if string not found
 }
 
-void intArrayToString(const int* arr, int size, char* result){
+void intArrayToChar(const int* arr, int size, char* result){
     result[0] = '\0';
     char temp[12];
 
@@ -47,12 +47,14 @@ const TrialType* trialTypeObjects[] = {
     &NO_PUFF_NO_SIGNAL // ID 4
 };
 
-const char* trialTypeStringIdx[] = {
+const char* trialTypesCharIdx[] = {
     "no_puff_CS-",  // ID 0
     "puff_CS+",      // ID 1
     "no_puff_CS+",  // ID 2
     "puff_CS-",     // ID 3
     "no_puff_no_signal" //ID 4
 };
+
+
 
 #endif
