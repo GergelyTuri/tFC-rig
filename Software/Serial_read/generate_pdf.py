@@ -3,7 +3,6 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
 from reportlab.lib.styles import getSampleStyleSheet
 import pandas as pd
 import matplotlib.pyplot as plt
-from matplotlib.backends.backend_pdf import FigureCanvasPdf
 import io
 from .constants import START_STRING
 

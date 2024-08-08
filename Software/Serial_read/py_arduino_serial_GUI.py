@@ -180,7 +180,7 @@ class Window(QWidget):
 
         command = f"python -m Software.Serial_read.py_arduino_serial_camera -ids {p_mouse_id}{s_mouse_id}{p}{s1}{c1}{c2}"
         process_thread = ProcessThread(command)
-        dialog = OutputDialogPlot(process_thread, self)
+        dialog = OutputDialogPlot(process_thread, p_mouse_id, s_mouse_id, self)
 
         self.update_sketch(dialog)
 
