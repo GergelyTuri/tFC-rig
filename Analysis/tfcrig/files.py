@@ -33,6 +33,8 @@ BAD_DATE_REGEX_2 = r"(\d{1,2})[_](\d{1,2})[_](\d{2,4})"
 Possible date format in Google Drive folder names
 """
 
+FILENAME_REGEX = DATETIME_REGEX + r".json"
+
 
 def extract_exp_mouse_pairs(exp_mouse_blob: str) -> list[str]:
     """
@@ -61,6 +63,7 @@ class RigFiles:
 
     data_root: str = "/gdrive/Shareddrives/Turi_lab/Data/aging_project/"
     dry_run: bool = True
+    verbose: bool = False
 
     def check(self) -> None:
         """
@@ -154,7 +157,7 @@ class RigFiles:
                 data_files.add(os.path.join(root, file_name))
 
         # Print a wrap-up of the output
-        if data_files:
+        if data_files and self.verbose:
             print("Correctly named data files:")
             for f in data_files:
                 builtin_print(f"  {f}")
@@ -186,8 +189,10 @@ class RigFiles:
                 if not full_file.endswith(".json"):
                     continue
 
-                # Skip raw files
-                if full_file.endswith("_raw.json"):
+                # Skip raw files, and a couple of other file patterns
+                # generated in the past
+                is_data_file = re.search(FILENAME_REGEX, full_file)
+                if not is_data_file:
                     continue
 
                 # Define the raw file path and see if _it_ exists
@@ -414,14 +419,92 @@ class RigFiles:
                     need_to_fix_data = True
                 del data_str
 
+                # Fix individual data blobs.
+                # This is based on the output from setting up the analysis
+                def is_good_data_blob(gui_msg: dict) -> bool:
+                    # The GUI message itself can be bad
+                    try:
+                        rig_msg = gui_msg["message"].strip()
+                    except KeyError as e:
+                        if "KeyboardInterrupt" in gui_msg:
+                            return False
+                        raise e
+
+                    # Is the message not formatted properly?
+                    split_msg = rig_msg.split(": ")
+                    n_chunks = len(split_msg)
+                    if n_chunks not in [4, 5]:
+                        return False
+                    try:
+                        split_ints = [
+                            int(split_msg[0]),
+                            int(split_msg[1]),
+                            int(split_msg[2]),
+                        ]
+                    except ValueError:
+                        # The first three message parts are integers
+                        return False
+
+                    # Known good messages that can be false positives for the
+                    # below known bad
+                    if split_msg[3] == "Waiting for session to start...":
+                        return True
+
+                    # Removes at least some known bad messages
+                    if rig_msg == "KeyboardInterrupt":
+                        # Keyboard interrupts appear as a rig message
+                        return False
+                    if rig_msg[-10::] in "Waiting for session to start...":
+                        # For some reason, portions of this message appear in
+                        # the data often
+                        return False
+                    if "Waiting for session to start..." in rig_msg:
+                        # Might be the same weirdness as above
+                        return False
+                    if rig_msg in "Your session has ended, but a sketch cannot stop Arduino.":
+                        # Something the rig prints that we can ignore
+                        return False
+                    if "Session consists of " in rig_msg:
+                        # Known non-conforming string
+                        return False
+
+                    return True
+
+                for mouse_id in list(data["data"].keys()):
+                    original_mouse_data = data["data"][mouse_id]
+                    new_mouse_data = [
+                        blob
+                        for blob in original_mouse_data
+                        if is_good_data_blob(blob)
+                    ]
+                    data["data"][mouse_id] = new_mouse_data
+
+                    try:
+                        diff = [
+                            x["message"]
+                            for x in original_mouse_data
+                            if x not in new_mouse_data
+                        ]
+                    except Exception:
+                        diff = [
+                            x
+                            for x in original_mouse_data
+                            if x not in new_mouse_data
+                        ]
+                    if diff:
+                        need_to_fix_data = True
+                        need_to_fix_msg = "Bad data blob removed"
+
                 # Fix the data
-                if need_to_fix_data and self.dry_run:
-                    print(f"Need to fix '{file_path}'")
+                if need_to_fix_data:
+                    print(f"Fixing '{file_path}'")
                     builtin_print(f"- Reason: {need_to_fix_msg}")
                     count += 1
-                elif need_to_fix_data:
-                    with open(file_path, "w") as f:
-                        json.dump(data, f, indent=4)
+                    if not self.dry_run:
+                        with open(file_path, "w") as f:
+                            json.dump(data, f, indent=4)
 
         if count == 0:
-            print(f"Did not need to fix any files!")
+            print("Did not need to fix any files!")
+        else:
+            print(f"Fixed {count} files!")
