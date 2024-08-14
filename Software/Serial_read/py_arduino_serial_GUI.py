@@ -71,7 +71,7 @@ class Window(QWidget):
         self.trial_type_2 = ComboBox(trialSettingsLayout, 'Trial Type 2', TRIAL_CLASSES, PUFF_POSITIVE)
         self.min_iti = SpinBox(trialSettingsLayout, "Minimum iti duration", 60000, step=1000)
         self.max_iti = SpinBox(trialSettingsLayout, "Maximum iti duration", 300000, step=1000)
-        self.trial_duration = SpinBox(trialSettingsLayout, "Trial duration", 50000, step=1000)
+        self.trial_duration = SpinBox(trialSettingsLayout, "Trial duration", 50000, step=1000, max=2000000)
         self.post_trial_duration = SpinBox(trialSettingsLayout, "Post-last trial duration", 60000, step=1000)
 
         trailSettingsGroupBox.setLayout(trialSettingsLayout)
