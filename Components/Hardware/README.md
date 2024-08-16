@@ -8,3 +8,15 @@
 * Arduino [Shield OM1](https://claylacefield.wixsite.com/openmazehome/pcb-designs) is preferred (03/22/2022 design) bc of the JST connetors, OM2 is also possible
 * 12V power supply
 * buttons, resistors, H-bridges, wires for shield assembly
+
+| Item Name | Model |Vendor | Cat. number | link |
+|-----------|-------|---------|----------|----------|
+|speakers |          | Amazon |          |
+|air solenoid|          |          |          |
+|liquid solenoid|          |          |          |
+|Arduino Uno|          |          |          |
+|Arduino Shield|OpenMaze|  OM1   | this repo|
+|12V power supply|          |          | |
+|buttons|          |          |          |
+|H-bridges|          |          |          |
+|Lickdetection|          |SparkFun|          |
