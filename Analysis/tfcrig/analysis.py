@@ -273,6 +273,7 @@ def extract_features_from_session_data(
         if "trialTypes" in msg or check_next_trial_types_message:
             if check_next_trial_types_message:
                 trial_types = msg.split(msg_delimiter)[0]
+                check_next_trial_types_message = False
             else:
                 try:
                     trial_types = msg.split(msg_delimiter)[1]
@@ -281,8 +282,16 @@ def extract_features_from_session_data(
                     # its value
                     check_next_trial_types_message = True
                     continue
-            if trial_types.count("0") != trial_types.count("1"):
-                raise ValueError(f"Unbalanced trial types in: '{msg}'!!!")
+
+            # This ensures a balanced session, no matter which trial types are
+            # included. It assumes we want sessions to be balanced (:
+            trial_type_count = None
+            for each_trial_type in set(trial_types):
+                if not trial_type_count:
+                    trial_type_count = trial_types.count(each_trial_type)
+                    continue
+                if trial_types.count(each_trial_type) != trial_type_count:
+                    raise ValueError(f"Unbalanced trial types in: '{msg}'!!!")
 
         # Check for some trial parameters
         if "AIR_PUFF_START_TIME" in msg:
