@@ -770,6 +770,11 @@ class Analysis:
         # Can get this from the Cohort Info, may consider adding
         # it to the rig output
 
+        # TODO: this fails for newer cohorts that seem to break the
+        # assumption that there are at least 12 sessions; it might
+        # not be worth fixing depending on using the `determine_significance`
+        # or similar, instead
+
         if not mouse_ids:
             mouse_ids = self.mouse_ids
 
