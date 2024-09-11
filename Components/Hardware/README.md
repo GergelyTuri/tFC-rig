@@ -3,7 +3,7 @@
 * two speakers
 * water solenoid
 * air solenoid
-* lickport (metal tube, usualy we use gavage needles <- spec?)
+* lickport (metal tube, usualy we use gavage needles)
 * Arduino Uno with USB cable
 * Arduino [Shield OM1](https://claylacefield.wixsite.com/openmazehome/pcb-designs) is preferred (03/22/2022 design) bc of the JST connetors, OM2 is also possible
 * 12V power supply
@@ -20,3 +20,4 @@
 |buttons|12Pcs 1A 250V AC 2 Pins SPST Momentary Mini Push Button Switch Normal Open (Pack of 12) CYT1078|Amazon|B0752RMB7Q|https://www.amazon.com/Cylewet-Momentary-Button-Switch-CYT1078/dp/B0752RMB7Q
 |H-bridges|BOJACK 16-pin IC Stepper Motor Drivers Controllers L293 L293D|Amazon|N/A|https://www.amazon.com/BOJACK-16-pin-Stepper-Drivers-Controllers/dp/B09NBQVYLL
 |Lickdetection|SparkFun Capacitive Touch Breakout |SparkFun|AT42QT1010|https://www.sparkfun.com/products/12041
+|Lickport|Reusable AFN 20g x 1.5", 2.25mm-Curved|Cadence Science|7910|https://www.cadencescience.com/needles/animal-feeding/reusable-curved/reusable-afn-20g-x-1.5-inch-2.25mm-curved
