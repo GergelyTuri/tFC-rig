@@ -130,6 +130,7 @@ def get_mouse_ids(data_root: str) -> set[Optional[str]]:
     IDs. Also checks that mouse ID, session ID pairs are unique
     """
     all_mouse_ids = []
+    mouse_ids = []
     mouse_session_pairs = set()
     for _, _, files in os.walk(data_root):
         for file_name in files:
