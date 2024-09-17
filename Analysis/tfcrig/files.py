@@ -126,8 +126,11 @@ class RigFiles:
 
         data_files = set()
         close_data_files = set()
+        print("checking filenames")
         for root, _, files in os.walk(self.data_root):
+            print("files: ", files)
             for file_name in files:
+                print('filename: ', file_name)
                 if not file_name.endswith(".json"):
                     # Only walk for JSON files
                     continue
@@ -155,7 +158,8 @@ class RigFiles:
                 # These should be good.
                 # But, check them!
                 data_files.add(os.path.join(root, file_name))
-
+        print('data_files: ', data_files)
+        print('close_data_files: ', close_data_files)
         # Print a wrap-up of the output
         if data_files and self.verbose:
             print("Correctly named data files:")
