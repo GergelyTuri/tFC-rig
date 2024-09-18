@@ -155,7 +155,7 @@ class RigFiles:
                 # These should be good.
                 # But, check them!
                 data_files.add(os.path.join(root, file_name))
-                
+
         # Print a wrap-up of the output
         if data_files and self.verbose:
             print("Correctly named data files:")
