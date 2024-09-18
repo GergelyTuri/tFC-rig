@@ -130,7 +130,6 @@ def get_mouse_ids(data_root: str) -> set[Optional[str]]:
     IDs. Also checks that mouse ID, session ID pairs are unique
     """
     all_mouse_ids = []
-    mouse_ids = []
     mouse_session_pairs = set()
     for _, _, files in os.walk(data_root):
         for file_name in files:
@@ -657,13 +656,14 @@ class Analysis:
         min_session: int=0,
         water_on: bool=False,
         tail_length: Optional[int]=None,
+        lineplot: bool=False
     ) -> None:
         """
         Creates a bar plot showing licks per session and for each mouse.
 
         Args:
             mouse_ids: The set of mice to plot
-            min_session: Filter sessions lower than this value
+            min_session: Includes sessions higher than this value
             water_on: Set to `True` to only consider licks when water
                 reward is available
             tail_length: Set to an integer to only graph a tail of
@@ -736,27 +736,42 @@ class Analysis:
             height=4,
             aspect=1,
         )
-        g.map_dataframe(
-            sns.barplot,
-            x="session_id",
-            y="Licks",
-            hue="Type",
-            errorbar=None,
-        )
+
+        if lineplot:
+          df['session_id_str'] = df['session_id'].astype(str)
+
+          g.map_dataframe(
+          sns.lineplot,
+          x="session_id_str",
+          y="Licks",
+          marker="o",
+          hue="Type",
+          errorbar=None,
+          )
+        else:
+          g.map_dataframe(
+              sns.barplot,
+              x="session_id",
+              y="Licks",
+              hue="Type",
+              errorbar=None,
+          )
         g.add_legend(title="Lick Type")
 
-        for ax in g.axes:
-            if ax in g.axes[:-2]:
-                ax.set_xticklabels("")
-            else:
-                ax.set_xticklabels(ax.get_xticklabels(), rotation=90)
+        for ax in g.axes.flatten():
+            ax.set_xticklabels(ax.get_xticklabels(), rotation=90)
+            ax.tick_params(axis='x', which='both', labelsize=8)
 
-        g.set_axis_labels("", "Total Licks")
+        g.set_axis_labels("Session ID", "Total Licks")
         g.set_titles("Mouse: {col_name}")
 
-        suptitle = "Total Licks Over Time by Mouse"
+        if water_on:
+            suptitle = "Total Licks Over Time by Mouse (only with water reward)"
+        else:
+            suptitle = "Total Licks Over Time by Mouse"
 
         plt.suptitle(suptitle, y=1.05)
+        plt.tight_layout()
         plt.show()
 
     def learning_rate_heat_map(
