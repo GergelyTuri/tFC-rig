@@ -427,6 +427,18 @@ def get_data_features_from_data_file(
         df1 = df1[df1["is_trial"] == 1]
         total_licks_type_1 = df1["lick"].sum()
         total_puffed_licks_type_1 = df1["puffed_lick"].sum()
+        df2 = df[df["trial_type"] == 0]
+        df2 = df2[df2["is_trial"] == 1]
+        total_licks_type_2 = df2["lick"].sum()
+        total_puffed_licks_type_2 = df2["puffed_lick"].sum()
+        df3 = df[df["trial_type"] == 0]
+        df3 = df3[df3["is_trial"] == 1]
+        total_licks_type_3 = df3["lick"].sum()
+        total_puffed_licks_type_3 = df3["puffed_lick"].sum()
+        df4 = df[df["trial_type"] == 0]
+        df4 = df4[df4["is_trial"] == 1]
+        total_licks_type_4 = df4["lick"].sum()
+        total_puffed_licks_type_4 = df4["puffed_lick"].sum()
 
         # Total licks, water is on
         df_water = df[df["water"] == 1]
@@ -454,6 +466,18 @@ def get_data_features_from_data_file(
         )
         z_total_licks_type_1 = scalar_divide(
             total_licks_type_1,
+            total_licks,
+        )
+        z_total_licks_type_2 = scalar_divide(
+            total_licks_type_2,
+            total_licks,
+        )
+        z_total_licks_type_3 = scalar_divide(
+            total_licks_type_3,
+            total_licks,
+        )
+        z_total_licks_type_4 = scalar_divide(
+            total_licks_type_4,
             total_licks,
         )
         z_total_licks_water_on_type_0 = scalar_divide(
@@ -514,6 +538,9 @@ def get_data_features_from_data_file(
             "z_total_puffed_licks_type_0": z_total_puffed_licks_type_0,
             "total_licks_type_1": total_licks_type_1,
             "z_total_licks_type_1": z_total_licks_type_1,
+            "z_total_licks_type_2": z_total_licks_type_2,
+            "z_total_licks_type_3": z_total_licks_type_3,
+            "z_total_licks_type_4": z_total_licks_type_4,
             "z_total_puffed_licks_type_1": z_total_puffed_licks_type_1,
             "total_licks_water_on": total_licks_water_on,
             "total_licks_water_on_type_0": total_licks_water_on_type_0,
@@ -700,12 +727,18 @@ class Analysis:
                     "session_id",
                     "z_total_licks_type_0",
                     "z_total_licks_type_1",
+                    "z_total_licks_type_2",
+                    "z_total_licks_type_3",
+                    "z_total_licks_type_4",
                 ]
             ]
             df = df.rename(
                 columns={
                     "z_total_licks_type_0": "type0",
                     "z_total_licks_type_1": "type1",
+                    "z_total_licks_type_2": "type2",
+                    "z_total_licks_type_3": "type3",
+                    "z_total_licks_type_4": "type4"
                 },
             )
 
