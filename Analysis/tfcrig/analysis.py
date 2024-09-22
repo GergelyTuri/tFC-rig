@@ -1,3 +1,4 @@
+# analysis.py
 import calendar
 import json
 import os
@@ -428,6 +429,28 @@ def get_data_features_from_data_file(
         dfl_iti = dfl[dfl["is_trial"] == 0]
         avg_lick_freq_iti = dfl_iti["lick_frequency"].mean()
 
+        # Normalize lick frequency to the total licks in the session trials,
+        # which will hopefully account for variance in lick sensor sensitivity
+        # between sessions and between days. The factor of 1,000 is just for
+        # readability of printed output
+        total_session_licks = dfl["lick"].sum()
+        z_avg_lick_freq = 1000*scalar_divide(
+            avg_lick_freq,
+            total_session_licks,
+        )
+        z_avg_lick_freq_csplus = 1000*scalar_divide(
+            avg_lick_freq_csplus,
+            total_session_licks,
+        )
+        z_avg_lick_freq_csminus = 1000*scalar_divide(
+            avg_lick_freq_csminus,
+            total_session_licks,
+        )
+        z_avg_lick_freq_iti = 1000*scalar_divide(
+            avg_lick_freq_iti,
+            total_session_licks,
+        )
+
         # Total licks
         total_licks = df["lick"].sum()
         total_puffed_licks = df["puffed_lick"].sum()
@@ -524,6 +547,10 @@ def get_data_features_from_data_file(
             "avg_lick_freq_csplus": avg_lick_freq_csplus,
             "avg_lick_freq_csminus": avg_lick_freq_csminus,
             "avg_lick_freq_iti": avg_lick_freq_iti,
+            "z_avg_lick_freq": z_avg_lick_freq,
+            "z_avg_lick_freq_csplus": z_avg_lick_freq_csplus,
+            "z_avg_lick_freq_csminus": z_avg_lick_freq_csminus,
+            "z_avg_lick_freq_iti": z_avg_lick_freq_iti,
             "total_licks": total_licks,
             "total_puffed_licks": total_puffed_licks,
             "total_licks_in_trial": total_licks_in_trial,
