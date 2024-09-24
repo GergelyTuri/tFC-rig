@@ -412,6 +412,23 @@ def get_data_features_from_data_file(
     if not data_frames:
         return (data_features, pd.DataFrame())
     for df in data_frames:
+        # Lick frequency
+        # Work with another data frame to avoid setting index on 'df'
+        dfl = df[df["is_session"] == 1].copy()
+        dfl["session_time_delta"] = pd.to_timedelta(dfl["session_time"], unit="ms")
+        dfl.set_index("session_time_delta", inplace=True)
+        dfl["lick_frequency"] = dfl["lick"].rolling(window="1s", center=True).sum()
+        avg_lick_freq = dfl["lick_frequency"].mean()
+        dfl_csplus = dfl[dfl["is_trial"] == 1]
+        dfl_csplus = dfl_csplus[dfl_csplus["trial_type"].isin([1, 2])]
+        avg_lick_freq_csplus = dfl_csplus["lick_frequency"].mean()
+        dfl_csminus = dfl[dfl["is_trial"] == 1]
+        dfl_csminus = dfl_csminus[dfl_csminus["trial_type"].isin([0, 3])]
+        avg_lick_freq_csminus = dfl_csminus["lick_frequency"].mean()
+        dfl_iti = dfl[dfl["is_trial"] == 0]
+        avg_lick_freq_iti = dfl_iti["lick_frequency"].mean()
+
+        # Total licks
         total_licks = df["lick"].sum()
         total_puffed_licks = df["puffed_lick"].sum()
 
@@ -427,15 +444,15 @@ def get_data_features_from_data_file(
         df1 = df1[df1["is_trial"] == 1]
         total_licks_type_1 = df1["lick"].sum()
         total_puffed_licks_type_1 = df1["puffed_lick"].sum()
-        df2 = df[df["trial_type"] == 0]
+        df2 = df[df["trial_type"] == 2]
         df2 = df2[df2["is_trial"] == 1]
         total_licks_type_2 = df2["lick"].sum()
         total_puffed_licks_type_2 = df2["puffed_lick"].sum()
-        df3 = df[df["trial_type"] == 0]
+        df3 = df[df["trial_type"] == 3]
         df3 = df3[df3["is_trial"] == 1]
         total_licks_type_3 = df3["lick"].sum()
         total_puffed_licks_type_3 = df3["puffed_lick"].sum()
-        df4 = df[df["trial_type"] == 0]
+        df4 = df[df["trial_type"] == 4]
         df4 = df4[df4["is_trial"] == 1]
         total_licks_type_4 = df4["lick"].sum()
         total_puffed_licks_type_4 = df4["puffed_lick"].sum()
@@ -527,6 +544,10 @@ def get_data_features_from_data_file(
             "mouse_id": df["mouse_id"].iloc[0],
             "session_id": df["session_id"].iloc[0],
             "day_of_week": df["day_of_week"].iloc[0],
+            "avg_lick_freq": avg_lick_freq,
+            "avg_lick_freq_csplus": avg_lick_freq_csplus,
+            "avg_lick_freq_csminus": avg_lick_freq_csminus,
+            "avg_lick_freq_iti": avg_lick_freq_iti,
             "total_licks": total_licks,
             "total_puffed_licks": total_puffed_licks,
             "total_licks_in_trial": total_licks_in_trial,
@@ -538,8 +559,11 @@ def get_data_features_from_data_file(
             "z_total_puffed_licks_type_0": z_total_puffed_licks_type_0,
             "total_licks_type_1": total_licks_type_1,
             "z_total_licks_type_1": z_total_licks_type_1,
+            "total_licks_type_2": total_licks_type_2,
             "z_total_licks_type_2": z_total_licks_type_2,
+            "total_licks_type_3": total_licks_type_3,
             "z_total_licks_type_3": z_total_licks_type_3,
+            "total_licks_type_4": total_licks_type_4,
             "z_total_licks_type_4": z_total_licks_type_4,
             "z_total_puffed_licks_type_1": z_total_puffed_licks_type_1,
             "total_licks_water_on": total_licks_water_on,
@@ -552,7 +576,7 @@ def get_data_features_from_data_file(
             "z_learning_rate": z_learning_rate,
             "z_learning_rate_reward": z_learning_rate_reward,
         }
-        if dict_contains_other_values(features_dict, (np.generic, str)):
+        if dict_contains_other_values(features_dict, (np.generic, str, float)):
             raise ValueError("File contains invalid features")
         data_features.append(features_dict)
     return (
@@ -579,10 +603,17 @@ class Analysis:
     #
     # TODO: message folks about the files with mismatched mouse IDs
     #
-
-    def __init__(self, *, data_root: str, verbose: bool=False) -> None:
+    
+    def __init__(
+        self,
+        *,
+        data_root: str,
+        verbose: bool=False,
+        mice_of_interest: list[str]=[],
+    ) -> None:
         self.data_root = data_root
         self.verbose = verbose
+        self.mice_of_interest = mice_of_interest
 
         # Keep track of per-file errors
         self.file_errors = {}
@@ -597,6 +628,14 @@ class Analysis:
             for file in files:
                 if not is_data_file(file):
                     continue
+
+                if self.mice_of_interest:
+                    mouse_ids = get_mouse_ids_from_file_name(file)
+                    if not all([
+                        mouse_id in self.mice_of_interest
+                        for mouse_id in mouse_ids
+                    ]):
+                        continue
 
                 # Try to extract features.
                 # Keep track of errors we raise above, to be printed later.
