@@ -420,12 +420,13 @@ def get_data_features_from_data_file(
         dfl.set_index("session_time_delta", inplace=True)
         dfl["lick_frequency"] = dfl["lick"].rolling(window="1s", center=True).sum()
         avg_lick_freq = dfl["lick_frequency"].mean()
-        dfl_csplus = dfl[dfl["is_trial"] == 1]
-        dfl_csplus = dfl_csplus[dfl_csplus["trial_type"].isin([1, 2])]
+        df_is_trial = dfl[dfl["is_trial"] == 1]
+        dfl_csplus = df_is_trial[df_is_trial["trial_type"].isin([1, 2])]
         avg_lick_freq_csplus = dfl_csplus["lick_frequency"].mean()
-        dfl_csminus = dfl[dfl["is_trial"] == 1]
-        dfl_csminus = dfl_csminus[dfl_csminus["trial_type"].isin([0, 3])]
+        dfl_csminus = df_is_trial[df_is_trial["trial_type"].isin([0, 3])]
         avg_lick_freq_csminus = dfl_csminus["lick_frequency"].mean()
+        dfl_no_signal = df_is_trial[df_is_trial["trial_type"].isin([4])]
+        avg_lick_freq_no_signal = dfl_no_signal["lick_frequency"].mean()
         dfl_iti = dfl[dfl["is_trial"] == 0]
         avg_lick_freq_iti = dfl_iti["lick_frequency"].mean()
 
@@ -448,6 +449,10 @@ def get_data_features_from_data_file(
         )
         z_avg_lick_freq_iti = 1000*scalar_divide(
             avg_lick_freq_iti,
+            total_session_licks,
+        )
+        z_avg_lick_freq_no_signal = 1000*scalar_divide(
+            avg_lick_freq_no_signal,
             total_session_licks,
         )
 
@@ -575,6 +580,7 @@ def get_data_features_from_data_file(
             "z_avg_lick_freq_csplus": z_avg_lick_freq_csplus,
             "z_avg_lick_freq_csminus": z_avg_lick_freq_csminus,
             "z_avg_lick_freq_iti": z_avg_lick_freq_iti,
+            "z_avg_lick_freq_no_signal": z_avg_lick_freq_no_signal,
             "total_licks": total_licks,
             "total_puffed_licks": total_puffed_licks,
             "total_licks_in_trial": total_licks_in_trial,
