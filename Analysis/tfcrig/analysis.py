@@ -827,7 +827,7 @@ class Analysis:
         # Accounts for trial type
         df = df.melt(
             id_vars=["mouse_id", "session_id"],
-            value_vars=["type0", "type1"],
+            value_vars=["type0", "type1", "type2", "type3", "type4"],
             var_name="Type",
             value_name="Licks",
         )
