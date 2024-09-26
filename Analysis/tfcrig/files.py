@@ -558,7 +558,6 @@ class RigFiles:
 
                           # Update the second mouse's data
                           data[second_mouse_id] = combined_data
-                          print(file_path)
                           with open(file_path, "w") as f:
                               json.dump(data, f, indent=4)
 
