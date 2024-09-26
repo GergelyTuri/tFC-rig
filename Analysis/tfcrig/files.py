@@ -90,6 +90,7 @@ class RigFiles:
         self._rename_some_bad_file_name_patterns()
         self._rename_date_directories()
         self._examine_and_fix_typos_in_data_files()
+        self._sync_second_mouse()
 
     @staticmethod
     def reformat_date_in_directory(directory: str) -> str:
