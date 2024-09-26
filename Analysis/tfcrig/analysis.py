@@ -325,6 +325,9 @@ def extract_features_from_session_data(
                 t_trial <= air_puff_stop_time
             ):
                 puffed_lick = 1
+                
+            if t_trial > air_puff_stop_time:
+                first_puff_started = 0
 
         # Negative signal
         if "Negative signal start" in msg:
