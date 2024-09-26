@@ -92,8 +92,6 @@ class RigFiles:
         self._examine_and_fix_typos_in_data_files()
         self._sync_second_mouse()
 
-    def clean_test(self) -> None:
-        self._sync_second_mouse()
 
     @staticmethod
     def reformat_date_in_directory(directory: str) -> str:
@@ -517,41 +515,51 @@ class RigFiles:
     def _sync_second_mouse(self) -> None:
         print("Syncing puffs and signals from first mouse to second mouse")
 
-        required_messages = ["Puff start", "Puff stop", "Negative signal start", "Negative signal stop", "Positive signal start", "Positive signal stop"]
+        missing_messages = ["Puff start", "Puff stop", "Negative signal start", "Negative signal stop", "Positive signal start", "Positive signal stop"]
+        missing = False
 
         for root, _, files in os.walk(self.data_root):
 
             for file_name in files:
                 file_path = os.path.join(root, file_name)
 
+                if file_name.endswith("_raw.json") or file_name.endswith("_processed.json") or file_name.endswith("_analyzed.json") or not file_name.endswith(".json"):
+                    continue
+                file_path = os.path.join(root, file_name)
                 with open(file_path, "r") as f:
-                    data = json.load(f)
-                    mouse_ids = data["header"]["mouse_ids"]
-
+                    file = json.load(f)
+                    mouse_ids = file["header"]["mouse_ids"]
+                    data = file["data"]
                 # Ensure we have at least two mice in the data
                 if len(mouse_ids) >= 2:
                     first_mouse_id = mouse_ids[0]
                     second_mouse_id = mouse_ids[1]
 
-                    if first_mouse_id in data and second_mouse_id in data:
-                        # Extract the necessary messages from the first mouse (which has complete data)
-                        first_mouse_messages = [
-                            {"message": entry["message"], "absolute_time": entry["absolute_time"]}
-                            for entry in data[first_mouse_id]
-                            if any(msg in entry["message"] for msg in required_messages)
-                        ]
+                    has_required_messages = any(
+                        any(entry["message"].strip().endswith(msg) for msg in missing_messages) 
+                        for entry in data[second_mouse_id]
+                    )
+                    if not has_required_messages:
+                      missing = True
+                      if first_mouse_id in data and second_mouse_id in data:
+                          # Extract the necessary messages from the first mouse (which has complete data)
+                          first_mouse_messages = [
+                              {"message": entry["message"], "absolute_time": entry["absolute_time"]}
+                              for entry in data[first_mouse_id]
+                              if any(entry["message"].strip().endswith(msg) for msg in missing_messages)
+                          ]
+                          combined_data = data[second_mouse_id] + first_mouse_messages
 
-                        # Convert string timestamp to datetime object for sorting
-                        def convert_to_datetime(entry):
-                            return datetime.strptime(entry['absolute_time'], "%Y-%m-%d_%H-%M-%S.%f")
+                          # Sort the combined data
+                          def extract_second_number(entry):
+                              match = re.search(r"^\d+:\s*(\d+)", entry["message"])
+                              return int(match.group(1)) if match else float('inf')  # If not found, return a large number
+                          combined_data.sort(key=extract_second_number)
 
-                        # Combine both data lists (second mouse data and the required messages from the first mouse)
-                        combined_data = data[second_mouse_id] + first_mouse_messages
+                          # Update the second mouse's data
+                          data[second_mouse_id] = combined_data
+                          print(file_path)
+                          with open(file_path, "w") as f:
+                              json.dump(data, f, indent=4)
 
-                        # Sort the combined data based on absolute time
-                        combined_data.sort(key=convert_to_datetime)
-
-                        # Update the second mouse's data
-                        data[second_mouse_id] = combined_data
-                        with open(file_path, "w") as f:
-                            json.dump(data, f, indent=4)
+        if missing: print("Filled and synced missing data for second mouse!")
