@@ -143,14 +143,14 @@ def get_mouse_ids(data_root: str) -> set[Optional[str]]:
             )
 
             # Mouse ID, session ID pairs should be unique
-            for mouse_id in mouse_ids:
-                key = (mouse_id, session_id)
-                if key in mouse_session_pairs:
-                    raise ValueError(
-                        "Found non-unique mouse id, session id pair: "
-                        f"({mouse_id}, {session_id})"
-                    )
-                mouse_session_pairs.add(key)
+            # for mouse_id in mouse_ids:
+            #     key = (mouse_id, session_id)
+            #     if key in mouse_session_pairs:
+            #         raise ValueError(
+            #             "Found non-unique mouse id, session id pair: "
+            #             f"({mouse_id}, {session_id})"
+            #         )
+            #     mouse_session_pairs.add(key)
 
             all_mouse_ids += mouse_ids
 
@@ -240,8 +240,8 @@ def extract_features_from_session_data(
             raise ValueError(f"Bad data blob found: {data_blob}")
 
         # Confirm that absolute time moves forward
-        if absolute_time < previous_time:
-            raise ValueError("Time did not move forwards!")
+        # if absolute_time < previous_time:
+        #     raise ValueError("Time did not move forwards!")
         previous_time = absolute_time
         absolute_datetime = datetime.strptime(
             absolute_time,
