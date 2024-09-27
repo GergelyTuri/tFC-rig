@@ -92,6 +92,8 @@ class RigFiles:
         self._examine_and_fix_typos_in_data_files()
         self._sync_second_mouse()
 
+    def fix_files(self) -> None:
+        self._sync_second_mouse()
 
     @staticmethod
     def reformat_date_in_directory(directory: str) -> str:
