@@ -523,42 +523,45 @@ class RigFiles:
             for file_name in files:
                 file_path = os.path.join(root, file_name)
 
-                if file_name.endswith("_raw.json") or file_name.endswith("_processed.json") or file_name.endswith("_analyzed.json") or not file_name.endswith(".json"):
+                if file_name.endswith("_processed.json") or file_name.endswith("_analyzed.json") or not file_name.endswith(".json"):
                     continue
-                file_path = os.path.join(root, file_name)
-                with open(file_path, "r") as f:
-                    file = json.load(f)
-                    mouse_ids = file["header"]["mouse_ids"]
-                    data = file["data"]
-                # Ensure we have at least two mice in the data
-                if len(mouse_ids) >= 2:
-                    first_mouse_id = mouse_ids[0]
-                    second_mouse_id = mouse_ids[1]
+                is_data_file = re.search(FILENAME_REGEX, file_name)
+                if not is_data_file:
+                    continue
+                if file_name.endswith("_raw.json"):
+                    file_path = os.path.join(root, file_name)
+                    with open(file_path, "r") as f:
+                        data = json.load(f)
+                        mouse_ids = data["header"]["mouse_ids"]
+                    # Ensure we have at least two mice in the data
+                    if len(mouse_ids) >= 2:
+                        first_mouse_id = mouse_ids[0]
+                        second_mouse_id = mouse_ids[1]
 
-                    has_required_messages = any(
-                        any(entry["message"].strip().endswith(msg) for msg in missing_messages) 
-                        for entry in data[second_mouse_id]
-                    )
-                    if not has_required_messages:
-                      missing = True
-                      if first_mouse_id in data and second_mouse_id in data:
-                          # Extract the necessary messages from the first mouse (which has complete data)
-                          first_mouse_messages = [
-                              {"message": entry["message"], "absolute_time": entry["absolute_time"]}
-                              for entry in data[first_mouse_id]
-                              if any(entry["message"].strip().endswith(msg) for msg in missing_messages)
-                          ]
-                          combined_data = data[second_mouse_id] + first_mouse_messages
+                        has_required_messages = any(
+                            any(entry["message"].strip().endswith(msg) for msg in missing_messages) 
+                            for entry in data["data"][second_mouse_id]
+                        )
+                        if not has_required_messages:
+                            missing = True
+                            if first_mouse_id in data["data"] and second_mouse_id in data["data"]:
+                                # Extract the necessary messages from the first mouse (which has complete data)
+                                first_mouse_messages = [
+                                    {"message": entry["message"], "absolute_time": entry["absolute_time"]}
+                                    for entry in data["data"][first_mouse_id]
+                                    if any(entry["message"].strip().endswith(msg) for msg in missing_messages)
+                                ]
+                                combined_data = data["data"][second_mouse_id] + first_mouse_messages
 
-                          # Sort the combined data
-                          def extract_second_number(entry):
-                              match = re.search(r"^\d+:\s*(\d+)", entry["message"])
-                              return int(match.group(1)) if match else float('inf')  # If not found, return a large number
-                          combined_data.sort(key=extract_second_number)
+                                # Sort the combined data
+                                def extract_second_number(entry):
+                                    match = re.search(r"^\d+:\s*(\d+)", entry["message"])
+                                    return int(match.group(1)) if match else float('inf')  # If not found, return a large number
+                                combined_data.sort(key=extract_second_number)
 
-                          # Update the second mouse's data
-                          data[second_mouse_id] = combined_data
-                          with open(file_path, "w") as f:
-                              json.dump(data, f, indent=4)
+                                # Update the second mouse's data
+                                data["data"][second_mouse_id] = combined_data
+                                with open(file_path, "w") as f:
+                                    json.dump(data, f, indent=4)
 
         if missing: print("Filled and synced missing data for second mouse!")
