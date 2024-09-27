@@ -523,11 +523,6 @@ class RigFiles:
             for file_name in files:
                 file_path = os.path.join(root, file_name)
 
-                if file_name.endswith("_processed.json") or file_name.endswith("_analyzed.json") or not file_name.endswith(".json"):
-                    continue
-                is_data_file = re.search(FILENAME_REGEX, file_name)
-                if not is_data_file:
-                    continue
                 if file_name.endswith("_raw.json"):
                     file_path = os.path.join(root, file_name)
                     with open(file_path, "r") as f:
@@ -561,7 +556,9 @@ class RigFiles:
 
                                 # Update the second mouse's data
                                 data["data"][second_mouse_id] = combined_data
-                                with open(file_path, "w") as f:
+
+                                new_file_name = file_name.replace("_raw.json", ".json")
+                                with open(new_file_name, "w") as f:
                                     json.dump(data, f, indent=4)
 
         if missing: print("Filled and synced missing data for second mouse!")
