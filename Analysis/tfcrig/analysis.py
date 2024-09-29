@@ -240,9 +240,11 @@ def extract_features_from_session_data(
             raise ValueError(f"Bad data blob found: {data_blob}")
 
         # Confirm that absolute time moves forward
-        # if absolute_time < previous_time:
-        #     raise ValueError("Time did not move forwards!")
-        previous_time = absolute_time
+        if absolute_time < previous_time:
+            prev_blob["absolute_time"]=absolute_time
+            # print("Absolute time did not move forward, fixing...")
+            raise ValueError("Time did not move forwards!")
+        prev_blob = data_blob
         absolute_datetime = datetime.strptime(
             absolute_time,
             "%Y-%m-%d_%H-%M-%S.%f",
