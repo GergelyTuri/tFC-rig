@@ -90,10 +90,11 @@ class RigFiles:
         self._rename_some_bad_file_name_patterns()
         self._rename_date_directories()
         self._examine_and_fix_typos_in_data_files()
-        # self._sync_second_mouse() # This messes up the lick frequency stat since absolute time is out of order
-
-    def sync_second_mouse(self) -> None:
         self._sync_second_mouse()
+
+    # Testing purposes - to test individually
+    # def sync_second_mouse(self) -> None:
+    #     self._sync_second_mouse()
 
     @staticmethod
     def reformat_date_in_directory(directory: str) -> str:
@@ -532,15 +533,15 @@ class RigFiles:
                 is_data_file = re.search(FILENAME_REGEX, file_name)
                 if not is_data_file:
                     continue
-                # Testing purposes
+                # TESTING purposes
                 # if not '102_1_102_2_2024-09-04_15-00-27' in file_path:
                 #     continue
                 with open(file_path, "r") as f:
                     data = json.load(f)
                     mouse_ids = data["header"]["mouse_ids"]
                     sec_port = data["header"]["secondary_port"]
-                # Ensure we have at least two mice in the data
-                if len(mouse_ids) >= 2:
+                # Ensure we have two mice in the data
+                if len(mouse_ids) == 2:
                     first_mouse_id = mouse_ids[0]
                     second_mouse_id = mouse_ids[1]
 
@@ -555,49 +556,51 @@ class RigFiles:
                         first_mouse_trial_end_times = [
                             pd.to_datetime(entry["absolute_time"], format="%Y-%m-%d_%H-%M-%S.%f")
                             for entry in data["data"][first_mouse_id]
-                            if entry["message"].strip() == "Trial has ended"
+                            if entry["message"].strip().endswith("Trial has ended")
                         ]
 
                         second_mouse_trial_end_times = [
                             pd.to_datetime(entry["absolute_time"], format="%Y-%m-%d_%H-%M-%S.%f")
                             for entry in data["data"][second_mouse_id]
-                            if entry["message"].strip() == "Trial has ended"
+                            if entry["message"].strip().endswith("Trial has ended")
                         ]
+                        first_mouse_trial_end_times = sorted(first_mouse_trial_end_times)
+                        second_mouse_trial_end_times = sorted(second_mouse_trial_end_times)
 
-                        # Calculate difference between all end session times and get the average
-                        first_mouse_avg_time = sum(first_mouse_trial_end_times, pd.Timedelta(0)) / len(first_mouse_trial_end_times)
-                        second_mouse_avg_time = sum(second_mouse_trial_end_times, pd.Timedelta(0)) / len(second_mouse_trial_end_times)
-                        time_diff = first_mouse_avg_time - second_mouse_avg_time
+                        # Ensure trials are synced based on trial starts
+                        combined_data = data["data"][second_mouse_id]
+                        prev_end_time = None
+                        for i, first_end_time in enumerate(first_mouse_trial_end_times):
+                            if i < len(second_mouse_trial_end_times):
+                                second_end_time = second_mouse_trial_end_times[i]
+                                time_diff = first_end_time - second_end_time
 
-                        if first_mouse_id in data["data"] and second_mouse_id in data["data"]:
-                            # Extract the necessary messages from the first mouse (which has complete data)
-                            first_mouse_messages = [
-                                {"message": entry["message"], 
-                                 "mouse_id": second_mouse_id,
-                                 "port": sec_port,
-                                 "absolute_time": (pd.to_datetime(entry["absolute_time"]) - time_diff).strftime('%Y-%m-%d_%H-%M-%S.%f')}
-                                for entry in data["data"][first_mouse_id]
-                                if any(entry["message"].strip().endswith(msg) for msg in missing_messages)
-                            ]
-                            combined_data = data["data"][second_mouse_id] + first_mouse_messages
+                                first_mouse_trial_messages = [
+                                    {
+                                        "message": entry["message"],
+                                        "mouse_id": second_mouse_id,
+                                        "port": sec_port,
+                                        "absolute_time": (pd.to_datetime(entry["absolute_time"], format="%Y-%m-%d_%H-%M-%S.%f") - time_diff).strftime('%Y-%m-%d_%H-%M-%S.%f')
+                                    }
+                                    for entry in data["data"][first_mouse_id]
+                                    if any(entry["message"].strip().endswith(msg) for msg in missing_messages)
+                                    and pd.to_datetime(entry["absolute_time"], format="%Y-%m-%d_%H-%M-%S.%f") <= first_end_time
+                                    and (prev_end_time is None or pd.to_datetime(entry["absolute_time"], format="%Y-%m-%d_%H-%M-%S.%f") > prev_end_time)
+                                ]
+                                # Sync the data with corrected times for the second mouse
+                                combined_data.extend(first_mouse_trial_messages)
+                                prev_end_time = first_end_time
+                        combined_data.sort(key=lambda entry: pd.to_datetime(entry["absolute_time"], format="%Y-%m-%d_%H-%M-%S.%f"))
+                        data["data"][second_mouse_id] = combined_data
 
-                            # Sort the combined data
-                            def extract_second_number(entry):
-                                match = re.search(r"^\d+:\s*(\d+)", entry["message"])
-                                return int(match.group(1)) if match else float('inf')  # If not found, return a large number
-                            combined_data.sort(key=extract_second_number)
-                            # combined_data.sort(key=lambda entry: pd.to_datetime(entry["absolute_time"], format="%Y-%m-%d_%H-%M-%S.%f"))
-
-                            # Update the second mouse's data
-                            data["data"][second_mouse_id] = combined_data
-
-                            # Testing purposes - write to a new file
-                            # dir_name, base_name = os.path.split(file_path)
-                            # file_name, file_extension = os.path.splitext(base_name)
-                            # new_file_name = f"{file_name}_v2{file_extension}"
-                            # new_file_path = os.path.join(dir_name, new_file_name)
-                            # with open(new_file_path, "w") as f:
-                            with open(file_path, "w") as f:
-                                json.dump(data, f, indent=4)
+                            # TESTING purposes - write to a new file
+                        # dir_name, base_name = os.path.split(file_path)
+                        # file_name, file_extension = os.path.splitext(base_name)
+                        # new_file_name = f"{file_name}_v2{file_extension}"
+                        # new_file_path = os.path.join(dir_name, new_file_name)
+                        # with open(new_file_path, "w") as f:
+                            # json.dump(data, f, indent=4)
+                        with open(file_path, "w") as f:
+                            json.dump(data, f, indent=4)
 
         if missing: print("Filled and synced missing data for second mouse!")

@@ -793,8 +793,8 @@ class Analysis:
             ]
             df = df.rename(
                 columns={
-                    "z_total_licks_water_on_type_0": "type0",
-                    "z_total_licks_water_on_type_1": "type1",
+                    "z_total_licks_water_on_type_0": "no_puff_CS-",
+                    "z_total_licks_water_on_type_1": "puff_CS+",
                 },
             )
         else:
@@ -811,11 +811,11 @@ class Analysis:
             ]
             df = df.rename(
                 columns={
-                    "z_total_licks_type_0": "type0",
-                    "z_total_licks_type_1": "type1",
-                    "z_total_licks_type_2": "type2",
-                    "z_total_licks_type_3": "type3",
-                    "z_total_licks_type_4": "type4"
+                    "z_total_licks_type_0": "no_puff_CS-",
+                    "z_total_licks_type_1": "puff_CS+",
+                    "z_total_licks_type_2": "no_puff_CS+",
+                    "z_total_licks_type_3": "puff_CS-",
+                    "z_total_licks_type_4": "no_puff_no_signal"
                 },
             )
 
@@ -832,7 +832,7 @@ class Analysis:
         # Accounts for trial type
         df = df.melt(
             id_vars=["mouse_id", "session_id"],
-            value_vars=["type0", "type1", "type2", "type3", "type4"],
+            value_vars=["no_puff_CS-", "puff_CS+", "no_puff_CS+", "puff_CS-", "no_puff_no_signal"],
             var_name="Type",
             value_name="Licks",
         )
