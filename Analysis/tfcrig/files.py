@@ -539,11 +539,11 @@ class RigFiles:
                 with open(file_path, "r") as f:
                     data = json.load(f)
                     mouse_ids = data["header"]["mouse_ids"]
-                    sec_port = data["header"]["secondary_port"]
                 # Ensure we have two mice in the data
                 if len(mouse_ids) == 2:
                     first_mouse_id = mouse_ids[0]
                     second_mouse_id = mouse_ids[1]
+                    sec_port = data["header"]["secondary_port"]
 
                     has_required_messages = any(
                         any(entry["message"].strip().endswith(msg) for msg in missing_messages) 
