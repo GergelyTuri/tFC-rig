@@ -238,7 +238,6 @@ def extract_features_from_session_data(
             msg = msg_delimiter.join(split_data[3::])
         except (KeyError, ValueError):
             raise ValueError(f"Bad data blob found: {data_blob}")
-
         # Confirm that absolute time moves forward
         if absolute_time < previous_time:
             # prev_blob["absolute_time"]=absolute_time
@@ -411,7 +410,6 @@ def get_data_features_from_data_file(
         )
         if not df.empty:
             data_frames.append(df)
-
     # Files can contain multiple mouse/session pairs. Extract features
     # from each data frame (pair)
     data_features = []
@@ -421,8 +419,7 @@ def get_data_features_from_data_file(
         # Lick frequency
         # Work with another data frame to avoid setting index on 'df'
         dfl = df[df["is_session"] == 1].copy()
-        dfl["session_time_delta"] = pd.to_timedelta(dfl["session_time"], unit="ms")
-        dfl.set_index("session_time_delta", inplace=True)
+        dfl.set_index("absolute_time", inplace=True)
         dfl["lick_frequency"] = dfl["lick"].rolling(window="1s", center=True).sum()
         avg_lick_freq = dfl["lick_frequency"].mean()
         df_is_trial = dfl[dfl["is_trial"] == 1]
@@ -434,7 +431,6 @@ def get_data_features_from_data_file(
         avg_lick_freq_no_signal = dfl_no_signal["lick_frequency"].mean()
         dfl_iti = dfl[dfl["is_trial"] == 0]
         avg_lick_freq_iti = dfl_iti["lick_frequency"].mean()
-
         # Normalize lick frequency to the total licks in the session trials,
         # which will hopefully account for variance in lick sensor sensitivity
         # between sessions and between days. The factor of 1,000 is just for
@@ -666,7 +662,7 @@ class Analysis:
             for file in files:
                 if not is_data_file(file):
                     continue
-
+                
                 if self.mice_of_interest:
                     mouse_ids = get_mouse_ids_from_file_name(file)
                     if not all([
@@ -689,7 +685,6 @@ class Analysis:
                     else:
                         self.file_errors[error].append(file)
                     continue
-
                 features += f_features
                 if not f_data_frames.empty:
                     data_frames.append(f_data_frames)
