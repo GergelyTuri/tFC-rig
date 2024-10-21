@@ -240,10 +240,8 @@ def extract_features_from_session_data(
             raise ValueError(f"Bad data blob found: {data_blob}")
         # Confirm that absolute time moves forward
         if absolute_time < previous_time:
-            # prev_blob["absolute_time"]=absolute_time
-            # print("Absolute time did not move forward, fixing...")
             raise ValueError("Time did not move forwards!")
-        # prev_blob = data_blob
+        # previous_time = absolute_time
         absolute_datetime = datetime.strptime(
             absolute_time,
             "%Y-%m-%d_%H-%M-%S.%f",
@@ -420,6 +418,7 @@ def get_data_features_from_data_file(
         # Work with another data frame to avoid setting index on 'df'
         dfl = df[df["is_session"] == 1].copy()
         dfl.set_index("absolute_time", inplace=True)
+        dfl.sort_index(inplace=True)
         dfl["lick_frequency"] = dfl["lick"].rolling(window="1s", center=True).sum()
         avg_lick_freq = dfl["lick_frequency"].mean()
         df_is_trial = dfl[dfl["is_trial"] == 1]
@@ -662,7 +661,10 @@ class Analysis:
             for file in files:
                 if not is_data_file(file):
                     continue
-                
+                # Testing purposes
+                # if '102_1_103_2_2024-09-03_15-32-46.json' not in file:
+                #     continue
+                # print('continuing!')
                 if self.mice_of_interest:
                     mouse_ids = get_mouse_ids_from_file_name(file)
                     if not all([
