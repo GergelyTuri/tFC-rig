@@ -143,14 +143,14 @@ def get_mouse_ids(data_root: str) -> set[Optional[str]]:
             )
 
             # Mouse ID, session ID pairs should be unique
-            for mouse_id in mouse_ids:
-                key = (mouse_id, session_id)
-                if key in mouse_session_pairs:
-                    raise ValueError(
-                        "Found non-unique mouse id, session id pair: "
-                        f"({mouse_id}, {session_id})"
-                    )
-                mouse_session_pairs.add(key)
+            # for mouse_id in mouse_ids:
+            #     key = (mouse_id, session_id)
+            #     if key in mouse_session_pairs:
+            #         raise ValueError(
+            #             "Found non-unique mouse id, session id pair: "
+            #             f"({mouse_id}, {session_id})"
+            #         )
+            #     mouse_session_pairs.add(key)
 
             all_mouse_ids += mouse_ids
 
@@ -238,11 +238,10 @@ def extract_features_from_session_data(
             msg = msg_delimiter.join(split_data[3::])
         except (KeyError, ValueError):
             raise ValueError(f"Bad data blob found: {data_blob}")
-
         # Confirm that absolute time moves forward
         if absolute_time < previous_time:
             raise ValueError("Time did not move forwards!")
-        previous_time = absolute_time
+        # previous_time = absolute_time
         absolute_datetime = datetime.strptime(
             absolute_time,
             "%Y-%m-%d_%H-%M-%S.%f",
@@ -325,6 +324,9 @@ def extract_features_from_session_data(
                 t_trial <= air_puff_stop_time
             ):
                 puffed_lick = 1
+                
+            if t_trial > air_puff_stop_time:
+                first_puff_started = 0
 
         # Negative signal
         if "Negative signal start" in msg:
@@ -406,7 +408,6 @@ def get_data_features_from_data_file(
         )
         if not df.empty:
             data_frames.append(df)
-
     # Files can contain multiple mouse/session pairs. Extract features
     # from each data frame (pair)
     data_features = []
@@ -416,19 +417,19 @@ def get_data_features_from_data_file(
         # Lick frequency
         # Work with another data frame to avoid setting index on 'df'
         dfl = df[df["is_session"] == 1].copy()
-        dfl["session_time_delta"] = pd.to_timedelta(dfl["session_time"], unit="ms")
-        dfl.set_index("session_time_delta", inplace=True)
+        dfl.set_index("absolute_time", inplace=True)
+        dfl.sort_index(inplace=True)
         dfl["lick_frequency"] = dfl["lick"].rolling(window="1s", center=True).sum()
         avg_lick_freq = dfl["lick_frequency"].mean()
-        dfl_csplus = dfl[dfl["is_trial"] == 1]
-        dfl_csplus = dfl_csplus[dfl_csplus["trial_type"].isin([1, 2])]
+        df_is_trial = dfl[dfl["is_trial"] == 1]
+        dfl_csplus = df_is_trial[df_is_trial["trial_type"].isin([1, 2])]
         avg_lick_freq_csplus = dfl_csplus["lick_frequency"].mean()
-        dfl_csminus = dfl[dfl["is_trial"] == 1]
-        dfl_csminus = dfl_csminus[dfl_csminus["trial_type"].isin([0, 3])]
+        dfl_csminus = df_is_trial[df_is_trial["trial_type"].isin([0, 3])]
         avg_lick_freq_csminus = dfl_csminus["lick_frequency"].mean()
+        dfl_no_signal = df_is_trial[df_is_trial["trial_type"].isin([4])]
+        avg_lick_freq_no_signal = dfl_no_signal["lick_frequency"].mean()
         dfl_iti = dfl[dfl["is_trial"] == 0]
         avg_lick_freq_iti = dfl_iti["lick_frequency"].mean()
-
         # Normalize lick frequency to the total licks in the session trials,
         # which will hopefully account for variance in lick sensor sensitivity
         # between sessions and between days. The factor of 1,000 is just for
@@ -450,6 +451,10 @@ def get_data_features_from_data_file(
             avg_lick_freq_iti,
             total_session_licks,
         )
+        z_avg_lick_freq_no_signal = 1000*scalar_divide(
+            avg_lick_freq_no_signal,
+            total_session_licks,
+        )
 
         # Total licks
         total_licks = df["lick"].sum()
@@ -467,6 +472,18 @@ def get_data_features_from_data_file(
         df1 = df1[df1["is_trial"] == 1]
         total_licks_type_1 = df1["lick"].sum()
         total_puffed_licks_type_1 = df1["puffed_lick"].sum()
+        df2 = df[df["trial_type"] == 2]
+        df2 = df2[df2["is_trial"] == 1]
+        total_licks_type_2 = df2["lick"].sum()
+        total_puffed_licks_type_2 = df2["puffed_lick"].sum()
+        df3 = df[df["trial_type"] == 3]
+        df3 = df3[df3["is_trial"] == 1]
+        total_licks_type_3 = df3["lick"].sum()
+        total_puffed_licks_type_3 = df3["puffed_lick"].sum()
+        df4 = df[df["trial_type"] == 4]
+        df4 = df4[df4["is_trial"] == 1]
+        total_licks_type_4 = df4["lick"].sum()
+        total_puffed_licks_type_4 = df4["puffed_lick"].sum()
 
         # Total licks, water is on
         df_water = df[df["water"] == 1]
@@ -494,6 +511,18 @@ def get_data_features_from_data_file(
         )
         z_total_licks_type_1 = scalar_divide(
             total_licks_type_1,
+            total_licks,
+        )
+        z_total_licks_type_2 = scalar_divide(
+            total_licks_type_2,
+            total_licks,
+        )
+        z_total_licks_type_3 = scalar_divide(
+            total_licks_type_3,
+            total_licks,
+        )
+        z_total_licks_type_4 = scalar_divide(
+            total_licks_type_4,
             total_licks,
         )
         z_total_licks_water_on_type_0 = scalar_divide(
@@ -551,6 +580,7 @@ def get_data_features_from_data_file(
             "z_avg_lick_freq_csplus": z_avg_lick_freq_csplus,
             "z_avg_lick_freq_csminus": z_avg_lick_freq_csminus,
             "z_avg_lick_freq_iti": z_avg_lick_freq_iti,
+            "z_avg_lick_freq_no_signal": z_avg_lick_freq_no_signal,
             "total_licks": total_licks,
             "total_puffed_licks": total_puffed_licks,
             "total_licks_in_trial": total_licks_in_trial,
@@ -562,6 +592,12 @@ def get_data_features_from_data_file(
             "z_total_puffed_licks_type_0": z_total_puffed_licks_type_0,
             "total_licks_type_1": total_licks_type_1,
             "z_total_licks_type_1": z_total_licks_type_1,
+            "total_licks_type_2": total_licks_type_2,
+            "z_total_licks_type_2": z_total_licks_type_2,
+            "total_licks_type_3": total_licks_type_3,
+            "z_total_licks_type_3": z_total_licks_type_3,
+            "total_licks_type_4": total_licks_type_4,
+            "z_total_licks_type_4": z_total_licks_type_4,
             "z_total_puffed_licks_type_1": z_total_puffed_licks_type_1,
             "total_licks_water_on": total_licks_water_on,
             "total_licks_water_on_type_0": total_licks_water_on_type_0,
@@ -625,7 +661,10 @@ class Analysis:
             for file in files:
                 if not is_data_file(file):
                     continue
-
+                # Testing purposes
+                # if '102_1_103_2_2024-09-03_15-32-46.json' not in file:
+                #     continue
+                # print('continuing!')
                 if self.mice_of_interest:
                     mouse_ids = get_mouse_ids_from_file_name(file)
                     if not all([
@@ -648,7 +687,6 @@ class Analysis:
                     else:
                         self.file_errors[error].append(file)
                     continue
-
                 features += f_features
                 if not f_data_frames.empty:
                     data_frames.append(f_data_frames)
@@ -719,13 +757,14 @@ class Analysis:
         min_session: int=0,
         water_on: bool=False,
         tail_length: Optional[int]=None,
+        lineplot: bool=False
     ) -> None:
         """
         Creates a bar plot showing licks per session and for each mouse.
 
         Args:
             mouse_ids: The set of mice to plot
-            min_session: Filter sessions lower than this value
+            min_session: Includes sessions higher than this value
             water_on: Set to `True` to only consider licks when water
                 reward is available
             tail_length: Set to an integer to only graph a tail of
@@ -751,8 +790,8 @@ class Analysis:
             ]
             df = df.rename(
                 columns={
-                    "z_total_licks_water_on_type_0": "type0",
-                    "z_total_licks_water_on_type_1": "type1",
+                    "z_total_licks_water_on_type_0": "no_puff_CS-",
+                    "z_total_licks_water_on_type_1": "puff_CS+",
                 },
             )
         else:
@@ -762,12 +801,18 @@ class Analysis:
                     "session_id",
                     "z_total_licks_type_0",
                     "z_total_licks_type_1",
+                    "z_total_licks_type_2",
+                    "z_total_licks_type_3",
+                    "z_total_licks_type_4",
                 ]
             ]
             df = df.rename(
                 columns={
-                    "z_total_licks_type_0": "type0",
-                    "z_total_licks_type_1": "type1",
+                    "z_total_licks_type_0": "no_puff_CS-",
+                    "z_total_licks_type_1": "puff_CS+",
+                    "z_total_licks_type_2": "no_puff_CS+",
+                    "z_total_licks_type_3": "puff_CS-",
+                    "z_total_licks_type_4": "no_puff_no_signal"
                 },
             )
 
@@ -784,7 +829,7 @@ class Analysis:
         # Accounts for trial type
         df = df.melt(
             id_vars=["mouse_id", "session_id"],
-            value_vars=["type0", "type1"],
+            value_vars=["no_puff_CS-", "puff_CS+", "no_puff_CS+", "puff_CS-", "no_puff_no_signal"],
             var_name="Type",
             value_name="Licks",
         )
@@ -798,27 +843,42 @@ class Analysis:
             height=4,
             aspect=1,
         )
-        g.map_dataframe(
-            sns.barplot,
-            x="session_id",
-            y="Licks",
-            hue="Type",
-            errorbar=None,
-        )
+
+        if lineplot:
+          df['session_id_str'] = df['session_id'].astype(str)
+
+          g.map_dataframe(
+          sns.lineplot,
+          x="session_id_str",
+          y="Licks",
+          marker="o",
+          hue="Type",
+          errorbar=None,
+          )
+        else:
+          g.map_dataframe(
+              sns.barplot,
+              x="session_id",
+              y="Licks",
+              hue="Type",
+              errorbar=None,
+          )
         g.add_legend(title="Lick Type")
 
-        for ax in g.axes:
-            if ax in g.axes[:-2]:
-                ax.set_xticklabels("")
-            else:
-                ax.set_xticklabels(ax.get_xticklabels(), rotation=90)
+        for ax in g.axes.flatten():
+            ax.set_xticklabels(ax.get_xticklabels(), rotation=90)
+            ax.tick_params(axis='x', which='both', labelsize=8)
 
-        g.set_axis_labels("", "Total Licks")
+        g.set_axis_labels("Session ID", "Total Licks")
         g.set_titles("Mouse: {col_name}")
 
-        suptitle = "Total Licks Over Time by Mouse"
+        if water_on:
+            suptitle = "Total Licks Over Time by Mouse (only with water reward)"
+        else:
+            suptitle = "Total Licks Over Time by Mouse"
 
         plt.suptitle(suptitle, y=1.05)
+        plt.tight_layout()
         plt.show()
 
     def learning_rate_heat_map(
