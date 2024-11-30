@@ -15,7 +15,7 @@ jobs:
         # As of November 2024, Google Colab runs on Python 3.10, but we
         # can test one version back and two ahead to be more sure that
         # the tests are compatible with Colab
-        python-version: [3.9, 3.10, 3.11, 3.12]
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
 
     steps:
       - name: Checkout code
