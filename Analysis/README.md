@@ -9,3 +9,15 @@ Analysis pipeline source code exists at `Analysis/tfcrig` and in a Google Colabo
 ```python
 from tfcrig.path.to.module import SomethingUseful
 ```
+
+## Local Development
+
+The package can be installed in development mode by running the following command from the root of the repository:
+
+```bash
+cd Analysis
+```
+
+```bash
+pip install -e .
+```

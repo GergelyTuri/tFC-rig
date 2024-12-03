@@ -1,4 +1,6 @@
 .vscode
 *.pyc
 Software/Serial_read/__pycache__/
+*egg-info/
+*__pycache__
 # Software/Serial_read/*.json
