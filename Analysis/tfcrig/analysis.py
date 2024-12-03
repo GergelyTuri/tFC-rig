@@ -5,7 +5,7 @@ import os
 import re
 import warnings
 from datetime import datetime
-from typing import Any, List, Optional
+from typing import Any, Optional
 
 import ipywidgets as widgets
 import matplotlib.patches as mpatches
@@ -32,7 +32,7 @@ def dict_contains_other_values(d: dict, types: tuple[Any]) -> bool:
     return False
 
 
-def extract_exp_mouse_pairs(exp_mouse_blob: str) -> List[str]:
+def extract_exp_mouse_pairs(exp_mouse_blob: str) -> list[str]:
     """
     Define a recursive function that helps extract sets of
     `{experiment_id}_{mouse_id}_` from a file name. It accepts the
