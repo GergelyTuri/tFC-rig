@@ -17,14 +17,4 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    install_requires=[
-        "numpy>=1.21, <1.25",
-        "scipy>=1.9, <1.10",
-        "pandas>=2.0",
-        "matplotlib>=3.7",
-        "seaborn>=0.13.2",
-        "ipywidgets>=7.7.1",
-        "ipython>=7.34.0",
-        # "google-colab>=?.?.?" for the notebook.py module
-    ],
 )

@@ -7,12 +7,17 @@ dependencies:
   - pip
   - python=3.10
   - setuptools
-  - numpy 
+  - numpy
+  - scipy
+  - matplotlib
+  - pandas
+  - ipython
+  - ipywidgets
+  - ipykernel
+  - seaborn
   - pip:      
     - pyserial==3.5
     - tqdm==4.66.1
     - PyQt6
     - requests
     - reportlab
-    - pandas
-    - matplotlib
