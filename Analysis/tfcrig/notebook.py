@@ -4,7 +4,11 @@ import os
 from dataclasses import dataclass
 from datetime import datetime
 
-from google.colab import drive, output
+try:
+    from google.colab import drive, output
+except ImportError:
+    drive = None
+    output = None
 from IPython.core.getipython import get_ipython
 from IPython.display import HTML, display
 
@@ -76,6 +80,7 @@ class Notebook:
         notebook-like environment to confirm when an analysis had last
         been run.
         """
+
         def tprint(*args, **kwargs):
             t = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             builtin_print(f">{t}:", *args, **kwargs)
@@ -88,20 +93,21 @@ class Notebook:
         Registers a `css` event before the execution of a cell in
         Google Colaboratory, so that text output is wrapped
         """
+
         def set_css():
             display(
                 HTML(
-                    '''
+                    """
                     <style>
                         pre {
                             white-space: pre-wrap;
                         }
                     </style>
-                    '''
+                    """
                 )
             )
 
-        get_ipython().events.register('pre_run_cell', set_css)
+        get_ipython().events.register("pre_run_cell", set_css)
 
     def _configure_timestamped_logging(self) -> None:
         """
@@ -120,7 +126,7 @@ class Notebook:
             root_logger.removeHandler(handler)
 
         handler = logging.StreamHandler()
-        handler.setFormatter(TimestampedFormatter('>%(custom_time)s: %(message)s'))
+        handler.setFormatter(TimestampedFormatter(">%(custom_time)s: %(message)s"))
         root_logger.addHandler(handler)
         root_logger.setLevel(logging.INFO)
 
@@ -129,10 +135,11 @@ class Notebook:
         Registers an even that executes JavaScript before the execution
         of any cell, to set a max height
         """
+
         def set_output_height_for_all_cells():
             script = f"""
 google.colab.output.setIframeHeight(0, true, {{maxHeight: {self.max_cell_height}}});
             """
             output.eval_js(script)
 
-        get_ipython().events.register('pre_run_cell', set_output_height_for_all_cells)
+        get_ipython().events.register("pre_run_cell", set_output_height_for_all_cells)

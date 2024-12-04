@@ -15,10 +15,8 @@ import pandas as pd
 import scipy.stats as stats
 import seaborn as sns
 from IPython.display import display
-
 from tfcrig.files import DATETIME_REGEX
 from tfcrig.notebook import builtin_print
-
 
 WARN_SCALAR_DIVIDE = [
     "invalid value encountered in scalar divide",
@@ -46,7 +44,7 @@ def extract_exp_mouse_pairs(exp_mouse_blob: str) -> list[str]:
 
     if string_match:
         first_pair = string_match.group()
-        rest_of_string = exp_mouse_blob[string_match.end():]
+        rest_of_string = exp_mouse_blob[string_match.end() :]
         return [first_pair] + extract_exp_mouse_pairs(rest_of_string)
     return []
 
@@ -116,8 +114,8 @@ def scalar_divide(a: np.int64, b: np.int64) -> np.int64:
     if len(w) > 0:
         warning = w[0]
         if (
-            not issubclass(warning.category, RuntimeWarning) or
-            str(warning.message) not in WARN_SCALAR_DIVIDE
+            not issubclass(warning.category, RuntimeWarning)
+            or str(warning.message) not in WARN_SCALAR_DIVIDE
         ):
             # Raises an exception for other warnings
             raise Exception(warning.message)
@@ -138,9 +136,7 @@ def get_mouse_ids(data_root: str) -> set[Optional[str]]:
                 continue
 
             mouse_ids = get_mouse_ids_from_file_name(file_name)
-            session_id = datetime_to_session_id(
-                get_datetime_from_file_path(file_name)
-            )
+            session_id = datetime_to_session_id(get_datetime_from_file_path(file_name))
 
             # Mouse ID, session ID pairs should be unique
             # for mouse_id in mouse_ids:
@@ -211,10 +207,7 @@ def extract_features_from_session_data(
     data_str = json.dumps(raw_data)
     session_start_msg = "Session has started"
     session_end_msg = "Session has ended"
-    if (
-        session_start_msg not in data_str
-        or session_end_msg not in data_str
-    ):
+    if session_start_msg not in data_str or session_end_msg not in data_str:
         raise ValueError("Session either does not start or does not end!!!")
 
     # Check trial start and ends (every trial that starts, ends)
@@ -318,13 +311,13 @@ def extract_features_from_session_data(
             # We are in a part of the trial where these parameters have
             # been determined, given that we initialize them as `-1`
             if (
-                lick and
-                first_puff_started and
-                t_trial >= air_puff_start_time and
-                t_trial <= air_puff_stop_time
+                lick
+                and first_puff_started
+                and t_trial >= air_puff_start_time
+                and t_trial <= air_puff_stop_time
             ):
                 puffed_lick = 1
-                
+
             if t_trial > air_puff_stop_time:
                 first_puff_started = 0
 
@@ -396,9 +389,7 @@ def get_data_features_from_data_file(
                 json_data = json.load(f)
             raw_data = json_data["data"][mouse_id]
         except KeyError:
-            raise ValueError(
-                f"File name does not match its 'mouse_ids': {full_file}"
-            )
+            raise ValueError(f"File name does not match its 'mouse_ids': {full_file}")
         df = extract_features_from_session_data(
             raw_data=raw_data,
             mouse_id=mouse_id,
@@ -435,23 +426,23 @@ def get_data_features_from_data_file(
         # between sessions and between days. The factor of 1,000 is just for
         # readability of printed output
         total_session_licks = dfl["lick"].sum()
-        z_avg_lick_freq = 1000*scalar_divide(
+        z_avg_lick_freq = 1000 * scalar_divide(
             avg_lick_freq,
             total_session_licks,
         )
-        z_avg_lick_freq_csplus = 1000*scalar_divide(
+        z_avg_lick_freq_csplus = 1000 * scalar_divide(
             avg_lick_freq_csplus,
             total_session_licks,
         )
-        z_avg_lick_freq_csminus = 1000*scalar_divide(
+        z_avg_lick_freq_csminus = 1000 * scalar_divide(
             avg_lick_freq_csminus,
             total_session_licks,
         )
-        z_avg_lick_freq_iti = 1000*scalar_divide(
+        z_avg_lick_freq_iti = 1000 * scalar_divide(
             avg_lick_freq_iti,
             total_session_licks,
         )
-        z_avg_lick_freq_no_signal = 1000*scalar_divide(
+        z_avg_lick_freq_no_signal = 1000 * scalar_divide(
             avg_lick_freq_no_signal,
             total_session_licks,
         )
@@ -628,6 +619,7 @@ class Analysis:
         - Features
 
     """
+
     # TODO: investigate if performance becomes an issue
     #
     #   - Extracting features into data frames, and not concatenating all
@@ -641,8 +633,8 @@ class Analysis:
         self,
         *,
         data_root: str,
-        verbose: bool=False,
-        mice_of_interest: list[str]=[],
+        verbose: bool = False,
+        mice_of_interest: list[str] = [],
     ) -> None:
         self.data_root = data_root
         self.verbose = verbose
@@ -667,10 +659,9 @@ class Analysis:
                 # print('continuing!')
                 if self.mice_of_interest:
                     mouse_ids = get_mouse_ids_from_file_name(file)
-                    if not all([
-                        mouse_id in self.mice_of_interest
-                        for mouse_id in mouse_ids
-                    ]):
+                    if not all(
+                        [mouse_id in self.mice_of_interest for mouse_id in mouse_ids]
+                    ):
                         continue
 
                 # Try to extract features.
@@ -753,11 +744,11 @@ class Analysis:
 
     def summarize_licks_per_session(
         self,
-        mouse_ids: list=[],
-        min_session: int=0,
-        water_on: bool=False,
-        tail_length: Optional[int]=None,
-        lineplot: bool=False
+        mouse_ids: list = [],
+        min_session: int = 0,
+        water_on: bool = False,
+        tail_length: Optional[int] = None,
+        lineplot: bool = False,
     ) -> None:
         """
         Creates a bar plot showing licks per session and for each mouse.
@@ -812,24 +803,28 @@ class Analysis:
                     "z_total_licks_type_1": "puff_CS+",
                     "z_total_licks_type_2": "no_puff_CS+",
                     "z_total_licks_type_3": "puff_CS-",
-                    "z_total_licks_type_4": "no_puff_no_signal"
+                    "z_total_licks_type_4": "no_puff_no_signal",
                 },
             )
 
         # Get a tail of sessions
         if tail_length:
-            df = df.groupby(
-                "mouse_id"
-            ).apply(
-                lambda x: x.sort_values("session_id").tail(tail_length)
-            ).reset_index(
-                drop=True
+            df = (
+                df.groupby("mouse_id")
+                .apply(lambda x: x.sort_values("session_id").tail(tail_length))
+                .reset_index(drop=True)
             )
 
         # Accounts for trial type
         df = df.melt(
             id_vars=["mouse_id", "session_id"],
-            value_vars=["no_puff_CS-", "puff_CS+", "no_puff_CS+", "puff_CS-", "no_puff_no_signal"],
+            value_vars=[
+                "no_puff_CS-",
+                "puff_CS+",
+                "no_puff_CS+",
+                "puff_CS-",
+                "no_puff_no_signal",
+            ],
             var_name="Type",
             value_name="Licks",
         )
@@ -845,29 +840,29 @@ class Analysis:
         )
 
         if lineplot:
-          df['session_id_str'] = df['session_id'].astype(str)
+            df["session_id_str"] = df["session_id"].astype(str)
 
-          g.map_dataframe(
-          sns.lineplot,
-          x="session_id_str",
-          y="Licks",
-          marker="o",
-          hue="Type",
-          errorbar=None,
-          )
+            g.map_dataframe(
+                sns.lineplot,
+                x="session_id_str",
+                y="Licks",
+                marker="o",
+                hue="Type",
+                errorbar=None,
+            )
         else:
-          g.map_dataframe(
-              sns.barplot,
-              x="session_id",
-              y="Licks",
-              hue="Type",
-              errorbar=None,
-          )
+            g.map_dataframe(
+                sns.barplot,
+                x="session_id",
+                y="Licks",
+                hue="Type",
+                errorbar=None,
+            )
         g.add_legend(title="Lick Type")
 
         for ax in g.axes.flatten():
             ax.set_xticklabels(ax.get_xticklabels(), rotation=90)
-            ax.tick_params(axis='x', which='both', labelsize=8)
+            ax.tick_params(axis="x", which="both", labelsize=8)
 
         g.set_axis_labels("Session ID", "Total Licks")
         g.set_titles("Mouse: {col_name}")
@@ -883,10 +878,10 @@ class Analysis:
 
     def learning_rate_heat_map(
         self,
-        mouse_ids: list=[],
-        min_session: int=0,
-        water_on: bool=False,
-        tail_length: Optional[int]=None,
+        mouse_ids: list = [],
+        min_session: int = 0,
+        water_on: bool = False,
+        tail_length: Optional[int] = None,
     ) -> None:
         # TODO: Need to align on the air puff day, which should be
         # Wednesday, which should be ... 7 and 8 in the current plot?
@@ -935,6 +930,7 @@ class Analysis:
 
         # Get a tail of sessions
         if tail_length:
+
             def process_group(x):
                 """
                 Gets the tail of sessions and gives them an index
@@ -942,25 +938,18 @@ class Analysis:
                 x = x.sort_values("session_id").tail(tail_length)
                 x["session_id"] = range(1, tail_length + 1)
                 return x
-            df = df.groupby(
-                "mouse_id"
-            ).apply(
-                process_group
-            ).reset_index(
-                drop=True
-            )
+
+            df = df.groupby("mouse_id").apply(process_group).reset_index(drop=True)
 
         # This section does a bit of additional work with the learning
         # rate. It takes the log and replaces inf, -inf, nan values with
         # the max, min, and 0 values of the data frame
         df["learning_rate"] = np.log(df["learning_rate"])
-        df = df.pivot(
-            index="mouse_id", columns="session_id", values="learning_rate"
-        )
+        df = df.pivot(index="mouse_id", columns="session_id", values="learning_rate")
         max_value = df.replace(np.inf, np.nan).max().max()
-        min_value = df.replace(-1*np.inf, np.nan).min().min()
+        min_value = df.replace(-1 * np.inf, np.nan).min().min()
         df.replace(np.inf, max_value, inplace=True)
-        df.replace(-1*np.inf, min_value, inplace=True)
+        df.replace(-1 * np.inf, min_value, inplace=True)
         df.replace(np.nan, 0, inplace=True)
         vmin, vmax = df.min().min(), df.max().max()
 
@@ -980,7 +969,12 @@ class Analysis:
         # Plots average learning rate across mice for the last set of sessions
         mean_learning_rate = df.mean(axis=0)
         plt.figure(figsize=(8, 6))
-        plt.plot(mean_learning_rate.index, mean_learning_rate.values, marker="o", linestyle="-")
+        plt.plot(
+            mean_learning_rate.index,
+            mean_learning_rate.values,
+            marker="o",
+            linestyle="-",
+        )
         plt.title("Average Learning Rate Across Mice")
         plt.xlabel("Session ID")
         plt.ylabel("Average Learning Rate")
@@ -992,13 +986,15 @@ class Analysis:
         self,
         *,
         puff_map: dict,
-        natural_logarithm: bool=False,
-        drop_bad_rows: bool=True,
-        metric_of_interest: str="z_learning_rate",
+        natural_logarithm: bool = False,
+        drop_bad_rows: bool = True,
+        metric_of_interest: str = "z_learning_rate",
     ) -> None:
         learn = self.df.sort_values(by=["session_id", "mouse_id"])
         learn = learn[learn["mouse_id"].isin(list(puff_map.keys()))]
-        print(f"Exploring significance between pre- and post-learning for '{metric_of_interest}'")
+        print(
+            f"Exploring significance between pre- and post-learning for '{metric_of_interest}'"
+        )
         learn = learn[
             [
                 "mouse_id",
@@ -1029,9 +1025,9 @@ class Analysis:
                 index="mouse_id", columns="session_id", values="learning_rate"
             )
             max_value = learn.replace(np.inf, np.nan).max().max()
-            min_value = learn.replace(-1*np.inf, np.nan).min().min()
+            min_value = learn.replace(-1 * np.inf, np.nan).min().min()
             learn.replace(np.inf, max_value, inplace=True)
-            learn.replace(-1*np.inf, min_value, inplace=True)
+            learn.replace(-1 * np.inf, min_value, inplace=True)
             learn.replace(np.nan, 0, inplace=True)
 
         # See if we can put each session learning rate into one of two buckets,
@@ -1065,20 +1061,24 @@ class Analysis:
         mu_y = np.mean(y)
         sx = np.std(x, ddof=1)
         sy = np.std(y, ddof=1)
-        t = (mu_x-mu_y)/np.sqrt(sx*sx/nx+sy*sy/ny)
-        dof = nx+ny-2
+        t = (mu_x - mu_y) / np.sqrt(sx * sx / nx + sy * sy / ny)
+        dof = nx + ny - 2
         p = 2 * (1 - stats.t.cdf(abs(t), dof))
 
         if p < alpha:
             print(f"P-value {round(p, 2)} is less than {alpha}, significance!")
         else:
-            print(f"P-value {round(p, 2)} is greater than alpha {alpha}, x and y are the same.")
+            print(
+                f"P-value {round(p, 2)} is greater than alpha {alpha}, x and y are the same."
+            )
 
     def update_session_id_options(self, *args, **kwargs) -> None:
         selected_mouse_id = self.mouse_id_widget.value
         session_ids = [
             int_session_id_to_date_string(d)
-            for d in self.data[self.data["mouse_id"] == selected_mouse_id]["session_id"].unique()
+            for d in self.data[self.data["mouse_id"] == selected_mouse_id][
+                "session_id"
+            ].unique()
         ]
         session_ids = sorted(list(set(session_ids)))
         self.session_id_widget.options = session_ids
@@ -1133,7 +1133,9 @@ class Analysis:
 
         # Lick frequency calculation
         # The `window` is 1000ms (1s) in `session_time`
-        df["lick_rate"] = df["lick"].rolling(window="1s", min_periods=1, center=True).sum()
+        df["lick_rate"] = (
+            df["lick"].rolling(window="1s", min_periods=1, center=True).sum()
+        )
         plt.figure(figsize=(15, 5))
 
         # Add background colors for whether it is a trial
@@ -1201,9 +1203,8 @@ class Analysis:
         plt.ylabel("Lick Rate [lick/s]")
         plt.title(f"Mouse: '{mouse_id}', Session: '{date_id}'")
         plt.legend(
-            handles=legend_patches + [
-                plt.Line2D([0], [0], color="black", label="Lick Rate")
-            ],
+            handles=legend_patches
+            + [plt.Line2D([0], [0], color="black", label="Lick Rate")],
             framealpha=1,
         )
         plt.grid(True)
