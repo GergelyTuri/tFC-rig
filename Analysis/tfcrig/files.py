@@ -38,21 +38,42 @@ Possible date format in Google Drive folder names
 FILENAME_REGEX = DATETIME_REGEX + r".json"
 
 
-def extract_exp_mouse_pairs(exp_mouse_blob: str) -> list[str]:
+def extract_cohort_mouse_pairs(cohort_mouse_blob: str) -> list[str]:
     """
     Define a recursive function that helps extract sets of
-    `{experiment_id}_{mouse_id}_` from a file name. It accepts the
+    `{cohort_id}_{mouse_id}_` from a file name. It accepts the
     front portion of a session file name and returns a list of
     these sets
     """
+    if not isinstance(cohort_mouse_blob, str):
+        raise TypeError(
+            f"Can only search strings for cohort, mouse pairs!"
+        )
+
+    if not cohort_mouse_blob:
+        raise ValueError(
+            f"Can only search non-empty strings for cohort, mouse pairs!"
+        )
+
+    date_match = re.search(DATETIME_REGEX, cohort_mouse_blob)
+    if date_match:
+        raise ValueError(
+            f"Provided string '{cohort_mouse_blob}' still contains a date-time!"
+        )
+
     pattern = r"\d+[_-]\d+[_-]"
-    string_match = re.search(pattern, exp_mouse_blob)
+    string_match = re.search(pattern, cohort_mouse_blob)
 
     if string_match:
         first_pair = string_match.group()
-        rest_of_string = exp_mouse_blob[string_match.end() :]
-        return [first_pair] + extract_exp_mouse_pairs(rest_of_string)
-    return []
+        rest_of_string = cohort_mouse_blob[string_match.end() :]
+        if rest_of_string:
+            return [first_pair] + extract_cohort_mouse_pairs(rest_of_string)
+        return [first_pair]
+    raise ValueError(
+        f"Provided string or sub-string '{cohort_mouse_blob}' does not "
+        "contain a cohort, mouse pair!"
+    )
 
 
 @dataclass
@@ -145,9 +166,9 @@ class RigFiles:
                     continue
 
                 file_name_parts = re.split(DATETIME_REGEX, file_name)
-                exp_mouse_pairs = extract_exp_mouse_pairs(file_name_parts[0])
-                if not exp_mouse_pairs or any(
-                    "-" in mouse_id for mouse_id in exp_mouse_pairs
+                cohort_mouse_pairs = extract_cohort_mouse_pairs(file_name_parts[0])
+                if not cohort_mouse_pairs or any(
+                    "-" in mouse_id for mouse_id in cohort_mouse_pairs
                 ):
                     # Some JSON files are named incorrectly, or they contain
                     # the correct date-time string but no information on the
@@ -244,10 +265,10 @@ class RigFiles:
                     continue
 
                 file_name_parts = re.split(DATETIME_REGEX, file_name)
-                exp_mouse_blob = file_name_parts[0]
-                exp_mouse_pairs = extract_exp_mouse_pairs(exp_mouse_blob)
-                if exp_mouse_pairs and all(
-                    "-" not in mouse_id for mouse_id in exp_mouse_pairs
+                cohort_mouse_blob = file_name_parts[0]
+                cohort_mouse_pairs = extract_cohort_mouse_pairs(cohort_mouse_blob)
+                if cohort_mouse_pairs and all(
+                    "-" not in mouse_id for mouse_id in cohort_mouse_pairs
                 ):
                     # This is a good file name. Skip it
                     continue
@@ -261,12 +282,12 @@ class RigFiles:
                 if file_name.startswith(prefix):
                     better_file = os.path.join(root, file_name.split(prefix)[-1])
 
-                # The `exp_mouse_blob` may accidentally have a `-` instead of `_`
+                # The `cohort_mouse_blob` may accidentally have a `-` instead of `_`
                 bad_char = "-"
-                if bad_char in exp_mouse_blob:
-                    rest_of_name = file_name.split(exp_mouse_blob)[-1]
-                    exp_mouse_blob = exp_mouse_blob.replace("-", "_")
-                    better_file_name = exp_mouse_blob + rest_of_name
+                if bad_char in cohort_mouse_blob:
+                    rest_of_name = file_name.split(cohort_mouse_blob)[-1]
+                    cohort_mouse_blob = cohort_mouse_blob.replace("-", "_")
+                    better_file_name = cohort_mouse_blob + rest_of_name
                     better_file = os.path.join(root, better_file_name)
 
                 # Continue if we did not find a way to define a better file
@@ -347,7 +368,7 @@ class RigFiles:
 
                 # Data files have the format:
                 #
-                #     {exp_mouse_blob}_{datetime}.json
+                #     {cohort_mouse_blob}_{datetime}.json
                 #
                 file_name_parts = re.split(DATETIME_REGEX, file_name)
                 if file_name_parts[-1] != ".json":
@@ -356,8 +377,8 @@ class RigFiles:
                 need_to_fix_data = False
                 need_to_fix_msg = ""
                 file_name_parts = re.split(DATETIME_REGEX, file_name)
-                exp_mouse_pairs = extract_exp_mouse_pairs(file_name_parts[0])
-                mouse_ids = [e[0:-1] for e in exp_mouse_pairs]
+                cohort_mouse_pairs = extract_cohort_mouse_pairs(file_name_parts[0])
+                mouse_ids = [e[0:-1] for e in cohort_mouse_pairs]
 
                 file_path = os.path.join(root, file_name)
                 with open(file_path, "r") as f:
