@@ -3,4 +3,5 @@
 Software/Serial_read/__pycache__/
 *egg-info/
 *__pycache__
+*.log
 # Software/Serial_read/*.json
