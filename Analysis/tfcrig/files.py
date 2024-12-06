@@ -65,6 +65,7 @@ class RigFiles:
     data_root: str = "/gdrive/Shareddrives/Turi_lab/Data/aging_project/"
     dry_run: bool = True
     verbose: bool = False
+    cohort_of_interest: str = None
 
     def check(self) -> None:
         """
@@ -134,6 +135,9 @@ class RigFiles:
         close_data_files = set()
         for root, _, files in os.walk(self.data_root):
             for file_name in files:
+                if self.cohort_of_interest and self.cohort_of_interest not in root:
+                    # Only walk for files in that cohort
+                    continue
                 if not file_name.endswith(".json"):
                     # Only walk for JSON files
                     continue
@@ -191,6 +195,10 @@ class RigFiles:
             for file in files:
                 full_file = os.path.join(root, file)
 
+                # if cohort is specified, skip files not in cohort
+                if self.cohort_of_interest and self.cohort_of_interest not in root:
+                    continue
+
                 # Skip files that are not JSON
                 if not full_file.endswith(".json"):
                     continue
@@ -239,6 +247,9 @@ class RigFiles:
         dry_run = True
         for root, _, files in os.walk(self.data_root):
             for file_name in files:
+                if self.cohort_of_interest and self.cohort_of_interest not in root:
+                    # Only walk for files under specified cohort, if cohort is specified
+                    continue
                 if not file_name.endswith(".json"):
                     # Only walk for JSON files
                     continue
@@ -302,6 +313,9 @@ class RigFiles:
 
         count = 0
         for root, directories, _ in os.walk(self.data_root):
+            if self.cohort_of_interest and self.cohort_of_interest not in root:
+                    # Only walk for files under specified cohort, if cohort is specified
+                    continue
             for directory in directories:
                 bad_dir_match_1 = re.match(BAD_DATE_REGEX_1, directory)
                 bad_dir_match_2 = re.match(BAD_DATE_REGEX_2, directory)
@@ -344,6 +358,10 @@ class RigFiles:
         count = 0
         for root, _, files in os.walk(self.data_root):
             for file_name in files:
+                if self.cohort_of_interest and self.cohort_of_interest not in root:
+                    # Only walk for files under specified cohort, if cohort is specified
+                    continue
+
                 # Data files contain a specific date-time blob
                 if not re.search(DATETIME_REGEX, file_name):
                     continue
@@ -524,6 +542,9 @@ class RigFiles:
         missing = False
 
         for root, _, files in os.walk(self.data_root):
+            if self.cohort_of_interest and self.cohort_of_interest not in root:
+                    # Only walk for files under specified cohort, if cohort is specified
+                    continue
 
             for file_name in files:
                 file_path = os.path.join(root, file_name)
