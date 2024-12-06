@@ -65,7 +65,7 @@ class RigFiles:
     data_root: str = "/gdrive/Shareddrives/Turi_lab/Data/aging_project/"
     dry_run: bool = True
     verbose: bool = False
-    cohort_of_interest: list[str] = []
+    cohort_of_interest: list[str] = None
 
     def check(self) -> None:
         """
