@@ -65,7 +65,7 @@ class RigFiles:
     data_root: str = "/gdrive/Shareddrives/Turi_lab/Data/aging_project/"
     dry_run: bool = True
     verbose: bool = False
-    cohort_of_interest: str = None
+    cohort_of_interest: list[str] = []
 
     def check(self) -> None:
         """
@@ -134,7 +134,7 @@ class RigFiles:
         data_files = set()
         close_data_files = set()
         for root, _, files in os.walk(self.data_root):
-            if self.cohort_of_interest and f"/{self.cohort_of_interest}_" not in root:
+            if self.cohort_of_interest and not any(f"/{cohort}_" in root for cohort in self.cohort_of_interest):
                 # Only walk for files in that cohort
                 continue
             for file_name in files:
@@ -194,7 +194,7 @@ class RigFiles:
         for root, _, files in os.walk(self.data_root):
 
             # if cohort is specified, skip files not in cohort
-            if self.cohort_of_interest and f"/{self.cohort_of_interest}_" not in root:
+            if self.cohort_of_interest and not any(f"/{cohort}_" in root for cohort in self.cohort_of_interest):
                 continue
 
             for file in files:
@@ -247,7 +247,7 @@ class RigFiles:
         count_fixed = 0
         dry_run = True
         for root, _, files in os.walk(self.data_root):
-            if self.cohort_of_interest and f"/{self.cohort_of_interest}_" not in root:
+            if self.cohort_of_interest and not any(f"/{cohort}_" in root for cohort in self.cohort_of_interest):
                 # Only walk for files under specified cohort, if cohort is specified
                 continue
             for file_name in files:
@@ -314,7 +314,7 @@ class RigFiles:
 
         count = 0
         for root, directories, _ in os.walk(self.data_root):
-            if self.cohort_of_interest and f"/{self.cohort_of_interest}_" not in root:
+            if self.cohort_of_interest and not any(f"/{cohort}_" in root for cohort in self.cohort_of_interest):
                     # Only walk for files under specified cohort, if cohort is specified
                     continue
             for directory in directories:
@@ -358,7 +358,7 @@ class RigFiles:
 
         count = 0
         for root, _, files in os.walk(self.data_root):
-            if self.cohort_of_interest and f"/{self.cohort_of_interest}_" not in root:
+            if self.cohort_of_interest and not any(f"/{cohort}_" in root for cohort in self.cohort_of_interest):
                 # Only walk for files under specified cohort, if cohort is specified
                 continue
             for file_name in files:
@@ -542,7 +542,7 @@ class RigFiles:
         missing = False
 
         for root, _, files in os.walk(self.data_root):
-            if self.cohort_of_interest and f"/{self.cohort_of_interest}_" not in root:
+            if self.cohort_of_interest and not any(f"/{cohort}_" in root for cohort in self.cohort_of_interest):
                     # Only walk for files under specified cohort, if cohort is specified
                     continue
 
