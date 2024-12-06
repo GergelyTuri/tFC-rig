@@ -123,14 +123,17 @@ def scalar_divide(a: np.int64, b: np.int64) -> np.int64:
     return c
 
 
-def get_mouse_ids(data_root: str) -> set[Optional[str]]:
+def get_mouse_ids(data_root: str, cohort_of_interest: str) -> set[Optional[str]]:
     """
     Given the path to the root of the data directory, return a set of mouse
     IDs. Also checks that mouse ID, session ID pairs are unique
     """
     all_mouse_ids = []
     mouse_session_pairs = set()
-    for _, _, files in os.walk(data_root):
+    for root, _, files in os.walk(data_root):
+        if cohort_of_interest and f"/{cohort_of_interest}_" not in root:
+            # Only walk for files in that cohort
+            continue
         for file_name in files:
             if not is_data_file(file_name):
                 continue
@@ -635,21 +638,26 @@ class Analysis:
         data_root: str,
         verbose: bool = False,
         mice_of_interest: list[str] = [],
+        cohort_of_interest: str = None
     ) -> None:
         self.data_root = data_root
         self.verbose = verbose
         self.mice_of_interest = mice_of_interest
+        self.cohort_of_interest = cohort_of_interest
 
         # Keep track of per-file errors
         self.file_errors = {}
 
         # From the entire data root directory, get the set of mouse IDs
-        self.mouse_ids = get_mouse_ids(self.data_root)
+        self.mouse_ids = get_mouse_ids(self.data_root, self.cohort_of_interest)
 
         # Likewise, extract features from all of the data
         features = []
         data_frames = []
         for root, _, files in os.walk(self.data_root):
+            if cohort_of_interest and f"/{cohort_of_interest}_" not in root:
+                # Only walk for files in that cohort
+                continue
             for file in files:
                 if not is_data_file(file):
                     continue
