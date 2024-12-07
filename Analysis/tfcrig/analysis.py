@@ -261,7 +261,7 @@ def extract_features_from_session_data(
             is_trial = 0
             trial_type = -1
         
-        if trace_start_msg in msg:
+        if trace_start_msg == msg:
             is_trace = 1
         if is_trace and trace_end_msg in msg:
             is_trace = 0
