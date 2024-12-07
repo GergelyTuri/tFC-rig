@@ -222,6 +222,10 @@ def extract_features_from_session_data(
     if n_trial_starts != n_trial_ends:
         raise ValueError(f"Trial start, end mismatch!!!")
 
+    is_trace = 0
+    trace_start_msg = "Positive signal stop"
+    trace_end_msg = "Puff start"
+
     check_next_trial_types_message = False
     for data_blob in raw_data:
         # Parse the JSON message
@@ -256,6 +260,11 @@ def extract_features_from_session_data(
         if trial_end_msg in msg:
             is_trial = 0
             trial_type = -1
+        
+        if trace_start_msg in msg:
+            is_trace = 1
+        if is_trace and trace_end_msg in msg:
+            is_trace = 0
 
         # Get trial type
         if "currentTrialType" in msg:
@@ -356,6 +365,7 @@ def extract_features_from_session_data(
                 "message": msg,
                 "is_session": is_session,
                 "is_trial": is_trial,
+                "is_trace": is_trace,
                 "trial_type": trial_type,
                 "lick": lick,
                 "puffed_lick": puffed_lick,
