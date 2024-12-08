@@ -13,6 +13,7 @@ dependencies:
   - ipython
   - ipywidgets
   - ipykernel
+  - jupyter
   - seaborn
   - pip:      
     - pyserial==3.5
@@ -20,3 +21,6 @@ dependencies:
     - PyQt6
     - requests
     - reportlab
+    - gspread
+    - oauth2client
+    - gspread-dataframe
