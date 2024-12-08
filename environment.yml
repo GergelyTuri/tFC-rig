@@ -24,3 +24,4 @@ dependencies:
     - gspread
     - oauth2client
     - gspread-dataframe
+    - python-dotenv
