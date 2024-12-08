@@ -2,7 +2,6 @@ name: cued-fc
 channels:
   - conda-forge
   - defaults
-  - anaconda
 dependencies:
   - pip
   - python=3.10
@@ -14,6 +13,7 @@ dependencies:
   - ipython
   - ipywidgets
   - ipykernel
+  - jupyter
   - seaborn
   - pip:      
     - pyserial==3.5
@@ -21,3 +21,6 @@ dependencies:
     - PyQt6
     - requests
     - reportlab
+    - gspread
+    - oauth2client
+    - gspread-dataframe

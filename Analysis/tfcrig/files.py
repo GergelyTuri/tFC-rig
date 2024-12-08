@@ -15,8 +15,8 @@ import re
 import shutil
 from copy import deepcopy
 from dataclasses import dataclass
-import pandas as pd
 
+import pandas as pd
 from tfcrig.notebook import builtin_print
 
 DATETIME_REGEX = r"\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}"
@@ -91,6 +91,20 @@ class RigFiles:
         self._rename_date_directories()
         self._examine_and_fix_typos_in_data_files()
         self._sync_second_mouse()
+
+    def restore(self) -> None:
+        """
+        Restore data directories to their original states by removing processed files.
+        This will result in processed data removal!
+        Highly recommended to run this with `dry_run` and `verbose`set to `True` first to ensure
+        the correct files are removed.
+        """
+        folder_exceptions = [
+            self.data_root,
+        ]
+        self._remove_processed_data(
+            files_to_remove=["_raw.json", ".pdf"], folder_exceptions=folder_exceptions
+        )
 
     # Testing purposes - to test individually
     # def sync_second_mouse(self) -> None:
@@ -467,7 +481,10 @@ class RigFiles:
                     if "Waiting for session to start..." in rig_msg:
                         # Might be the same weirdness as above
                         return False
-                    if rig_msg in "Your session has ended, but a sketch cannot stop Arduino.":
+                    if (
+                        rig_msg
+                        in "Your session has ended, but a sketch cannot stop Arduino."
+                    ):
                         # Something the rig prints that we can ignore
                         return False
                     if "Session consists of " in rig_msg:
@@ -479,9 +496,7 @@ class RigFiles:
                 for mouse_id in list(data["data"].keys()):
                     original_mouse_data = data["data"][mouse_id]
                     new_mouse_data = [
-                        blob
-                        for blob in original_mouse_data
-                        if is_good_data_blob(blob)
+                        blob for blob in original_mouse_data if is_good_data_blob(blob)
                     ]
                     data["data"][mouse_id] = new_mouse_data
 
@@ -493,9 +508,7 @@ class RigFiles:
                         ]
                     except Exception:
                         diff = [
-                            x
-                            for x in original_mouse_data
-                            if x not in new_mouse_data
+                            x for x in original_mouse_data if x not in new_mouse_data
                         ]
                     if diff:
                         need_to_fix_data = True
@@ -515,20 +528,31 @@ class RigFiles:
         else:
             print(f"Fixed {count} files!")
 
-
     # Add exact puff, positive signal, and negative signal timings to second mouse data
     def _sync_second_mouse(self) -> None:
         print("Syncing puffs and signals from first mouse to second mouse")
 
-        missing_messages = ["Puff start", "Puff stop", "Puff stop, catch block", "Negative signal start", "Negative signal stop", "Positive signal start", "Positive signal stop"]
+        missing_messages = [
+            "Puff start",
+            "Puff stop",
+            "Puff stop, catch block",
+            "Negative signal start",
+            "Negative signal stop",
+            "Positive signal start",
+            "Positive signal stop",
+        ]
         missing = False
 
         for root, _, files in os.walk(self.data_root):
-
             for file_name in files:
                 file_path = os.path.join(root, file_name)
 
-                if file_name.endswith("_raw.json") or file_name.endswith("_processed.json") or file_name.endswith("_analyzed.json") or not file_name.endswith(".json"):
+                if (
+                    file_name.endswith("_raw.json")
+                    or file_name.endswith("_processed.json")
+                    or file_name.endswith("_analyzed.json")
+                    or not file_name.endswith(".json")
+                ):
                     continue
                 is_data_file = re.search(FILENAME_REGEX, file_name)
                 if not is_data_file:
@@ -546,7 +570,10 @@ class RigFiles:
                     sec_port = data["header"]["secondary_port"]
 
                     has_required_messages = any(
-                        any(entry["message"].strip().endswith(msg) for msg in missing_messages) 
+                        any(
+                            entry["message"].strip().endswith(msg)
+                            for msg in missing_messages
+                        )
                         for entry in data["data"][second_mouse_id]
                     )
                     if not has_required_messages:
@@ -554,18 +581,26 @@ class RigFiles:
 
                         # Calculate time difference due to delay in second rig
                         first_mouse_trial_end_times = [
-                            pd.to_datetime(entry["absolute_time"], format="%Y-%m-%d_%H-%M-%S.%f")
+                            pd.to_datetime(
+                                entry["absolute_time"], format="%Y-%m-%d_%H-%M-%S.%f"
+                            )
                             for entry in data["data"][first_mouse_id]
                             if entry["message"].strip().endswith("Trial has ended")
                         ]
 
                         second_mouse_trial_end_times = [
-                            pd.to_datetime(entry["absolute_time"], format="%Y-%m-%d_%H-%M-%S.%f")
+                            pd.to_datetime(
+                                entry["absolute_time"], format="%Y-%m-%d_%H-%M-%S.%f"
+                            )
                             for entry in data["data"][second_mouse_id]
                             if entry["message"].strip().endswith("Trial has ended")
                         ]
-                        first_mouse_trial_end_times = sorted(first_mouse_trial_end_times)
-                        second_mouse_trial_end_times = sorted(second_mouse_trial_end_times)
+                        first_mouse_trial_end_times = sorted(
+                            first_mouse_trial_end_times
+                        )
+                        second_mouse_trial_end_times = sorted(
+                            second_mouse_trial_end_times
+                        )
 
                         # Ensure trials are synced based on trial starts
                         combined_data = data["data"][second_mouse_id]
@@ -580,27 +615,135 @@ class RigFiles:
                                         "message": entry["message"],
                                         "mouse_id": second_mouse_id,
                                         "port": sec_port,
-                                        "absolute_time": (pd.to_datetime(entry["absolute_time"], format="%Y-%m-%d_%H-%M-%S.%f") - time_diff).strftime('%Y-%m-%d_%H-%M-%S.%f')
+                                        "absolute_time": (
+                                            pd.to_datetime(
+                                                entry["absolute_time"],
+                                                format="%Y-%m-%d_%H-%M-%S.%f",
+                                            )
+                                            - time_diff
+                                        ).strftime("%Y-%m-%d_%H-%M-%S.%f"),
                                     }
                                     for entry in data["data"][first_mouse_id]
-                                    if any(entry["message"].strip().endswith(msg) for msg in missing_messages)
-                                    and pd.to_datetime(entry["absolute_time"], format="%Y-%m-%d_%H-%M-%S.%f") <= first_end_time
-                                    and (prev_end_time is None or pd.to_datetime(entry["absolute_time"], format="%Y-%m-%d_%H-%M-%S.%f") > prev_end_time)
+                                    if any(
+                                        entry["message"].strip().endswith(msg)
+                                        for msg in missing_messages
+                                    )
+                                    and pd.to_datetime(
+                                        entry["absolute_time"],
+                                        format="%Y-%m-%d_%H-%M-%S.%f",
+                                    )
+                                    <= first_end_time
+                                    and (
+                                        prev_end_time is None
+                                        or pd.to_datetime(
+                                            entry["absolute_time"],
+                                            format="%Y-%m-%d_%H-%M-%S.%f",
+                                        )
+                                        > prev_end_time
+                                    )
                                 ]
                                 # Sync the data with corrected times for the second mouse
                                 combined_data.extend(first_mouse_trial_messages)
                                 prev_end_time = first_end_time
-                        combined_data.sort(key=lambda entry: pd.to_datetime(entry["absolute_time"], format="%Y-%m-%d_%H-%M-%S.%f"))
+                        combined_data.sort(
+                            key=lambda entry: pd.to_datetime(
+                                entry["absolute_time"], format="%Y-%m-%d_%H-%M-%S.%f"
+                            )
+                        )
                         data["data"][second_mouse_id] = combined_data
 
-                            # TESTING purposes - write to a new file
+                        # TESTING purposes - write to a new file
                         # dir_name, base_name = os.path.split(file_path)
                         # file_name, file_extension = os.path.splitext(base_name)
                         # new_file_name = f"{file_name}_v2{file_extension}"
                         # new_file_path = os.path.join(dir_name, new_file_name)
                         # with open(new_file_path, "w") as f:
-                            # json.dump(data, f, indent=4)
+                        # json.dump(data, f, indent=4)
                         with open(file_path, "w") as f:
                             json.dump(data, f, indent=4)
 
-        if missing: print("Filled and synced missing data for second mouse!")
+        if missing:
+            print("Filled and synced missing data for second mouse!")
+
+    import os
+
+    def _remove_processed_data(
+        self,
+        directories_to_clean=[],
+        files_to_remove=["_raw.json", ".pdf"],
+        folder_exceptions=None,
+    ) -> None:
+        """
+        Given a list of directories, removes files with specified endings, excluding critical folders.
+
+        Args:
+            directories_to_clean: List of directories where the action should take place.
+            files_to_remove: List of file endings to remove.
+            folder_exceptions: List of folder paths to exclude from the operation.
+        """
+        if folder_exceptions is None:
+            folder_exceptions = []  # Default to an empty list if no folder exceptions are provided
+
+        if self.verbose:
+            print(
+                f"Starting file removal. Directories to clean: {', '.join(directories_to_clean)}"
+            )
+            print(f"Excluding folders: {', '.join(folder_exceptions)}")
+
+        count = 0
+        files_to_be_removed = []  # Collect files to be removed for confirmation
+
+        for directory in directories_to_clean:
+            # Ensure the directory exists before processing
+            if not os.path.exists(directory):
+                print(f"Directory does not exist: {directory}")
+                continue
+
+            for root, _, files in os.walk(directory):
+                # Check if current directory is in the folder exceptions
+                if any(
+                    os.path.commonpath([root, exc]) == exc for exc in folder_exceptions
+                ):
+                    if self.verbose:
+                        print(f"Skipping folder: {root}")
+                    continue
+
+                for file in files:
+                    full_file = os.path.join(root, file)
+                    # Check if file ends with any of the specified endings
+                    if any(full_file.endswith(ending) for ending in files_to_remove):
+                        files_to_be_removed.append(full_file)
+                        if self.verbose:
+                            print(f"Matched for removal: {full_file}")
+
+        if not files_to_be_removed:
+            print("No files matched the criteria.")
+            return
+
+        # Confirmation prompt
+        print(f"\n{len(files_to_be_removed)} files matched the criteria for removal.")
+        for f in files_to_be_removed[:5]:  # Show up to 5 matched files
+            print(f"- {f}")
+        if len(files_to_be_removed) > 5:
+            print(f"...and {len(files_to_be_removed) - 5} more.")
+
+        confirmation = (
+            input("Do you want to proceed with deletion? (y/n): ").strip().lower()
+        )
+        if confirmation != "y":
+            print("Operation cancelled. No files were removed.")
+            return
+
+        # Proceed with removal
+        for full_file in files_to_be_removed:
+            count += 1
+            if self.dry_run:
+                if self.verbose:
+                    print(f"[DRY RUN] Would remove: {full_file}")
+            else:
+                os.remove(full_file)
+                if self.verbose:
+                    print(f"Removed: {full_file}")
+
+        if self.verbose:
+            print(f"Total files removed: {count}")
