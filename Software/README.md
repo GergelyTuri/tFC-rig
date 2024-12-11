@@ -19,3 +19,7 @@ The Arduino controls the following components:
 
 The trials make up blocks. 
 One block consists of 3 trials of `CS+` and 3 trials of `CS-` in random order with random inter trial intervals (ITIs) between them.
+
+### Development Environment
+
+The code was developed in a conda environment. To create it please follow the instructions in the README.md file in the root directory.

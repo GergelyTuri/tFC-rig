@@ -14,12 +14,43 @@ The repository is organized as follows:
 
 - The `Components` folder contains all the hardware designs for the rig. These include 3D printable parts, laser cuttable parts, and electronics schematics.
 - the `Software` folder contains the Arduino code for the microcontrollers and the Python code for the data collection and analysis.
+- the `Analysis` folder contains the code for the analysis of the data collected by the rig.
 
-## Software Installation and usage
+## Installation and Usage
 
 ### Arduino
 
 The Arduino code is written in C++ and can be compiled and uploaded to the microcontrollers using the Arduino IDE. Details of the code are provided in the `README.md` file under the `Software/Rig` folder.
+
+### Analysis source code
+
+See the `README.md` file under the `Software/Analysis` folder for details on how to use the analysis pipeline.
+
+## Local Development
+
+Most of the analysis routies were optimized for running in Google Colaboratory notebooks. However the package can be installed for local development. To create it please download the latest Anaconda distribution. Then clone the repositioy and run the following commands as shown below:
+
+```bash
+cd tFC-rig
+```
+
+```bash
+conda env create -f environment.yml
+```
+
+```bash
+conda activate cued-fc
+```
+
+```bash
+cd Analysis
+```
+
+```bash
+pip install -e .
+```
+
+wich will install the custom analysis package in editable mode.
 
 ## References
 
