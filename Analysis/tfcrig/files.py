@@ -134,6 +134,16 @@ class RigFiles:
         Given a string that might represent a date based on the above
         regex, return a consistently formatted date string `YYYY_MM_DD`
         """
+        if not isinstance(directory, str):
+            raise TypeError(
+                f"Can only reformat strings!"
+            )
+
+        if not directory:
+            raise ValueError(
+                f"Can only reformat non-empty strings!"
+            )
+
         re_date = re.match(BAD_DATE_REGEX_1, directory)
         if not re_date:
             # Not feeling great about this logic
