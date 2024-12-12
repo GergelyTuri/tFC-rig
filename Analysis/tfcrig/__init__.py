@@ -43,7 +43,7 @@ def extract_cohort(path: str, pattern: re.Pattern) -> str:
 
 def root_contains_cohort_of_interest(
     root: str,
-    pattern: re.Pattern,
+    cohort_pattern: re.Pattern,
     cohorts: Optional[list[str]],
 ) -> bool:
     """
