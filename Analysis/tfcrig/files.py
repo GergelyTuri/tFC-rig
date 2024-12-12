@@ -198,7 +198,6 @@ class RigFiles:
         data_files = set()
         close_data_files = set()
         for root, _, files in self.os_walk:
-            print(root)
             for file_name in files:
                 if not file_name.endswith(".json"):
                     # Only walk for JSON files
