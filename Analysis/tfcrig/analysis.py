@@ -144,14 +144,14 @@ def get_mouse_ids(data_root: str) -> set[Optional[str]]:
             session_id = datetime_to_session_id(get_datetime_from_file_path(file_name))
 
             # Mouse ID, session ID pairs should be unique
-            # for mouse_id in mouse_ids:
-            #     key = (mouse_id, session_id)
-            #     if key in mouse_session_pairs:
-            #         raise ValueError(
-            #             "Found non-unique mouse id, session id pair: "
-            #             f"({mouse_id}, {session_id})"
-            #         )
-            #     mouse_session_pairs.add(key)
+            for mouse_id in mouse_ids:
+                key = (mouse_id, session_id)
+                if key in mouse_session_pairs:
+                    raise ValueError(
+                        "Found non-unique mouse id, session id pair: "
+                        f"({mouse_id}, {session_id})"
+                    )
+                mouse_session_pairs.add(key)
 
             all_mouse_ids += mouse_ids
 
