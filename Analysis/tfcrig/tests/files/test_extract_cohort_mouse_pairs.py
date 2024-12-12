@@ -19,7 +19,7 @@ class ExtractCohortMousePairsTestCase(unittest.TestCase):
         with self.assertRaises(TypeError):
             extract_cohort_mouse_pairs(1)
 
-    def test_extract_cohort_mouse_pairs_type_error_int(self):
+    def test_extract_cohort_mouse_pairs_type_error_empty_string(self):
         """
         Cannot pass an empty string to `extract_cohort_mouse_pairs`
         """

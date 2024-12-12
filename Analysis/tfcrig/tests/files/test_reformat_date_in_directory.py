@@ -19,7 +19,7 @@ class ReformatDateInDirectoryTestCase(unittest.TestCase):
         with self.assertRaises(TypeError):
             RigFiles.reformat_date_in_directory(1)
 
-    def test_reformat_date_in_directory_type_error_int(self):
+    def test_reformat_date_in_directory_type_error_empty_string(self):
         """
         Cannot pass an empty string to `reformat_date_in_directory`
         """

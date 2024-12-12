@@ -25,6 +25,11 @@ WARN_SCALAR_DIVIDE = [
 
 
 def dict_contains_other_values(d: dict, types: tuple[Any]) -> bool:
+    if not isinstance(d, dict):
+        raise TypeError(
+            "Can only check for values in a dict if given a dict!"
+        )
+
     invalid_items = []
     for key, value in d.items():
         if not isinstance(value, types):
