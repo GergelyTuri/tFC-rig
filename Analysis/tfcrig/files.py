@@ -18,6 +18,11 @@ from dataclasses import dataclass
 
 import pandas as pd
 
+from tfcrig import (
+    create_cohort_pattern,
+    extract_cohort,
+    root_contains_cohort_of_interest,
+)
 from tfcrig.notebook import builtin_print
 
 DATETIME_REGEX = r"\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}"
@@ -87,6 +92,22 @@ class RigFiles:
     data_root: str = "/gdrive/Shareddrives/Turi_lab/Data/aging_project/"
     dry_run: bool = True
     verbose: bool = False
+    cohorts: list[str] = None
+
+    def __post_init__(self):
+        """
+        Because this is a dataclass, use a post-init method to do
+        what you might normally do in init
+        """
+        self.cohort_pattern = create_cohort_pattern(self.data_root)
+
+        # Need to pre-define the set of directories and files of interest
+        self.os_walk = []
+        for root, dirs, files in os.walk(self.data_root):
+            if root_contains_cohort_of_interest(
+                root, self.cohort_pattern, self.cohorts
+            ):
+                self.os_walk.append((root, dirs, files))
 
     def check(self) -> None:
         """
@@ -125,8 +146,10 @@ class RigFiles:
             self.data_root,
         ]
         self._remove_processed_data(
-            files_to_remove=["_raw.json", ".pdf"], folder_exceptions=folder_exceptions
+            files_to_remove=["_raw.json", ".pdf"],
+            folder_exceptions=folder_exceptions,
         )
+
 
     @staticmethod
     def reformat_date_in_directory(directory: str) -> str:
@@ -174,7 +197,8 @@ class RigFiles:
 
         data_files = set()
         close_data_files = set()
-        for root, _, files in os.walk(self.data_root):
+        for root, _, files in self.os_walk:
+            print(root)
             for file_name in files:
                 if not file_name.endswith(".json"):
                     # Only walk for JSON files
@@ -229,7 +253,7 @@ class RigFiles:
         print("Creating copies of raw data files!")
 
         count = 0
-        for root, _, files in os.walk(self.data_root):
+        for root, _, files in self.os_walk:
             for file in files:
                 full_file = os.path.join(root, file)
 
@@ -261,7 +285,7 @@ class RigFiles:
         Renames files with incorrect naming patterns.
 
         This method walks through the directory specified by `self.data_root` and renames files that have incorrect
-        naming patterns. It looks for files with the extension ".json" and a specific date-time blob in their names.
+        naming patterns. It looks for files with the extension `.json` and a specific date-time blob in their names.
         If the file name does not meet the expected pattern, it is renamed according to certain rules.
 
         The method keeps track of the number of files found and the number of files fixed. It also supports a dry run
@@ -279,7 +303,7 @@ class RigFiles:
         count_found = 0
         count_fixed = 0
         dry_run = True
-        for root, _, files in os.walk(self.data_root):
+        for root, _, files in self.os_walk:
             for file_name in files:
                 if not file_name.endswith(".json"):
                     # Only walk for JSON files
@@ -343,7 +367,7 @@ class RigFiles:
         print("Renaming some incorrectly named directories!")
 
         count = 0
-        for root, directories, _ in os.walk(self.data_root):
+        for root, directories, _ in self.os_walk:
             for directory in directories:
                 bad_dir_match_1 = re.match(BAD_DATE_REGEX_1, directory)
                 bad_dir_match_2 = re.match(BAD_DATE_REGEX_2, directory)
@@ -384,7 +408,7 @@ class RigFiles:
         print("Fixing some incorrect data, be careful!")
 
         count = 0
-        for root, _, files in os.walk(self.data_root):
+        for root, _, files in self.os_walk:
             for file_name in files:
                 # Data files contain a specific date-time blob
                 if not re.search(DATETIME_REGEX, file_name):
@@ -571,7 +595,7 @@ class RigFiles:
         ]
         missing = False
 
-        for root, _, files in os.walk(self.data_root):
+        for root, _, files in self.os_walk:
             for file_name in files:
                 file_path = os.path.join(root, file_name)
 
