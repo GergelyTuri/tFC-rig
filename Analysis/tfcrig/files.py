@@ -17,6 +17,12 @@ from copy import deepcopy
 from dataclasses import dataclass
 
 import pandas as pd
+
+from tfcrig import (
+    create_cohort_pattern,
+    extract_cohort,
+    root_contains_cohort_of_interest,
+)
 from tfcrig.notebook import builtin_print
 
 DATETIME_REGEX = r"\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}"
@@ -37,21 +43,42 @@ Possible date format in Google Drive folder names
 FILENAME_REGEX = DATETIME_REGEX + r".json"
 
 
-def extract_exp_mouse_pairs(exp_mouse_blob: str) -> list[str]:
+def extract_cohort_mouse_pairs(cohort_mouse_blob: str) -> list[str]:
     """
     Define a recursive function that helps extract sets of
-    `{experiment_id}_{mouse_id}_` from a file name. It accepts the
+    `{cohort_id}_{mouse_id}_` from a file name. It accepts the
     front portion of a session file name and returns a list of
     these sets
     """
+    if not isinstance(cohort_mouse_blob, str):
+        raise TypeError(
+            f"Can only search strings for cohort, mouse pairs!"
+        )
+
+    if not cohort_mouse_blob:
+        raise ValueError(
+            f"Can only search non-empty strings for cohort, mouse pairs!"
+        )
+
+    date_match = re.search(DATETIME_REGEX, cohort_mouse_blob)
+    if date_match:
+        raise ValueError(
+            f"Provided string '{cohort_mouse_blob}' still contains a date-time!"
+        )
+
     pattern = r"\d+[_-]\d+[_-]"
-    string_match = re.search(pattern, exp_mouse_blob)
+    string_match = re.search(pattern, cohort_mouse_blob)
 
     if string_match:
         first_pair = string_match.group()
-        rest_of_string = exp_mouse_blob[string_match.end() :]
-        return [first_pair] + extract_exp_mouse_pairs(rest_of_string)
-    return []
+        rest_of_string = cohort_mouse_blob[string_match.end() :]
+        if rest_of_string:
+            return [first_pair] + extract_cohort_mouse_pairs(rest_of_string)
+        return [first_pair]
+    raise ValueError(
+        f"Provided string or sub-string '{cohort_mouse_blob}' does not "
+        "contain a cohort, mouse pair!"
+    )
 
 
 @dataclass
@@ -65,6 +92,22 @@ class RigFiles:
     data_root: str = "/gdrive/Shareddrives/Turi_lab/Data/aging_project/"
     dry_run: bool = True
     verbose: bool = False
+    cohorts: list[str] = None
+
+    def __post_init__(self):
+        """
+        Because this is a dataclass, use a post-init method to do
+        what you might normally do in init
+        """
+        self.cohort_pattern = create_cohort_pattern(self.data_root)
+
+        # Need to pre-define the set of directories and files of interest
+        self.os_walk = []
+        for root, dirs, files in os.walk(self.data_root):
+            if root_contains_cohort_of_interest(
+                root, self.cohort_pattern, self.cohorts
+            ):
+                self.os_walk.append((root, dirs, files))
 
     def check(self) -> None:
         """
@@ -94,28 +137,36 @@ class RigFiles:
 
     def restore(self) -> None:
         """
-        Restore data directories to their original states by removing processed files.
-        This will result in processed data removal!
-        Highly recommended to run this with `dry_run` and `verbose`set to `True` first to ensure
-        the correct files are removed.
+        Restore data directories to their original states by removing
+        processed files. This will result in processed data removal!
+        Highly recommended to run this with `dry_run` and `verbose` set
+        to `True` first to ensure the correct files are removed.
         """
         folder_exceptions = [
             self.data_root,
         ]
         self._remove_processed_data(
-            files_to_remove=["_raw.json", ".pdf"], folder_exceptions=folder_exceptions
+            files_to_remove=["_raw.json", ".pdf"],
+            folder_exceptions=folder_exceptions,
         )
 
-    # Testing purposes - to test individually
-    # def sync_second_mouse(self) -> None:
-    #     self._sync_second_mouse()
 
     @staticmethod
     def reformat_date_in_directory(directory: str) -> str:
         """
-        Given a string that might represent a date based on the above regex, return
-        a consistently formatted date string `YYYY_MM_DD`
+        Given a string that might represent a date based on the above
+        regex, return a consistently formatted date string `YYYY_MM_DD`
         """
+        if not isinstance(directory, str):
+            raise TypeError(
+                f"Can only reformat strings!"
+            )
+
+        if not directory:
+            raise ValueError(
+                f"Can only reformat non-empty strings!"
+            )
+
         re_date = re.match(BAD_DATE_REGEX_1, directory)
         if not re_date:
             # Not feeling great about this logic
@@ -146,7 +197,7 @@ class RigFiles:
 
         data_files = set()
         close_data_files = set()
-        for root, _, files in os.walk(self.data_root):
+        for root, _, files in self.os_walk:
             for file_name in files:
                 if not file_name.endswith(".json"):
                     # Only walk for JSON files
@@ -162,9 +213,9 @@ class RigFiles:
                     continue
 
                 file_name_parts = re.split(DATETIME_REGEX, file_name)
-                exp_mouse_pairs = extract_exp_mouse_pairs(file_name_parts[0])
-                if not exp_mouse_pairs or any(
-                    "-" in mouse_id for mouse_id in exp_mouse_pairs
+                cohort_mouse_pairs = extract_cohort_mouse_pairs(file_name_parts[0])
+                if not cohort_mouse_pairs or any(
+                    "-" in mouse_id for mouse_id in cohort_mouse_pairs
                 ):
                     # Some JSON files are named incorrectly, or they contain
                     # the correct date-time string but no information on the
@@ -201,7 +252,7 @@ class RigFiles:
         print("Creating copies of raw data files!")
 
         count = 0
-        for root, _, files in os.walk(self.data_root):
+        for root, _, files in self.os_walk:
             for file in files:
                 full_file = os.path.join(root, file)
 
@@ -233,7 +284,7 @@ class RigFiles:
         Renames files with incorrect naming patterns.
 
         This method walks through the directory specified by `self.data_root` and renames files that have incorrect
-        naming patterns. It looks for files with the extension ".json" and a specific date-time blob in their names.
+        naming patterns. It looks for files with the extension `.json` and a specific date-time blob in their names.
         If the file name does not meet the expected pattern, it is renamed according to certain rules.
 
         The method keeps track of the number of files found and the number of files fixed. It also supports a dry run
@@ -251,7 +302,7 @@ class RigFiles:
         count_found = 0
         count_fixed = 0
         dry_run = True
-        for root, _, files in os.walk(self.data_root):
+        for root, _, files in self.os_walk:
             for file_name in files:
                 if not file_name.endswith(".json"):
                     # Only walk for JSON files
@@ -261,10 +312,10 @@ class RigFiles:
                     continue
 
                 file_name_parts = re.split(DATETIME_REGEX, file_name)
-                exp_mouse_blob = file_name_parts[0]
-                exp_mouse_pairs = extract_exp_mouse_pairs(exp_mouse_blob)
-                if exp_mouse_pairs and all(
-                    "-" not in mouse_id for mouse_id in exp_mouse_pairs
+                cohort_mouse_blob = file_name_parts[0]
+                cohort_mouse_pairs = extract_cohort_mouse_pairs(cohort_mouse_blob)
+                if cohort_mouse_pairs and all(
+                    "-" not in mouse_id for mouse_id in cohort_mouse_pairs
                 ):
                     # This is a good file name. Skip it
                     continue
@@ -278,12 +329,12 @@ class RigFiles:
                 if file_name.startswith(prefix):
                     better_file = os.path.join(root, file_name.split(prefix)[-1])
 
-                # The `exp_mouse_blob` may accidentally have a `-` instead of `_`
+                # The `cohort_mouse_blob` may accidentally have a `-` instead of `_`
                 bad_char = "-"
-                if bad_char in exp_mouse_blob:
-                    rest_of_name = file_name.split(exp_mouse_blob)[-1]
-                    exp_mouse_blob = exp_mouse_blob.replace("-", "_")
-                    better_file_name = exp_mouse_blob + rest_of_name
+                if bad_char in cohort_mouse_blob:
+                    rest_of_name = file_name.split(cohort_mouse_blob)[-1]
+                    cohort_mouse_blob = cohort_mouse_blob.replace("-", "_")
+                    better_file_name = cohort_mouse_blob + rest_of_name
                     better_file = os.path.join(root, better_file_name)
 
                 # Continue if we did not find a way to define a better file
@@ -315,7 +366,7 @@ class RigFiles:
         print("Renaming some incorrectly named directories!")
 
         count = 0
-        for root, directories, _ in os.walk(self.data_root):
+        for root, directories, _ in self.os_walk:
             for directory in directories:
                 bad_dir_match_1 = re.match(BAD_DATE_REGEX_1, directory)
                 bad_dir_match_2 = re.match(BAD_DATE_REGEX_2, directory)
@@ -356,7 +407,7 @@ class RigFiles:
         print("Fixing some incorrect data, be careful!")
 
         count = 0
-        for root, _, files in os.walk(self.data_root):
+        for root, _, files in self.os_walk:
             for file_name in files:
                 # Data files contain a specific date-time blob
                 if not re.search(DATETIME_REGEX, file_name):
@@ -364,7 +415,7 @@ class RigFiles:
 
                 # Data files have the format:
                 #
-                #     {exp_mouse_blob}_{datetime}.json
+                #     {cohort_mouse_blob}_{datetime}.json
                 #
                 file_name_parts = re.split(DATETIME_REGEX, file_name)
                 if file_name_parts[-1] != ".json":
@@ -373,8 +424,8 @@ class RigFiles:
                 need_to_fix_data = False
                 need_to_fix_msg = ""
                 file_name_parts = re.split(DATETIME_REGEX, file_name)
-                exp_mouse_pairs = extract_exp_mouse_pairs(file_name_parts[0])
-                mouse_ids = [e[0:-1] for e in exp_mouse_pairs]
+                cohort_mouse_pairs = extract_cohort_mouse_pairs(file_name_parts[0])
+                mouse_ids = [e[0:-1] for e in cohort_mouse_pairs]
 
                 file_path = os.path.join(root, file_name)
                 with open(file_path, "r") as f:
@@ -543,7 +594,7 @@ class RigFiles:
         ]
         missing = False
 
-        for root, _, files in os.walk(self.data_root):
+        for root, _, files in self.os_walk:
             for file_name in files:
                 file_path = os.path.join(root, file_name)
 

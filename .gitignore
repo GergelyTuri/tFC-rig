@@ -3,6 +3,7 @@
 
 # Byte-compiled / optimized / DLL files
 *.pyc
+*egg-info/
 *__pycache__
 
 # Logs
