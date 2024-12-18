@@ -239,8 +239,9 @@ def extract_features_from_session_data(
         except (KeyError, ValueError):
             raise ValueError(f"Bad data blob found: {data_blob}")
         # Confirm that absolute time moves forward
-        if absolute_time < previous_time:
-            raise ValueError("Time did not move forwards!")
+        # TODO: uncomment once we fix syncing second and first mouse data
+        # if absolute_time < previous_time:
+        #     raise ValueError("Time did not move forwards!")
         # previous_time = absolute_time
         absolute_datetime = datetime.strptime(
             absolute_time,
@@ -436,6 +437,10 @@ def get_data_features_from_data_file(
         avg_lick_freq_csminus = dfl_csminus["lick_frequency"].mean()
         dfl_no_signal = df_is_trial[df_is_trial["trial_type"].isin([4])]
         avg_lick_freq_no_signal = dfl_no_signal["lick_frequency"].mean()
+        dfl_csplus_is_trace = dfl_csplus[dfl_csplus["is_trace"] == 1]
+        avg_lick_freq_csplus_trace = dfl_csplus_is_trace["lick_frequency"].mean()
+        dfl_csminus_is_trace = dfl_csminus[dfl_csminus["is_trace"] == 1]
+        avg_lick_freq_csminus_trace = dfl_csminus_is_trace["lick_frequency"].mean()
         dfl_iti = dfl[dfl["is_trial"] == 0]
         avg_lick_freq_iti = dfl_iti["lick_frequency"].mean()
         # Normalize lick frequency to the total licks in the session trials,
@@ -461,6 +466,14 @@ def get_data_features_from_data_file(
         )
         z_avg_lick_freq_no_signal = 1000 * scalar_divide(
             avg_lick_freq_no_signal,
+            total_session_licks,
+        )
+        z_avg_lick_freq_csplus_trace = 1000 * scalar_divide(
+            avg_lick_freq_csplus_trace,
+            total_session_licks,
+        )
+        z_avg_lick_freq_csminus_trace = 1000 * scalar_divide(
+            avg_lick_freq_csminus_trace,
             total_session_licks,
         )
 
@@ -584,10 +597,14 @@ def get_data_features_from_data_file(
             "avg_lick_freq_csplus": avg_lick_freq_csplus,
             "avg_lick_freq_csminus": avg_lick_freq_csminus,
             "avg_lick_freq_iti": avg_lick_freq_iti,
+            "avg_lick_freq_csplus_trace": avg_lick_freq_csplus_trace,
+            "avg_lick_freq_csminus_trace": avg_lick_freq_csminus_trace,
             "z_avg_lick_freq": z_avg_lick_freq,
             "z_avg_lick_freq_csplus": z_avg_lick_freq_csplus,
             "z_avg_lick_freq_csminus": z_avg_lick_freq_csminus,
             "z_avg_lick_freq_iti": z_avg_lick_freq_iti,
+            "z_avg_lick_freq_csplus_trace": z_avg_lick_freq_csplus_trace,
+            "z_avg_lick_freq_csminus_trace": z_avg_lick_freq_csminus_trace,
             "z_avg_lick_freq_no_signal": z_avg_lick_freq_no_signal,
             "total_licks": total_licks,
             "total_puffed_licks": total_puffed_licks,
