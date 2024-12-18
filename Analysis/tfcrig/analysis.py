@@ -191,6 +191,7 @@ def extract_features_from_session_data(
     # by time, and checks for certain markers in the data. It uses `{0, 1}`
     # to represent `False` and `True` respectively
     is_session = 0
+    is_trace = 0
     # Valid trial types: `{0, 1}`, type `-1` represents not known or no
     # current trial yet
     trial_type = -1
@@ -200,6 +201,7 @@ def extract_features_from_session_data(
     previous_time = raw_data[0]["absolute_time"]
 
     # Some trial parameters we will try to extract
+    auditory_stop = -1
     air_puff_start_time = -1
     air_puff_stop_time = -1
     air_puff_total_time = -1
@@ -297,6 +299,8 @@ def extract_features_from_session_data(
         if "AIR_PUFF_TOTAL_TIME" in msg:
             air_puff_total_time = int(msg.split(msg_delimiter)[1])
             air_puff_stop_time = air_puff_start_time + air_puff_total_time
+        if "AUDITORY_STOP" in msg:
+            auditory_stop = int(msg.split(msg_delimiter)[1])
 
         # Check for lick
         lick = 0
@@ -325,6 +329,13 @@ def extract_features_from_session_data(
 
             if t_trial > air_puff_stop_time:
                 first_puff_started = 0
+        
+        # Check if data falls under trace period (short duration after auditory cues)
+        if air_puff_start_time > 0 and auditory_stop > 0:
+            if t_trial > auditory_stop and t_trial < air_puff_start_time:
+                is_trace = 1
+            else:
+                is_trace = 0
 
         # Negative signal
         if "Negative signal start" in msg:
@@ -358,6 +369,7 @@ def extract_features_from_session_data(
                 "message": msg,
                 "is_session": is_session,
                 "is_trial": is_trial,
+                "is_trace": is_trace,
                 "trial_type": trial_type,
                 "lick": lick,
                 "puffed_lick": puffed_lick,
