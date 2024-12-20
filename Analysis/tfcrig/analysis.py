@@ -583,6 +583,10 @@ def get_data_features_from_data_file(
             z_total_puffed_licks_type_0,
             z_total_puffed_licks_type_1,
         )
+        z_trace_learning_rate = scalar_divide(
+            z_avg_lick_freq_csminus_trace,
+            z_avg_lick_freq_csplus_trace,
+        )
         z_learning_rate_reward = scalar_divide(
             z_total_puffed_licks_water_on_type_0,
             z_total_puffed_licks_water_on_type_1,
@@ -632,6 +636,7 @@ def get_data_features_from_data_file(
             "z_total_licks_water_on_type_1": z_total_licks_water_on_type_1,
             "z_total_puffed_licks_water_on_type_1": z_total_puffed_licks_water_on_type_1,
             "z_learning_rate": z_learning_rate,
+            "z_trace_learning_rate": z_trace_learning_rate,
             "z_learning_rate_reward": z_learning_rate_reward,
         }
         if dict_contains_other_values(features_dict, (np.generic, str, float)):
