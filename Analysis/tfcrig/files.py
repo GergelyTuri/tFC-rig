@@ -22,14 +22,9 @@ from tfcrig import (
     create_cohort_pattern,
     extract_cohort,
     root_contains_cohort_of_interest,
+    DATETIME_REGEX
 )
 from tfcrig.notebook import builtin_print
-
-DATETIME_REGEX = r"\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}"
-"""
-Regex matching for a datetime of the format `YYYY-MM-DD_HH-MM-SS` which
-is included in the file names generated during data collection
-"""
 
 BAD_DATE_REGEX_1 = r"(\d{1,2})[ \/](\d{1,2})[ \/](\d{2,4})"
 """

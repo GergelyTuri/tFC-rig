@@ -1,8 +1,12 @@
 import re
 from typing import Optional
 from datetime import datetime
-from tfcrig.files import DATETIME_REGEX
 
+DATETIME_REGEX = r"\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}"
+"""
+Regex matching for a datetime of the format `YYYY-MM-DD_HH-MM-SS` which
+is included in the file names generated during data collection
+"""
 
 def create_cohort_pattern(root_path: str) -> re.Pattern:
     """
