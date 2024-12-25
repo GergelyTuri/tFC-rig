@@ -17,6 +17,10 @@ import seaborn as sns
 from IPython.display import display
 from tfcrig.files import DATETIME_REGEX
 from tfcrig.notebook import builtin_print
+from tfcrig import (
+    create_cohort_pattern,
+    root_contains_cohort_of_interest,
+)
 
 WARN_SCALAR_DIVIDE = [
     "invalid value encountered in scalar divide",
@@ -128,14 +132,14 @@ def scalar_divide(a: np.int64, b: np.int64) -> np.int64:
     return c
 
 
-def get_mouse_ids(data_root: str) -> set[Optional[str]]:
+def get_mouse_ids(file_paths: list[str]) -> set[Optional[str]]:
     """
     Given the path to the root of the data directory, return a set of mouse
     IDs. Also checks that mouse ID, session ID pairs are unique
     """
     all_mouse_ids = []
     mouse_session_pairs = set()
-    for _, _, files in os.walk(data_root):
+    for _, _, files in file_paths:
         for file_name in files:
             if not is_data_file(file_name):
                 continue
@@ -674,21 +678,32 @@ class Analysis:
         data_root: str,
         verbose: bool = False,
         mice_of_interest: list[str] = [],
+        cohorts: list[str] = []
     ) -> None:
         self.data_root = data_root
         self.verbose = verbose
         self.mice_of_interest = mice_of_interest
+        self.cohorts = cohorts
 
         # Keep track of per-file errors
         self.file_errors = {}
 
+        self.cohort_pattern = create_cohort_pattern(self.data_root)
+        # Need to pre-define the set of directories and files of interest
+        self.os_walk = []
+        for root, dirs, files in os.walk(self.data_root):
+            if root_contains_cohort_of_interest(
+                root, self.cohort_pattern, self.cohorts
+            ):
+                self.os_walk.append((root, dirs, files))
+        
         # From the entire data root directory, get the set of mouse IDs
         self.mouse_ids = get_mouse_ids(self.data_root)
 
         # Likewise, extract features from all of the data
         features = []
         data_frames = []
-        for root, _, files in os.walk(self.data_root):
+        for root, _, files in self.os_walk:
             for file in files:
                 if not is_data_file(file):
                     continue
