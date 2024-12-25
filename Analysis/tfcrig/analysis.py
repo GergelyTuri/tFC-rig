@@ -132,7 +132,7 @@ def scalar_divide(a: np.int64, b: np.int64) -> np.int64:
     return c
 
 
-def get_mouse_ids(file_paths: list[str]) -> set[Optional[str]]:
+def get_mouse_ids(file_paths: list[tuple[str,str,str]]) -> set[Optional[str]]:
     """
     Given the path to the root of the data directory, return a set of mouse
     IDs. Also checks that mouse ID, session ID pairs are unique
@@ -698,7 +698,7 @@ class Analysis:
                 self.os_walk.append((root, dirs, files))
         
         # From the entire data root directory, get the set of mouse IDs
-        self.mouse_ids = get_mouse_ids(self.data_root)
+        self.mouse_ids = get_mouse_ids(self.os_walk)
 
         # Likewise, extract features from all of the data
         features = []
