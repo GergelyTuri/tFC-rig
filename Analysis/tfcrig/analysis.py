@@ -2,7 +2,6 @@
 import calendar
 import json
 import os
-import re
 import warnings
 from datetime import datetime
 from typing import Any, Optional
@@ -15,11 +14,15 @@ import pandas as pd
 import scipy.stats as stats
 import seaborn as sns
 from IPython.display import display
-from tfcrig.files import DATETIME_REGEX
 from tfcrig.notebook import builtin_print
 from tfcrig import (
     create_cohort_pattern,
     root_contains_cohort_of_interest,
+    get_datetime_from_file_path,
+    datetime_to_session_id,
+    get_mouse_ids,
+    get_mouse_ids_from_file_name,
+    is_data_file
 )
 
 WARN_SCALAR_DIVIDE = [
@@ -39,58 +42,6 @@ def dict_contains_other_values(d: dict, types: tuple[Any]) -> bool:
         if not isinstance(value, types):
             return True
     return False
-
-
-def extract_exp_mouse_pairs(exp_mouse_blob: str) -> list[str]:
-    """
-    Define a recursive function that helps extract sets of
-    `{experiment_id}_{mouse_id}_` from a file name. It accepts the
-    front portion of a session file name and returns a list of
-    these sets
-    """
-    pattern = r"\d+[_-]\d+[_-]"
-    string_match = re.search(pattern, exp_mouse_blob)
-
-    if string_match:
-        first_pair = string_match.group()
-        rest_of_string = exp_mouse_blob[string_match.end() :]
-        return [first_pair] + extract_exp_mouse_pairs(rest_of_string)
-    return []
-
-
-def is_data_file(file_name: str) -> bool:
-    # Data files contain a specific date-time blob
-    if not re.search(DATETIME_REGEX, file_name):
-        return False
-
-    # Data files have the format:
-    #
-    #     {exp_mouse_blob}_{datetime}.json
-    #
-    file_name_parts = re.split(DATETIME_REGEX, file_name)
-    if file_name_parts[-1] != ".json":
-        return False
-
-    return True
-
-
-def get_mouse_ids_from_file_name(file_name: str) -> list[Optional[str]]:
-    file_name_parts = re.split(DATETIME_REGEX, file_name)
-    exp_mouse_pairs = extract_exp_mouse_pairs(file_name_parts[0])
-    # The magic `[0:-1]` removes a trailing underscore. Later raw data files
-    # will be examined for mouse IDs that match their names
-    return [e[0:-1] for e in exp_mouse_pairs]
-
-
-def get_datetime_from_file_path(file_path: str) -> datetime:
-    date_match = re.search(DATETIME_REGEX, file_path)
-    if date_match:
-        return datetime.strptime(date_match.group(), "%Y-%m-%d_%H-%M-%S")
-    return None
-
-
-def datetime_to_session_id(date_time: datetime) -> int:
-    return int(date_time.strftime("%Y%m%d%H%M%S"))
 
 
 def datetime_to_day_of_week(date_time: datetime) -> str:
@@ -130,36 +81,6 @@ def scalar_divide(a: np.int64, b: np.int64) -> np.int64:
             raise Exception(warning.message)
 
     return c
-
-
-def get_mouse_ids(file_paths: list[tuple[str,str,str]]) -> set[Optional[str]]:
-    """
-    Given the path to the root of the data directory, return a set of mouse
-    IDs. Also checks that mouse ID, session ID pairs are unique
-    """
-    all_mouse_ids = []
-    mouse_session_pairs = set()
-    for _, _, files in file_paths:
-        for file_name in files:
-            if not is_data_file(file_name):
-                continue
-
-            mouse_ids = get_mouse_ids_from_file_name(file_name)
-            session_id = datetime_to_session_id(get_datetime_from_file_path(file_name))
-
-            # Mouse ID, session ID pairs should be unique
-            for mouse_id in mouse_ids:
-                key = (mouse_id, session_id)
-                if key in mouse_session_pairs:
-                    raise ValueError(
-                        "Found non-unique mouse id, session id pair: "
-                        f"({mouse_id}, {session_id})"
-                    )
-                mouse_session_pairs.add(key)
-
-            all_mouse_ids += mouse_ids
-
-    return set(mouse_ids)
 
 
 def extract_features_from_session_data(
