@@ -642,10 +642,10 @@ class Analysis:
         self.os_walk = []
         cohort_pattern = create_cohort_pattern(self.data_root)
         for root, dirs, files in os.walk(self.data_root):
-            if "/test_data/" in root:
+            if "/test_data/" in root and "/test_data/" not in self.data_root:
                 # There exists a top-level 'test_data' folder that we should skip
                 continue
-            if "/duplicate_data/" in root:
+            if "/duplicate_data/" in root and "/duplicate_data/" not in self.data_root:
                 # Likewise, skip the 'duplicate_data' folder
                 continue
             if root_contains_cohort_of_interest(
