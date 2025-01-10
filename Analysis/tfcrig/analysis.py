@@ -15,7 +15,11 @@ import pandas as pd
 import scipy.stats as stats
 import seaborn as sns
 from IPython.display import display
-from tfcrig.files import DATETIME_REGEX
+from tfcrig import (
+    create_cohort_pattern,
+    root_contains_cohort_of_interest,
+)
+from tfcrig.files import DATETIME_REGEX, extract_cohort_mouse_pairs
 from tfcrig.notebook import builtin_print
 
 WARN_SCALAR_DIVIDE = [
@@ -37,23 +41,6 @@ def dict_contains_other_values(d: dict, types: tuple[Any]) -> bool:
     return False
 
 
-def extract_exp_mouse_pairs(exp_mouse_blob: str) -> list[str]:
-    """
-    Define a recursive function that helps extract sets of
-    `{experiment_id}_{mouse_id}_` from a file name. It accepts the
-    front portion of a session file name and returns a list of
-    these sets
-    """
-    pattern = r"\d+[_-]\d+[_-]"
-    string_match = re.search(pattern, exp_mouse_blob)
-
-    if string_match:
-        first_pair = string_match.group()
-        rest_of_string = exp_mouse_blob[string_match.end() :]
-        return [first_pair] + extract_exp_mouse_pairs(rest_of_string)
-    return []
-
-
 def is_data_file(file_name: str) -> bool:
     # Data files contain a specific date-time blob
     if not re.search(DATETIME_REGEX, file_name):
@@ -72,7 +59,7 @@ def is_data_file(file_name: str) -> bool:
 
 def get_mouse_ids_from_file_name(file_name: str) -> list[Optional[str]]:
     file_name_parts = re.split(DATETIME_REGEX, file_name)
-    exp_mouse_pairs = extract_exp_mouse_pairs(file_name_parts[0])
+    exp_mouse_pairs = extract_cohort_mouse_pairs(file_name_parts[0])
     # The magic `[0:-1]` removes a trailing underscore. Later raw data files
     # will be examined for mouse IDs that match their names
     return [e[0:-1] for e in exp_mouse_pairs]
@@ -128,14 +115,14 @@ def scalar_divide(a: np.int64, b: np.int64) -> np.int64:
     return c
 
 
-def get_mouse_ids(data_root: str) -> set[Optional[str]]:
+def get_mouse_ids(os_walk: list[tuple]) -> set[Optional[str]]:
     """
     Given the path to the root of the data directory, return a set of mouse
     IDs. Also checks that mouse ID, session ID pairs are unique
     """
     all_mouse_ids = []
     mouse_session_pairs = set()
-    for _, _, files in os.walk(data_root):
+    for dirpath, _, files in os_walk:
         for file_name in files:
             if not is_data_file(file_name):
                 continue
@@ -639,22 +626,40 @@ class Analysis:
         *,
         data_root: str,
         verbose: bool = False,
+        cohorts: list[str] = [],
         mice_of_interest: list[str] = [],
     ) -> None:
         self.data_root = data_root
         self.verbose = verbose
+        self.cohorts = cohorts
         self.mice_of_interest = mice_of_interest
 
         # Keep track of per-file errors
         self.file_errors = {}
 
+        # Use a subset of directories for the analysis
+        # Need to pre-define the set of directories and files of interest
+        self.os_walk = []
+        cohort_pattern = create_cohort_pattern(self.data_root)
+        for root, dirs, files in os.walk(self.data_root):
+            if "/test_data/" in root and "/test_data/" not in self.data_root:
+                # There exists a top-level 'test_data' folder that we should skip
+                continue
+            if "/duplicate_data/" in root and "/duplicate_data/" not in self.data_root:
+                # Likewise, skip the 'duplicate_data' folder
+                continue
+            if root_contains_cohort_of_interest(
+                root, cohort_pattern, self.cohorts
+            ):
+                self.os_walk.append((root, dirs, files))
+
         # From the entire data root directory, get the set of mouse IDs
-        self.mouse_ids = get_mouse_ids(self.data_root)
+        self.mouse_ids = get_mouse_ids(self.os_walk)
 
         # Likewise, extract features from all of the data
         features = []
         data_frames = []
-        for root, _, files in os.walk(self.data_root):
+        for root, _, files in self.os_walk:
             for file in files:
                 if not is_data_file(file):
                     continue
