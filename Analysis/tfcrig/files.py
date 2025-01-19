@@ -20,7 +20,6 @@ import pandas as pd
 
 from tfcrig import (
     create_cohort_pattern,
-    extract_cohort,
     root_contains_cohort_of_interest,
     DATETIME_REGEX
 )
