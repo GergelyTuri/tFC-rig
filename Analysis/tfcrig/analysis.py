@@ -83,6 +83,34 @@ def scalar_divide(a: np.int64, b: np.int64) -> np.int64:
     return c
 
 
+def list_scalar_divide(l1: list[np.int64], l2: list[np.int64], c: np.int64=1):
+    out = []
+    with warnings.catch_warnings(record=True) as w:
+        for a, b in zip(l1, l2):
+            if b == 0:
+                out.append(np.int64(0))  # Handle division by zero explicitly
+            else:
+                out.append(c * a / b)
+
+    if len(w) > 0:
+        warning = w[0]
+        if (
+            not issubclass(warning.category, RuntimeWarning)
+            or str(warning.message) not in WARN_SCALAR_DIVIDE
+        ):
+            # Raises an exception for other warnings
+            raise Exception(warning.message)
+
+    return out
+
+
+def safe_get(arr, index, default=0):
+    """Returns the element at the given index of the array if valid, else defaults to 0."""
+    if len(arr) == 0 or len(arr) <= index:
+        return default
+    return arr[index]
+
+
 def extract_features_from_session_data(
     *,
     raw_data: dict,
@@ -345,8 +373,9 @@ def get_data_features_from_data_file(
     # Files can contain multiple mouse/session pairs. Extract features
     # from each data frame (pair)
     data_features = []
+    data_features_trial = []
     if not data_frames:
-        return (data_features, pd.DataFrame())
+        return (data_features, data_features_trial, pd.DataFrame())
     for df in data_frames:
         # Lick frequency
         # Work with another data frame to avoid setting index on 'df'
@@ -368,6 +397,54 @@ def get_data_features_from_data_file(
         avg_lick_freq_csminus_trace = dfl_csminus_is_trace["lick_frequency"].mean()
         dfl_iti = dfl[dfl["is_trial"] == 0]
         avg_lick_freq_iti = dfl_iti["lick_frequency"].mean()
+
+        # Trial specific stats
+        trials = range(min(dfl['trial']), max(dfl['trial']) + 1)
+        trial_types = (dfl[['trial', 'trial_type']]
+               .drop_duplicates(subset=['trial', 'trial_type'])
+               .loc[lambda x: x['trial_type'] != -1]
+               .set_index('trial')
+               .reindex(trials, fill_value=-1)
+               .squeeze())
+        avg_lick_freq_trial = dfl.groupby('trial')["lick_frequency"].mean().reindex(trials, fill_value=0)
+        avg_lick_freq_csplus_trial = dfl_csplus.groupby('trial')["lick_frequency"].mean().reindex(trials, fill_value=0)
+        avg_lick_freq_csminus_trial = dfl_csminus.groupby('trial')["lick_frequency"].mean().reindex(trials, fill_value=0)
+        avg_lick_freq_iti_trial = dfl_iti.groupby('trial')["lick_frequency"].mean().reindex(trials, fill_value=0)
+        avg_lick_freq_csplus_trace_trial = dfl_csplus_is_trace.groupby('trial')["lick_frequency"].mean().reindex(trials, fill_value=0)
+        avg_lick_freq_csminus_trace_trial = dfl_csminus_is_trace.groupby('trial')["lick_frequency"].mean().reindex(trials, fill_value=0)
+        total_licks_trial = dfl.groupby('trial')['lick'].sum().reindex(trials, fill_value=0)
+
+        z_avg_lick_freq_trial = list_scalar_divide(
+            avg_lick_freq_trial,
+            total_licks_trial,
+            1000
+        )
+        z_avg_lick_freq_csplus_trial = list_scalar_divide(
+            avg_lick_freq_csplus_trial,
+            total_licks_trial,
+            1000
+        )
+        z_avg_lick_freq_csminus_trial = list_scalar_divide(
+            avg_lick_freq_csminus_trial,
+            total_licks_trial,
+            1000
+        )
+        z_avg_lick_freq_iti_trial = list_scalar_divide(
+            avg_lick_freq_iti_trial,
+            total_licks_trial,
+            1000
+        )
+        z_avg_lick_freq_csplus_trace_trial = list_scalar_divide(
+            avg_lick_freq_csplus_trace_trial,
+            total_licks_trial,
+            1000
+        )
+        z_avg_lick_freq_csminus_trace_trial = list_scalar_divide(
+            avg_lick_freq_csminus_trace_trial,
+            total_licks_trial,
+            1000
+        )
+        
         # Normalize lick frequency to the total licks in the session trials,
         # which will hopefully account for variance in lick sensor sensitivity
         # between sessions and between days. The factor of 1,000 is just for
@@ -564,11 +641,37 @@ def get_data_features_from_data_file(
             "z_trace_learning_rate": z_trace_learning_rate,
             "z_learning_rate_reward": z_learning_rate_reward,
         }
+        trial_features = [
+            {
+                "mouse_id": df["mouse_id"].iloc[0],
+                "session_id": df["session_id"].iloc[0],
+                "day_of_week": df["day_of_week"].iloc[0],
+                "trial": safe_get(trials, i),
+                "trial_type": safe_get(trial_types, i),
+                "avg_lick_freq": safe_get(avg_lick_freq_trial, i),
+                "avg_lick_freq_csplus": safe_get(avg_lick_freq_csplus_trial, i),
+                "avg_lick_freq_csminus": safe_get(avg_lick_freq_csminus_trial, i),
+                "avg_lick_freq_iti": safe_get(avg_lick_freq_iti_trial, i),
+                "avg_lick_freq_csplus_trace": safe_get(avg_lick_freq_csplus_trace_trial, i),
+                "avg_lick_freq_csminus_trace": safe_get(avg_lick_freq_csminus_trace_trial, i),
+                "z_avg_lick_freq": safe_get(z_avg_lick_freq_trial, i),
+                "z_avg_lick_freq_csplus": safe_get(z_avg_lick_freq_csplus_trial, i),
+                "z_avg_lick_freq_csminus": safe_get(z_avg_lick_freq_csminus_trial, i),
+                "z_avg_lick_freq_iti": safe_get(z_avg_lick_freq_iti_trial, i),
+                "z_avg_lick_freq_csplus_trace": safe_get(z_avg_lick_freq_csplus_trace_trial, i),
+                "z_avg_lick_freq_csminus_trace": safe_get(z_avg_lick_freq_csminus_trace_trial, i),
+                "total_licks": safe_get(total_licks_trial, i)
+            }
+            for i in range(len(avg_lick_freq_trial))
+        ]
         if dict_contains_other_values(features_dict, (np.generic, str, float)):
             raise ValueError("File contains invalid features")
         data_features.append(features_dict)
+        for d in trial_features:
+            data_features_trial.append(d)
     return (
         data_features,
+        data_features_trial,
         pd.concat(data_frames).reset_index(drop=True),
     )
 
@@ -623,7 +726,10 @@ class Analysis:
 
         # Likewise, extract features from all of the data
         features = []
+        trial_features = []
         data_frames = []
+        print(f"gathering data...")
+        file_i = 0
         for root, _, files in self.os_walk:
             for file in files:
                 if not is_data_file(file):
@@ -641,8 +747,10 @@ class Analysis:
 
                 # Try to extract features.
                 # Keep track of errors we raise above, to be printed later.
+                file_i += 1
+                print(f"file {file_i}: {file}")
                 try:
-                    f_features, f_data_frames = get_data_features_from_data_file(
+                    f_features, f_trial_features, f_data_frames = get_data_features_from_data_file(
                         full_file=os.path.join(root, file),
                         verbose=self.verbose,
                     )
@@ -654,10 +762,13 @@ class Analysis:
                         self.file_errors[error].append(file)
                     continue
                 features += f_features
+                trial_features += f_trial_features
                 if not f_data_frames.empty:
                     data_frames.append(f_data_frames)
         self.df = pd.DataFrame(features)
         self.df = self.df.sort_values(by=["session_id", "mouse_id"])
+        self.trial_df = pd.DataFrame(trial_features)
+        self.trial_df = self.trial_df.sort_values(by=["session_id", "trial", "mouse_id"])
         self.data = pd.concat(data_frames).reset_index(drop=True)
 
         # Print errors we found
