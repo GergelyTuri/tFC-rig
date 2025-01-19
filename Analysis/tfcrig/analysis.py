@@ -2,7 +2,6 @@
 import calendar
 import json
 import os
-import re
 import warnings
 from datetime import datetime
 from typing import Any, Optional
@@ -15,12 +14,17 @@ import pandas as pd
 import scipy.stats as stats
 import seaborn as sns
 from IPython.display import display
+from tfcrig.files import DATETIME_REGEX, extract_cohort_mouse_pairs
+from tfcrig.notebook import builtin_print
 from tfcrig import (
     create_cohort_pattern,
     root_contains_cohort_of_interest,
+    get_datetime_from_file_path,
+    datetime_to_session_id,
+    get_mouse_ids,
+    get_mouse_ids_from_file_name,
+    is_data_file
 )
-from tfcrig.files import DATETIME_REGEX, extract_cohort_mouse_pairs
-from tfcrig.notebook import builtin_print
 
 WARN_SCALAR_DIVIDE = [
     "invalid value encountered in scalar divide",
@@ -40,42 +44,7 @@ def dict_contains_other_values(d: dict, types: tuple[Any]) -> bool:
             return True
     return False
 
-
-def is_data_file(file_name: str) -> bool:
-    # Data files contain a specific date-time blob
-    if not re.search(DATETIME_REGEX, file_name):
-        return False
-
-    # Data files have the format:
-    #
-    #     {exp_mouse_blob}_{datetime}.json
-    #
-    file_name_parts = re.split(DATETIME_REGEX, file_name)
-    if file_name_parts[-1] != ".json":
-        return False
-
-    return True
-
-
-def get_mouse_ids_from_file_name(file_name: str) -> list[Optional[str]]:
-    file_name_parts = re.split(DATETIME_REGEX, file_name)
-    exp_mouse_pairs = extract_cohort_mouse_pairs(file_name_parts[0])
-    # The magic `[0:-1]` removes a trailing underscore. Later raw data files
-    # will be examined for mouse IDs that match their names
-    return [e[0:-1] for e in exp_mouse_pairs]
-
-
-def get_datetime_from_file_path(file_path: str) -> datetime:
-    date_match = re.search(DATETIME_REGEX, file_path)
-    if date_match:
-        return datetime.strptime(date_match.group(), "%Y-%m-%d_%H-%M-%S")
-    return None
-
-
-def datetime_to_session_id(date_time: datetime) -> int:
-    return int(date_time.strftime("%Y%m%d%H%M%S"))
-
-
+  
 def datetime_to_day_of_week(date_time: datetime) -> str:
     return calendar.day_name[date_time.weekday()]
 
@@ -115,6 +84,26 @@ def scalar_divide(a: np.int64, b: np.int64) -> np.int64:
     return c
 
 
+def list_scalar_divide(l1: list[np.int64], l2: list[np.int64], c: np.int64=1):
+    out = []
+    with warnings.catch_warnings(record=True) as w:
+        for a, b in zip(l1, l2):
+            if b == 0:
+                out.append(np.int64(0))  # Handle division by zero explicitly
+            else:
+                out.append(c * a / b)
+    if len(w) > 0:
+        warning = w[0]
+        if (
+            not issubclass(warning.category, RuntimeWarning)
+            or str(warning.message) not in WARN_SCALAR_DIVIDE
+        ):
+            # Raises an exception for other warnings
+            raise Exception(warning.message)
+
+    return out
+
+  
 def get_mouse_ids(os_walk: list[tuple]) -> set[Optional[str]]:
     """
     Given the path to the root of the data directory, return a set of mouse
@@ -139,10 +128,16 @@ def get_mouse_ids(os_walk: list[tuple]) -> set[Optional[str]]:
                         f"({mouse_id}, {session_id})"
                     )
                 mouse_session_pairs.add(key)
-
             all_mouse_ids += mouse_ids
 
     return set(mouse_ids)
+  
+
+def safe_get(arr, index, default=0):
+    """Returns the element at the given index of the array if valid, else defaults to 0."""
+    if len(arr) == 0 or len(arr) <= index:
+        return default
+    return arr[index]
 
 
 def extract_features_from_session_data(
@@ -178,6 +173,7 @@ def extract_features_from_session_data(
     # by time, and checks for certain markers in the data. It uses `{0, 1}`
     # to represent `False` and `True` respectively
     is_session = 0
+    is_trace = 0
     # Valid trial types: `{0, 1}`, type `-1` represents not known or no
     # current trial yet
     trial_type = -1
@@ -187,6 +183,7 @@ def extract_features_from_session_data(
     previous_time = raw_data[0]["absolute_time"]
 
     # Some trial parameters we will try to extract
+    auditory_stop = -1
     air_puff_start_time = -1
     air_puff_stop_time = -1
     air_puff_total_time = -1
@@ -224,8 +221,9 @@ def extract_features_from_session_data(
         except (KeyError, ValueError):
             raise ValueError(f"Bad data blob found: {data_blob}")
         # Confirm that absolute time moves forward
-        if absolute_time < previous_time:
-            raise ValueError("Time did not move forwards!")
+        # TODO: uncomment once we fix syncing second and first mouse data
+        # if absolute_time < previous_time:
+        #     raise ValueError("Time did not move forwards!")
         # previous_time = absolute_time
         absolute_datetime = datetime.strptime(
             absolute_time,
@@ -284,6 +282,8 @@ def extract_features_from_session_data(
         if "AIR_PUFF_TOTAL_TIME" in msg:
             air_puff_total_time = int(msg.split(msg_delimiter)[1])
             air_puff_stop_time = air_puff_start_time + air_puff_total_time
+        if "AUDITORY_STOP" in msg:
+            auditory_stop = int(msg.split(msg_delimiter)[1])
 
         # Check for lick
         lick = 0
@@ -312,6 +312,13 @@ def extract_features_from_session_data(
 
             if t_trial > air_puff_stop_time:
                 first_puff_started = 0
+        
+        # Check if data falls under trace period (short duration after auditory cues)
+        if air_puff_start_time > 0 and auditory_stop > 0:
+            if t_trial > auditory_stop and t_trial < air_puff_start_time:
+                is_trace = 1
+            else:
+                is_trace = 0
 
         # Negative signal
         if "Negative signal start" in msg:
@@ -345,6 +352,7 @@ def extract_features_from_session_data(
                 "message": msg,
                 "is_session": is_session,
                 "is_trial": is_trial,
+                "is_trace": is_trace,
                 "trial_type": trial_type,
                 "lick": lick,
                 "puffed_lick": puffed_lick,
@@ -394,8 +402,9 @@ def get_data_features_from_data_file(
     # Files can contain multiple mouse/session pairs. Extract features
     # from each data frame (pair)
     data_features = []
+    data_features_trial = []
     if not data_frames:
-        return (data_features, pd.DataFrame())
+        return (data_features, data_features_trial, pd.DataFrame())
     for df in data_frames:
         # Lick frequency
         # Work with another data frame to avoid setting index on 'df'
@@ -411,8 +420,60 @@ def get_data_features_from_data_file(
         avg_lick_freq_csminus = dfl_csminus["lick_frequency"].mean()
         dfl_no_signal = df_is_trial[df_is_trial["trial_type"].isin([4])]
         avg_lick_freq_no_signal = dfl_no_signal["lick_frequency"].mean()
+        dfl_csplus_is_trace = dfl_csplus[dfl_csplus["is_trace"] == 1]
+        avg_lick_freq_csplus_trace = dfl_csplus_is_trace["lick_frequency"].mean()
+        dfl_csminus_is_trace = dfl_csminus[dfl_csminus["is_trace"] == 1]
+        avg_lick_freq_csminus_trace = dfl_csminus_is_trace["lick_frequency"].mean()
         dfl_iti = dfl[dfl["is_trial"] == 0]
         avg_lick_freq_iti = dfl_iti["lick_frequency"].mean()
+
+        # Trial specific stats
+        trials = range(min(dfl['trial']), max(dfl['trial']) + 1)
+        trial_types = (dfl[['trial', 'trial_type']]
+               .drop_duplicates(subset=['trial', 'trial_type'])
+               .loc[lambda x: x['trial_type'] != -1]
+               .set_index('trial')
+               .reindex(trials, fill_value=-1)
+               .squeeze())
+        avg_lick_freq_trial = dfl.groupby('trial')["lick_frequency"].mean().reindex(trials, fill_value=0)
+        avg_lick_freq_csplus_trial = dfl_csplus.groupby('trial')["lick_frequency"].mean().reindex(trials, fill_value=0)
+        avg_lick_freq_csminus_trial = dfl_csminus.groupby('trial')["lick_frequency"].mean().reindex(trials, fill_value=0)
+        avg_lick_freq_iti_trial = dfl_iti.groupby('trial')["lick_frequency"].mean().reindex(trials, fill_value=0)
+        avg_lick_freq_csplus_trace_trial = dfl_csplus_is_trace.groupby('trial')["lick_frequency"].mean().reindex(trials, fill_value=0)
+        avg_lick_freq_csminus_trace_trial = dfl_csminus_is_trace.groupby('trial')["lick_frequency"].mean().reindex(trials, fill_value=0)
+        total_licks_trial = dfl.groupby('trial')['lick'].sum().reindex(trials, fill_value=0)
+
+        z_avg_lick_freq_trial = list_scalar_divide(
+            avg_lick_freq_trial,
+            total_licks_trial,
+            1000
+        )
+        z_avg_lick_freq_csplus_trial = list_scalar_divide(
+            avg_lick_freq_csplus_trial,
+            total_licks_trial,
+            1000
+        )
+        z_avg_lick_freq_csminus_trial = list_scalar_divide(
+            avg_lick_freq_csminus_trial,
+            total_licks_trial,
+            1000
+        )
+        z_avg_lick_freq_iti_trial = list_scalar_divide(
+            avg_lick_freq_iti_trial,
+            total_licks_trial,
+            1000
+        )
+        z_avg_lick_freq_csplus_trace_trial = list_scalar_divide(
+            avg_lick_freq_csplus_trace_trial,
+            total_licks_trial,
+            1000
+        )
+        z_avg_lick_freq_csminus_trace_trial = list_scalar_divide(
+            avg_lick_freq_csminus_trace_trial,
+            total_licks_trial,
+            1000
+        )
+        
         # Normalize lick frequency to the total licks in the session trials,
         # which will hopefully account for variance in lick sensor sensitivity
         # between sessions and between days. The factor of 1,000 is just for
@@ -436,6 +497,14 @@ def get_data_features_from_data_file(
         )
         z_avg_lick_freq_no_signal = 1000 * scalar_divide(
             avg_lick_freq_no_signal,
+            total_session_licks,
+        )
+        z_avg_lick_freq_csplus_trace = 1000 * scalar_divide(
+            avg_lick_freq_csplus_trace,
+            total_session_licks,
+        )
+        z_avg_lick_freq_csminus_trace = 1000 * scalar_divide(
+            avg_lick_freq_csminus_trace,
             total_session_licks,
         )
 
@@ -545,6 +614,10 @@ def get_data_features_from_data_file(
             z_total_puffed_licks_type_0,
             z_total_puffed_licks_type_1,
         )
+        z_trace_learning_rate = scalar_divide(
+            z_avg_lick_freq_csminus_trace,
+            z_avg_lick_freq_csplus_trace,
+        )
         z_learning_rate_reward = scalar_divide(
             z_total_puffed_licks_water_on_type_0,
             z_total_puffed_licks_water_on_type_1,
@@ -559,10 +632,14 @@ def get_data_features_from_data_file(
             "avg_lick_freq_csplus": avg_lick_freq_csplus,
             "avg_lick_freq_csminus": avg_lick_freq_csminus,
             "avg_lick_freq_iti": avg_lick_freq_iti,
+            "avg_lick_freq_csplus_trace": avg_lick_freq_csplus_trace,
+            "avg_lick_freq_csminus_trace": avg_lick_freq_csminus_trace,
             "z_avg_lick_freq": z_avg_lick_freq,
             "z_avg_lick_freq_csplus": z_avg_lick_freq_csplus,
             "z_avg_lick_freq_csminus": z_avg_lick_freq_csminus,
             "z_avg_lick_freq_iti": z_avg_lick_freq_iti,
+            "z_avg_lick_freq_csplus_trace": z_avg_lick_freq_csplus_trace,
+            "z_avg_lick_freq_csminus_trace": z_avg_lick_freq_csminus_trace,
             "z_avg_lick_freq_no_signal": z_avg_lick_freq_no_signal,
             "total_licks": total_licks,
             "total_puffed_licks": total_puffed_licks,
@@ -590,13 +667,40 @@ def get_data_features_from_data_file(
             "z_total_licks_water_on_type_1": z_total_licks_water_on_type_1,
             "z_total_puffed_licks_water_on_type_1": z_total_puffed_licks_water_on_type_1,
             "z_learning_rate": z_learning_rate,
+            "z_trace_learning_rate": z_trace_learning_rate,
             "z_learning_rate_reward": z_learning_rate_reward,
         }
+        trial_features = [
+            {
+                "mouse_id": df["mouse_id"].iloc[0],
+                "session_id": df["session_id"].iloc[0],
+                "day_of_week": df["day_of_week"].iloc[0],
+                "trial": safe_get(trials, i),
+                "trial_type": safe_get(trial_types, i),
+                "avg_lick_freq": safe_get(avg_lick_freq_trial, i),
+                "avg_lick_freq_csplus": safe_get(avg_lick_freq_csplus_trial, i),
+                "avg_lick_freq_csminus": safe_get(avg_lick_freq_csminus_trial, i),
+                "avg_lick_freq_iti": safe_get(avg_lick_freq_iti_trial, i),
+                "avg_lick_freq_csplus_trace": safe_get(avg_lick_freq_csplus_trace_trial, i),
+                "avg_lick_freq_csminus_trace": safe_get(avg_lick_freq_csminus_trace_trial, i),
+                "z_avg_lick_freq": safe_get(z_avg_lick_freq_trial, i),
+                "z_avg_lick_freq_csplus": safe_get(z_avg_lick_freq_csplus_trial, i),
+                "z_avg_lick_freq_csminus": safe_get(z_avg_lick_freq_csminus_trial, i),
+                "z_avg_lick_freq_iti": safe_get(z_avg_lick_freq_iti_trial, i),
+                "z_avg_lick_freq_csplus_trace": safe_get(z_avg_lick_freq_csplus_trace_trial, i),
+                "z_avg_lick_freq_csminus_trace": safe_get(z_avg_lick_freq_csminus_trace_trial, i),
+                "total_licks": safe_get(total_licks_trial, i)
+            }
+            for i in range(len(avg_lick_freq_trial))
+        ]
         if dict_contains_other_values(features_dict, (np.generic, str, float)):
             raise ValueError("File contains invalid features")
         data_features.append(features_dict)
+        for d in trial_features:
+            data_features_trial.append(d)
     return (
         data_features,
+        data_features_trial,
         pd.concat(data_frames).reset_index(drop=True),
     )
 
@@ -627,7 +731,7 @@ class Analysis:
         data_root: str,
         verbose: bool = False,
         cohorts: list[str] = [],
-        mice_of_interest: list[str] = [],
+        mice_of_interest: list[str] = []
     ) -> None:
         self.data_root = data_root
         self.verbose = verbose
@@ -658,7 +762,11 @@ class Analysis:
 
         # Likewise, extract features from all of the data
         features = []
+        trial_features = []
         data_frames = []
+
+        print(f"gathering data...")
+        file_i = 0
         for root, _, files in self.os_walk:
             for file in files:
                 if not is_data_file(file):
@@ -676,8 +784,10 @@ class Analysis:
 
                 # Try to extract features.
                 # Keep track of errors we raise above, to be printed later.
+                file_i += 1
+                print(f"file {file_i}: {file}")
                 try:
-                    f_features, f_data_frames = get_data_features_from_data_file(
+                    f_features, f_trial_features, f_data_frames = get_data_features_from_data_file(
                         full_file=os.path.join(root, file),
                         verbose=self.verbose,
                     )
@@ -689,10 +799,13 @@ class Analysis:
                         self.file_errors[error].append(file)
                     continue
                 features += f_features
+                trial_features += f_trial_features
                 if not f_data_frames.empty:
                     data_frames.append(f_data_frames)
         self.df = pd.DataFrame(features)
         self.df = self.df.sort_values(by=["session_id", "mouse_id"])
+        self.trial_df = pd.DataFrame(trial_features)
+        self.trial_df = self.trial_df.sort_values(by=["session_id", "trial", "mouse_id"])
         self.data = pd.concat(data_frames).reset_index(drop=True)
 
         # Print errors we found
