@@ -1,6 +1,7 @@
 import re
 from typing import Optional
 from datetime import datetime
+from tfcrig.files import extract_cohort_mouse_pairs
 
 DATETIME_REGEX = r"\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}"
 """
@@ -92,7 +93,7 @@ def extract_exp_mouse_pairs(exp_mouse_blob: str) -> list[str]:
 
 def get_mouse_ids_from_file_name(file_name: str) -> list[Optional[str]]:
     file_name_parts = re.split(DATETIME_REGEX, file_name)
-    exp_mouse_pairs = extract_exp_mouse_pairs(file_name_parts[0])
+    exp_mouse_pairs = extract_cohort_mouse_pairs(file_name_parts[0])
     # The magic `[0:-1]` removes a trailing underscore. Later raw data files
     # will be examined for mouse IDs that match their names
     return [e[0:-1] for e in exp_mouse_pairs]

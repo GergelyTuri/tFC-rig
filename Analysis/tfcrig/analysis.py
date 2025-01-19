@@ -45,14 +45,6 @@ def dict_contains_other_values(d: dict, types: tuple[Any]) -> bool:
     return False
 
   
-def get_mouse_ids_from_file_name(file_name: str) -> list[Optional[str]]:
-    file_name_parts = re.split(DATETIME_REGEX, file_name)
-    exp_mouse_pairs = extract_cohort_mouse_pairs(file_name_parts[0])
-    # The magic `[0:-1]` removes a trailing underscore. Later raw data files
-    # will be examined for mouse IDs that match their names
-    return [e[0:-1] for e in exp_mouse_pairs]
-
-  
 def datetime_to_day_of_week(date_time: datetime) -> str:
     return calendar.day_name[date_time.weekday()]
 
@@ -739,14 +731,12 @@ class Analysis:
         data_root: str,
         verbose: bool = False,
         cohorts: list[str] = [],
-        mice_of_interest: list[str] = [],
-        cohorts: list[str] = []
+        mice_of_interest: list[str] = []
     ) -> None:
         self.data_root = data_root
         self.verbose = verbose
         self.cohorts = cohorts
         self.mice_of_interest = mice_of_interest
-        self.cohorts = cohorts
 
         # Keep track of per-file errors
         self.file_errors = {}
