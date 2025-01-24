@@ -15,16 +15,16 @@ import scipy.stats as stats
 import seaborn as sns
 from IPython.display import display
 from tfcrig.files import DATETIME_REGEX, extract_cohort_mouse_pairs
-from tfcrig.notebook import builtin_print
-from tfcrig import (
+from tfcrig.helpers import (
     create_cohort_pattern,
     root_contains_cohort_of_interest,
     get_datetime_from_file_path,
     datetime_to_session_id,
     get_mouse_ids,
     get_mouse_ids_from_file_name,
-    is_data_file
+    is_base_data_file
 )
+from tfcrig.notebook import builtin_print
 
 WARN_SCALAR_DIVIDE = [
     "invalid value encountered in scalar divide",
@@ -113,7 +113,7 @@ def get_mouse_ids(os_walk: list[tuple]) -> set[Optional[str]]:
     mouse_session_pairs = set()
     for dirpath, _, files in os_walk:
         for file_name in files:
-            if not is_data_file(file_name):
+            if not is_base_data_file(file_name):
                 continue
 
             mouse_ids = get_mouse_ids_from_file_name(file_name)
@@ -769,7 +769,7 @@ class Analysis:
         file_i = 0
         for root, _, files in self.os_walk:
             for file in files:
-                if not is_data_file(file):
+                if not is_base_data_file(file):
                     continue
                 # Testing purposes
                 # if '102_1_103_2_2024-09-03_15-32-46.json' not in file:
