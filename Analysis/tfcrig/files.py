@@ -15,8 +15,12 @@ import re
 import shutil
 from copy import deepcopy
 from dataclasses import dataclass
+from datetime import datetime
 
+import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
+import seaborn as sns
 
 from tfcrig import (
     create_cohort_pattern,
@@ -80,6 +84,18 @@ def extract_cohort_mouse_pairs(cohort_mouse_blob: str) -> list[str]:
     )
 
 
+def is_base_data_file(file_name: str) -> bool:
+    """
+    Given a file name, determine whether it is an base data file.
+    These are JSON files used to build the data frame for the analysis.
+    They are not the raw, analyzed, or processed data that may be used
+    as an intermediate step in the analysis
+    """
+    if re.search(FILENAME_REGEX, file_name):
+        return True
+    return False
+
+
 @dataclass
 class RigFiles:
     """
@@ -105,7 +121,7 @@ class RigFiles:
         for root, dirs, files in os.walk(self.data_root):
             if root_contains_cohort_of_interest(
                 root, self.cohort_pattern, self.cohorts
-            ):
+            ) or not self.cohorts:
                 self.os_walk.append((root, dirs, files))
 
     def check(self) -> None:
@@ -132,7 +148,19 @@ class RigFiles:
         self._rename_some_bad_file_name_patterns()
         self._rename_date_directories()
         self._examine_and_fix_typos_in_data_files()
-        self._sync_second_mouse()
+
+    def sync(self) -> None:
+        """
+        Data is collected with a setup that runs two mice through the
+        protocol at the same time on a primary and a secondary rig. The
+        time at which certain fixed events occur between files can be
+        offset; this method attempts to correct for that offset. It
+        checks that the offset for each file is within a certain
+        threshold that is deemed acceptable to correct for behavioral
+        data.
+        """
+        self._sync_messages_to_second_mouse()
+        self._sync_primary_secondary_rigs()
 
     def restore(self) -> None:
         """
@@ -188,8 +216,8 @@ class RigFiles:
 
     def _are_data_files_named_correctly(self) -> None:
         """
-        Crawls the entire data root directory and checks file names. No
-        corrections are made here (yet)
+        Crawls the entire data root directory and checks the originally
+        uploaded file names. No corrections are made here
         """
         builtin_print("")
         print("Checking data file names for consistency!")
@@ -198,17 +226,7 @@ class RigFiles:
         close_data_files = set()
         for root, _, files in self.os_walk:
             for file_name in files:
-                if not file_name.endswith(".json"):
-                    # Only walk for JSON files
-                    continue
-                if not re.search(DATETIME_REGEX, file_name):
-                    # JSON files contain a specific date-time blob
-                    continue
-                if file_name.endswith("_processed.json") or file_name.endswith(
-                    "_analyzed.json"
-                ):
-                    # Other types of analysis process the data a certain way.
-                    # This analysis may, too, but for now skip these.
+                if not is_base_data_file(file_name):
                     continue
 
                 file_name_parts = re.split(DATETIME_REGEX, file_name)
@@ -222,8 +240,7 @@ class RigFiles:
                     close_data_files.add(os.path.join(root, file_name))
                     continue
 
-                # These should be good.
-                # But, check them!
+                # These should be good. But, check them!
                 data_files.add(os.path.join(root, file_name))
 
         # Print a wrap-up of the output
@@ -246,27 +263,20 @@ class RigFiles:
             - The file does not end with `_raw.json`
             - The file does not already have a copy
 
+        Only the originally-uploaded JSON files should be copied.
         """
         builtin_print("")
         print("Creating copies of raw data files!")
 
         count = 0
         for root, _, files in self.os_walk:
-            for file in files:
-                full_file = os.path.join(root, file)
-
-                # Skip files that are not JSON
-                if not full_file.endswith(".json"):
+            for file_name in files:
+                if not is_base_data_file(file_name):
                     continue
+                full_file = os.path.join(root, file_name)
 
-                # Skip raw files, and a couple of other file patterns
-                # generated in the past
-                is_data_file = re.search(FILENAME_REGEX, full_file)
-                if not is_data_file:
-                    continue
-
-                # Define the raw file path and see if _it_ exists
-                file_parts = file.split(".")
+                # Define the raw file path and see if it exists
+                file_parts = file_name.split(".")
                 raw_full_file = os.path.join(root, file_parts[0] + "_raw.json")
                 if os.path.exists(raw_full_file):
                     continue
@@ -280,14 +290,12 @@ class RigFiles:
 
     def _rename_some_bad_file_name_patterns(self) -> None:
         """
-        Renames files with incorrect naming patterns.
+        Renames files with incorrect naming patterns. This should have
+        only been necessary prior to enforcing file name patterns using
+        the GUI, where there were some inconsistencies:
 
-        This method walks through the directory specified by `self.data_root` and renames files that have incorrect
-        naming patterns. It looks for files with the extension `.json` and a specific date-time blob in their names.
-        If the file name does not meet the expected pattern, it is renamed according to certain rules.
-
-        The method keeps track of the number of files found and the number of files fixed. It also supports a dry run
-        mode where it prints the renaming actions without actually renaming the files.
+            - Mouse IDs or files prefixed with 'mouse_'
+            - Mouse IDs contain '-' instead of '_'
 
         Args:
             None
@@ -298,28 +306,11 @@ class RigFiles:
         builtin_print("")
         print("Renaming some incorrectly named files!")
 
-        count_found = 0
-        count_fixed = 0
-        dry_run = True
+        full_files_to_fix = []
         for root, _, files in self.os_walk:
             for file_name in files:
-                if not file_name.endswith(".json"):
-                    # Only walk for JSON files
+                if not is_base_data_file(file_name):
                     continue
-                if not re.search(DATETIME_REGEX, file_name):
-                    # JSON files contain a specific date-time blob
-                    continue
-
-                file_name_parts = re.split(DATETIME_REGEX, file_name)
-                cohort_mouse_blob = file_name_parts[0]
-                cohort_mouse_pairs = extract_cohort_mouse_pairs(cohort_mouse_blob)
-                if cohort_mouse_pairs and all(
-                    "-" not in mouse_id for mouse_id in cohort_mouse_pairs
-                ):
-                    # This is a good file name. Skip it
-                    continue
-                count_found += 1
-
                 bad_file = os.path.join(root, file_name)
                 better_file = ""
 
@@ -329,33 +320,58 @@ class RigFiles:
                     better_file = os.path.join(root, file_name.split(prefix)[-1])
 
                 # The `cohort_mouse_blob` may accidentally have a `-` instead of `_`
+                file_name_parts = re.split(DATETIME_REGEX, file_name)
+                cohort_mouse_blob = file_name_parts[0]
                 bad_char = "-"
                 if bad_char in cohort_mouse_blob:
                     rest_of_name = file_name.split(cohort_mouse_blob)[-1]
-                    cohort_mouse_blob = cohort_mouse_blob.replace("-", "_")
+                    cohort_mouse_blob = cohort_mouse_blob.replace(bad_char, "_")
                     better_file_name = cohort_mouse_blob + rest_of_name
                     better_file = os.path.join(root, better_file_name)
 
-                # Continue if we did not find a way to define a better file
+                # If no `better_file` is defined, we haven't detected
+                # anything to fix and can continue
                 if not better_file:
                     continue
-                count_fixed += 1
 
-                if dry_run:
-                    print("Bad file found.")
-                    builtin_print("  Would rename:")
-                    builtin_print(f"    {bad_file}")
-                    builtin_print("  To:")
-                    builtin_print(f"    {better_file}")
-                else:
-                    os.rename(bad_file, better_file)
+                # We have a `bad_file` and `better_file`, but this `clean`
+                # method runs after we've created a copy of the raw data. See
+                # if a `bad_raw_file` exists
+                bad_raw_file = bad_file.replace(".json", "_raw.json")
+                if not os.path.isfile(bad_raw_file):
+                    raise FileNotFoundError(
+                        f"Raw file corresponding to {bad_file} not found. "
+                        "The `prep` method should be run on all files before "
+                        "the `clean` method."
+                    )
+                better_raw_file = better_file.replace(".json", "_raw.json")
 
-        if not count_found:
+                # Store the changes we would make for later
+                full_files_to_fix += [
+                    (bad_file, better_file),
+                    (bad_raw_file, better_raw_file)
+                ]
+
+        # Fix the files
+        for files in full_files_to_fix:
+            if self.dry_run:
+                print("Bad file found.")
+                builtin_print("  Would rename:")
+                builtin_print(f"    {files[0]}")
+                builtin_print("  To:")
+                builtin_print(f"    {files[1]}")
+            else:
+                os.rename(files[0], files[1])
+
+        # Summarize
+        if not full_files_to_fix:
             print("Found no bad file names!")
-        elif count_found == count_fixed:
-            print("Fixed every bad file name we found!")
         else:
-            print(f"Found {count_found} bad file names, fixed {count_fixed}!")
+            n = len(full_files_to_fix)
+            if self.dry_run:
+                print(f"Would fix {n} bad file names.")
+            else:
+                print(f"Fixed {n} bad file names!")
 
     def _rename_date_directories(self) -> None:
         """
@@ -408,16 +424,7 @@ class RigFiles:
         count = 0
         for root, _, files in self.os_walk:
             for file_name in files:
-                # Data files contain a specific date-time blob
-                if not re.search(DATETIME_REGEX, file_name):
-                    continue
-
-                # Data files have the format:
-                #
-                #     {cohort_mouse_blob}_{datetime}.json
-                #
-                file_name_parts = re.split(DATETIME_REGEX, file_name)
-                if file_name_parts[-1] != ".json":
+                if not is_base_data_file(file_name):
                     continue
 
                 need_to_fix_data = False
@@ -578,8 +585,288 @@ class RigFiles:
         else:
             print(f"Fixed {count} files!")
 
-    # Add exact puff, positive signal, and negative signal timings to second mouse data
-    def _sync_second_mouse(self) -> None:
+    def _sync_primary_secondary_rigs(self) -> None:
+        """
+        Correct file timestamps between the primary and secondary rigs
+        """
+        builtin_print("")
+        print("Syncing timestamps between the primary and secondry rigs!")
+
+        # These messages should occur at the same time for both the primary and
+        # secondary mouse. They'll be used to calculate primary-secondary rig
+        # offset, and then the trial starts will be used  as the anchor point
+        # for syncing data between mice
+        trial_start_msg = "Trial has started"
+        trial_end_msg = "Trial has ended"
+
+        # These messages might be missing from one or the other mouse data
+        # sets. They can be added to the data sets they are missing from
+        missing_messages = [
+            'Puff start"',
+            'Puff stop"',
+            'Puff stop, catch block"',
+            'Negative signal start"',
+            'Negative signal stop"',
+            'Positive signal start"',
+            'Positive signal stop"',
+        ]
+
+        # This checks that every file can be opened. It is repetitive code from
+        # below, but because the sync process takes time while developing and
+        # there might be an error in opening a newly uploaded file, this is
+        # kept here for now
+        for root, _, files in self.os_walk:
+            for file_name in files:
+                if not is_base_data_file(file_name):
+                    continue
+
+                full_file = os.path.join(root, file_name)
+                with open(full_file, "r") as f:
+                    data = json.load(f)
+
+        start_time_offset_data = []
+        start_time_offsets = []
+        sample_files = True
+        skip = 0
+        for root, _, files in self.os_walk:
+            for file_name in files:
+                if not is_base_data_file(file_name):
+                    continue
+                full_file = os.path.join(root, file_name)
+
+                # Skip every nth file, to sample across all cohorts but save
+                # time running the sync. Set `sample_files` to `False` to sync
+                # all files
+                skip += 1
+                if sample_files and skip % 10 != 0:
+                    continue
+
+                # Work only with files with two mice
+                file_name_parts = re.split(DATETIME_REGEX, file_name)
+                cohort_mouse_pairs = extract_cohort_mouse_pairs(file_name_parts[0])
+                mouse_ids = [e[0:-1] for e in cohort_mouse_pairs]
+                if len(mouse_ids) == 1:
+                    continue
+                if len(mouse_ids) > 2:
+                    raise ValueError(
+                        f"File {full_file} has more than two mouse IDs! This "
+                        "method can only sync a primary and secondary rig."
+                    )
+                if mouse_ids[0] == mouse_ids[1]:
+                    raise ValueError(
+                        f"File {full_file} has two mouse IDs, but they are "
+                        "the same mouse!"
+                    )
+
+                # Check that the file is consistent. This isn't necessary as it
+                # is likely done elsewhere, but is added while testing
+                with open(full_file, "r") as f:
+                    data = json.load(f)
+                stored_mouse_ids = data["header"]["mouse_ids"]
+                if mouse_ids != stored_mouse_ids:
+                    # TODO: this should be a raised `ValueError` but it just
+                    # continues until the existing data errors are fixed
+                    print(
+                        f"File {full_file} has mouse IDs in its file name "
+                        "that do not match the file header data."
+                    )
+                    continue
+
+                # Get the `Trial has started` messages which'll be used as the
+                # anchor point to sync data between the primary and secondary
+                # mice
+                first_trial_starts = [
+                    entry
+                    for entry in data["data"][mouse_ids[0]]
+                    if trial_start_msg in entry["message"]
+                ]
+                second_trial_starts = [
+                    entry
+                    for entry in data["data"][mouse_ids[1]]
+                    if trial_start_msg in entry["message"]
+                ]
+                if len(first_trial_starts) != len(second_trial_starts):
+                    raise ValueError(
+                        f"File {full_file} has a first and second mouse whose "
+                        "data have a different number of trials based on the "
+                        "trial start times!"
+                    )
+
+                # Get the `Trial has ended` messages which'll be used to help
+                # calculate the offset between the first and second mice
+                first_trial_ends = [
+                    entry
+                    for entry in data["data"][mouse_ids[0]]
+                    if trial_end_msg in entry["message"]
+                ]
+                second_trial_ends = [
+                    entry
+                    for entry in data["data"][mouse_ids[1]]
+                    if trial_end_msg in entry["message"]
+                ]
+                if len(first_trial_ends) != len(second_trial_ends):
+                    raise ValueError(
+                        f"File {full_file} has a first and second mouse whose "
+                        "data have a different number of trials based on the "
+                        "trial end times!"
+                    )
+
+                # Ensure that the number of starts and ends is the same, and
+                # that they are not empty
+                if len(first_trial_starts) != len(first_trial_ends):
+                    # TODO: this should be a raised `ValueError` but it just
+                    # continues until the existing data errors are fixed
+                    print(
+                        f"File {full_file} has a first mouse whose number of "
+                        "trial start and end times differs."
+                    )
+                    continue
+                if not first_trial_starts:
+                    # TODO: this should be a raised `ValueError` but it just
+                    # continues until the existing data errors are fixed
+                    print(
+                        f"File {full_file} does not have any trial starts!"
+                    )
+                    continue
+
+                # Ensure that the trials all start at trial start time zero
+                trial_start_times = [
+                    int(entry["message"].split(":")[2].strip())
+                    for entry in first_trial_starts + second_trial_starts
+                ]
+                if not all(t_start == 0 for t_start in trial_start_times):
+                    raise ValueError(
+                        f"File {full_file} has a trial that does not start at "
+                        "trial start time zero."
+                    )
+
+                # Trial time should not be impacted by a rig offset. Confirm
+                # that the mean of the second mouse trial end times is within
+                # one standard deviation of the first trial end times, or 10
+                # millis, of the mean of the first mouse trial end times. The
+                # 10 millis distinction is made because trial end times can be
+                # exactly the same (e.g. 50,001) for all trials, leading to a
+                # zero standard deviation, but checking the standard deviation
+                # accounts for if trial end times ever do vary between trials
+                first_trial_end_times = [
+                    int(entry["message"].split(":")[2].strip())
+                    for entry in first_trial_ends
+                ]
+                second_trial_end_times = [
+                    int(entry["message"].split(":")[2].strip())
+                    for entry in second_trial_ends
+                ]
+                mu_one = np.mean(first_trial_end_times)
+                std_one = np.std(first_trial_end_times)
+                mu_two = np.mean(second_trial_end_times)
+                if abs(mu_one-mu_two) > max(std_one, 10):
+                    raise ValueError(
+                        f"File {full_file} has a second mouse whose trial end "
+                        "times differ significantly from its first mouse's "
+                        "trial end times."
+                    )
+
+                # Get an array of absolute trial start times for the first and
+                # second mouse, and look at their diff (Unix time, which is in
+                # seconds, is used)
+                abs_first_trial_start_times = np.array([
+                    datetime.strptime(
+                        entry["absolute_time"], "%Y-%m-%d_%H-%M-%S.%f"
+                    ).timestamp()
+                    for entry in first_trial_starts
+                ])
+                abs_second_trial_start_times = np.array([
+                    datetime.strptime(
+                        entry["absolute_time"], "%Y-%m-%d_%H-%M-%S.%f"
+                    ).timestamp()
+                    for entry in second_trial_starts
+                ])
+                abs_trial_start_diff = abs_first_trial_start_times - abs_second_trial_start_times
+                start_time_offsets += abs(abs_trial_start_diff).tolist()
+                mu = round(1000*np.mean(abs_trial_start_diff), 0)
+                std = round(1000*np.std(abs_trial_start_diff), 0)
+                start_time_offset_data.append((mu, std))
+
+                # We want to iterate over the first mouse data, find
+                # potentially missing messages, see if they occur in the second
+                # mouse data and insert them if they don't
+                mouse_one_potential = []
+                for entry in data["data"][mouse_ids[0]]:
+                    # Collect all the potentially missing messages
+                    msg = entry["message"].split(":")[-1].strip()
+                    if msg in missing_messages:
+                        if entry["mouse_id"] != mouse_ids[0]:
+                            raise ValueError("Bad mouse id!")
+                        mouse_one_potential.append(entry)
+                add_to_mouse_two_entries = []
+                for mouse_one_entry in mouse_one_potential:
+                    # For each potentially missing mouse message, see if it has
+                    # a match in the second mouse data
+                    msg_one = mouse_one_entry["message"].split(":")[-1].strip()
+                    t_one = datetime.strptime(
+                        mouse_one_entry["absolute_time"], "%Y-%m-%d_%H-%M-%S.%f"
+                    ).timestamp()
+
+                    found_match = False
+                    for entry in data["data"][mouse_ids[1]]:
+                        msg_two = entry["message"].split(":")[-1].strip()
+                        t_two = datetime.strptime(
+                            entry["absolute_time"], "%Y-%m-%d_%H-%M-%S.%f"
+                        ).timestamp()
+                        if msg_one == msg_two:
+                            if abs(t_one-t_two) < 0.5:
+                                found_match = True
+                    if not found_match:
+                        add_to_mouse_two_entries.append(mouse_one_entry)
+
+                if add_to_mouse_two_entries:
+                    raise ValueError(
+                        f"File {file_name} did not have messages synced correctly"
+                    )
+
+                # Check the count of each potentially missing message, in the
+                # data set for each mouse
+                first_missing_count = []
+                second_missing_count = []
+                for msg in missing_messages:
+                    first_count = [
+                        entry
+                        for entry in data["data"][mouse_ids[0]]
+                        if msg in entry["message"]
+                    ]
+                    second_count = [
+                        entry
+                        for entry in data["data"][mouse_ids[1]]
+                        if msg in entry["message"]
+                    ]
+                    first_missing_count.append(len(first_count))
+                    second_missing_count.append(len(second_count))
+                first_missing_count = np.array(first_missing_count)
+                second_missing_count = np.array(second_missing_count)
+                diff_missing_count = first_missing_count - second_missing_count
+                if any(diff_missing_count):
+                    print(f"File {file_name} has unsynced missing messages")
+                    print(f"{file_name}: {diff_missing_count}")
+
+        # Show a histogram of the offset data.
+        # This can tell us, for the given data, how spread the offset
+        # is. It won't tell us whether the offset drifts throughout a
+        # given session
+        start_time_offsets = [
+            round(1000*x, 0)
+            for x in start_time_offsets
+        ]
+        sns.histplot(np.array(start_time_offsets), bins=50, kde=True, color="blue")
+        plt.xlabel("Milliseconds")
+        plt.ylabel("Frequency")
+        plt.title("Primary, Secondary Trial Start Time Offset")
+        plt.show()
+
+    def _sync_messages_to_second_mouse(self) -> None:
+        """
+        Add exact puff, positive signal, and negative signal timings
+        to second mouse data
+        """
         print("Syncing puffs and signals from first mouse to second mouse")
 
         missing_messages = [
@@ -595,22 +882,18 @@ class RigFiles:
 
         for root, _, files in self.os_walk:
             for file_name in files:
-                file_path = os.path.join(root, file_name)
+                if not is_base_data_file(file_name):
+                    continue
 
-                if (
-                    file_name.endswith("_raw.json")
-                    or file_name.endswith("_processed.json")
-                    or file_name.endswith("_analyzed.json")
-                    or not file_name.endswith(".json")
-                ):
+                # This specific file needs to be skipped but is an
+                # outlier. When it was created, the hard drive on the
+                # computer running the rig ran out of space
+                if file_name == "106_3_106_4_2025-01-17_13-44-11.json":
                     continue
-                is_data_file = re.search(FILENAME_REGEX, file_name)
-                if not is_data_file:
-                    continue
-                # TESTING purposes
-                # if not '102_1_102_2_2024-09-04_15-00-27' in file_path:
-                #     continue
-                with open(file_path, "r") as f:
+
+                full_file = os.path.join(root, file_name)
+
+                with open(full_file, "r") as f:
                     data = json.load(f)
                     mouse_ids = data["header"]["mouse_ids"]
                 # Ensure we have two mice in the data
@@ -703,19 +986,18 @@ class RigFiles:
                         data["data"][second_mouse_id] = combined_data
 
                         # TESTING purposes - write to a new file
-                        # dir_name, base_name = os.path.split(file_path)
+                        # dir_name, base_name = os.path.split(full_file)
                         # file_name, file_extension = os.path.splitext(base_name)
                         # new_file_name = f"{file_name}_v2{file_extension}"
                         # new_file_path = os.path.join(dir_name, new_file_name)
                         # with open(new_file_path, "w") as f:
                         # json.dump(data, f, indent=4)
-                        with open(file_path, "w") as f:
+                        with open(full_file, "w") as f:
                             json.dump(data, f, indent=4)
 
         if missing:
             print("Filled and synced missing data for second mouse!")
 
-    import os
 
     def _remove_processed_data(
         self,
