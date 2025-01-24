@@ -146,8 +146,8 @@ def extract_features_from_session_data(
     mouse_id: str,
     session_id: int,
     file_name: str,
-    print_bad_data_blobs: bool = False,
-) -> pd.DataFrame:
+    print_bad_data_blobs: bool = True,
+) -> tuple[str, pd.DataFrame]:
     """The raw data frame is parsed into a Pandas data frame with the
     `message` field parsed into
 
@@ -160,6 +160,7 @@ def extract_features_from_session_data(
     doing a lot of the heavy-lifting in terms of data processing, and it
     contains assumptions about the way the Rig saves data.
 
+    Returns a dataframe with features and string containing trial types
         -
     """
     parsed_data = []
@@ -190,6 +191,7 @@ def extract_features_from_session_data(
     air_puff_stop_time = -1
     air_puff_total_time = -1
     first_puff_started = 0
+    trial_types = ''
 
     # Some data integrity checks, we may want to skip data and mark sessions as
     # invalid if these fails.
@@ -221,7 +223,10 @@ def extract_features_from_session_data(
             t_trial = int(split_data[2])
             msg = msg_delimiter.join(split_data[3::])
         except (KeyError, ValueError):
-            raise ValueError(f"Bad data blob found: {data_blob}")
+            if print_bad_data_blobs:
+                print(f"Skipping bad data blob: {data_blob}")
+            continue
+            # raise ValueError(f"Bad data blob found: {data_blob}")
         # Confirm that absolute time moves forward
         # TODO: uncomment once we fix syncing second and first mouse data
         # if absolute_time < previous_time:
@@ -244,7 +249,6 @@ def extract_features_from_session_data(
             is_trial = 1
         if trial_end_msg in msg:
             is_trial = 0
-            trial_type = -1
 
         # Get trial type
         if "currentTrialType" in msg:
@@ -374,7 +378,7 @@ def extract_features_from_session_data(
             }
         )
 
-    return pd.DataFrame(parsed_data)
+    return trial_types, pd.DataFrame(parsed_data)
 
 
 def get_data_features_from_data_file(
@@ -402,7 +406,7 @@ def get_data_features_from_data_file(
             raw_data = json_data["data"][mouse_id]
         except KeyError:
             raise ValueError(f"File name does not match its 'mouse_ids': {full_file}")
-        df = extract_features_from_session_data(
+        trial_types, df = extract_features_from_session_data(
             raw_data=raw_data,
             mouse_id=mouse_id,
             session_id=session_id,
@@ -451,12 +455,7 @@ def get_data_features_from_data_file(
 
         # Trial specific stats
         trials = range(min(dfl['trial']), max(dfl['trial']) + 1)
-        trial_types = (dfl[['trial', 'trial_type']]
-               .drop_duplicates(subset=['trial', 'trial_type'])
-               .loc[lambda x: x['trial_type'] != -1]
-               .set_index('trial')
-               .reindex(trials, fill_value=-1)
-               .squeeze())
+        trial_types = pd.Series(list(trial_types)).reindex(trials, fill_value=-1)
         avg_lick_freq_trial = dfl.groupby('trial')["lick_frequency"].mean().reindex(trials, fill_value=0)
         avg_lick_freq_csplus_trial = dfl_csplus.groupby('trial')["lick_frequency"].mean().reindex(trials, fill_value=0)
         avg_lick_freq_csminus_trial = dfl_csminus.groupby('trial')["lick_frequency"].mean().reindex(trials, fill_value=0)
@@ -776,7 +775,7 @@ class Analysis:
         self,
         *,
         data_root: str,
-        verbose: bool = False,
+        verbose: bool = True,
         cohorts: list[str] = [],
         mice_of_interest: list[str] = []
     ) -> None:
