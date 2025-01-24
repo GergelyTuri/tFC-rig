@@ -146,8 +146,8 @@ def extract_features_from_session_data(
     mouse_id: str,
     session_id: int,
     file_name: str,
-    print_bad_data_blobs: bool = False,
-) -> pd.DataFrame:
+    print_bad_data_blobs: bool = True,
+) -> tuple[str, pd.DataFrame]:
     """The raw data frame is parsed into a Pandas data frame with the
     `message` field parsed into
 
@@ -160,6 +160,7 @@ def extract_features_from_session_data(
     doing a lot of the heavy-lifting in terms of data processing, and it
     contains assumptions about the way the Rig saves data.
 
+    Returns a dataframe with features and string containing trial types
         -
     """
     parsed_data = []
@@ -173,6 +174,7 @@ def extract_features_from_session_data(
     # by time, and checks for certain markers in the data. It uses `{0, 1}`
     # to represent `False` and `True` respectively
     is_session = 0
+    is_tone = 0
     is_trace = 0
     # Valid trial types: `{0, 1}`, type `-1` represents not known or no
     # current trial yet
@@ -183,11 +185,13 @@ def extract_features_from_session_data(
     previous_time = raw_data[0]["absolute_time"]
 
     # Some trial parameters we will try to extract
+    auditory_start = -1
     auditory_stop = -1
     air_puff_start_time = -1
     air_puff_stop_time = -1
     air_puff_total_time = -1
     first_puff_started = 0
+    trial_types = ''
 
     # Some data integrity checks, we may want to skip data and mark sessions as
     # invalid if these fails.
@@ -219,7 +223,10 @@ def extract_features_from_session_data(
             t_trial = int(split_data[2])
             msg = msg_delimiter.join(split_data[3::])
         except (KeyError, ValueError):
-            raise ValueError(f"Bad data blob found: {data_blob}")
+            if print_bad_data_blobs:
+                print(f"Skipping bad data blob: {data_blob}")
+            continue
+            # raise ValueError(f"Bad data blob found: {data_blob}")
         # Confirm that absolute time moves forward
         # TODO: uncomment once we fix syncing second and first mouse data
         # if absolute_time < previous_time:
@@ -242,7 +249,6 @@ def extract_features_from_session_data(
             is_trial = 1
         if trial_end_msg in msg:
             is_trial = 0
-            trial_type = -1
 
         # Get trial type
         if "currentTrialType" in msg:
@@ -282,6 +288,8 @@ def extract_features_from_session_data(
         if "AIR_PUFF_TOTAL_TIME" in msg:
             air_puff_total_time = int(msg.split(msg_delimiter)[1])
             air_puff_stop_time = air_puff_start_time + air_puff_total_time
+        if "AUDITORY_START" in msg:
+            auditory_start = int(msg.split(msg_delimiter)[1])
         if "AUDITORY_STOP" in msg:
             auditory_stop = int(msg.split(msg_delimiter)[1])
 
@@ -312,6 +320,13 @@ def extract_features_from_session_data(
 
             if t_trial > air_puff_stop_time:
                 first_puff_started = 0
+        
+        # Check if data falls under tone period
+        if auditory_start > 0 and auditory_stop > 0:
+            if t_trial > auditory_start and t_trial < auditory_stop:
+                is_tone = 1
+            else:
+                is_tone = 0
         
         # Check if data falls under trace period (short duration after auditory cues)
         if air_puff_start_time > 0 and auditory_stop > 0:
@@ -352,6 +367,7 @@ def extract_features_from_session_data(
                 "message": msg,
                 "is_session": is_session,
                 "is_trial": is_trial,
+                "is_tone": is_tone,
                 "is_trace": is_trace,
                 "trial_type": trial_type,
                 "lick": lick,
@@ -362,7 +378,7 @@ def extract_features_from_session_data(
             }
         )
 
-    return pd.DataFrame(parsed_data)
+    return trial_types, pd.DataFrame(parsed_data)
 
 
 def get_data_features_from_data_file(
@@ -390,7 +406,7 @@ def get_data_features_from_data_file(
             raw_data = json_data["data"][mouse_id]
         except KeyError:
             raise ValueError(f"File name does not match its 'mouse_ids': {full_file}")
-        df = extract_features_from_session_data(
+        trial_types, df = extract_features_from_session_data(
             raw_data=raw_data,
             mouse_id=mouse_id,
             session_id=session_id,
@@ -420,21 +436,26 @@ def get_data_features_from_data_file(
         avg_lick_freq_csminus = dfl_csminus["lick_frequency"].mean()
         dfl_no_signal = df_is_trial[df_is_trial["trial_type"].isin([4])]
         avg_lick_freq_no_signal = dfl_no_signal["lick_frequency"].mean()
+
+        dfl_csplus_is_tone = dfl_csplus[dfl_csplus["is_tone"] == 1]
+        avg_lick_freq_csplus_tone = dfl_csplus_is_tone["lick_frequency"].mean()
+        dfl_csminus_is_tone = dfl_csminus[dfl_csminus["is_tone"] == 1]
+        avg_lick_freq_csminus_tone = dfl_csminus_is_tone["lick_frequency"].mean()
         dfl_csplus_is_trace = dfl_csplus[dfl_csplus["is_trace"] == 1]
         avg_lick_freq_csplus_trace = dfl_csplus_is_trace["lick_frequency"].mean()
         dfl_csminus_is_trace = dfl_csminus[dfl_csminus["is_trace"] == 1]
         avg_lick_freq_csminus_trace = dfl_csminus_is_trace["lick_frequency"].mean()
+        
         dfl_iti = dfl[dfl["is_trial"] == 0]
         avg_lick_freq_iti = dfl_iti["lick_frequency"].mean()
+        dfl_csplus_iti = dfl_iti[dfl_iti["trial_type"].isin([1, 2])]
+        dfl_csminus_iti = dfl_iti[dfl_iti["trial_type"].isin([0, 3])]
+        avg_lick_freq_csplus_iti = dfl_csplus_iti["lick_frequency"].mean()
+        avg_lick_freq_csminus_iti = dfl_csminus_iti["lick_frequency"].mean()
 
         # Trial specific stats
         trials = range(min(dfl['trial']), max(dfl['trial']) + 1)
-        trial_types = (dfl[['trial', 'trial_type']]
-               .drop_duplicates(subset=['trial', 'trial_type'])
-               .loc[lambda x: x['trial_type'] != -1]
-               .set_index('trial')
-               .reindex(trials, fill_value=-1)
-               .squeeze())
+        trial_types = pd.Series(list(trial_types)).reindex(trials, fill_value=-1)
         avg_lick_freq_trial = dfl.groupby('trial')["lick_frequency"].mean().reindex(trials, fill_value=0)
         avg_lick_freq_csplus_trial = dfl_csplus.groupby('trial')["lick_frequency"].mean().reindex(trials, fill_value=0)
         avg_lick_freq_csminus_trial = dfl_csminus.groupby('trial')["lick_frequency"].mean().reindex(trials, fill_value=0)
@@ -499,6 +520,14 @@ def get_data_features_from_data_file(
             avg_lick_freq_no_signal,
             total_session_licks,
         )
+        z_avg_lick_freq_csplus_tone = 1000 * scalar_divide(
+            avg_lick_freq_csplus_tone,
+            total_session_licks,
+        )
+        z_avg_lick_freq_csminus_tone = 1000 * scalar_divide(
+            avg_lick_freq_csminus_tone,
+            total_session_licks,
+        )
         z_avg_lick_freq_csplus_trace = 1000 * scalar_divide(
             avg_lick_freq_csplus_trace,
             total_session_licks,
@@ -507,6 +536,15 @@ def get_data_features_from_data_file(
             avg_lick_freq_csminus_trace,
             total_session_licks,
         )
+        z_avg_lick_freq_csplus_iti = 1000 * scalar_divide(
+            avg_lick_freq_csplus_iti,
+            total_session_licks,
+        )
+        z_avg_lick_freq_csminus_iti = 1000 * scalar_divide(
+            avg_lick_freq_csminus_iti,
+            total_session_licks,
+        )
+        
 
         # Total licks
         total_licks = df["lick"].sum()
@@ -632,14 +670,22 @@ def get_data_features_from_data_file(
             "avg_lick_freq_csplus": avg_lick_freq_csplus,
             "avg_lick_freq_csminus": avg_lick_freq_csminus,
             "avg_lick_freq_iti": avg_lick_freq_iti,
+            "avg_lick_freq_csplus_tone": avg_lick_freq_csplus_tone,
+            "avg_lick_freq_csminus_tone": avg_lick_freq_csminus_tone,
             "avg_lick_freq_csplus_trace": avg_lick_freq_csplus_trace,
             "avg_lick_freq_csminus_trace": avg_lick_freq_csminus_trace,
+            "avg_lick_freq_csplus_iti": avg_lick_freq_csplus_iti,
+            "avg_lick_freq_csminus_iti": avg_lick_freq_csminus_iti,
             "z_avg_lick_freq": z_avg_lick_freq,
             "z_avg_lick_freq_csplus": z_avg_lick_freq_csplus,
             "z_avg_lick_freq_csminus": z_avg_lick_freq_csminus,
             "z_avg_lick_freq_iti": z_avg_lick_freq_iti,
+            "z_avg_lick_freq_csplus_tone": z_avg_lick_freq_csplus_tone,
+            "z_avg_lick_freq_csminus_tone": z_avg_lick_freq_csminus_tone,
             "z_avg_lick_freq_csplus_trace": z_avg_lick_freq_csplus_trace,
             "z_avg_lick_freq_csminus_trace": z_avg_lick_freq_csminus_trace,
+            "z_avg_lick_freq_csplus_iti": z_avg_lick_freq_csplus_iti,
+            "z_avg_lick_freq_csminus_iti": z_avg_lick_freq_csminus_iti,
             "z_avg_lick_freq_no_signal": z_avg_lick_freq_no_signal,
             "total_licks": total_licks,
             "total_puffed_licks": total_puffed_licks,
@@ -729,7 +775,7 @@ class Analysis:
         self,
         *,
         data_root: str,
-        verbose: bool = False,
+        verbose: bool = True,
         cohorts: list[str] = [],
         mice_of_interest: list[str] = []
     ) -> None:
