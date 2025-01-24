@@ -173,6 +173,7 @@ def extract_features_from_session_data(
     # by time, and checks for certain markers in the data. It uses `{0, 1}`
     # to represent `False` and `True` respectively
     is_session = 0
+    is_tone = 0
     is_trace = 0
     # Valid trial types: `{0, 1}`, type `-1` represents not known or no
     # current trial yet
@@ -183,6 +184,7 @@ def extract_features_from_session_data(
     previous_time = raw_data[0]["absolute_time"]
 
     # Some trial parameters we will try to extract
+    auditory_start = -1
     auditory_stop = -1
     air_puff_start_time = -1
     air_puff_stop_time = -1
@@ -282,6 +284,8 @@ def extract_features_from_session_data(
         if "AIR_PUFF_TOTAL_TIME" in msg:
             air_puff_total_time = int(msg.split(msg_delimiter)[1])
             air_puff_stop_time = air_puff_start_time + air_puff_total_time
+        if "AUDITORY_START" in msg:
+            auditory_start = int(msg.split(msg_delimiter)[1])
         if "AUDITORY_STOP" in msg:
             auditory_stop = int(msg.split(msg_delimiter)[1])
 
@@ -312,6 +316,13 @@ def extract_features_from_session_data(
 
             if t_trial > air_puff_stop_time:
                 first_puff_started = 0
+        
+        # Check if data falls under tone period
+        if auditory_start > 0 and auditory_stop > 0:
+            if t_trial > auditory_start and t_trial < auditory_stop:
+                is_tone = 1
+            else:
+                is_tone = 0
         
         # Check if data falls under trace period (short duration after auditory cues)
         if air_puff_start_time > 0 and auditory_stop > 0:
@@ -352,6 +363,7 @@ def extract_features_from_session_data(
                 "message": msg,
                 "is_session": is_session,
                 "is_trial": is_trial,
+                "is_tone": is_tone,
                 "is_trace": is_trace,
                 "trial_type": trial_type,
                 "lick": lick,
@@ -420,12 +432,22 @@ def get_data_features_from_data_file(
         avg_lick_freq_csminus = dfl_csminus["lick_frequency"].mean()
         dfl_no_signal = df_is_trial[df_is_trial["trial_type"].isin([4])]
         avg_lick_freq_no_signal = dfl_no_signal["lick_frequency"].mean()
+
+        dfl_csplus_is_tone = dfl_csplus[dfl_csplus["is_tone"] == 1]
+        avg_lick_freq_csplus_tone = dfl_csplus_is_tone["lick_frequency"].mean()
+        dfl_csminus_is_tone = dfl_csminus[dfl_csminus["is_tone"] == 1]
+        avg_lick_freq_csminus_tone = dfl_csminus_is_tone["lick_frequency"].mean()
         dfl_csplus_is_trace = dfl_csplus[dfl_csplus["is_trace"] == 1]
         avg_lick_freq_csplus_trace = dfl_csplus_is_trace["lick_frequency"].mean()
         dfl_csminus_is_trace = dfl_csminus[dfl_csminus["is_trace"] == 1]
         avg_lick_freq_csminus_trace = dfl_csminus_is_trace["lick_frequency"].mean()
+        
         dfl_iti = dfl[dfl["is_trial"] == 0]
         avg_lick_freq_iti = dfl_iti["lick_frequency"].mean()
+        dfl_csplus_iti = dfl_csplus[dfl_csplus["is_trial"] == 0]
+        avg_lick_freq_csplus_iti = dfl_csplus_iti["lick_frequency"].mean()
+        dfl_csminus_iti = dfl_csminus[dfl_csminus["is_trial"] == 0]
+        avg_lick_freq_csminus_iti = dfl_csminus_iti["lick_frequency"].mean()
 
         # Trial specific stats
         trials = range(min(dfl['trial']), max(dfl['trial']) + 1)
@@ -499,6 +521,14 @@ def get_data_features_from_data_file(
             avg_lick_freq_no_signal,
             total_session_licks,
         )
+        z_avg_lick_freq_csplus_tone = 1000 * scalar_divide(
+            avg_lick_freq_csplus_tone,
+            total_session_licks,
+        )
+        z_avg_lick_freq_csminus_tone = 1000 * scalar_divide(
+            avg_lick_freq_csminus_tone,
+            total_session_licks,
+        )
         z_avg_lick_freq_csplus_trace = 1000 * scalar_divide(
             avg_lick_freq_csplus_trace,
             total_session_licks,
@@ -507,6 +537,15 @@ def get_data_features_from_data_file(
             avg_lick_freq_csminus_trace,
             total_session_licks,
         )
+        z_avg_lick_freq_csplus_iti = 1000 * scalar_divide(
+            avg_lick_freq_csplus_iti,
+            total_session_licks,
+        )
+        z_avg_lick_freq_csminus_iti = 1000 * scalar_divide(
+            avg_lick_freq_csminus_iti,
+            total_session_licks,
+        )
+        
 
         # Total licks
         total_licks = df["lick"].sum()
@@ -632,14 +671,22 @@ def get_data_features_from_data_file(
             "avg_lick_freq_csplus": avg_lick_freq_csplus,
             "avg_lick_freq_csminus": avg_lick_freq_csminus,
             "avg_lick_freq_iti": avg_lick_freq_iti,
+            "avg_lick_freq_csplus_tone": avg_lick_freq_csplus_tone,
+            "avg_lick_freq_csminus_tone": avg_lick_freq_csminus_tone,
             "avg_lick_freq_csplus_trace": avg_lick_freq_csplus_trace,
             "avg_lick_freq_csminus_trace": avg_lick_freq_csminus_trace,
+            "avg_lick_freq_csplus_iti": avg_lick_freq_csplus_iti,
+            "avg_lick_freq_csminus_iti": avg_lick_freq_csminus_iti,
             "z_avg_lick_freq": z_avg_lick_freq,
             "z_avg_lick_freq_csplus": z_avg_lick_freq_csplus,
             "z_avg_lick_freq_csminus": z_avg_lick_freq_csminus,
             "z_avg_lick_freq_iti": z_avg_lick_freq_iti,
+            "z_avg_lick_freq_csplus_tone": z_avg_lick_freq_csplus_tone,
+            "z_avg_lick_freq_csminus_tone": z_avg_lick_freq_csminus_tone,
             "z_avg_lick_freq_csplus_trace": z_avg_lick_freq_csplus_trace,
             "z_avg_lick_freq_csminus_trace": z_avg_lick_freq_csminus_trace,
+            "z_avg_lick_freq_csplus_iti": z_avg_lick_freq_csplus_iti,
+            "z_avg_lick_freq_csminus_iti": z_avg_lick_freq_csminus_iti,
             "z_avg_lick_freq_no_signal": z_avg_lick_freq_no_signal,
             "total_licks": total_licks,
             "total_puffed_licks": total_puffed_licks,
