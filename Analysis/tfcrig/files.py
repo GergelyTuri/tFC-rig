@@ -24,15 +24,11 @@ import seaborn as sns
 
 from tfcrig import (
     create_cohort_pattern,
+    extract_cohort_mouse_pairs,
     root_contains_cohort_of_interest,
+    DATETIME_REGEX
 )
 from tfcrig.notebook import builtin_print
-
-DATETIME_REGEX = r"\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}"
-"""
-Regex matching for a datetime of the format `YYYY-MM-DD_HH-MM-SS` which
-is included in the file names generated during data collection
-"""
 
 BAD_DATE_REGEX_1 = r"(\d{1,2})[ \/](\d{1,2})[ \/](\d{2,4})"
 """
@@ -44,44 +40,6 @@ Possible date format in Google Drive folder names
 """
 
 FILENAME_REGEX = DATETIME_REGEX + r".json"
-
-
-def extract_cohort_mouse_pairs(cohort_mouse_blob: str) -> list[str]:
-    """
-    Define a recursive function that helps extract sets of
-    `{cohort_id}_{mouse_id}_` from a file name. It accepts the
-    front portion of a session file name and returns a list of
-    these sets
-    """
-    if not isinstance(cohort_mouse_blob, str):
-        raise TypeError(
-            f"Can only search strings for cohort, mouse pairs!"
-        )
-
-    if not cohort_mouse_blob:
-        raise ValueError(
-            f"Can only search non-empty strings for cohort, mouse pairs!"
-        )
-
-    date_match = re.search(DATETIME_REGEX, cohort_mouse_blob)
-    if date_match:
-        raise ValueError(
-            f"Provided string '{cohort_mouse_blob}' still contains a date-time!"
-        )
-
-    pattern = r"\d+[_-]\d+[_-]"
-    string_match = re.search(pattern, cohort_mouse_blob)
-
-    if string_match:
-        first_pair = string_match.group()
-        rest_of_string = cohort_mouse_blob[string_match.end() :]
-        if rest_of_string:
-            return [first_pair] + extract_cohort_mouse_pairs(rest_of_string)
-        return [first_pair]
-    raise ValueError(
-        f"Provided string or sub-string '{cohort_mouse_blob}' does not "
-        "contain a cohort, mouse pair!"
-    )
 
 
 def is_base_data_file(file_name: str) -> bool:
