@@ -444,9 +444,9 @@ def get_data_features_from_data_file(
         
         dfl_iti = dfl[dfl["is_trial"] == 0]
         avg_lick_freq_iti = dfl_iti["lick_frequency"].mean()
-        dfl_csplus_iti = dfl_csplus[dfl_csplus["is_trial"] == 0]
+        dfl_csplus_iti = dfl_iti[dfl_iti["trial_type"].isin([1, 2])]
+        dfl_csminus_iti = dfl_iti[dfl_iti["trial_type"].isin([0, 3])]
         avg_lick_freq_csplus_iti = dfl_csplus_iti["lick_frequency"].mean()
-        dfl_csminus_iti = dfl_csminus[dfl_csminus["is_trial"] == 0]
         avg_lick_freq_csminus_iti = dfl_csminus_iti["lick_frequency"].mean()
 
         # Trial specific stats
