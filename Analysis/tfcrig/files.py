@@ -22,9 +22,10 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 
-from tfcrig import (
+from tfcrig.helpers import (
     create_cohort_pattern,
     extract_cohort_mouse_pairs,
+    is_base_data_file,
     root_contains_cohort_of_interest,
     DATETIME_REGEX
 )
@@ -38,20 +39,6 @@ BAD_DATE_REGEX_2 = r"(\d{1,2})[_](\d{1,2})[_](\d{2,4})"
 """
 Possible date format in Google Drive folder names
 """
-
-FILENAME_REGEX = DATETIME_REGEX + r".json"
-
-
-def is_base_data_file(file_name: str) -> bool:
-    """
-    Given a file name, determine whether it is an base data file.
-    These are JSON files used to build the data frame for the analysis.
-    They are not the raw, analyzed, or processed data that may be used
-    as an intermediate step in the analysis
-    """
-    if re.search(FILENAME_REGEX, file_name):
-        return True
-    return False
 
 
 @dataclass
