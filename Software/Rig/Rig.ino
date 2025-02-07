@@ -105,7 +105,8 @@ void setup() {
   // default and `LOW` when pressed, the secondary pins are set to
   // `HIGH` here
   if (IS_PRIMARY_RIG) {
-    // Add logic to skip positive and negative tones on secondary rigs (need tok eep water, licks, air puffs)
+    // Add logic to skip positive and negative tones on secondary rigs
+    // (need to keep water, licks, air puffs)
     pinMode(PIN_BUTTON, INPUT_PULLUP);
     pinMode(PIN_SECONDARY, OUTPUT);
   } else {
@@ -179,8 +180,10 @@ void loop() {
           checkWater();
         }
         if (USING_AUDITORY_CUES && IS_PRIMARY_RIG) {
-          if (trialTypeObjects[currentTrialType]->airpuff==true) {
-              checkAir();
+          if (trialTypeObjects[currentTrialType]->water==true) {
+            // Water is made available at the point in the experiment where
+            // an air puff used to be sent
+            checkWater();
           }
           if (trialTypeObjects[currentTrialType]->hasSignal==1){
             if (trialTypeObjects[currentTrialType]->signal == 1) {
@@ -217,7 +220,6 @@ void loop() {
               interTrialIntervalWaitTime = POST_LAST_TRIAL_INTERVAL;
             }
           }
-          
 
           /* INTER TRIAL INTERVAL LOOP
            * Do things during the inter-trial interval. For example,
@@ -455,10 +457,7 @@ void trialStart() {
   // printed at session start
   print("Printing trial parameters");
   vprint("randomInterTrialInterval", randomInterTrialInterval);
-  // This strange subtraction is due to casting a char to an int,
-  // where the char takes on its ASCII value but we subtract the ASCII
-  // value of zero to give us the true numeric
-  // currentTrialType = trialTypes[currentTrial] - 48;
+
   currentTrialType = trialTypes[currentTrial];
   vprint("currentTrialType", currentTrialType);
 

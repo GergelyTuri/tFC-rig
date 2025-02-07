@@ -183,7 +183,7 @@ const long POST_LAST_TRIAL_INTERVAL = 60000;
 // Globally enable or disable whether the water solenoid can be
 // activated through licks
 // Lick, water settings
-const bool WATER_REWARD_AVAILABLE = true;
+const bool WATER_REWARD_AVAILABLE = false;
 //
 // -------------------
 // WATER_DISPENSE_TIME
