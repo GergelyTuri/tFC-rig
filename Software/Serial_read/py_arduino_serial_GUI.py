@@ -13,7 +13,7 @@ Usage:
 from PyQt6.QtWidgets import QApplication, QVBoxLayout, QWidget, QPushButton, QFormLayout, QGroupBox, QMessageBox, QScrollArea, QComboBox, QGridLayout
 from PyQt6.QtGui import QIcon, QPixmap
 from PyQt6.QtCore import Qt
-from .constants import NO_PUFF_NEGATIVE, PARAMS_PATH, PUFF_POSITIVE, TRIAL_CLASSES
+from .constants import PARAMS_PATH, TRIAL_CLASSES
 from ..camera_control import camera_class as cc
 from .serial_comm import SerialComm as sc
 from .update_sketch import UpdateSketch
@@ -67,8 +67,8 @@ class Window(QWidget):
             checked=False,
         )
         # Trial Types
-        self.trial_type_1 = ComboBox(trialSettingsLayout, 'Trial Type 1', TRIAL_CLASSES, NO_PUFF_NEGATIVE)
-        self.trial_type_2 = ComboBox(trialSettingsLayout, 'Trial Type 2', TRIAL_CLASSES, PUFF_POSITIVE)
+        self.trial_type_1 = ComboBox(trialSettingsLayout, 'Trial Type 1', TRIAL_CLASSES, TRIAL_CLASSES[0])
+        self.trial_type_2 = ComboBox(trialSettingsLayout, 'Trial Type 2', TRIAL_CLASSES, TRIAL_CLASSES[1])
         self.min_iti = SpinBox(trialSettingsLayout, "Minimum iti duration", 60000, step=1000)
         self.max_iti = SpinBox(trialSettingsLayout, "Maximum iti duration", 300000, step=1000)
         self.trial_duration = SpinBox(trialSettingsLayout, "Trial duration", 50000, step=1000, max=2000000)
