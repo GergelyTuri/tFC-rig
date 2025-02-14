@@ -128,12 +128,12 @@ const int NUMBER_OF_TRIALS = 6;
 // ----------------
 // TRIAL_TYPES
 // The type for each trial.
-// puff_CS-: negative signal with airpuff
-// puff_CS+: positive signal with airpuff
-// no_puff_CS-: negative signal (no airpuff)
-// no_puff_CS+: positive signal (no airpuff)
-const char TRIAL_TYPE_1[] = "no_puff_CS-";
-const char TRIAL_TYPE_2[] = "puff_CS+";
+// water_CS-: negative signal with water
+// water_CS+: positive signal with water
+// no_water_CS-: negative signal (no water)
+// no_water_CS+: positive signal (no water)
+const char TRIAL_TYPE_1[] = "no_water_CS-";
+const char TRIAL_TYPE_2[] = "water_CS+";
 //
 // -----------
 // IS_TRAINING
@@ -183,7 +183,7 @@ const long POST_LAST_TRIAL_INTERVAL = 60000;
 // Globally enable or disable whether the water solenoid can be
 // activated through licks
 // Lick, water settings
-const bool WATER_REWARD_AVAILABLE = true;
+const bool WATER_REWARD_AVAILABLE = false;
 //
 // -------------------
 // WATER_DISPENSE_TIME

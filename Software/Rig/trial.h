@@ -16,8 +16,8 @@ const int DEBUG_TEST_SECONDARY = false;
 
 // Trial settings
 const int NUMBER_OF_TRIALS = 6;
-const char* TRIAL_TYPE_1 = "no_puff_CS-";
-const char* TRIAL_TYPE_2 = "puff_CS+";
+const char* TRIAL_TYPE_1 = "no_water_CS-";
+const char* TRIAL_TYPE_2 = "water_CS+";
 const bool IS_TRAINING = false;
 const long MIN_ITI = 60000;
 const long MAX_ITI = 300000;
@@ -25,7 +25,7 @@ const long TRIAL_DURATION = 50000;
 const long POST_LAST_TRIAL_INTERVAL = 60000;
 
 // Lick, water settings
-const bool WATER_REWARD_AVAILABLE = true;
+const bool WATER_REWARD_AVAILABLE = false;
 const int WATER_DISPENSE_TIME = 200;
 const int WATER_TIMEOUT = 700;
 const long LICK_TIMEOUT = 100;
