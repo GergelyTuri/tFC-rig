@@ -22,7 +22,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 
-from tfcrig.helpers import (
+from tfcrig.helpers.tfcrig import (
     create_cohort_pattern,
     extract_cohort_mouse_pairs,
     is_base_data_file,

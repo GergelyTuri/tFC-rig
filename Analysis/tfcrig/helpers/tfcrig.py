@@ -1,3 +1,6 @@
+"""
+Helper functions with custom, tFC-rig-specific logic
+"""
 import re
 from typing import Optional
 from datetime import datetime
@@ -12,6 +15,7 @@ FILENAME_REGEX = DATETIME_REGEX + r".json"
 """
 Base data files end in the datetime and are of type JSON
 """
+
 
 def create_cohort_pattern(root_path: str) -> re.Pattern:
     """
@@ -141,16 +145,16 @@ def get_mouse_ids_from_file_name(file_name: str) -> list[Optional[str]]:
     return [e[0:-1] for e in exp_mouse_pairs]
 
 
-def get_mouse_ids(file_paths: list[tuple[str,str,str]]) -> set[Optional[str]]:
+def get_mouse_ids(os_walk: list[tuple[str,str,str]]) -> set[Optional[str]]:
     """
     Given the path to the root of the data directory, return a set of mouse
     IDs. Also checks that mouse ID, session ID pairs are unique
     """
     all_mouse_ids = []
     mouse_session_pairs = set()
-    for _, _, files in file_paths:
+    for _, _, files in os_walk:
         for file_name in files:
-            if not is_data_file(file_name):
+            if not is_base_data_file(file_name):
                 continue
 
             mouse_ids = get_mouse_ids_from_file_name(file_name)
@@ -165,7 +169,6 @@ def get_mouse_ids(file_paths: list[tuple[str,str,str]]) -> set[Optional[str]]:
                         f"({mouse_id}, {session_id})"
                     )
                 mouse_session_pairs.add(key)
-
             all_mouse_ids += mouse_ids
 
     return set(mouse_ids)
