@@ -160,7 +160,6 @@ void loop() {
     printSessionParameters();
 
     print("Session has started");
-    print("THIS IS THE TEST SKETCH 02-12-2025");
     sessionHasStarted = true;
     digitalWrite(PIN_CAMERA, HIGH);
     sessionStartTime = millis();
