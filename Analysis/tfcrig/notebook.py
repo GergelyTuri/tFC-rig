@@ -160,7 +160,7 @@ google.colab.output.setIframeHeight(0, true, {{maxHeight: {self.max_cell_height}
             def stop(self, *args, **kwargs):
                 try:
                     delta = round(monotonic() - self.start_time, 2)
-                    print(f"\n⏱️ Execution time: {delta}s")
+                    builtin_print(f"\n⏱️ Execution time: {delta}s")
                 except TypeError:
                     # The `stop` will be called when the cell that
                     # defines `CellTimer` is executed, but `start`
