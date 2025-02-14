@@ -3,6 +3,7 @@ import logging
 import os
 from dataclasses import dataclass
 from datetime import datetime
+from time import monotonic
 
 try:
     from google.colab import drive, output
@@ -143,3 +144,32 @@ google.colab.output.setIframeHeight(0, true, {{maxHeight: {self.max_cell_height}
             output.eval_js(script)
 
         get_ipython().events.register("pre_run_cell", set_output_height_for_all_cells)
+
+    def _add_cell_timing(self) -> None:
+        """
+        To be careful of analysis pipeline execution time, print out
+        the time it takes each cell to execute
+        """
+        class CellTimer:
+            def __init__(self):
+                self.start_time = None
+
+            def start(self, *args, **kwargs):
+                self.start_time = monotonic()
+
+            def stop(self, *args, **kwargs):
+                try:
+                    delta = round(monotonic() - self.start_time, 2)
+                    print(f"\n⏱️ Execution time: {delta}s")
+                except TypeError:
+                    # The `stop` will be called when the cell that
+                    # defines `CellTimer` is executed, but `start`
+                    # was never called, leading to a `TypeError` in
+                    # the subtraction. Skip it
+                    pass
+
+
+        timer = CellTimer()
+
+        get_ipython().events.register("pre_run_cell", timer.start)
+        get_ipython().events.register("post_run_cell", timer.stop)
