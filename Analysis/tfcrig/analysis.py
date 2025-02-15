@@ -17,7 +17,10 @@ from tfcrig.helpers.numpy import (
     scalar_divide,
     list_scalar_divide,
 )
-from tfcrig.helpers.python import dict_contains_other_values
+from tfcrig.helpers.python import (
+    datetime_to_day_of_week,
+    dict_contains_other_values,
+)
 from tfcrig.helpers.tfcrig import (
     create_cohort_pattern,
     root_contains_cohort_of_interest,
