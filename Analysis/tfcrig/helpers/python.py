@@ -21,3 +21,12 @@ def dict_contains_other_values(d: dict, types: tuple[Any]) -> bool:
 
 def datetime_to_day_of_week(date_time: datetime) -> str:
     return calendar.day_name[date_time.weekday()]
+
+
+def get_or_default(x: list, i: int, default=0):
+    """
+    Returns the element at the given index of the list if valid, else defaults to 0
+    """
+    if len(x) == 0 or len(x) <= i:
+        return default
+    return x[i]

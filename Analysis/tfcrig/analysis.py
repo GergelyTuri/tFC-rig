@@ -2,7 +2,7 @@
 import json
 import os
 from datetime import datetime
-from typing import Any, Optional
+from typing import Optional
 
 import ipywidgets as widgets
 import matplotlib.patches as mpatches
@@ -20,6 +20,7 @@ from tfcrig.helpers.numpy import (
 from tfcrig.helpers.python import (
     datetime_to_day_of_week,
     dict_contains_other_values,
+    get_or_default,
 )
 from tfcrig.helpers.tfcrig import (
     create_cohort_pattern,
@@ -47,16 +48,6 @@ def int_session_id_to_date_string(session_id: int) -> str:
     minute = session_id[10:12]
     second = session_id[12:14]
     return f"{year}-{month}-{day}T{hour}:{minute}:{second}"
-  
-
-def safe_get(x: list, i: int, default=0):
-    """
-    Returns the element at the given index of the list if valid, else defaults to 0
-    """
-    print(f"TYPE SAFE GET: {type(x)}")
-    if len(x) == 0 or len(x) <= i:
-        return default
-    return x[i]
 
 
 def extract_features_from_session_data(
@@ -640,21 +631,21 @@ def get_data_features_from_data_file(
                 "mouse_id": df["mouse_id"].iloc[0],
                 "session_id": df["session_id"].iloc[0],
                 "day_of_week": df["day_of_week"].iloc[0],
-                "trial": safe_get(trials, i),
-                "trial_type": safe_get(trial_types, i),
-                "avg_lick_freq": safe_get(avg_lick_freq_trial, i),
-                "avg_lick_freq_csplus": safe_get(avg_lick_freq_csplus_trial, i),
-                "avg_lick_freq_csminus": safe_get(avg_lick_freq_csminus_trial, i),
-                "avg_lick_freq_iti": safe_get(avg_lick_freq_iti_trial, i),
-                "avg_lick_freq_csplus_trace": safe_get(avg_lick_freq_csplus_trace_trial, i),
-                "avg_lick_freq_csminus_trace": safe_get(avg_lick_freq_csminus_trace_trial, i),
-                "z_avg_lick_freq": safe_get(z_avg_lick_freq_trial, i),
-                "z_avg_lick_freq_csplus": safe_get(z_avg_lick_freq_csplus_trial, i),
-                "z_avg_lick_freq_csminus": safe_get(z_avg_lick_freq_csminus_trial, i),
-                "z_avg_lick_freq_iti": safe_get(z_avg_lick_freq_iti_trial, i),
-                "z_avg_lick_freq_csplus_trace": safe_get(z_avg_lick_freq_csplus_trace_trial, i),
-                "z_avg_lick_freq_csminus_trace": safe_get(z_avg_lick_freq_csminus_trace_trial, i),
-                "total_licks": safe_get(total_licks_trial, i)
+                "trial": get_or_default(trials, i),
+                "trial_type": get_or_default(trial_types, i),
+                "avg_lick_freq": get_or_default(avg_lick_freq_trial, i),
+                "avg_lick_freq_csplus": get_or_default(avg_lick_freq_csplus_trial, i),
+                "avg_lick_freq_csminus": get_or_default(avg_lick_freq_csminus_trial, i),
+                "avg_lick_freq_iti": get_or_default(avg_lick_freq_iti_trial, i),
+                "avg_lick_freq_csplus_trace": get_or_default(avg_lick_freq_csplus_trace_trial, i),
+                "avg_lick_freq_csminus_trace": get_or_default(avg_lick_freq_csminus_trace_trial, i),
+                "z_avg_lick_freq": get_or_default(z_avg_lick_freq_trial, i),
+                "z_avg_lick_freq_csplus": get_or_default(z_avg_lick_freq_csplus_trial, i),
+                "z_avg_lick_freq_csminus": get_or_default(z_avg_lick_freq_csminus_trial, i),
+                "z_avg_lick_freq_iti": get_or_default(z_avg_lick_freq_iti_trial, i),
+                "z_avg_lick_freq_csplus_trace": get_or_default(z_avg_lick_freq_csplus_trace_trial, i),
+                "z_avg_lick_freq_csminus_trace": get_or_default(z_avg_lick_freq_csminus_trace_trial, i),
+                "total_licks": get_or_default(total_licks_trial, i)
             }
             for i in range(len(avg_lick_freq_trial))
         ]
