@@ -195,3 +195,18 @@ def get_datetime_from_file_path(file_path: str) -> datetime:
 
 def datetime_to_session_id(date_time: datetime) -> int:
     return int(date_time.strftime("%Y%m%d%H%M%S"))
+
+
+def int_session_id_to_date_string(session_id: int) -> str:
+    """
+    Input is a session ID integer representing a `YYYYMMDDHHMMSS` date,
+    output is a date string `YYYY-MM-DDTHH:MM:SS`
+    """
+    session_id = str(session_id)
+    year = session_id[0:4]
+    month = session_id[4:6]
+    day = session_id[6:8]
+    hour = session_id[8:10]
+    minute = session_id[10:12]
+    second = session_id[12:14]
+    return f"{year}-{month}-{day}T{hour}:{minute}:{second}"

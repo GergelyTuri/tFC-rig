@@ -30,24 +30,10 @@ from tfcrig.helpers.tfcrig import (
     datetime_to_session_id,
     get_mouse_ids,
     get_mouse_ids_from_file_name,
+    int_session_id_to_date_string,
     is_base_data_file
 )
 from tfcrig.notebook import builtin_print
-
-
-def int_session_id_to_date_string(session_id: int) -> str:
-    """
-    Input is a session ID integer representing a `YYYYMMDDHHMMSS` date,
-    output is a date string `YYYY-MM-DDTHH:MM:SS`
-    """
-    session_id = str(session_id)
-    year = session_id[0:4]
-    month = session_id[4:6]
-    day = session_id[6:8]
-    hour = session_id[8:10]
-    minute = session_id[10:12]
-    second = session_id[12:14]
-    return f"{year}-{month}-{day}T{hour}:{minute}:{second}"
 
 
 def extract_features_from_session_data(
@@ -678,8 +664,6 @@ class Analysis:
     #     data from all mice/sessions
     #   - At either point, storing processed data
     #
-    # TODO: message folks about the files with mismatched mouse IDs
-    #
 
     def __init__(
         self,
@@ -721,16 +705,12 @@ class Analysis:
         trial_features = []
         data_frames = []
 
-        print(f"gathering data...")
+        print("Gathering data...")
         file_i = 0
         for root, _, files in self.os_walk:
             for file in files:
                 if not is_base_data_file(file):
                     continue
-                # Testing purposes
-                # if '102_1_103_2_2024-09-03_15-32-46.json' not in file:
-                #     continue
-                # print('continuing!')
                 if self.mice_of_interest:
                     mouse_ids = get_mouse_ids_from_file_name(file)
                     if not all(
