@@ -1,6 +1,6 @@
 import unittest
 
-from tfcrig.helpers import extract_cohort_mouse_pairs
+from tfcrig.helpers.tfcrig import extract_cohort_mouse_pairs
 
 
 class ExtractCohortMousePairsTestCase(unittest.TestCase):
