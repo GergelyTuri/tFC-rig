@@ -22,7 +22,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 
-from tfcrig.helpers import (
+from tfcrig.helpers.tfcrig import (
     create_cohort_pattern,
     extract_cohort_mouse_pairs,
     is_base_data_file,
@@ -467,10 +467,12 @@ class RigFiles:
                         # The first three message parts are integers
                         return False
 
-                    # Known good messages that can be false positives for the
-                    # below known bad
+                    # Filter out repetitive messages at the start and
+                    # end of a session
                     if split_msg[3] == "Waiting for session to start...":
-                        return True
+                        return False
+                    if split_msg[3] == "Session has ended":
+                        return False
 
                     # Removes at least some known bad messages
                     if rig_msg == "KeyboardInterrupt":

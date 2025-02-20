@@ -1,10 +1,8 @@
 # analysis.py
-import calendar
 import json
 import os
-import warnings
 from datetime import datetime
-from typing import Any, Optional
+from typing import Optional
 
 import ipywidgets as widgets
 import matplotlib.patches as mpatches
@@ -14,130 +12,28 @@ import pandas as pd
 import scipy.stats as stats
 import seaborn as sns
 from IPython.display import display
-from tfcrig.files import DATETIME_REGEX, extract_cohort_mouse_pairs
-from tfcrig.helpers import (
+
+from tfcrig.helpers.numpy import (
+    scalar_divide,
+    list_scalar_divide,
+)
+from tfcrig.helpers.python import (
+    datetime_to_day_of_week,
+    dict_contains_other_values,
+    get_or_default,
+)
+from tfcrig.helpers.tfcrig import (
     create_cohort_pattern,
     root_contains_cohort_of_interest,
     get_datetime_from_file_path,
+    get_mouse_ids,
     datetime_to_session_id,
     get_mouse_ids,
     get_mouse_ids_from_file_name,
+    int_session_id_to_date_string,
     is_base_data_file
 )
 from tfcrig.notebook import builtin_print
-
-WARN_SCALAR_DIVIDE = [
-    "invalid value encountered in scalar divide",
-    "divide by zero encountered in scalar divide",
-]
-
-
-def dict_contains_other_values(d: dict, types: tuple[Any]) -> bool:
-    if not isinstance(d, dict):
-        raise TypeError(
-            "Can only check for values in a dict if given a dict!"
-        )
-
-    invalid_items = []
-    for key, value in d.items():
-        if not isinstance(value, types):
-            return True
-    return False
-
-  
-def datetime_to_day_of_week(date_time: datetime) -> str:
-    return calendar.day_name[date_time.weekday()]
-
-
-def int_session_id_to_date_string(session_id: int) -> str:
-    """
-    Input is a session ID integer representing a `YYYYMMDDHHMMSS` date,
-    output is a date string `YYYY-MM-DDTHH:MM:SS`
-    """
-    session_id = str(session_id)
-    year = session_id[0:4]
-    month = session_id[4:6]
-    day = session_id[6:8]
-    hour = session_id[8:10]
-    minute = session_id[10:12]
-    second = session_id[12:14]
-    return f"{year}-{month}-{day}T{hour}:{minute}:{second}"
-
-
-def scalar_divide(a: np.int64, b: np.int64) -> np.int64:
-    """
-    Divide two scalars, a numerator `a` and denominator `b`, without printing a
-    `RuntimeWarning` if we divide by zero
-    """
-    with warnings.catch_warnings(record=True) as w:
-        c = a / b
-
-    if len(w) > 0:
-        warning = w[0]
-        if (
-            not issubclass(warning.category, RuntimeWarning)
-            or str(warning.message) not in WARN_SCALAR_DIVIDE
-        ):
-            # Raises an exception for other warnings
-            raise Exception(warning.message)
-
-    return c
-
-
-def list_scalar_divide(l1: list[np.int64], l2: list[np.int64], c: np.int64=1):
-    out = []
-    with warnings.catch_warnings(record=True) as w:
-        for a, b in zip(l1, l2):
-            if b == 0:
-                out.append(np.int64(0))  # Handle division by zero explicitly
-            else:
-                out.append(c * a / b)
-    if len(w) > 0:
-        warning = w[0]
-        if (
-            not issubclass(warning.category, RuntimeWarning)
-            or str(warning.message) not in WARN_SCALAR_DIVIDE
-        ):
-            # Raises an exception for other warnings
-            raise Exception(warning.message)
-
-    return out
-
-  
-def get_mouse_ids(os_walk: list[tuple]) -> set[Optional[str]]:
-    """
-    Given the path to the root of the data directory, return a set of mouse
-    IDs. Also checks that mouse ID, session ID pairs are unique
-    """
-    all_mouse_ids = []
-    mouse_session_pairs = set()
-    for dirpath, _, files in os_walk:
-        for file_name in files:
-            if not is_base_data_file(file_name):
-                continue
-
-            mouse_ids = get_mouse_ids_from_file_name(file_name)
-            session_id = datetime_to_session_id(get_datetime_from_file_path(file_name))
-
-            # Mouse ID, session ID pairs should be unique
-            for mouse_id in mouse_ids:
-                key = (mouse_id, session_id)
-                if key in mouse_session_pairs:
-                    raise ValueError(
-                        "Found non-unique mouse id, session id pair: "
-                        f"({mouse_id}, {session_id})"
-                    )
-                mouse_session_pairs.add(key)
-            all_mouse_ids += mouse_ids
-
-    return set(mouse_ids)
-  
-
-def safe_get(arr, index, default=0):
-    """Returns the element at the given index of the array if valid, else defaults to 0."""
-    if len(arr) == 0 or len(arr) <= index:
-        return default
-    return arr[index]
 
 
 def extract_features_from_session_data(
@@ -721,21 +617,21 @@ def get_data_features_from_data_file(
                 "mouse_id": df["mouse_id"].iloc[0],
                 "session_id": df["session_id"].iloc[0],
                 "day_of_week": df["day_of_week"].iloc[0],
-                "trial": safe_get(trials, i),
-                "trial_type": safe_get(trial_types, i),
-                "avg_lick_freq": safe_get(avg_lick_freq_trial, i),
-                "avg_lick_freq_csplus": safe_get(avg_lick_freq_csplus_trial, i),
-                "avg_lick_freq_csminus": safe_get(avg_lick_freq_csminus_trial, i),
-                "avg_lick_freq_iti": safe_get(avg_lick_freq_iti_trial, i),
-                "avg_lick_freq_csplus_trace": safe_get(avg_lick_freq_csplus_trace_trial, i),
-                "avg_lick_freq_csminus_trace": safe_get(avg_lick_freq_csminus_trace_trial, i),
-                "z_avg_lick_freq": safe_get(z_avg_lick_freq_trial, i),
-                "z_avg_lick_freq_csplus": safe_get(z_avg_lick_freq_csplus_trial, i),
-                "z_avg_lick_freq_csminus": safe_get(z_avg_lick_freq_csminus_trial, i),
-                "z_avg_lick_freq_iti": safe_get(z_avg_lick_freq_iti_trial, i),
-                "z_avg_lick_freq_csplus_trace": safe_get(z_avg_lick_freq_csplus_trace_trial, i),
-                "z_avg_lick_freq_csminus_trace": safe_get(z_avg_lick_freq_csminus_trace_trial, i),
-                "total_licks": safe_get(total_licks_trial, i)
+                "trial": get_or_default(trials, i),
+                "trial_type": get_or_default(trial_types, i),
+                "avg_lick_freq": get_or_default(avg_lick_freq_trial, i),
+                "avg_lick_freq_csplus": get_or_default(avg_lick_freq_csplus_trial, i),
+                "avg_lick_freq_csminus": get_or_default(avg_lick_freq_csminus_trial, i),
+                "avg_lick_freq_iti": get_or_default(avg_lick_freq_iti_trial, i),
+                "avg_lick_freq_csplus_trace": get_or_default(avg_lick_freq_csplus_trace_trial, i),
+                "avg_lick_freq_csminus_trace": get_or_default(avg_lick_freq_csminus_trace_trial, i),
+                "z_avg_lick_freq": get_or_default(z_avg_lick_freq_trial, i),
+                "z_avg_lick_freq_csplus": get_or_default(z_avg_lick_freq_csplus_trial, i),
+                "z_avg_lick_freq_csminus": get_or_default(z_avg_lick_freq_csminus_trial, i),
+                "z_avg_lick_freq_iti": get_or_default(z_avg_lick_freq_iti_trial, i),
+                "z_avg_lick_freq_csplus_trace": get_or_default(z_avg_lick_freq_csplus_trace_trial, i),
+                "z_avg_lick_freq_csminus_trace": get_or_default(z_avg_lick_freq_csminus_trace_trial, i),
+                "total_licks": get_or_default(total_licks_trial, i)
             }
             for i in range(len(avg_lick_freq_trial))
         ]
@@ -767,8 +663,6 @@ class Analysis:
     #   - Extracting features into data frames, and not concatenating all
     #     data from all mice/sessions
     #   - At either point, storing processed data
-    #
-    # TODO: message folks about the files with mismatched mouse IDs
     #
 
     def __init__(
@@ -811,16 +705,12 @@ class Analysis:
         trial_features = []
         data_frames = []
 
-        print(f"gathering data...")
+        print("Gathering data...")
         file_i = 0
         for root, _, files in self.os_walk:
             for file in files:
                 if not is_base_data_file(file):
                     continue
-                # Testing purposes
-                # if '102_1_103_2_2024-09-03_15-32-46.json' not in file:
-                #     continue
-                # print('continuing!')
                 if self.mice_of_interest:
                     mouse_ids = get_mouse_ids_from_file_name(file)
                     if not all(
