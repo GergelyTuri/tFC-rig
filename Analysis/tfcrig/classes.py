@@ -1,12 +1,10 @@
 """Data class dealing with the preprocessed session data."""
 
 import json
-import re
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, List, Union
 
-import numpy as np
 import pandas as pd
 
 
@@ -180,3 +178,198 @@ class Session:
             records, columns=["mouse_id", "port", "absolute_time", "event"]
         )
         return df
+
+    def get_trial_events(self, mouse_id: str) -> pd.DataFrame:
+        """
+        Parse the session data at the trial level for a given mouse.
+        Returns a DataFrame with columns:
+            ["mouse_id", "trial_number", "absolute_time",
+            "trial_time", "event", "trial_type"].
+
+        We look for lines containing:
+        - 'Trial has started'
+        - 'Trial has ended'
+        and anything in between. We also look for 'currentTrialType: X'
+        to capture the trial type.
+
+        :param mouse_id: The mouse ID to parse.
+        :return: A pandas DataFrame of trial-level events.
+        """
+        session_events = self.get_mouse_session_data(mouse_id)
+
+        # This will hold our final rows for ALL trials
+        all_records: List[Dict[str, Any]] = []
+
+        # Temporary structure to hold the current trial data
+        # until we see 'Trial has ended'
+        current_trial = (
+            None  # Will be a dict with keys: trial_number, trial_type, events
+        )
+
+        for event in session_events:
+            msg = event.get("message", "")
+            parts = msg.split(": ")
+
+            # We expect something like: "6: 584376: 0: Trial has started"
+            # parts = ["6", "584376", "0", "Trial has started"] (or more if there's a colon in the last chunk)
+            if len(parts) < 4:
+                # Doesn't match the expected "trial_number: session_ms: trial_ms: event"
+                continue
+
+            trial_number_str, session_ms_str, trial_ms_str = (
+                parts[0],
+                parts[1],
+                parts[2],
+            )
+
+            # Join anything beyond the 3rd chunk to form the event string
+            # E.g., "Trial has started" or "currentTrialType: 2"
+            event_text = ": ".join(parts[3:]).strip()
+
+            # Attempt to convert those first three parts to integers
+            try:
+                trial_number = int(trial_number_str)
+                session_ms = int(session_ms_str)
+                trial_ms = int(trial_ms_str)
+            except ValueError:
+                # If they don't parse as integers, skip
+                continue
+
+            # -- Check for "Trial has started" --
+            if event_text == "Trial has started":
+                # If we were already in a trial, we close it out first
+                # (in case the data is malformed; else we can ignore it)
+                if current_trial is not None:
+                    # This would be unusual, but you can decide how to handle
+                    self._finalize_trial(current_trial, all_records, mouse_id)
+
+                # Begin a new trial
+                current_trial = {
+                    "trial_number": trial_number,
+                    "trial_type": None,  # Will fill in later if we see "currentTrialType"
+                    "events": [],
+                }
+
+                # Store the 'Trial has started' event itself
+                current_trial["events"].append(
+                    {
+                        "absolute_time": event["absolute_time"],
+                        "trial_time": trial_ms,
+                        "event": "Trial has started",
+                    }
+                )
+                continue
+
+            # If we're not currently in a trial, ignore events until next "Trial has started"
+            if current_trial is None:
+                continue
+
+            # -- Check for "currentTrialType: X" --
+            if event_text.startswith("currentTrialType: "):
+                # E.g., "currentTrialType: 2"
+                trial_type_str = event_text.split("currentTrialType: ")[1].strip()
+                try:
+                    current_trial["trial_type"] = int(trial_type_str)
+                except ValueError:
+                    # If it can't parse to int, store it as string
+                    current_trial["trial_type"] = trial_type_str
+
+                # Optionally store the "currentTrialType" as an event row, if desired:
+                current_trial["events"].append(
+                    {
+                        "absolute_time": event["absolute_time"],
+                        "trial_time": trial_ms,
+                        "event": f"currentTrialType: {trial_type_str}",
+                    }
+                )
+                continue
+
+            # -- Check for "Trial has ended" --
+            if event_text == "Trial has ended":
+                # Record the 'Trial has ended' event
+                current_trial["events"].append(
+                    {
+                        "absolute_time": event["absolute_time"],
+                        "trial_time": trial_ms,
+                        "event": "Trial has ended",
+                    }
+                )
+                # Finalize this trial: store all events with known trial_number, trial_type, etc.
+                self._finalize_trial(current_trial, all_records, mouse_id)
+                current_trial = None  # reset for the next trial
+                continue
+
+            # -- Otherwise, it's a normal event (Lick, Water on, Water off, etc.) --
+            current_trial["events"].append(
+                {
+                    "absolute_time": event["absolute_time"],
+                    "trial_time": trial_ms,
+                    "event": event_text,
+                }
+            )
+
+        # If the file ends but a trial never ended,
+        # you can decide if you want to finalize it anyway:
+        if current_trial is not None:
+            self._finalize_trial(current_trial, all_records, mouse_id)
+
+        # Build a DataFrame
+        df = pd.DataFrame(
+            all_records,
+            columns=[
+                "mouse_id",
+                "trial_number",
+                "absolute_time",
+                "trial_time",
+                "event",
+                "trial_type",
+            ],
+        )
+        return df
+
+    @staticmethod
+    def _finalize_trial(
+        trial_dict: Dict[str, Any],
+        master_list: List[Dict[str, Any]],
+        mouse_id: str,
+    ) -> None:
+        """
+        Helper function to dump the events of a single trial into the master record list.
+        """
+        trial_number = trial_dict["trial_number"]
+        trial_type = trial_dict["trial_type"]
+
+        for evt in trial_dict["events"]:
+            master_list.append(
+                {
+                    "mouse_id": mouse_id,
+                    "trial_number": trial_number,
+                    "absolute_time": evt["absolute_time"],
+                    "trial_time": evt["trial_time"],
+                    "event": evt["event"],
+                    "trial_type": trial_type,
+                }
+            )
+
+
+@dataclass
+class Trial:
+    """
+    class for dealing with the trial data.
+    """
+
+    trial_df: pd.DataFrame
+    # TODO: this class shoudl be initialized with a dataframe of trial data
+    # the df should have the following columns:
+    # mouse_id, absolute_time, event, trial_num, trial_relative time
+
+    # the class should have methods for calculating the following:
+    # - the absolute, average licks per trial and lick rate
+    # - avg interlick interval
+    # - the time of the first lick in each trial
+    # - split up the trial to "pre-tone", "tone", "trace" and "post_trace" periods
+    # - calculate the number of licks in each of these periods
+    # - the delay of the first lick in each af these periods from the beginning of the trial
+    # - normalization methods for the lick data
+    # - different filters for the trials e.g., more than 5 licks, less then 5 licks etc.
+    # - methods for plotting the lick data
