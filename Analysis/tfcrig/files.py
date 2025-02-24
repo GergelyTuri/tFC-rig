@@ -13,9 +13,11 @@ import json
 import os
 import re
 import shutil
+import warnings
 from copy import deepcopy
 from dataclasses import dataclass
 from datetime import datetime
+from json.decoder import JSONDecodeError
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -76,12 +78,12 @@ class RigFiles:
         """
         self._are_data_files_named_correctly()
 
-    def prep(self) -> None:
+    def prep(self, restore_raw=False) -> None:
         """
         Prep the data directory for cleaning. This at least means
         making a `raw` copy of the data
         """
-        self._make_a_copy_of_raw_data()
+        self._make_a_copy_of_raw_data(restore_raw=restore_raw)
 
     def clean(self) -> None:
         """
@@ -200,7 +202,7 @@ class RigFiles:
         else:
             print("No potential bad data files found!")
 
-    def _make_a_copy_of_raw_data(self) -> None:
+    def _make_a_copy_of_raw_data(self, restore_raw=False) -> None:
         """
         Given a data directory, make a copy of each JSON file in the
         directory, as long as:
@@ -224,7 +226,15 @@ class RigFiles:
                 file_parts = file_name.split(".")
                 raw_full_file = os.path.join(root, file_parts[0] + "_raw.json")
                 if os.path.exists(raw_full_file):
+                    if restore_raw:
+                        # Restores the full file from the raw backup
+                        print(f"Restoring {full_file} from backup")
+                        shutil.copy(raw_full_file, full_file)
                     continue
+                if restore_raw:
+                    warnings.warn(
+                        f"Tried to restore {file_name} when no backup exists."
+                    )
 
                 # Make a copy of the file
                 print(f"Created a copy of {full_file}")
@@ -380,7 +390,11 @@ class RigFiles:
 
                 file_path = os.path.join(root, file_name)
                 with open(file_path, "r") as f:
-                    data = json.load(f)
+                    try:
+                        data = json.load(f)
+                    except JSONDecodeError as e:
+                        print(f"Cannot open {file_name}")
+                        raise e
 
                 # Some old files, or perhaps any experiment with only a single mouse,
                 # has a `mouse_id` header value when they should all be `mouse_ids`
@@ -467,11 +481,13 @@ class RigFiles:
                         # The first three message parts are integers
                         return False
 
+                    # Known good message(s)
+                    if split_msg[3] == "Session has ended":
+                        return True
+
                     # Filter out repetitive messages at the start and
                     # end of a session
                     if split_msg[3] == "Waiting for session to start...":
-                        return False
-                    if split_msg[3] == "Session has ended":
                         return False
 
                     # Removes at least some known bad messages
