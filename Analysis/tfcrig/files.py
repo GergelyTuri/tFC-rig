@@ -17,6 +17,7 @@ import warnings
 from copy import deepcopy
 from dataclasses import dataclass
 from datetime import datetime
+from json.decoder import JSONDecodeError
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -389,7 +390,11 @@ class RigFiles:
 
                 file_path = os.path.join(root, file_name)
                 with open(file_path, "r") as f:
-                    data = json.load(f)
+                    try:
+                        data = json.load(f)
+                    except JSONDecodeError as e:
+                        print(f"Cannot open {file_name}")
+                        raise e
 
                 # Some old files, or perhaps any experiment with only a single mouse,
                 # has a `mouse_id` header value when they should all be `mouse_ids`
