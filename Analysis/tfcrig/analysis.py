@@ -12,11 +12,7 @@ import pandas as pd
 import scipy.stats as stats
 import seaborn as sns
 from IPython.display import display
-
-from tfcrig.helpers.numpy import (
-    scalar_divide,
-    list_scalar_divide,
-)
+from tfcrig.helpers.numpy import list_scalar_divide, scalar_divide
 from tfcrig.helpers.python import (
     datetime_to_day_of_week,
     dict_contains_other_values,
@@ -24,20 +20,18 @@ from tfcrig.helpers.python import (
 )
 from tfcrig.helpers.tfcrig import (
     create_cohort_pattern,
-    root_contains_cohort_of_interest,
-    get_datetime_from_file_path,
-    get_mouse_ids,
     datetime_to_session_id,
+    get_datetime_from_file_path,
     get_mouse_ids,
     get_mouse_ids_from_file_name,
     int_session_id_to_date_string,
-    is_base_data_file
+    is_base_data_file,
+    root_contains_cohort_of_interest,
 )
 from tfcrig.notebook import builtin_print
 
 
 def extract_features_from_session_data(
-    *,
     raw_data: dict,
     mouse_id: str,
     session_id: int,
@@ -55,6 +49,13 @@ def extract_features_from_session_data(
     The `message` is further parsed based on its content. This method is
     doing a lot of the heavy-lifting in terms of data processing, and it
     contains assumptions about the way the Rig saves data.
+
+    Parameters:
+        raw_data (dict): The raw session data.
+        mouse_id (str): The ID of the mouse.
+        session_id (int): The ID of the session.
+        file_name (str): The name of the file containing the session data.
+        print_bad_data_blobs (bool): Whether to print bad data blobs. Default is True.
 
     Returns a dataframe with features and string containing trial types
         -
@@ -89,7 +90,7 @@ def extract_features_from_session_data(
     air_puff_stop_time = -1
     air_puff_total_time = -1
     first_puff_started = 0
-    trial_types = ''
+    trial_types = ""
 
     # Some data integrity checks, we may want to skip data and mark sessions as
     # invalid if these fails.
@@ -196,14 +197,14 @@ def extract_features_from_session_data(
                 is_pre_cs = 1
             else:
                 is_pre_cs = 0
-        
+
         # Check if data falls under tone period
         if auditory_start > 0 and auditory_stop > 0:
             if t_trial > auditory_start and t_trial < auditory_stop:
                 is_tone = 1
             else:
                 is_tone = 0
-                
+
         # Check if data falls under trace period (short duration after auditory cues)
         if air_puff_start_time > 0 and auditory_stop > 0:
             if t_trial > auditory_stop and t_trial < air_puff_start_time:
@@ -238,7 +239,7 @@ def extract_features_from_session_data(
 
             if t_trial > air_puff_stop_time:
                 first_puff_started = 0
-            
+
             if t_trial >= air_puff_start_time and t_trial <= air_puff_stop_time:
                 is_puff = 1
             else:
@@ -350,12 +351,12 @@ def get_data_features_from_data_file(
 
         # Pre-CS period features
         df_is_pre_cs = dfl[dfl["is_pre_cs"] == 1]
-        total_licks_is_pre_cs = df_is_pre_cs['lick'].sum()
+        total_licks_is_pre_cs = df_is_pre_cs["lick"].sum()
         avg_lick_freq_is_pre_cs = df_is_pre_cs["lick_frequency"].mean()
-        
+
         # Tone period features
         df_is_tone = dfl[dfl["is_tone"] == 1]
-        total_licks_is_tone = df_is_tone['lick'].sum()
+        total_licks_is_tone = df_is_tone["lick"].sum()
         avg_lick_freq_is_tone = df_is_tone["lick_frequency"].mean()
         dfl_csplus_is_tone = dfl_csplus[dfl_csplus["is_tone"] == 1]
         avg_lick_freq_csplus_tone = dfl_csplus_is_tone["lick_frequency"].mean()
@@ -364,7 +365,7 @@ def get_data_features_from_data_file(
 
         # Trace period features
         df_is_trace = df_is_trial[df_is_trial["is_trace"] == 1]
-        total_licks_is_trace = df_is_trace['lick'].sum()
+        total_licks_is_trace = df_is_trace["lick"].sum()
         avg_lick_freq_is_trace = df_is_trace["lick_frequency"].mean()
         dfl_csplus_is_trace = dfl_csplus[dfl_csplus["is_trace"] == 1]
         total_licks_csplus_trace = dfl_csplus_is_trace["lick"].sum()
@@ -375,12 +376,12 @@ def get_data_features_from_data_file(
 
         # Puff period features
         df_is_puff = dfl[dfl["is_puff"] == 1]
-        total_licks_is_puff = df_is_puff['lick'].sum()
+        total_licks_is_puff = df_is_puff["lick"].sum()
         avg_lick_freq_is_puff = df_is_puff["lick_frequency"].mean()
-        
+
         # ITI features
         dfl_iti = dfl[dfl["is_trial"] == 0]
-        total_licks_iti = dfl_iti['lick'].sum()
+        total_licks_iti = dfl_iti["lick"].sum()
         avg_lick_freq_iti = dfl_iti["lick_frequency"].mean()
         dfl_csplus_iti = dfl_iti[dfl_iti["trial_type"].isin([1, 2])]
         dfl_csminus_iti = dfl_iti[dfl_iti["trial_type"].isin([0, 3])]
@@ -388,26 +389,78 @@ def get_data_features_from_data_file(
         avg_lick_freq_csminus_iti = dfl_csminus_iti["lick_frequency"].mean()
 
         # Trial specific stats
-        trials = range(min(dfl['trial']), max(dfl['trial']) + 1)
+        trials = range(min(dfl["trial"]), max(dfl["trial"]) + 1)
         trial_types = pd.Series(list(trial_types)).reindex(trials, fill_value=-1)
-        trial_durations = dfl.groupby('trial')["trial_time"].max().reindex(trials, fill_value=0)
-        avg_lick_freq_trial = dfl.groupby('trial')["lick_frequency"].mean().reindex(trials, fill_value=0)
-        avg_lick_freq_csplus_trial = dfl_csplus.groupby('trial')["lick_frequency"].mean().reindex(trials, fill_value=0)
-        avg_lick_freq_csminus_trial = dfl_csminus.groupby('trial')["lick_frequency"].mean().reindex(trials, fill_value=0)
-        avg_lick_freq_is_pre_cs_trial = df_is_pre_cs.groupby('trial')["lick_frequency"].mean().reindex(trials, fill_value=0)
-        avg_lick_freq_is_tone_trial = df_is_tone.groupby('trial')["lick_frequency"].mean().reindex(trials, fill_value=0)
-        avg_lick_freq_is_trace_trial = df_is_trace.groupby('trial')["lick_frequency"].mean().reindex(trials, fill_value=0)
-        avg_lick_freq_is_puff_trial = df_is_puff.groupby('trial')["lick_frequency"].mean().reindex(trials, fill_value=0)
-        avg_lick_freq_iti_trial = dfl_iti.groupby('trial')["lick_frequency"].mean().reindex(trials, fill_value=0)
-        avg_lick_freq_csplus_trace_trial = dfl_csplus_is_trace.groupby('trial')["lick_frequency"].mean().reindex(trials, fill_value=0)
-        avg_lick_freq_csminus_trace_trial = dfl_csminus_is_trace.groupby('trial')["lick_frequency"].mean().reindex(trials, fill_value=0)
-        total_licks_trial = dfl.groupby('trial')['lick'].sum().reindex(trials, fill_value=0)
-        total_licks_is_pre_cs_trial = df_is_pre_cs.groupby('trial')['lick'].sum().reindex(trials, fill_value=0)
-        total_licks_is_tone_trial = df_is_tone.groupby('trial')['lick'].sum().reindex(trials, fill_value=0)
-        total_licks_is_trace_trial = df_is_trace.groupby('trial')['lick'].sum().reindex(trials, fill_value=0)
-        total_licks_is_puff_trial = df_is_puff.groupby('trial')['lick'].sum().reindex(trials, fill_value=0)
-        total_licks_iti_trial = dfl_iti.groupby('trial')['lick'].sum().reindex(trials, fill_value=0)
-        
+        trial_durations = (
+            dfl.groupby("trial")["trial_time"].max().reindex(trials, fill_value=0)
+        )
+        avg_lick_freq_trial = (
+            dfl.groupby("trial")["lick_frequency"].mean().reindex(trials, fill_value=0)
+        )
+        avg_lick_freq_csplus_trial = (
+            dfl_csplus.groupby("trial")["lick_frequency"]
+            .mean()
+            .reindex(trials, fill_value=0)
+        )
+        avg_lick_freq_csminus_trial = (
+            dfl_csminus.groupby("trial")["lick_frequency"]
+            .mean()
+            .reindex(trials, fill_value=0)
+        )
+        avg_lick_freq_is_pre_cs_trial = (
+            df_is_pre_cs.groupby("trial")["lick_frequency"]
+            .mean()
+            .reindex(trials, fill_value=0)
+        )
+        avg_lick_freq_is_tone_trial = (
+            df_is_tone.groupby("trial")["lick_frequency"]
+            .mean()
+            .reindex(trials, fill_value=0)
+        )
+        avg_lick_freq_is_trace_trial = (
+            df_is_trace.groupby("trial")["lick_frequency"]
+            .mean()
+            .reindex(trials, fill_value=0)
+        )
+        avg_lick_freq_is_puff_trial = (
+            df_is_puff.groupby("trial")["lick_frequency"]
+            .mean()
+            .reindex(trials, fill_value=0)
+        )
+        avg_lick_freq_iti_trial = (
+            dfl_iti.groupby("trial")["lick_frequency"]
+            .mean()
+            .reindex(trials, fill_value=0)
+        )
+        avg_lick_freq_csplus_trace_trial = (
+            dfl_csplus_is_trace.groupby("trial")["lick_frequency"]
+            .mean()
+            .reindex(trials, fill_value=0)
+        )
+        avg_lick_freq_csminus_trace_trial = (
+            dfl_csminus_is_trace.groupby("trial")["lick_frequency"]
+            .mean()
+            .reindex(trials, fill_value=0)
+        )
+        total_licks_trial = (
+            dfl.groupby("trial")["lick"].sum().reindex(trials, fill_value=0)
+        )
+        total_licks_is_pre_cs_trial = (
+            df_is_pre_cs.groupby("trial")["lick"].sum().reindex(trials, fill_value=0)
+        )
+        total_licks_is_tone_trial = (
+            df_is_tone.groupby("trial")["lick"].sum().reindex(trials, fill_value=0)
+        )
+        total_licks_is_trace_trial = (
+            df_is_trace.groupby("trial")["lick"].sum().reindex(trials, fill_value=0)
+        )
+        total_licks_is_puff_trial = (
+            df_is_puff.groupby("trial")["lick"].sum().reindex(trials, fill_value=0)
+        )
+        total_licks_iti_trial = (
+            dfl_iti.groupby("trial")["lick"].sum().reindex(trials, fill_value=0)
+        )
+
         # Normalize lick frequency to the total licks in the session trials,
         # which will hopefully account for variance in lick sensor sensitivity
         # between sessions and between days. The factor of 1,000 is just for
@@ -458,7 +511,7 @@ def get_data_features_from_data_file(
         total_licks_water_on_type_1 = df_water_t1["lick"].sum()
         total_puffed_licks_water_on_type_1 = df_water_t1["puffed_lick"].sum()
 
-        # Some math        
+        # Some math
         z_total_licks_in_trial = scalar_divide(
             total_licks_in_trial,
             total_licks,
@@ -534,7 +587,7 @@ def get_data_features_from_data_file(
             "mouse_id": df["mouse_id"].iloc[0],
             "session_id": df["session_id"].iloc[0],
             "day_of_week": df["day_of_week"].iloc[0],
-            "duration": max(dfl["session_time"])-min(dfl["session_time"]),
+            "duration": max(dfl["session_time"]) - min(dfl["session_time"]),
             "avg_lick_freq": avg_lick_freq,
             "avg_lick_freq_is_pre_cs": avg_lick_freq_is_pre_cs,
             "avg_lick_freq_is_tone": avg_lick_freq_is_tone,
@@ -594,13 +647,21 @@ def get_data_features_from_data_file(
                 "avg_lick_freq": get_or_default(avg_lick_freq_trial, i),
                 "avg_lick_freq_csplus": get_or_default(avg_lick_freq_csplus_trial, i),
                 "avg_lick_freq_csminus": get_or_default(avg_lick_freq_csminus_trial, i),
-                "avg_lick_freq_is_pre_cs": get_or_default(avg_lick_freq_is_pre_cs_trial, i),
+                "avg_lick_freq_is_pre_cs": get_or_default(
+                    avg_lick_freq_is_pre_cs_trial, i
+                ),
                 "avg_lick_freq_is_tone": get_or_default(avg_lick_freq_is_tone_trial, i),
-                "avg_lick_freq_is_trace": get_or_default(avg_lick_freq_is_trace_trial, i),
+                "avg_lick_freq_is_trace": get_or_default(
+                    avg_lick_freq_is_trace_trial, i
+                ),
                 "avg_lick_freq_is_puff": get_or_default(avg_lick_freq_is_puff_trial, i),
                 "avg_lick_freq_iti": get_or_default(avg_lick_freq_iti_trial, i),
-                "avg_lick_freq_csplus_trace": get_or_default(avg_lick_freq_csplus_trace_trial, i),
-                "avg_lick_freq_csminus_trace": get_or_default(avg_lick_freq_csminus_trace_trial, i),
+                "avg_lick_freq_csplus_trace": get_or_default(
+                    avg_lick_freq_csplus_trace_trial, i
+                ),
+                "avg_lick_freq_csminus_trace": get_or_default(
+                    avg_lick_freq_csminus_trace_trial, i
+                ),
                 "total_licks": get_or_default(total_licks_trial, i),
                 "total_licks_is_pre_cs": get_or_default(total_licks_is_pre_cs_trial, i),
                 "total_licks_is_tone": get_or_default(total_licks_is_tone_trial, i),
@@ -646,7 +707,7 @@ class Analysis:
         data_root: str,
         verbose: bool = True,
         cohorts: list[str] = [],
-        mice_of_interest: list[str] = []
+        mice_of_interest: list[str] = [],
     ) -> None:
         self.data_root = data_root
         self.verbose = verbose
@@ -667,9 +728,7 @@ class Analysis:
             if "/duplicate_data/" in root and "/duplicate_data/" not in self.data_root:
                 # Likewise, skip the 'duplicate_data' folder
                 continue
-            if root_contains_cohort_of_interest(
-                root, cohort_pattern, self.cohorts
-            ):
+            if root_contains_cohort_of_interest(root, cohort_pattern, self.cohorts):
                 self.os_walk.append((root, dirs, files))
 
         # From the entire data root directory, get the set of mouse IDs
@@ -698,9 +757,11 @@ class Analysis:
                 file_i += 1
                 print(f"file {file_i}: {file}")
                 try:
-                    f_features, f_trial_features, f_data_frames = get_data_features_from_data_file(
-                        full_file=os.path.join(root, file),
-                        verbose=self.verbose,
+                    f_features, f_trial_features, f_data_frames = (
+                        get_data_features_from_data_file(
+                            full_file=os.path.join(root, file),
+                            verbose=self.verbose,
+                        )
                     )
                 except ValueError as e:
                     error = str(e)
@@ -716,7 +777,9 @@ class Analysis:
         self.df = pd.DataFrame(features)
         self.df = self.df.sort_values(by=["session_id", "mouse_id"])
         self.trial_df = pd.DataFrame(trial_features)
-        self.trial_df = self.trial_df.sort_values(by=["session_id", "trial", "mouse_id"])
+        self.trial_df = self.trial_df.sort_values(
+            by=["session_id", "trial", "mouse_id"]
+        )
         self.data = pd.concat(data_frames).reset_index(drop=True)
 
         # Print errors we found
@@ -751,30 +814,30 @@ class Analysis:
         df.info()
 
         print("Unique data categories:")
-        builtin_print(f'- mouse_id: {df["mouse_id"].unique()}')
-        builtin_print(f'- session_id: {df["session_id"].unique()}')
-        builtin_print(f'- day_of_week: {df["day_of_week"].unique()}')
-        builtin_print(f'- is_session: {df["is_session"].unique()}')
-        builtin_print(f'- trial_type: {df["trial_type"].unique()}')
-        builtin_print(f'- trial: {df["trial"].unique()}')
-        builtin_print(f'- is_trial: {df["is_trial"].unique()}')
-        builtin_print(f'- lick: {df["lick"].unique()}')
-        builtin_print(f'- negative_signal: {df["negative_signal"].unique()}')
-        builtin_print(f'- positive_signal: {df["positive_signal"].unique()}')
-        builtin_print(f'- water: {df["water"].unique()}')
+        builtin_print(f"- mouse_id: {df['mouse_id'].unique()}")
+        builtin_print(f"- session_id: {df['session_id'].unique()}")
+        builtin_print(f"- day_of_week: {df['day_of_week'].unique()}")
+        builtin_print(f"- is_session: {df['is_session'].unique()}")
+        builtin_print(f"- trial_type: {df['trial_type'].unique()}")
+        builtin_print(f"- trial: {df['trial'].unique()}")
+        builtin_print(f"- is_trial: {df['is_trial'].unique()}")
+        builtin_print(f"- lick: {df['lick'].unique()}")
+        builtin_print(f"- negative_signal: {df['negative_signal'].unique()}")
+        builtin_print(f"- positive_signal: {df['positive_signal'].unique()}")
+        builtin_print(f"- water: {df['water'].unique()}")
         builtin_print("")
         print("Value counts:")
-        builtin_print(f'- mouse_id: {df["mouse_id"].value_counts()}')
-        builtin_print(f'- session_id: {df["session_id"].value_counts()}')
-        builtin_print(f'- day_of_week: {df["day_of_week"].value_counts()}')
-        builtin_print(f'- is_session: {df["is_session"].value_counts()}')
-        builtin_print(f'- trial_type: {df["trial_type"].value_counts()}')
-        builtin_print(f'- trial: {df["trial"].value_counts()}')
-        builtin_print(f'- is_trial: {df["is_trial"].value_counts()}')
-        builtin_print(f'- lick: {df["lick"].value_counts()}')
-        builtin_print(f'- negative_signal: {df["negative_signal"].value_counts()}')
-        builtin_print(f'- positive_signal: {df["positive_signal"].value_counts()}')
-        builtin_print(f'- water: {df["water"].value_counts()}')
+        builtin_print(f"- mouse_id: {df['mouse_id'].value_counts()}")
+        builtin_print(f"- session_id: {df['session_id'].value_counts()}")
+        builtin_print(f"- day_of_week: {df['day_of_week'].value_counts()}")
+        builtin_print(f"- is_session: {df['is_session'].value_counts()}")
+        builtin_print(f"- trial_type: {df['trial_type'].value_counts()}")
+        builtin_print(f"- trial: {df['trial'].value_counts()}")
+        builtin_print(f"- is_trial: {df['is_trial'].value_counts()}")
+        builtin_print(f"- lick: {df['lick'].value_counts()}")
+        builtin_print(f"- negative_signal: {df['negative_signal'].value_counts()}")
+        builtin_print(f"- positive_signal: {df['positive_signal'].value_counts()}")
+        builtin_print(f"- water: {df['water'].value_counts()}")
 
     def summarize_licks_per_session(
         self,
@@ -1260,7 +1323,7 @@ class Analysis:
             )
             ax.set_xlabel("Trial Time [ms]")
             ax.set_ylabel("Lick Rate [lick/s]")
-            ax.set_title(f"Trial: {trial+1}")
+            ax.set_title(f"Trial: {trial + 1}")
             if trial == 0:
                 ax.legend(
                     handles=[plt.Line2D([0], [0], color="black", label="Lick Rate")],
