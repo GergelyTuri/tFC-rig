@@ -232,6 +232,7 @@ void loop() {
            * that a trial is happening, since there is no trial time
            * and a trial is not happening :)
            */
+          print("Starting the inter-trial interval");
           if (IS_PRIMARY_RIG) {
             while (millis() - interTrialIntervalStartTime < interTrialIntervalWaitTime) {
               interTrialIntervalLoop();
@@ -249,6 +250,7 @@ void loop() {
           // Any module called during the inter-trial interval loop
           // should be flushed afterwards, so it is ready for the next
           // trial.
+          print("The inter-trial interval has ended");
           flushLickMetaData();
         }
       }
