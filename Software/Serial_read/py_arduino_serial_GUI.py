@@ -66,6 +66,11 @@ class Window(QWidget):
             text="Is training session?",
             checked=False,
         )
+        self.training_trials_are_rewarded = CheckBox(
+            layout=trialSettingsLayout,
+            text="Providing water reward (checked) or punishment (unchecked)?",
+            checked=True,
+        )
         # Trial Types
         self.trial_type_1 = ComboBox(trialSettingsLayout, 'Trial Type 1', TRIAL_CLASSES, TRIAL_CLASSES[0])
         self.trial_type_2 = ComboBox(trialSettingsLayout, 'Trial Type 2', TRIAL_CLASSES, TRIAL_CLASSES[1])
@@ -250,6 +255,7 @@ class Window(QWidget):
         params = {
             "NUMBER_OF_TRIALS": self.num_trials.value(),
             "IS_TRAINING": self.is_training.checkState() == Qt.CheckState.Checked,
+            "TRAINING_TRIALS_ARE_REWARDED": self.training_trials_are_rewarded.checkState() == Qt.CheckState.Checked,
             "TRIAL_TYPE_1": self.trial_type_1.currentText(),
             "TRIAL_TYPE_2": self.trial_type_2.currentText(),
             "MIN_ITI": self.min_iti.value(),

@@ -180,10 +180,14 @@ void loop() {
           checkWater();
         }
         if (USING_AUDITORY_CUES && IS_PRIMARY_RIG) {
-          if (trialTypeObjects[currentTrialType]->water==true) {
+          if (trialTypeObjects[currentTrialType]->training==true) {
             // Water is made available at the point in the experiment where
             // an air puff used to be sent
-            checkWater();
+            if (TRAINING_TRIALS_ARE_REWARDED) {
+              checkWater();
+            } else {
+              checkAir();
+            }
           }
           if (trialTypeObjects[currentTrialType]->hasSignal==1){
             if (trialTypeObjects[currentTrialType]->signal == 1) {
@@ -410,6 +414,7 @@ void printSessionParameters() {
   vprint("IS_PRIMARY_RIG", IS_PRIMARY_RIG);
   vprint("NUMBER_OF_TRIALS", NUMBER_OF_TRIALS);
   vprint("IS_TRAINING", IS_TRAINING);
+  vprint("TRAINING_TRIALS_ARE_REWARDED", TRAINING_TRIALS_ARE_REWARDED);
   vprint("INTER_TRIAL_DEBUG_WAIT_INTERVAL", INTER_TRIAL_DEBUG_WAIT_INTERVAL);
   vprint("TRIAL_DURATION", TRIAL_DURATION);
   vprint("LICK_TIMEOUT", LICK_TIMEOUT);

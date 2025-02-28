@@ -142,6 +142,13 @@ const char TRIAL_TYPE_2[] = "water_CS+";
 // learning, post-learning)?
 const bool IS_TRAINING = false;
 //
+// ----------------------------
+// TRAINING_TRIALS_ARE_REWARDED
+// When a trial is a training trial, the mouse receives either a reward
+// e.g. water, or a punishment e.g. air puff. This governs whether it
+// is a reward. Set to `true` to give the mouse water, not air puffs
+const bool TRAINING_TRIALS_ARE_REWARDED = true;
+//
 // -------
 // MIN_ITI
 // [milliseconds]
