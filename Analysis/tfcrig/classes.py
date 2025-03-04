@@ -520,7 +520,7 @@ class Trial:
             from pprint import pprint
             for _, row in trial_data.iterrows():
                 if row["event"] == "Lick":
-                    print(row["trial_time"])
+                    pprint(row["trial_time"])
                     for water_on, water_off in rewards:
                         if water_on <= row["trial_time"] <= water_off:
                             if row["trial_time"] < pre_tone_end:
