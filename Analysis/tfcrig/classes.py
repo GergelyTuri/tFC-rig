@@ -523,13 +523,18 @@ class Trial:
                     pprint(row["trial_time"])
                     for water_on, water_off in rewards:
                         if water_on <= row["trial_time"] <= water_off:
+                            pprint("rewarded")
                             if row["trial_time"] < pre_tone_end:
+                                pprint("pre tone")
                                 pre_tone_rewarded_licks += 1
                             elif row["trial_time"] < tone_end:
+                                pprint("tone")
                                 tone_rewarded_licks += 1
                             elif row["trial_time"] < trace_end:
+                                pprint("trace")
                                 trace_rewarded_licks += 1
                             else:
+                                pprint("post trace")
                                 post_trace_rewarded_licks += 1
                             break
             pprint(rewards)
