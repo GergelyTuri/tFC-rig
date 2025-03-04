@@ -473,6 +473,9 @@ class Trial:
             trial_data = trial_data.sort_values("trial_time").reset_index(drop=True)
             
             # Count licks in each period based on `trial_time`
+            total_licks = (
+                trial_data["event"] == "Lick"
+            ).sum()
             pre_tone_licks = (
                 (trial_data["event"] == "Lick") & 
                 (trial_data["trial_time"] < pre_tone_end)
@@ -543,6 +546,7 @@ class Trial:
             # Append results
             trial_results.append({
                 "trial_number": trial_number,
+                "total_licks": total_licks,
                 "pre_tone_licks": pre_tone_licks,
                 "tone_licks": tone_licks,
                 "trace_licks": trace_licks,
