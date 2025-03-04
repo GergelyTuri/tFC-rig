@@ -523,8 +523,8 @@ class Trial:
             for _, row in trial_data.iterrows():
                 if row["event"] == "Lick":
                     for water_on, water_off in rewards:
-                        pprint(row["trial_time"])
                         if water_on <= row["trial_time"] <= water_off:
+                            pprint(row["trial_time"])
                             total_rewarded_licks += 1
                             if row["trial_time"] < pre_tone_end:
                                 pre_tone_rewarded_licks += 1
