@@ -518,6 +518,8 @@ class Trial:
             pre_tone_rewarded_licks = tone_rewarded_licks = 0 
             trace_rewarded_licks = post_trace_rewarded_licks = 0
             total_rewarded_licks = 0
+            from pprint import pprint
+            pprint(f"{trial_number}: {pre_tone_end}: {tone_end}: {trace_end}")
             for _, row in trial_data.iterrows():
                 if row["event"] == "Lick":
                     for water_on, water_off in rewards:
