@@ -517,27 +517,21 @@ class Trial:
             # Count rewarded licks (licks between Water on and Water off, these are raw counts)
             pre_tone_rewarded_licks = tone_rewarded_licks = 0 
             trace_rewarded_licks = post_trace_rewarded_licks = 0
-            from pprint import pprint
+            total_rewarded_licks = 0
             for _, row in trial_data.iterrows():
                 if row["event"] == "Lick":
-                    pprint(row["trial_time"])
                     for water_on, water_off in rewards:
                         if water_on <= row["trial_time"] <= water_off:
-                            pprint("rewarded")
+                            total_rewarded_licks += 1
                             if row["trial_time"] < pre_tone_end:
-                                pprint("pre tone")
                                 pre_tone_rewarded_licks += 1
                             elif row["trial_time"] < tone_end:
-                                pprint("tone")
                                 tone_rewarded_licks += 1
                             elif row["trial_time"] < trace_end:
-                                pprint("trace")
                                 trace_rewarded_licks += 1
                             else:
-                                pprint("post trace")
                                 post_trace_rewarded_licks += 1
                             break
-            pprint(rewards)
             
             # Normalize licks by pre-tone licks (avoid division by zero)
             ## Avoid division by zero
@@ -554,6 +548,7 @@ class Trial:
             trial_results.append({
                 "trial_number": trial_number,
                 "total_licks": total_licks,
+                "total_rewarded_licks": total_rewarded_licks,
                 "pre_tone_licks": pre_tone_licks,
                 "tone_licks": tone_licks,
                 "trace_licks": trace_licks,
