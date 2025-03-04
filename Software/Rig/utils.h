@@ -25,34 +25,34 @@ void intArrayToChar(const int* arr, int size, char* result){
 
 class TrialType {
 public:
-    bool water; // 0 = CS-, 1 = CS+
+    bool training; // 0 = CS-, 1 = CS+
     int signal;
     int hasSignal;
 
-    TrialType(bool water, int signal, int hasSignal) : 
-    water(water), signal(signal), hasSignal(hasSignal) {}
+    TrialType(bool training, int signal, int hasSignal) : 
+    training(training), signal(signal), hasSignal(hasSignal) {}
 };
 
-const TrialType NO_WATER_NEGATIVE(false, 0, 1);
-const TrialType NO_WATER_POSITIVE(false, 1, 1);
-const TrialType WATER_NEGATIVE(true, 0, 1);
-const TrialType WATER_POSITIVE(true, 1, 1);
-const TrialType NO_WATER_NO_SIGNAL(true, 0, 0);
+const TrialType NO_TRAINING_NEGATIVE(false, 0, 1);
+const TrialType NO_TRAINING_POSITIVE(false, 1, 1);
+const TrialType TRAINING_NEGATIVE(true, 0, 1);
+const TrialType TRAINING_POSITIVE(true, 1, 1);
+const TrialType NO_TRAINING_NO_SIGNAL(true, 0, 0);
 
 const TrialType* trialTypeObjects[] = {
-    &NO_WATER_NEGATIVE,  // ID 0
-    &WATER_POSITIVE,     // ID 1
-    &NO_WATER_POSITIVE,  // ID 2
-    &WATER_NEGATIVE,     // ID 3
-    &NO_WATER_NO_SIGNAL  // ID 4
+    &NO_TRAINING_NEGATIVE,  // ID 0
+    &TRAINING_POSITIVE,     // ID 1
+    &NO_TRAINING_POSITIVE,  // ID 2
+    &TRAINING_NEGATIVE,     // ID 3
+    &NO_TRAINING_NO_SIGNAL  // ID 4
 };
 
 const char* trialTypesCharIdx[] = {
-    "no_water_CS-",      // ID 0
-    "water_CS+",         // ID 1
-    "no_water_CS+",      // ID 2
-    "water_CS-",         // ID 3
-    "no_water_no_signal" // ID 4
+    "no_training_CS-",      // ID 0
+    "training_CS+",         // ID 1
+    "no_training_CS+",      // ID 2
+    "training_CS-",         // ID 3
+    "no_training_no_signal" // ID 4
 };
 
 

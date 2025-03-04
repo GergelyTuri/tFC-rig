@@ -19,6 +19,7 @@ const int NUMBER_OF_TRIALS = 6;
 const char* TRIAL_TYPE_1 = "no_water_CS-";
 const char* TRIAL_TYPE_2 = "water_CS+";
 const bool IS_TRAINING = false;
+const bool TRAINING_TRIALS_ARE_REWARDED = true;
 const long MIN_ITI = 60000;
 const long MAX_ITI = 300000;
 const long TRIAL_DURATION = 50000;
