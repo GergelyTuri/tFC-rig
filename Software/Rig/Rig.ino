@@ -652,15 +652,17 @@ void flushNegativeSignalMetaData() {
  *
  */
 void prePrint() {
+  long currentMillis = millis();
+  long trialTime = currentMillis - trialStartTime;
+
   Serial.print(currentTrial);
   Serial.print(": ");
-  Serial.print(millis());
+  Serial.print(currentMillis);
   Serial.print(": ");
-  long trialTime = millis() - trialStartTime;
-  if (trialTime < millis()) {
+  if (trialTime < currentMillis) {
     // Only print true trial time if it is less than the current time
     // since we reset trial time to long max between trials
-    Serial.print(millis() - trialStartTime);
+    Serial.print(trialTime);
     Serial.print(": ");
   } else {
     Serial.print(0);
