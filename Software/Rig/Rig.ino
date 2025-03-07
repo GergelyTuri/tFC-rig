@@ -176,14 +176,18 @@ void loop() {
         // Executes continuously during each trial
         checkForTrialEnd();
         checkLick();
-        if (WATER_REWARD_AVAILABLE) {
+        if (WATER_REWARD_AVAILABLE && !TRAINING_TRIALS_ARE_REWARDED) {
           checkWater();
         }
         if (USING_AUDITORY_CUES && IS_PRIMARY_RIG) {
-          if (trialTypeObjects[currentTrialType]->water==true) {
+          if (trialTypeObjects[currentTrialType]->training==true) {
             // Water is made available at the point in the experiment where
             // an air puff used to be sent
-            checkWater();
+            if (TRAINING_TRIALS_ARE_REWARDED) {
+              checkWater();
+            } else {
+              checkAir();
+            }
           }
           if (trialTypeObjects[currentTrialType]->hasSignal==1){
             if (trialTypeObjects[currentTrialType]->signal == 1) {
@@ -228,6 +232,7 @@ void loop() {
            * that a trial is happening, since there is no trial time
            * and a trial is not happening :)
            */
+          print("Starting the inter-trial interval");
           if (IS_PRIMARY_RIG) {
             while (millis() - interTrialIntervalStartTime < interTrialIntervalWaitTime) {
               interTrialIntervalLoop();
@@ -245,6 +250,7 @@ void loop() {
           // Any module called during the inter-trial interval loop
           // should be flushed afterwards, so it is ready for the next
           // trial.
+          print("The inter-trial interval has ended");
           flushLickMetaData();
         }
       }
@@ -410,6 +416,7 @@ void printSessionParameters() {
   vprint("IS_PRIMARY_RIG", IS_PRIMARY_RIG);
   vprint("NUMBER_OF_TRIALS", NUMBER_OF_TRIALS);
   vprint("IS_TRAINING", IS_TRAINING);
+  vprint("TRAINING_TRIALS_ARE_REWARDED", TRAINING_TRIALS_ARE_REWARDED);
   vprint("INTER_TRIAL_DEBUG_WAIT_INTERVAL", INTER_TRIAL_DEBUG_WAIT_INTERVAL);
   vprint("TRIAL_DURATION", TRIAL_DURATION);
   vprint("LICK_TIMEOUT", LICK_TIMEOUT);
@@ -645,15 +652,17 @@ void flushNegativeSignalMetaData() {
  *
  */
 void prePrint() {
+  long currentMillis = millis();
+  long trialTime = currentMillis - trialStartTime;
+
   Serial.print(currentTrial);
   Serial.print(": ");
-  Serial.print(millis());
+  Serial.print(currentMillis);
   Serial.print(": ");
-  long trialTime = millis() - trialStartTime;
-  if (trialTime < millis()) {
+  if (trialTime < currentMillis) {
     // Only print true trial time if it is less than the current time
     // since we reset trial time to long max between trials
-    Serial.print(millis() - trialStartTime);
+    Serial.print(trialTime);
     Serial.print(": ");
   } else {
     Serial.print(0);
