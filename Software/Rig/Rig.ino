@@ -252,7 +252,6 @@ void loop() {
           // trial.
           print("The inter-trial interval has ended");
           flushLickMetaData();
-          currentTrial++;
         }
       }
     }
@@ -480,6 +479,7 @@ void checkForTrialEnd() {
   }
 }
 void flushTrialMetaData() {
+  currentTrial++;
   trialHasStarted = false;
   trialStartTime = __LONG_MAX__;
   trialHasEnded = false;
