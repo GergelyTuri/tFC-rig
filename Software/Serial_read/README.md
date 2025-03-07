@@ -31,7 +31,7 @@ First, clone the repository containing the project to your local machine. Open a
 2. Create the Conda Environment
 
     ```bash
-    conda env create -f environment.yml
+    conda env create [-n <environment_name>] -f environment.yml
     ```
 
 3. Activate the Environment

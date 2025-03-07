@@ -176,7 +176,7 @@ void loop() {
         // Executes continuously during each trial
         checkForTrialEnd();
         checkLick();
-        if (WATER_REWARD_AVAILABLE) {
+        if (WATER_REWARD_AVAILABLE && !TRAINING_TRIALS_ARE_REWARDED) {
           checkWater();
         }
         if (USING_AUDITORY_CUES && IS_PRIMARY_RIG) {
@@ -252,6 +252,7 @@ void loop() {
           // trial.
           print("The inter-trial interval has ended");
           flushLickMetaData();
+          currentTrial++;
         }
       }
     }
@@ -479,7 +480,6 @@ void checkForTrialEnd() {
   }
 }
 void flushTrialMetaData() {
-  currentTrial++;
   trialHasStarted = false;
   trialStartTime = __LONG_MAX__;
   trialHasEnded = false;
