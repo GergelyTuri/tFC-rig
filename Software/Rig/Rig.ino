@@ -172,6 +172,9 @@ void loop() {
       trialStart();
     } else {
       if (!trialHasEnded) {
+        long currentTime = millis();
+        long trialTime = currentTime - trialStartTime;
+
         // Core rig loop.
         // Executes continuously during each trial
         checkForTrialEnd();
