@@ -179,18 +179,19 @@ void loop() {
         if (WATER_REWARD_AVAILABLE && !TRAINING_TRIALS_ARE_REWARDED) {
           checkWater();
         }
-        print("Will now consider training the mouse");
+        if (
+          TRAINING_TRIALS_ARE_REWARDED &&                         // Are we giving water, not air?
+          (trialTypeObjects[currentTrialType]->training==true) && // Is the current trial type a training trial?
+          (trialTime >= AIR_PUFF_START_TIME) &&                   // Has the trace period started?
+          (trialTime < AIR_PUFF_TOTAL_TIME + AIR_PUFF_START_TIME) // Is the trace period not over yet?
+        ) {
+          checkWater();
+        }
         if (USING_AUDITORY_CUES && IS_PRIMARY_RIG) {
-          print("Using auditory cues on primary rig");
           if (trialTypeObjects[currentTrialType]->training==true) {
-            print("Training the mouse");
             // Water is made available at the point in the experiment where
             // an air puff used to be sent
-            if (TRAINING_TRIALS_ARE_REWARDED) {
-              print("Training the mouse: water");
-              checkWater();
-            } else {
-              print("Training the mouse: air");
+            if (!TRAINING_TRIALS_ARE_REWARDED) {
               checkAir();
             }
           }
