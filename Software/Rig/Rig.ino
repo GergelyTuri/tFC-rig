@@ -172,8 +172,8 @@ void loop() {
       trialStart();
     } else {
       if (!trialHasEnded) {
-        // long currentTime = millis();
-        // long trialTime = currentTime - trialStartTime;
+        long currentTime = millis();
+        long trialTime = currentTime - trialStartTime;
 
         // Core rig loop.
         // Executes continuously during each trial
@@ -182,14 +182,14 @@ void loop() {
         if (WATER_REWARD_AVAILABLE && !TRAINING_TRIALS_ARE_REWARDED) {
           checkWater();
         }
-        // if (
-        //   TRAINING_TRIALS_ARE_REWARDED &&                         // Are we giving water, not air?
-        //   (trialTypeObjects[currentTrialType]->training==true) && // Is the current trial type a training trial?
-        //   (trialTime >= AIR_PUFF_START_TIME) &&                   // Has the trace period started?
-        //   (trialTime < AIR_PUFF_TOTAL_TIME + AIR_PUFF_START_TIME) // Is the trace period not over yet?
-        // ) {
-        //   checkWater();
-        // }
+        if (
+          TRAINING_TRIALS_ARE_REWARDED &&                         // Are we giving water, not air?
+          (trialTypeObjects[currentTrialType]->training==true) && // Is the current trial type a training trial?
+          (trialTime >= AIR_PUFF_START_TIME) &&                   // Has the trace period started?
+          (trialTime < AIR_PUFF_TOTAL_TIME + AIR_PUFF_START_TIME) // Is the trace period not over yet?
+        ) {
+          checkWater();
+        }
         if (USING_AUDITORY_CUES && IS_PRIMARY_RIG) {
           if (trialTypeObjects[currentTrialType]->training==true) {
             // Water is made available at the point in the experiment where
