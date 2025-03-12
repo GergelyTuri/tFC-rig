@@ -659,7 +659,7 @@ void prePrint() {
   Serial.print(": ");
   Serial.print(currentMillis);
   Serial.print(": ");
-  if (trialTime < currentMillis) {
+  if ((trialTime < currentMillis) && (trialTime >= 0)) {
     // Only print true trial time if it is less than the current time
     // since we reset trial time to long max between trials
     Serial.print(trialTime);
