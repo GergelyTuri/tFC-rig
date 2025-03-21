@@ -10,10 +10,10 @@ Usage:
     
 """
 
-from PyQt6.QtWidgets import QApplication, QVBoxLayout, QWidget, QPushButton, QFormLayout, QGroupBox, QMessageBox, QScrollArea, QComboBox, QGridLayout
+from PyQt6.QtWidgets import QApplication, QVBoxLayout, QWidget, QPushButton, QFormLayout, QGroupBox, QMessageBox, QScrollArea, QComboBox
 from PyQt6.QtGui import QIcon, QPixmap
 from PyQt6.QtCore import Qt
-from .constants import PARAMS_PATH, TRIAL_CLASSES
+from .constants import TRIAL_CLASSES
 from ..camera_control import camera_class as cc
 from .serial_comm import SerialComm as sc
 from .update_sketch import UpdateSketch
@@ -28,7 +28,7 @@ class Window(QWidget):
     def __init__(self):
         super().__init__()
         
-        self.resize(500, 400)
+        self.resize(500, 500)
         self.setWindowTitle("tFC experiment")
         # TODO: Add window icon?
         self.setWindowIcon(QIcon(QPixmap(50,50)))
@@ -74,6 +74,9 @@ class Window(QWidget):
         # Trial Types
         self.trial_type_1 = ComboBox(trialSettingsLayout, 'Trial Type 1', TRIAL_CLASSES, TRIAL_CLASSES[0])
         self.trial_type_2 = ComboBox(trialSettingsLayout, 'Trial Type 2', TRIAL_CLASSES, TRIAL_CLASSES[1])
+        # TODO: check if this fixes the dropdown's black box/rendering issue?
+        self.trial_type_1.setStyleSheet("QComboBox { background-color: white; color: black; }")
+        self.trial_type_2.setStyleSheet("QComboBox { background-color: white; color: black; }")
         self.min_iti = SpinBox(trialSettingsLayout, "Minimum iti duration", 60000, step=1000)
         self.max_iti = SpinBox(trialSettingsLayout, "Maximum iti duration", 300000, step=1000)
         self.trial_duration = SpinBox(trialSettingsLayout, "Trial duration", 50000, step=1000, max=2000000)
@@ -121,8 +124,9 @@ class Window(QWidget):
         """
         Validate input fields before starting the experiment.
         """
+        self.submitBtn.setText("Validating...")
+        QApplication.processEvents()
         pattern = r"^[a-zA-Z0-9]+_\d+$"
-
         if self.primary_mouse_id.text() == '' or self.primary_port.text() == '':
             QMessageBox.warning(self, "Warning", "Mouse ID and Primary Port fields must be set!")
         
@@ -170,12 +174,15 @@ class Window(QWidget):
                 QMessageBox.critical(self, "Error", "Issue connecting to port: \n\n" + str(e))
             except Exception as e:
                 QMessageBox.critical(self, "Error", str(e))
+        self.submitBtn.setText("Start")
 
 
     def submit(self):    
         """
         Starts the experiment by calling subprocess of experiment script.
         """    
+        self.submitBtn.setText("Compiling...")
+        QApplication.processEvents()
         p_mouse_id = self.primary_mouse_id.text()
         s_mouse_id = f',{self.secondary_mouse_id.text()}' if self.secondary_mouse_id.text() else ''
         p = f' -p {self.primary_port.text()}'
@@ -188,6 +195,7 @@ class Window(QWidget):
         dialog = OutputDialogPlot(process_thread, p_mouse_id, s_mouse_id, self)
 
         self.update_sketch(dialog)
+        self.submitBtn.setText("Running...")
 
         process_thread.output_updated.connect(dialog.update_output)
         process_thread.start()
@@ -202,48 +210,14 @@ class Window(QWidget):
         """
         Updates sketch if there are new trial parameters.
         """
-        if self.params_has_changed():
-            params = self.get_ino_params()
-            ports = [self.primary_port.text()]
-            if self.secondary_port.text(): ports.append(self.secondary_port.text())
-            updater = UpdateSketch()
-            updater_out = updater.write_and_compile_ino(params, self.primary_port.text(), ports)
+        params = self.get_ino_params()
+        ports = [self.primary_port.text()]
+        if self.secondary_port.text(): ports.append(self.secondary_port.text())
+        updater = UpdateSketch()
+        updater_out = updater.write_and_compile_ino(params, self.primary_port.text(), ports)
 
-            for out in updater_out: dialog.update_output(out)
-            
+        for out in updater_out: dialog.update_output(out)
 
-    def params_has_changed(self):
-        """
-        Reads the header file and compares to GUI values to check if there are any param changes.
-
-        Returns:
-            Boolean indicating if there are any new changes.
-        """
-
-        with open(PARAMS_PATH, 'r') as file:
-            content = file.read()
-
-        pattern = r'const\s+(\w+\*?)\s+(\w+)(\[\])?\s*=\s*([^;]+);'
-        header_fields = re.findall(pattern, content)
-        header_params = {var_name: value for _, var_name, _, value in header_fields}
-
-        gui_params = self.get_ino_params()
-
-        for gui_field, gui_value in gui_params.items():
-            if gui_field in header_params:
-                header_value = header_params[gui_field]
-
-                if isinstance(gui_value, bool):
-                    header_value = header_value.lower() == 'true'
-                elif isinstance(gui_value, str):
-                    header_value = header_value[1:-1]
-                else:
-                    gui_type = type(gui_value)
-                    header_value = gui_type(header_value)
-
-                if gui_value != header_value:
-                    return True
-        return False
 
     def get_ino_params(self):
         """
