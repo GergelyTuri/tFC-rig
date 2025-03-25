@@ -25,3 +25,4 @@ dependencies:
     - oauth2client
     - gspread-dataframe
     - python-dotenv
+    - -e ./Analysis
