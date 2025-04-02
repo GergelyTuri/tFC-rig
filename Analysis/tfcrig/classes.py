@@ -76,6 +76,10 @@ class Session:
         session_events = self.get_mouse_session_data(mouse_id)
         metadata = {}
 
+        always_string_keys = {
+            "trialTypesChar"
+        }  # this/these will have to stay as string to prevent losing information
+
         for event in session_events:
             message = event.get("message", "")
 
@@ -93,14 +97,17 @@ class Session:
 
                 # Try converting the value to int or float if it's numeric
                 value: Any
-                try:
-                    value = int(value_str)
-                except ValueError:
+                if key in always_string_keys:
+                    value = value_str
+                else:
                     try:
-                        value = float(value_str)
+                        value = int(value_str)
                     except ValueError:
-                        # If it can't be converted to a number, leave as string
-                        value = value_str
+                        try:
+                            value = float(value_str)
+                        except ValueError:
+                            # If it can't be converted to a number, leave as string
+                            value = value_str
 
                 metadata[key] = value
 
@@ -506,6 +513,8 @@ class Trial:
 
             trial_data = trial_data.sort_values("trial_time").reset_index(drop=True)
 
+            trial_type = trial_data["trial_type"].iloc[0]
+
             # Count licks in each period based on `trial_time`
             pre_tone_licks = (
                 (trial_data["event"] == "Lick")
@@ -587,10 +596,19 @@ class Trial:
             normalized_trace_licks = trace_licks / norm_factor
             normalized_post_trace_licks = post_trace_licks / norm_factor
 
+            tone = (
+                "cs+"
+                if trial_type in [1, 2]
+                else "cs-" if trial_type in [0, 3] else "no_signal"
+            )
+            puff = "puff" if trial_type in [1, 3] else "no_puff"
+
             # Append results
             trial_results.append(
                 {
                     "trial_number": trial_number,
+                    "tone": tone,
+                    "airpuff": puff,
                     "pre_tone_licks": pre_tone_licks,
                     "tone_licks": tone_licks,
                     "trace_licks": trace_licks,
