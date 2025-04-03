@@ -352,8 +352,8 @@ class Session:
             metadata = self.get_session_metadata(mouse_id)
 
             # compute metrics
-            trial_obj = Trial(trial_df)
-            metrics_df = trial_obj.compute_lick_metrics(metadata)
+            trial_obj = Trial(trial_df, metadata)
+            metrics_df = trial_obj.compute_lick_metrics()
 
             # add mouse_id
             metrics_df["mouse_id"] = mouse_id
@@ -393,6 +393,7 @@ class Trial:
     """
 
     trial_df: pd.DataFrame = field(repr=False)
+    _session_metadata: Dict[str, Any] = field(default_factory=dict, repr=False)
 
     def __post_init__(self):
         """
@@ -416,6 +417,34 @@ class Trial:
         self.trial_df = self.trial_df.sort_values(
             by=["mouse_id", "trial_number", "trial_time"]
         ).reset_index(drop=True)
+
+    def set_metadata(self, session_metadata: Dict[str, Any]):
+        self._session_metadata = session_metadata
+
+    @property
+    def pre_tone_duration(self) -> int:
+        """
+        Return the duration of the pre-tone period in milliseconds.
+        """
+        return self._session_metadata.get("AUDITORY_START", 0)
+
+    @property
+    def tone_duration(self) -> int:
+        return max(
+            0, self._session_metadata.get("AUDITORY_STOP", 0) - self.pre_tone_duration
+        )
+
+    @property
+    def trace_duration(self) -> int:
+        return max(
+            0,
+            self._session_metadata.get("AIR_PUFF_START_TIME", 0)
+            - self._session_metadata.get("AUDITORY_STOP", 0),
+        )
+
+    @property
+    def post_trace_duration(self) -> int:
+        return max(0, self._session_metadata.get("AIR_PUFF_TOTAL_TIME", 0))
 
     def get_absolute_licks_per_trial(self) -> pd.DataFrame:
         """
@@ -465,7 +494,7 @@ class Trial:
 
         return lick_events.groupby("trial_number")["trial_time"].first()
 
-    def compute_lick_metrics(self, session_metadata: Dict[str, Any]) -> pd.DataFrame:
+    def compute_lick_metrics(self) -> pd.DataFrame:
         """
         Computes lick counts, normalized licks,
         and durations for each trial period:
@@ -480,25 +509,28 @@ class Trial:
         - 'trace': AIR_PUFF_START_TIME - AUDITORY_STOP
         - 'post_trace': AIR_PUFF_TOTAL_TIME
 
-        :param session_metadata: Dictionary containing event timing metadata
-                                 from Session.get_session_metadata()
-
         :return: DataFrame where each row represents a trial
                  with lick counts, normalized licks, and durations.
         """
 
-        # Extract timing information from session metadata
-        pre_tone_duration = session_metadata.get("AUDITORY_START", 0)
-        tone_duration = session_metadata.get("AUDITORY_STOP", 0) - pre_tone_duration
-        trace_duration = session_metadata.get(
-            "AIR_PUFF_START_TIME", 0
-        ) - session_metadata.get("AUDITORY_STOP", 0)
-        post_trace_duration = session_metadata.get("AIR_PUFF_TOTAL_TIME", 0)
+        # # Extract timing information from session metadata
+        # pre_tone_duration = session_metadata.get("AUDITORY_START", 0)
+        # tone_duration = session_metadata.get("AUDITORY_STOP", 0) - pre_tone_duration
+        # trace_duration = session_metadata.get(
+        #     "AIR_PUFF_START_TIME", 0
+        # ) - session_metadata.get("AUDITORY_STOP", 0)
+        # post_trace_duration = session_metadata.get("AIR_PUFF_TOTAL_TIME", 0)
 
-        # Ensure no negative durations
-        tone_duration = max(0, tone_duration)
-        trace_duration = max(0, trace_duration)
-        post_trace_duration = max(0, post_trace_duration)
+        # # Ensure no negative durations
+        # tone_duration = max(0, tone_duration)
+        # trace_duration = max(0, trace_duration)
+        # post_trace_duration = max(0, post_trace_duration)
+
+        # Extract timing information
+        pre_tone_duration = self.pre_tone_duration
+        tone_duration = self.tone_duration
+        trace_duration = self.trace_duration
+        post_trace_duration = self.post_trace_duration
 
         # get time stamps
         pre_tone_end = pre_tone_duration
@@ -540,8 +572,8 @@ class Trial:
 
             rewards = []
             current_reward = None
-            trial_duration = session_metadata.get("TRIAL_DURATION", 0)
-            water_dispense_time = session_metadata.get("WATER_DISPENSE_TIME", 0)
+            trial_duration = self._session_metadata.get("TRIAL_DURATION", 0)
+            water_dispense_time = self._session_metadata.get("WATER_DISPENSE_TIME", 0)
 
             # Find all rewards in the trial
             for _, row in trial_data.iterrows():
@@ -634,7 +666,7 @@ class Trial:
         # Convert results into a DataFrame
         return pd.DataFrame(trial_results)
 
-    def compute_lick_delays(self, session_metadata: Dict[str, Any]) -> pd.DataFrame:
+    def compute_lick_delays(self) -> pd.DataFrame:
         """
         Computes the delay (latency) of the first lick in each trial period
             ('pre-tone', 'tone', 'trace', 'post_trace').
@@ -644,30 +676,35 @@ class Trial:
         - 'delay_from_period_start':
                     Time of the first lick relative to the period start.
 
-        :param session_metadata:
-            Dictionary containing event timing metadata
-            from Session.get_session_metadata()
-
         :return: DataFrame where each row represents
                         a trial with lick delays for each period.
         """
 
-        # Extract timing information
-        pre_tone_start = 0  # Always starts at 0
-        pre_tone_duration = session_metadata.get("AUDITORY_START", 0)
-        tone_start = pre_tone_duration
-        tone_duration = session_metadata.get("AUDITORY_STOP", 0) - tone_start
-        trace_start = session_metadata.get("AUDITORY_STOP", 0)
-        trace_duration = session_metadata.get(
-            "AIR_PUFF_START_TIME", 0
-        ) - session_metadata.get("AUDITORY_STOP", 0)
-        post_trace_start = session_metadata.get("AIR_PUFF_START_TIME", 0)
-        post_trace_duration = session_metadata.get("AIR_PUFF_TOTAL_TIME", 0)
+        # # Extract timing information
+        # pre_tone_start = 0  # Always starts at 0
+        # pre_tone_duration = session_metadata.get("AUDITORY_START", 0)
+        # tone_start = pre_tone_duration
+        # tone_duration = session_metadata.get("AUDITORY_STOP", 0) - tone_start
+        # trace_start = session_metadata.get("AUDITORY_STOP", 0)
+        # trace_duration = session_metadata.get(
+        #     "AIR_PUFF_START_TIME", 0
+        # ) - session_metadata.get("AUDITORY_STOP", 0)
+        # post_trace_start = session_metadata.get("AIR_PUFF_START_TIME", 0)
+        # post_trace_duration = session_metadata.get("AIR_PUFF_TOTAL_TIME", 0)
 
-        # Ensure no negative durations
-        tone_duration = max(0, tone_duration)
-        trace_duration = max(0, trace_duration)
-        post_trace_duration = max(0, post_trace_duration)
+        # # Ensure no negative durations
+        # tone_duration = max(0, tone_duration)
+        # trace_duration = max(0, trace_duration)
+        # post_trace_duration = max(0, post_trace_duration)
+
+        pre_tone_start = 0  # Always starts at 0
+        pre_tone_duration = self.pre_tone_duration
+        tone_start = pre_tone_duration
+        tone_duration = self.tone_duration
+        trace_start = tone_start + tone_duration
+        trace_duration = self.trace_duration
+        post_trace_start = trace_start + trace_duration
+        post_trace_duration = self.post_trace_duration
 
         # Store results per trial
         trial_results = []
