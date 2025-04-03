@@ -513,19 +513,6 @@ class Trial:
                  with lick counts, normalized licks, and durations.
         """
 
-        # # Extract timing information from session metadata
-        # pre_tone_duration = session_metadata.get("AUDITORY_START", 0)
-        # tone_duration = session_metadata.get("AUDITORY_STOP", 0) - pre_tone_duration
-        # trace_duration = session_metadata.get(
-        #     "AIR_PUFF_START_TIME", 0
-        # ) - session_metadata.get("AUDITORY_STOP", 0)
-        # post_trace_duration = session_metadata.get("AIR_PUFF_TOTAL_TIME", 0)
-
-        # # Ensure no negative durations
-        # tone_duration = max(0, tone_duration)
-        # trace_duration = max(0, trace_duration)
-        # post_trace_duration = max(0, post_trace_duration)
-
         # Extract timing information
         pre_tone_duration = self.pre_tone_duration
         tone_duration = self.tone_duration
@@ -679,23 +666,6 @@ class Trial:
         :return: DataFrame where each row represents
                         a trial with lick delays for each period.
         """
-
-        # # Extract timing information
-        # pre_tone_start = 0  # Always starts at 0
-        # pre_tone_duration = session_metadata.get("AUDITORY_START", 0)
-        # tone_start = pre_tone_duration
-        # tone_duration = session_metadata.get("AUDITORY_STOP", 0) - tone_start
-        # trace_start = session_metadata.get("AUDITORY_STOP", 0)
-        # trace_duration = session_metadata.get(
-        #     "AIR_PUFF_START_TIME", 0
-        # ) - session_metadata.get("AUDITORY_STOP", 0)
-        # post_trace_start = session_metadata.get("AIR_PUFF_START_TIME", 0)
-        # post_trace_duration = session_metadata.get("AIR_PUFF_TOTAL_TIME", 0)
-
-        # # Ensure no negative durations
-        # tone_duration = max(0, tone_duration)
-        # trace_duration = max(0, trace_duration)
-        # post_trace_duration = max(0, post_trace_duration)
 
         pre_tone_start = 0  # Always starts at 0
         pre_tone_duration = self.pre_tone_duration
