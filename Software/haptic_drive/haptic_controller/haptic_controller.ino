@@ -3,32 +3,51 @@
 
 Adafruit_DRV2605 drv;
 
+const uint8_t EFFECT_ID = 1;
+const unsigned long START_DELAY_MS = 1000;       // 10 seconds before first effect
+const unsigned long EFFECT_INTERVAL_MS = 5550;    // Interval between effects
+
+unsigned long startTime;
+unsigned long lastEffectTime = 0;
+bool effectStarted = false;
+
 void setup() {
   Serial.begin(9600);
-  Serial.println("Adafruit DRV2605 Basic test");
-  if (! drv.begin()) {
+  Serial.println("Adafruit DRV2605 Haptic Motor Test");
+
+  if (!drv.begin()) {
     Serial.println("Could not find DRV2605");
-    while (1) delay(10); 
+    while (true) delay(10);
   }
-    drv.selectLibrary(1);
-  
-  // I2C trigger by sending 'go' command 
-  // default, internal trigger when sending GO command
-  drv.setMode(DRV2605_MODE_INTTRIG); 
+
+  drv.selectLibrary(1);
+  drv.setMode(DRV2605_MODE_INTTRIG);
+
+  startTime = millis();
 }
 
-uint8_t effect = 1;
-
 void loop() {
-   if (effect == 1) {
-    Serial.println("11.2 Waveform Library Effects List");
+  unsigned long currentTime = millis();
+
+  // Wait for start delay to pass before beginning the effect cycle
+  if (!effectStarted) {
+    if (currentTime - startTime >= START_DELAY_MS) {
+      Serial.println("Start delay elapsed. Beginning effect loop...");
+      effectStarted = true;
+      lastEffectTime = currentTime;
+    }
+    return;
   }
-  drv.setWaveform(0, effect);  // play effect 
-  drv.setWaveform(1, 0);       // end waveform
 
-  // play the effect!
-  drv.go();
+  // Once started, trigger the effect on interval
+  if (currentTime - lastEffectTime >= EFFECT_INTERVAL_MS) {
+    Serial.print("Playing effect: ");
+    Serial.println(EFFECT_ID);
 
-  // wait a bit
-  delay(5500);
+    drv.setWaveform(0, EFFECT_ID);
+    drv.setWaveform(1, 0);
+    drv.go();
+
+    lastEffectTime = currentTime;
+  }
 }
