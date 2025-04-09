@@ -175,3 +175,25 @@ class Cohort:
     def get_mouse(self, mouse_id: str) -> pd.DataFrame:
         """return all session data fpr a single or a set of mice"""
         return self.data[self.data["mouse_id"] == mouse_id]
+
+    def compute_reward_success_rate(
+        self,
+        reward_col: str = "post_trace_reward",
+        groupby_cols: list = ["mouse_id", "session_id"],
+    ) -> pd.DataFrame:
+        """
+        Computes the percent of trials where a reward was delivered (non-zero)
+        for each mouse for each group defined by 'groupby_cols'.
+
+        Args:
+            reward_col: column name indicating reward counts
+            groupby_cols: columns to group by (default is ['mouse_id', 'session_id'])
+
+        Returns:
+            DataFrame with columns: groupby_cols + ['reward_success_rate']
+        """
+        grouped = self.data.groupby(groupby_cols)[reward_col]
+        result = grouped.apply(lambda x: (x != 0).mean() * 100).reset_index(
+            name=f"{reward_col}_success_rate"
+        )
+        return result
