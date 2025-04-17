@@ -64,7 +64,7 @@ int trialType1Idx = getArrayIndex(TRIAL_TYPE_1, trialTypesCharIdx, trialTypesCha
 int trialType2Idx = getArrayIndex(TRIAL_TYPE_2, trialTypesCharIdx, trialTypesCharIdxSize);
 
 // Step 1: Define number of each trial type based on ratio
-int numCSPlus = (int)(NUMBER_OF_TRIALS * CS_PLUS_RATIO);
+int numCSPlus = round(NUMBER_OF_TRIALS * CS_PLUS_RATIO);
 int numCSMinus = NUMBER_OF_TRIALS - numCSPlus;
 
 long randomInterTrialInterval = 0;
@@ -119,36 +119,8 @@ void setup() {
     // not configure `PIN_BUTTON`
     pinMode(PIN_SECONDARY, INPUT);
   }
-
-  // Each session of trials has a different random seed taken by
-  // reading from a disconnected pin.
-  randomSeed(analogRead(0));
-
-  // Each session is a random permutation of the trial types (ex: {CS-, CS-, CS-, CS+, CS+, CS+}
-  // in the case that there are `6` trials).
-  // Note that 0 is CS-, 1 is CS+.
-  numCSPlus = round(NUMBER_OF_TRIALS * CS_PLUS_RATIO);
-  if (numCSPlus > NUMBER_OF_TRIALS) numCSPlus = NUMBER_OF_TRIALS;
-  numCSMinus = NUMBER_OF_TRIALS - numCSPlus;  
-
-  int idx = 0;
-  for (int i = 0; i < numCSPlus; ++i) {
-    trialTypes[idx++] = trialType2Idx;
-  }
-  for (int i = 0; i < numCSMinus; ++i) {
-    trialTypes[idx++] = trialType1Idx;  // Assuming CS- maps to trialType1Idx
-  }
   
-  // Step 3: Shuffle trialTypes array
-  for (int i = NUMBER_OF_TRIALS - 1; i > 0; --i) {
-    int j = random(0, i + 1);
-    int temp = trialTypes[i];
-    trialTypes[i] = trialTypes[j];
-    trialTypes[j] = temp;
-  }
-
-  // Convert to char array for printing/debugging
-  intArrayToChar(trialTypes, NUMBER_OF_TRIALS, trialTypesChar);
+  generateTrialTypes(float csPlusRatio)
 
   // Keeps track of the rig start time. This should be close to 0 since
   // `millis` starts when the rig starts, but is tracked separately for
@@ -729,4 +701,23 @@ void vprint (char* x, char* y) {
   char s[50];
   sprintf(s, "%s: %s", x, y);
   print(s);
+}
+
+void generateTrialTypes(float csPlusRatio) {
+  int idx = 0;
+  int numCSPlus = round(NUMBER_OF_TRIALS * csPlusRatio);
+  if (numCSPlus > NUMBER_OF_TRIALS) numCSPlus = NUMBER_OF_TRIALS;
+  int numCSMinus = NUMBER_OF_TRIALS - numCSPlus;
+
+  for (int i = 0; i < numCSPlus; ++i) trialTypes[idx++] = trialType2Idx;
+  for (int i = 0; i < numCSMinus; ++i) trialTypes[idx++] = trialType1Idx;
+
+  for (int i = NUMBER_OF_TRIALS - 1; i > 0; --i) {
+    int j = random(0, i + 1);
+    int temp = trialTypes[i];
+    trialTypes[i] = trialTypes[j];
+    trialTypes[j] = temp;
+  }
+
+  intArrayToChar(trialTypes, NUMBER_OF_TRIALS, trialTypesChar);
 }
