@@ -62,6 +62,10 @@ int trialTypesCharIdxSize = sizeof(trialTypesCharIdx) / sizeof(trialTypesCharIdx
 int trialType1Idx = getArrayIndex(TRIAL_TYPE_1, trialTypesCharIdx, trialTypesCharIdxSize);
 int trialType2Idx = getArrayIndex(TRIAL_TYPE_2, trialTypesCharIdx, trialTypesCharIdxSize);
 
+// Step 1: Define number of each trial type based on ratio
+int numCSPlus = (int)(NUMBER_OF_TRIALS * CS_PLUS_RATIO);
+int numCSMinus = NUMBER_OF_TRIALS - numCSPlus;
+
 long randomInterTrialInterval = 0;
 
 int currentTrial;
@@ -122,20 +126,27 @@ void setup() {
   // Each session is a random permutation of the trial types (ex: {CS-, CS-, CS-, CS+, CS+, CS+}
   // in the case that there are `6` trials).
   // Note that 0 is CS-, 1 is CS+.
-  for (int i = 0; i < NUMBER_OF_TRIALS / 2; ++i) {
-    trialTypes[i] = trialType1Idx;
+  int idx = 0;
+  for (int i = 0; i < numCSPlus; ++i) {
+    trialTypes[idx++] = trialType1Idx;
   }
-  for (int i = NUMBER_OF_TRIALS / 2; i < NUMBER_OF_TRIALS; ++i) {
-    trialTypes[i] = trialType2Idx;
+  for (int i = 0; i < numCSMinus; ++i) {
+    trialTypes[idx++] = trialType1Idx;  // Assuming CS- maps to trialType1Idx
   }
-  currentTrialType = trialTypes[0];
-  // This uses Fisher-Yates shuffle to randomize the trial types
-  for (int i = NUMBER_OF_TRIALS-1; i > 0; --i) {
-    int j = random (0, i+1);
+  
+  // Step 3: Shuffle trialTypes array
+  for (int i = NUMBER_OF_TRIALS - 1; i > 0; --i) {
+    int j = random(0, i + 1);
     int temp = trialTypes[i];
     trialTypes[i] = trialTypes[j];
     trialTypes[j] = temp;
   }
+  
+  // Print the trial types for debugging
+  vprint("Number of CS+", numCSPlus);
+  vprint("Number of CS-", numCSMinus);
+  
+  // Convert to char array for printing/debugging
   intArrayToChar(trialTypes, NUMBER_OF_TRIALS, trialTypesChar);
 
   // Keeps track of the rig start time. This should be close to 0 since

@@ -1,5 +1,6 @@
 #ifndef TRIAL
 #define TRIAL
+#define CS_PLUS_RATIO 0.8
 
 // Rig settings
 const bool IS_PRIMARY_RIG = true;
