@@ -48,6 +48,7 @@
 #include "rig.h"
 #include "trial.h"
 #include "utils.h"
+#include "math.h"
 
 long rigStartTime = __LONG_MAX__;
 bool sessionHasStarted = false;
@@ -126,9 +127,13 @@ void setup() {
   // Each session is a random permutation of the trial types (ex: {CS-, CS-, CS-, CS+, CS+, CS+}
   // in the case that there are `6` trials).
   // Note that 0 is CS-, 1 is CS+.
+  numCSPlus = round(NUMBER_OF_TRIALS * CS_PLUS_RATIO);
+  if (numCSPlus > NUMBER_OF_TRIALS) numCSPlus = NUMBER_OF_TRIALS;
+  numCSMinus = NUMBER_OF_TRIALS - numCSPlus;  
+
   int idx = 0;
   for (int i = 0; i < numCSPlus; ++i) {
-    trialTypes[idx++] = trialType1Idx;
+    trialTypes[idx++] = trialType2Idx;
   }
   for (int i = 0; i < numCSMinus; ++i) {
     trialTypes[idx++] = trialType1Idx;  // Assuming CS- maps to trialType1Idx
@@ -141,11 +146,7 @@ void setup() {
     trialTypes[i] = trialTypes[j];
     trialTypes[j] = temp;
   }
-  
-  // Print the trial types for debugging
-  vprint("Number of CS+", numCSPlus);
-  vprint("Number of CS-", numCSMinus);
-  
+
   // Convert to char array for printing/debugging
   intArrayToChar(trialTypes, NUMBER_OF_TRIALS, trialTypesChar);
 
@@ -417,6 +418,10 @@ void printSessionParameters() {
   vprint("NUMBER_OF_TRIALS", NUMBER_OF_TRIALS);
   vprint(TRIAL_TYPE_1, trialType1Idx);
   vprint(TRIAL_TYPE_2, trialType2Idx);
+    // GT
+  vprint("Number of CS+", numCSPlus);
+  vprint("Number of CS-", numCSMinus);
+    // GT  
   vprint("trialTypesChar", trialTypesChar);
 
   // print("Printing Arduino or rig parameters");
