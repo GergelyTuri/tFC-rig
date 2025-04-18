@@ -8,6 +8,19 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import re
 
+from tfcrig.google_drive import GoogleDrive
+
+
+def load_metadata_from_google(
+    sheet_id: str, sheet_name: str = "Sheet1"
+) -> pd.DataFrame:
+    gd = GoogleDrive()
+    metadata_df = gd.get_sheet_as_df(sheet_id, sheet_name)
+    metadata_df = metadata_df.dropna(subset=["mouse_id"])
+    metadata_df["mouse_id"] = metadata_df["mouse_id"].astype(str)
+    metadata_df.columns = map(str.lower, metadata_df.columns)
+    return metadata_df
+
 
 class Session:
     """
@@ -15,7 +28,7 @@ class Session:
     containing all trials and all animals within cohort
     """
 
-    def __init__(self, data: pd.DataFrame):
+    def __init__(self, data: pd.DataFrame, metadata_df: pd.DataFrame = None):
         unique_sessions = data["session_id"].unique()
         if len(unique_sessions) != 1:
             raise ValueError(f"Expected one session, found {unique_sessions}")
@@ -23,13 +36,71 @@ class Session:
         self.session_id = unique_sessions[0]
 
         df = data.copy()
+        parts = df["source_file"].str.split("_", expand=True)
+        if parts.shape[1] == 6:
+            df["session_date"] = parts[4]
+        elif parts.shape[1] == 4:
+            df["session_date"] = parts[2]
+
+        if metadata_df is not None:
+            df = df.merge(metadata_df, on=["mouse_id", "session_date"], how="left")
         df["norm_lick_rate"] = (df["tone_licks"] / df["tone_duration"]) / (
             np.where(df["pre_tone_licks"] == 0, 1, df["pre_tone_licks"])
             / df["pre_tone_duration"]
         )
+        df["total_licks"] = (
+            df["pre_tone_licks"]
+            + df["tone_licks"]
+            + df["trace_licks"]
+            + df["post_trace_licks"]
+        )
         self.data = df
         self.subjects = self.data["mouse_id"].unique().tolist()
         self.trials = self.data["trial_number"].unique().tolist()
+
+    def plot_mouse_trials(
+        self,
+        mouse_id: str,
+        y: str = "total_licks",
+        x: str = "trial_number",
+        title: str = None,
+        ylabel: str = None,
+        xlabel: str = None,
+        figsize=(10, 6),
+    ):
+        """
+        Line plot to visualize changes over trials for a single mouse.
+        Highlights trials where y == 0 with a different color.
+        """
+        df_mouse = self.data[self.data["mouse_id"] == mouse_id].copy()
+        df_zero = df_mouse[df_mouse[y] == 0]
+        df_nonzero = df_mouse[df_mouse[y] != 0]
+
+        plt.figure(figsize=figsize)
+
+        # Plot non-zero points
+        sns.lineplot(
+            data=df_nonzero, x=x, y=y, marker="o", label="Non-zero", color="tab:blue"
+        )
+
+        # Overlay zero points in red
+        if not df_zero.empty:
+            sns.scatterplot(
+                data=df_zero, x=x, y=y, color="red", label="Zero", marker="X", s=100
+            )
+
+        plt.title(title or f"{y} over {x} for {mouse_id}")
+        plt.ylabel(ylabel or y)
+        plt.xlabel(xlabel or x)
+        plt.legend()
+        plt.tight_layout()
+        plt.show()
+
+        # Optional: print trial numbers with y == 0
+        if not df_zero.empty:
+            print(f"Trials with {y} == 0 for {mouse_id}: {df_zero[x].tolist()}")
+
+        print(df_zero[[x, y]])
 
     def plot_over_trials(
         self,
@@ -56,60 +127,141 @@ class Session:
         plt.tight_layout(rect=[0, 0, 0.85, 1])  # leaves space for legend on the right
         plt.show()
 
-    def plot_trial_stages(
+    def plot_stage_boxplot_for_mouse(
         self,
-        stage_vars: dict,
-        hue: str = "mouse_id",
-        ylabel: str = "Lick Metric",
+        mouse_id: str,
+        stage_cols: dict = {
+            "Pre-tone": "pre_tone_licks",
+            "Tone": "norm_tone_licks",
+            "Trace": "norm_trace_licks",
+            "Post-trace": "norm_post_trace_licks",
+        },
+        hue: str = "tone",
+        hue_order: list = ["cs+", "cs-"],
+        palette={"cs+": "#A1C9F4", "cs-": "#FFB482"},
+        figsize: tuple = (8, 6),
         title: str = None,
-        agg: str = "mean",
-        figsize=(8, 5),
     ):
         """
-        Plot behavior across different trial stages (e.g., pre_tone, tone, trace, post_trace)
+        Plot grouped boxplots (x = stage, hue = tone) for a single mouse.
 
         Args:
-            stage_vars: dict mapping stage names (x-axis) to column names in data
-                e.g., {'Pre-tone': 'norm_pre_tone_licks', 'Tone': 'norm_tone_licks', ...}
-            hue: column used to color/group lines (e.g., 'mouse_id', 'tone')
-            ylabel: label for y-axis
+            mouse_id: ID of the mouse to filter
+            stage_cols: dict mapping stage names to data columns
+            palette: seaborn color palette
+            figsize: overall figure size
             title: plot title
-            agg: aggregation method ('mean' or 'median')
-            figsize: figure size
         """
 
+        df = self.data[self.data["mouse_id"] == mouse_id].copy()
+
+        # Reshape to long format
         long_df = []
-        for stage, col in stage_vars.items():
-            temp = self.data[[hue, col]].copy()
-            temp = temp.rename(columns={col: "value"})
+        for stage, col in stage_cols.items():
+            temp = df[[hue, col]].copy()
+            temp = df[[hue, col]].copy()  # << include hue!
+            temp = temp.rename(columns={col: "licks"})
             temp["stage"] = stage
             long_df.append(temp)
-        long_df = pd.concat(long_df)
 
-        grouped = long_df.groupby([hue, "stage"])["value"]
-        if agg == "mean":
-            long_df = grouped.mean().reset_index()
-        elif agg == "median":
-            long_df = grouped.median().reset_index()
-        else:
-            raise ValueError("Only 'mean' and 'median' aggregations are supported.")
+        plot_df = pd.concat(long_df)
 
+        # Plot
         plt.figure(figsize=figsize)
-        sns.lineplot(
-            data=long_df,
+        # Adjust hue_order to match actual data
+        available_hues = plot_df[hue].unique()
+        valid_hue_order = [h for h in hue_order if h in available_hues]
+
+        sns.boxplot(
+            data=plot_df,
             x="stage",
-            y="value",
+            y="licks",
             hue=hue,
-            marker="o",
-            err_style="bars",
-            errorbar=("se", 2),
+            hue_order=valid_hue_order,
+            palette=palette,
+            showfliers=False,
         )
-        plt.ylabel(ylabel)
+
         plt.title(
-            title or f"{agg.capitalize()} {ylabel} per Stage in {self.session_id}"
+            title
+            or f"Lick Distribution by Stage and Tone for {mouse_id} ({self.session_id})"
         )
-        plt.legend(loc="center left", bbox_to_anchor=(1.0, 0.5), ncol=2, title=hue)
-        plt.tight_layout(rect=[0, 0, 0.85, 1])
+        plt.xlabel("Stage")
+        plt.ylabel("Lick Count")
+        plt.legend(title="Tone")
+        sns.despine(offset=10, trim=True)
+        plt.tight_layout()
+        plt.show()
+
+    def plot_stage_boxplot_by_group(
+        self,
+        stage_cols: dict = {
+            "Pre-tone": "pre_tone_licks",
+            "Tone": "norm_tone_licks",
+            "Trace": "norm_trace_licks",
+            "Post-trace": "norm_post_trace_licks",
+        },
+        group_vars: list = ["tone", "Age"],
+        figsize: tuple = (8, 6),
+        title: str = None,
+    ):
+        """
+        Plot boxplots of lick metrics per stage, grouped by interaction of group variables across the cohort within a session.
+
+        Args:
+            stage_cols: dict mapping stage names to data columns
+            group_vars: list of columns to group by (e.g., ['tone', 'Age'])
+        """
+        df = self.data.copy()
+
+        # Create group labels by joining group_vars
+        df["group"] = df[group_vars].astype(str).agg(" × ".join, axis=1)
+
+        # Sort values for hue_order
+        levels_1 = sorted(df[group_vars[0]].dropna().unique())
+        levels_2 = sorted(df[group_vars[1]].dropna().unique())
+        hue_order = [f"{l1} × {l2}" for l1 in levels_1 for l2 in levels_2]
+
+        # Define color palette
+        green_palette = sns.color_palette("Greens", n_colors=len(levels_2) + 1)[
+            1:
+        ]  # Skip very light
+        blue_palette = sns.color_palette("Blues", n_colors=len(levels_2) + 1)[1:]
+
+        palette = {}
+        for i, l2 in enumerate(levels_2):
+            palette[f"{levels_1[0]} × {l2}"] = green_palette[i]
+            palette[f"{levels_1[1]} × {l2}"] = blue_palette[i]
+
+        # Reshape to long format
+        long_df = []
+        for stage, col in stage_cols.items():
+            temp = df[["group", col]].copy()
+            temp = temp.rename(columns={col: "licks"})
+            temp["stage"] = stage
+            long_df.append(temp)
+
+        plot_df = pd.concat(long_df)
+
+        # Plot
+        plt.figure(figsize=figsize)
+        sns.boxplot(
+            data=plot_df,
+            x="stage",
+            y="licks",
+            hue="group",
+            hue_order=hue_order,
+            palette=palette,
+        )
+
+        plt.title(title or f"Lick Distribution by Stage and Group ({self.session_id})")
+        plt.xlabel("Stage")
+        plt.ylabel("Lick Count")
+        plt.legend(
+            title=" × ".join(group_vars), bbox_to_anchor=(1.05, 1), loc="upper left"
+        )
+        plt.tight_layout()
+        # plt.ylim(0, 15)
         plt.show()
 
 
@@ -119,8 +271,10 @@ class Cohort:
     containing multiple sessions and all animals within cohort
     """
 
-    def __init__(self, data: pd.DataFrame):
+    def __init__(self, data: pd.DataFrame, metadata_df: pd.DataFrame = None):
         self.data = data.copy()
+        if metadata_df is not None:
+            self.data = self.data.merge(metadata_df, on="mouse_id", how="left")
 
         required = {"session_id", "mouse_id", "trial_number"}
         missing = required - set(data.columns)
