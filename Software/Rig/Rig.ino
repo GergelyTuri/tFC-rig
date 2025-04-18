@@ -60,8 +60,9 @@ int trialTypes[NUMBER_OF_TRIALS];
 char trialTypesChar[NUMBER_OF_TRIALS+1];
 int currentTrialType;
 int trialTypesCharIdxSize = sizeof(trialTypesCharIdx) / sizeof(trialTypesCharIdx[0]);
-int trialType1Idx = getArrayIndex(TRIAL_TYPE_1, trialTypesCharIdx, trialTypesCharIdxSize);
-int trialType2Idx = getArrayIndex(TRIAL_TYPE_2, trialTypesCharIdx, trialTypesCharIdxSize);
+// don't know why this does not work with the getArrayIndex function...
+int trialType1Idx = 0; //getArrayIndex(TRIAL_TYPE_1, trialTypesCharIdx, trialTypesCharIdxSize);
+int trialType2Idx = 1; //getArrayIndex(TRIAL_TYPE_2, trialTypesCharIdx, trialTypesCharIdxSize);
 
 // Step 1: Define number of each trial type based on ratio
 int numCSPlus = round(NUMBER_OF_TRIALS * CS_PLUS_RATIO);
@@ -120,7 +121,7 @@ void setup() {
     pinMode(PIN_SECONDARY, INPUT);
   }
   
-  generateTrialTypes(float csPlusRatio)
+  generateTrialTypes(CS_PLUS_RATIO);
 
   // Keeps track of the rig start time. This should be close to 0 since
   // `millis` starts when the rig starts, but is tracked separately for
@@ -709,8 +710,12 @@ void generateTrialTypes(float csPlusRatio) {
   if (numCSPlus > NUMBER_OF_TRIALS) numCSPlus = NUMBER_OF_TRIALS;
   int numCSMinus = NUMBER_OF_TRIALS - numCSPlus;
 
-  for (int i = 0; i < numCSPlus; ++i) trialTypes[idx++] = trialType2Idx;
-  for (int i = 0; i < numCSMinus; ++i) trialTypes[idx++] = trialType1Idx;
+  for (int i = 0; i < numCSPlus; ++i) {
+    trialTypes[idx++] = trialType2Idx;
+  }
+  for (int i = 0; i < numCSMinus; ++i) {
+    trialTypes[idx++] = trialType1Idx;
+  }
 
   for (int i = NUMBER_OF_TRIALS - 1; i > 0; --i) {
     int j = random(0, i + 1);
