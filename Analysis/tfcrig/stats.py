@@ -7,6 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import re
+from scipy.stats import wilcoxon, mannwhitneyu
 
 from tfcrig.google_drive import GoogleDrive
 
@@ -58,7 +59,42 @@ class Session:
         self.subjects = self.data["mouse_id"].unique().tolist()
         self.trials = self.data["trial_number"].unique().tolist()
 
-    def plot_mouse_trials(
+    def select_trials(self, trial_numbers):
+        """
+        Select specific trials based on trial numbers.
+        """
+
+        if isinstance(trial_numbers, int):
+            trial_numbers = [trial_numbers]
+
+        filtered_df = self.data[self.data["trial_number"].isin(trial_numbers)].copy()
+        return filtered_df
+
+    def plot_cohort_across_trials(
+        self,
+        x: str = "trial_number",
+        y: str = "total_licks",
+        hue: str = "tone",
+        style: str = "age",
+    ):
+        """
+        Plot cohort data across trials for a single session by age and tone groups.
+
+        Args:
+            x: x-axis variable (default is trial number)
+            y: y-axis variable (default is total licks)
+            hue: column name for hue grouping (default is tone)
+            style: column name for style grouping (default is Age)
+        """
+        plt.figure(figsize=(10, 6))
+        sns.lineplot(data=self.data, x=x, y=y, hue=hue, style=style)
+        plt.title(f"{y} over {x} in {self.session_id}")
+        plt.ylabel(y)
+        plt.xlabel(x)
+        plt.legend(loc="upper right", ncol=2, title=hue + " x " + style)
+        plt.tight_layout(rect=[0, 0, 0.85, 1])
+
+    def plot_mouse_total_licks_across_trials(
         self,
         mouse_id: str,
         y: str = "total_licks",
@@ -102,7 +138,7 @@ class Session:
 
         print(df_zero[[x, y]])
 
-    def plot_over_trials(
+    def plot_all_mice_metrics_over_trials(
         self,
         y: str,
         x: str = "trial_number",
@@ -127,7 +163,7 @@ class Session:
         plt.tight_layout(rect=[0, 0, 0.85, 1])  # leaves space for legend on the right
         plt.show()
 
-    def plot_stage_boxplot_for_mouse(
+    def plot_stage_boxplot_for_single_mouse(
         self,
         mouse_id: str,
         stage_cols: dict = {
@@ -204,6 +240,7 @@ class Session:
         group_vars: list = ["tone", "Age"],
         figsize: tuple = (8, 6),
         title: str = None,
+        ylabel: str = "Lick Count",
     ):
         """
         Plot boxplots of lick metrics per stage, grouped by interaction of group variables across the cohort within a session.
@@ -252,17 +289,75 @@ class Session:
             hue="group",
             hue_order=hue_order,
             palette=palette,
+            showfliers=False,
         )
 
         plt.title(title or f"Lick Distribution by Stage and Group ({self.session_id})")
         plt.xlabel("Stage")
-        plt.ylabel("Lick Count")
+        plt.ylabel(ylabel)
         plt.legend(
             title=" × ".join(group_vars), bbox_to_anchor=(1.05, 1), loc="upper left"
         )
         plt.tight_layout()
+        # plt.yscale("log")
         # plt.ylim(0, 15)
         plt.show()
+
+    def wilcoxon_test_for_condition(
+        self,
+        condition: str = "tone",
+        filter_group: str = "age",
+        select_group: str = "aged",
+        testing_metrics: str = "norm_tone_licks",
+    ):
+        """
+        Perform Wilcoxon signed rank test for comparing two conditions (e.g., cs+ vs cs-) within the same aged group (e.g., aged mice). within a session across all trials.
+
+        Args:
+            condition: column name indicationg the condition to compare
+            filter_group: column name indicating the group to filter by
+            select_group: specific value from filter_group to select (e.g., choose "aged" for "age")
+            testing_metrics: column name indicating the metric to test
+        """
+        df = self.data.copy()
+        df = df[df[filter_group] == select_group]
+        condition1 = df[condition].unique()[0]
+        condition2 = df[condition].unique()[1]
+        df_group1 = df[df[condition] == condition1][testing_metrics]
+        df_group2 = df[df[condition] == condition2][testing_metrics]
+        result = wilcoxon(df_group1, df_group2)
+        print(
+            f"Wilcoxon test between {condition1} and {condition2} among {select_group} mice:"
+        )
+        print(f"Statistic: {result.statistic}, p-value: {result.pvalue}")
+
+    def mann_whitney_test_for_age(
+        self,
+        condition: str = "age",
+        filter_group: str = "tone",
+        select_group: str = "cs+",
+        testing_metrics: str = "norm_tone_licks",
+    ):
+        """
+        Perform Mann-Whitney U test for comparing two age groups (e.g., aged vs young) within a specific condition (e.g., cs+).
+
+        Args:
+            condition: column name indicating the condition to compare
+            filter_group: column name indicating the group to filter by
+            select_group: specific value from filter_group to select (e.g., choose "cs+" for "tone")
+            testing_metrics: column name indicating the metric to test
+        """
+        df = self.data.copy()
+        df = df[df[filter_group] == select_group]
+        condition1 = df[condition].unique()[0]
+        condition2 = df[condition].unique()[1]
+        df_group1 = df[df[condition] == condition1][testing_metrics]
+        df_group2 = df[df[condition] == condition2][testing_metrics]
+        result = mannwhitneyu(df_group1, df_group2)
+        print(
+            f"Mann-Whitney U test between {condition1} and {condition2} among {select_group} mice:"
+        )
+        print(f"Statistic: {result.statistic}, p-value: {result.pvalue}")
 
 
 class Cohort:
