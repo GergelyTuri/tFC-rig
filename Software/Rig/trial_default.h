@@ -126,6 +126,13 @@ const int DEBUG_TEST_SECONDARY = false;
 // Trial settings
 const int NUMBER_OF_TRIALS = 6;
 // ----------------
+// CS_PLUS_RATIO
+// [float]
+// Define the ratio of CS+ to CS- trial types, e.g. if there are six
+// total trials and `CS_PLUS_RATIO=0.5` then there will be three of
+// each. If `CS_PLUS_RATIO=1` then there would be six CS+ and no CS-
+const float CS_PLUS_RATIO = 0.5
+// ----------------
 // TRIAL_TYPES
 // The type for each trial.
 // water_CS-: negative signal with water

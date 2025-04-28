@@ -60,7 +60,8 @@ class Window(QWidget):
         trailSettingsGroupBox = QGroupBox("Trial Settings")
         trialSettingsLayout = QFormLayout()
 
-        self.num_trials = SpinBox(trialSettingsLayout, "Number of trials", 6, step=1, min=1, max=30)
+        self.number_of_trials = SpinBox(trialSettingsLayout, "Number of trials", 6, step=1, min=1, max=30)
+        self.cs_plus_ratio = LineEdit(formLayout, "CS+ Ratio")
         self.is_training = CheckBox(
             layout=trialSettingsLayout,
             text="Is training session?",
@@ -253,7 +254,8 @@ class Window(QWidget):
             dict: Dictionary containing parameters.
         """
         params = {
-            "NUMBER_OF_TRIALS": self.num_trials.value(),
+            "NUMBER_OF_TRIALS": self.number_of_trials.value(),
+            "CS_PLUS_RATIO": self.cs_plus_ratio.value(),
             "IS_TRAINING": self.is_training.checkState() == Qt.CheckState.Checked,
             "TRAINING_TRIALS_ARE_REWARDED": self.training_trials_are_rewarded.checkState() == Qt.CheckState.Checked,
             "TRIAL_TYPE_1": self.trial_type_1.currentText(),
