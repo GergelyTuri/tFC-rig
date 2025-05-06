@@ -24,3 +24,25 @@ def compute_metrics_from_folder(folder_path: str) -> pd.DataFrame:
                 print(f"Skipping {filename} due to error: {e}")
 
     return pd.concat(all_metrics, ignore_index=True) if all_metrics else pd.DataFrame()
+
+
+def load_sessions_from_folder(folder_path: str) -> pd.DataFrame:
+    """
+    Loads all CSVs from a folder and returns a combined DataFrame.
+    Assumes each file already contains a 'session_id' column.
+    """
+    import os
+    import pandas as pd
+
+    all_data = []
+
+    for fname in os.listdir(folder_path):
+        if fname.endswith(".csv"):
+            full_path = os.path.join(folder_path, fname)
+            try:
+                df = pd.read_csv(full_path)
+                all_data.append(df)
+            except Exception as e:
+                print(f"Skipping {fname} due to error: {e}")
+
+    return pd.concat(all_data, ignore_index=True) if all_data else pd.DataFrame()
