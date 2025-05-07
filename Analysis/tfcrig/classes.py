@@ -4,7 +4,7 @@ import json
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, List, Union
-
+import numpy as np
 import pandas as pd
 
 
@@ -351,9 +351,12 @@ class Session:
             # get metadata
             metadata = self.get_session_metadata(mouse_id)
 
+            # get session events
+            session_events = self.get_mouse_session_data(mouse_id)
+
             # compute metrics
             trial_obj = Trial(trial_df)
-            metrics_df = trial_obj.compute_lick_metrics(metadata)
+            metrics_df = trial_obj.compute_lick_metrics(metadata, session_events)
 
             # add mouse_id
             metrics_df["mouse_id"] = mouse_id
@@ -465,7 +468,9 @@ class Trial:
 
         return lick_events.groupby("trial_number")["trial_time"].first()
 
-    def compute_lick_metrics(self, session_metadata: Dict[str, Any]) -> pd.DataFrame:
+    def compute_lick_metrics(
+        self, session_metadata: Dict[str, Any], session_events: List[Dict[str, Any]]
+    ) -> pd.DataFrame:
         """
         Computes lick counts, normalized licks,
         and durations for each trial period:
@@ -508,8 +513,61 @@ class Trial:
         # Store results for each trial
         trial_results = []
 
+        # pull inter trial interval data
+        iti_durations = []
+        iti_start_times = []
+        lick_events = [e for e in session_events if "Lick" in e["message"]]
+
+        for event in session_events:
+            message = event.get("message", "")
+            if "randomInterTrialInterval" in message:
+                try:
+                    iti_durations.append(
+                        int(message.split("randomInterTrialInterval: ")[1].strip())
+                    )
+                except:
+                    continue
+
+        iti_start_times = [
+            int(e["message"].split(": ")[1].strip())
+            for e in session_events
+            if "Starting the inter-trial interval" in e.get("message", "")
+        ]
+
+        iti_end_times = [
+            int(e["message"].split(": ")[1].strip())
+            for e in session_events
+            if "The inter-trial interval has ended" in e.get("message", "")
+        ]
+
+        iti_lick_counts = []
+
+        for iti_start, iti_end in zip(iti_start_times, iti_end_times):
+            lick_events = [
+                e
+                for e in session_events
+                if "Lick" in e["message"] and "Resetting" not in e["message"]
+            ]
+            iti_licks = [
+                e
+                for e in lick_events
+                if iti_start <= int(e["message"].split(":")[1].strip()) < iti_end
+            ]
+            iti_lick_counts.append(len(iti_licks))
+
         # Iterate over trials
         for trial_number, trial_data in self.trial_df.groupby("trial_number"):
+
+            iti_duration = (
+                iti_durations[trial_number]
+                if trial_number < len(iti_durations)
+                else np.nan
+            )
+            iti_lick_count = (
+                iti_lick_counts[trial_number]
+                if trial_number < len(iti_lick_counts)
+                else np.nan
+            )
 
             trial_data = trial_data.sort_values("trial_time").reset_index(drop=True)
 
@@ -628,6 +686,8 @@ class Trial:
                     "tone_rewarded_licks": tone_rewarded_licks,
                     "trace_rewarded_licks": trace_rewarded_licks,
                     "post_trace_rewarded_licks": post_trace_rewarded_licks,
+                    "iti_duration": iti_duration,
+                    "iti_lick_count": iti_lick_count,
                 }
             )
 
