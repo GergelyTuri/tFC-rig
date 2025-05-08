@@ -16,6 +16,7 @@ const int DEBUG_TEST_SECONDARY = false;
 
 // Trial settings
 const int NUMBER_OF_TRIALS = 6;
+const float CS_PLUS_RATIO = 0.5
 const char* TRIAL_TYPE_1 = "no_water_CS-";
 const char* TRIAL_TYPE_2 = "water_CS+";
 const bool IS_TRAINING = false;
