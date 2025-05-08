@@ -93,17 +93,19 @@ def generate_pdf(file_path, header, data_list):
         story.append(Spacer(1, 6))
     
         df = pd.DataFrame(events)
-        fig = simple_lick_plot(df)
 
-        img_data = io.BytesIO()
-        fig.savefig(img_data, format='png')
-        img_data.seek(0)
-        img_width = 550
-        img_height = 300
+        if df['message'].str.contains(START_STRING).any():
+            fig = simple_lick_plot(df)
 
-        # Add image to PDF
-        story.append(Image(img_data, width=img_width, height=img_height))
-        plt.close(fig)  # Close the figure to free up memory
+            img_data = io.BytesIO()
+            fig.savefig(img_data, format='png')
+            img_data.seek(0)
+            img_width = 550
+            img_height = 300
+
+            # Add image to PDF
+            story.append(Image(img_data, width=img_width, height=img_height))
+            plt.close(fig)  # Close the figure to free up memory
 
 
     # Build the PDF
