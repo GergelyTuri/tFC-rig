@@ -534,13 +534,30 @@ class Trial:
             if "Starting the inter-trial interval" in e.get("message", "")
         ]
 
+        if not iti_start_times:
+            iti_start_times = [
+                int(e["message"].split(": ")[1].strip())
+                for e in session_events
+                if "Waiting the inter-trial interval" in e.get("message", "")
+            ]
+
         iti_end_times = [
             int(e["message"].split(": ")[1].strip())
             for e in session_events
             if "The inter-trial interval has ended" in e.get("message", "")
         ]
 
+        if not iti_end_times:
+            iti_end_times = [
+                int(e["message"].split(": ")[1].strip())
+                for e in session_events
+                if "Trial has started" in e.get("message", "")
+            ]
+
         iti_lick_counts = []
+
+        if len(iti_end_times) - len(iti_start_times) == 1:
+            iti_end_times = iti_end_times[1:]
 
         for iti_start, iti_end in zip(iti_start_times, iti_end_times):
             lick_events = [
@@ -686,7 +703,7 @@ class Trial:
                     "tone_rewarded_licks": tone_rewarded_licks,
                     "trace_rewarded_licks": trace_rewarded_licks,
                     "post_trace_rewarded_licks": post_trace_rewarded_licks,
-                    "iti_duration": iti_duration,
+                    "iti_duration": iti_duration / 1000,
                     "iti_lick_count": iti_lick_count,
                 }
             )

@@ -29,7 +29,9 @@ class Session:
     containing all trials and all animals within cohort
     """
 
-    def __init__(self, data: pd.DataFrame, metadata_df: pd.DataFrame = None):
+    def __init__(
+        self, data: pd.DataFrame, metadata_df: pd.DataFrame = None, trial_filter=None
+    ):
         unique_sessions = data["session_id"].unique()
         if len(unique_sessions) != 1:
             raise ValueError(f"Expected one session, found {unique_sessions}")
@@ -37,6 +39,13 @@ class Session:
         self.session_id = unique_sessions[0]
 
         df = data.copy()
+
+        if trial_filter is not None:
+            if callable(trial_filter):
+                df = df[df["trial_number"].apply(trial_filter)]
+            else:
+                df = df[df["trial_number"].isin(trial_filter)]
+
         parts = df["source_file"].str.split("_", expand=True)
         if parts.shape[1] == 6:
             df["session_date"] = parts[4]
@@ -49,12 +58,25 @@ class Session:
             np.where(df["pre_tone_licks"] == 0, 1, df["pre_tone_licks"])
             / df["pre_tone_duration"]
         )
+
         df["total_licks"] = (
             df["pre_tone_licks"]
             + df["tone_licks"]
             + df["trace_licks"]
             + df["post_trace_licks"]
         )
+
+        df["pre_tone_lick_rate"] = df["pre_tone_licks"] / df["pre_tone_duration"]
+        df["tone_lick_rate"] = df["tone_licks"] / df["tone_duration"]
+        df["trace_lick_rate"] = df["trace_licks"] / df["trace_duration"]
+        df["post_trace_lick_rate"] = df["post_trace_licks"] / df["post_trace_duration"]
+        df["norm_tone_lick_rate"] = df["norm_tone_licks"] / df["tone_duration"]
+        df["norm_trace_lick_rate"] = df["norm_trace_licks"] / df["trace_duration"]
+        df["norm_post_trace_lick_rate"] = (
+            df["norm_post_trace_licks"] / df["post_trace_duration"]
+        )
+        df["iti_lick_rate"] = df["iti_lick_count"] / df["iti_duration"]
+
         self.data = df
         self.subjects = self.data["mouse_id"].unique().tolist()
         self.trials = self.data["trial_number"].unique().tolist()
@@ -359,6 +381,117 @@ class Session:
         )
         print(f"Statistic: {result.statistic}, p-value: {result.pvalue}")
 
+    def iti_comparison(
+        self,
+        stage_cols: dict = {
+            "Tone Lick Rate": "tone_lick_rate",
+            "ITI Lick Rate": "iti_lick_rate",
+        },
+        group_vars: str = "age",
+        hue: str = "tone",
+        hue_order: list = ["cs+", "cs-"],
+        palette: dict = {"cs+": "#3c73a8", "cs-": "#acc2d9"},
+        figsize: tuple = (12, 5),
+        title: str = None,
+        ylabel: str = "Lick Rate (licks/s)",
+    ):
+        """
+        Plot horizontal subplots comparing lick rate metrics between two groups defined by a group variable,
+        using hue to separate conditions (e.g., tone: cs+ vs cs-).
+        """
+        df = self.data.copy()
+        unique_groups = df[group_vars].dropna().unique()
+
+        if len(unique_groups) != 2:
+            raise ValueError(
+                f"Expected exactly two levels in '{group_vars}', got {unique_groups}"
+            )
+
+        fig, axes = plt.subplots(1, 2, figsize=figsize, sharey=True)
+
+        for ax, group in zip(axes, unique_groups):
+            sub_df = df[df[group_vars] == group].copy()
+
+            # Reshape to long format
+            long_df = []
+            for stage, col in stage_cols.items():
+                temp = sub_df[[col, hue]].copy()
+                temp = temp.rename(columns={col: "licks"})
+                temp["stage"] = stage
+                long_df.append(temp)
+
+            plot_df = pd.concat(long_df, ignore_index=True)
+
+            sns.boxplot(
+                data=plot_df,
+                x="stage",
+                y="licks",
+                hue=hue,
+                hue_order=hue_order,
+                palette=palette,
+                ax=ax,
+                showfliers=False,
+            )
+
+            ax.set_title(f"{group_vars.capitalize()}: {group}")
+            ax.set_xlabel("Stage")
+            ax.set_ylabel(ylabel)
+            ax.legend_.remove()
+
+        if title:
+            fig.suptitle(title, fontsize=14)
+
+        # Add shared legend outside plot
+        handles, labels = axes[0].get_legend_handles_labels()
+        fig.legend(
+            handles,
+            labels,
+            title=hue.capitalize(),
+            loc="upper right",
+            bbox_to_anchor=(1.15, 1),
+        )
+
+        plt.tight_layout(rect=[0, 0, 1, 0.95])
+        plt.show()
+
+    def iti_test(
+        self,
+        compare_cols: list = [
+            "tone_lick_rate",
+            "trace_lick_rate",
+            "post_trace_lick_rate",
+        ],
+        iti_col: str = "iti_lick_rate",
+        filter_group: list = ["age", "tone"],
+        select_group: list = ["aged", "cs+"],
+    ):
+        """
+        Perform Mann_Whitney U Test to compare ITI lick rate with other lick rates
+
+        Args:
+            compare_cols: list of columns to compare with ITI lick rate
+            iti_col: column name for ITI lick rate
+            filter_group: list of columns to filter by (e.g., ['age', 'tone'])
+            select_group: list of specific values from filter_group to select (e.g., ['aged', 'cs+'])
+
+        Note: the order of filter_group and select_group should match
+            e.g., filter_group[0] corresponds to select_group[0]
+        """
+        df = self.data.copy()
+        df = df[
+            (df[filter_group[0]] == select_group[0])
+            & (df[filter_group[1]] == select_group[1])
+        ]
+
+        iti_data = df[iti_col].dropna()
+
+        for col in compare_cols:
+            stage_data = df[col].dropna()
+            result = mannwhitneyu(stage_data, iti_data, alternative="two-sided")
+
+            print(f"Comparison: {col} vs {iti_col} (group = {select_group})")
+            print(f"Statistic: {result.statistic:.3f}, p-value: {result.pvalue:.5f}\n")
+
 
 class Cohort:
     """
@@ -367,15 +500,23 @@ class Cohort:
     """
 
     def __init__(self, data: pd.DataFrame, metadata_df: pd.DataFrame = None):
-        self.data = data.copy()
+        df = data.copy()
         if metadata_df is not None:
-            self.data = self.data.merge(metadata_df, on="mouse_id", how="left")
+            df = df.merge(metadata_df, on="mouse_id", how="left")
 
         required = {"session_id", "mouse_id", "trial_number"}
-        missing = required - set(data.columns)
+        missing = required - set(df.columns)
         if missing:
             raise ValueError(f"Missing required columns: {missing}")
 
+        df["pre_post_trace_licks"] = (
+            df["pre_tone_licks"] + df["tone_licks"] + df["trace_licks"]
+        )
+        df["new_norm_post_trace_licks"] = (
+            df["post_trace_licks"] / df["pre_post_trace_licks"]
+        )
+
+        self.data = df
         self.sessions = self.data["session_id"].unique().tolist()
         self.subjects = self.data["mouse_id"].unique().tolist()
 
@@ -441,8 +582,86 @@ class Cohort:
         Returns:
             DataFrame with columns: groupby_cols + ['reward_success_rate']
         """
-        grouped = self.data.groupby(groupby_cols)[reward_col]
+        df = self.data.copy()
+        grouped = df.groupby(groupby_cols)[reward_col]
         result = grouped.apply(lambda x: (x != 0).mean() * 100).reset_index(
             name=f"{reward_col}_success_rate"
         )
         return result
+
+    def plot_reward_success_rate(
+        self,
+        reward_col: str = "post_trace_reward",
+        groupby_cols: list = ["mouse_id", "session_id"],
+        title: str = None,
+        ylabel: str = None,
+        figsize: tuple = (10, 6),
+    ):
+        """
+        Plot the reward success rate for each mouse across sessions.
+
+        Args:
+            reward_col: column name indicating reward counts
+            groupby_cols: columns to group by (default is ['mouse_id', 'session_id'])
+            title: plot title
+            ylabel: y-axis label
+            figsize: figure size
+        """
+        df = self.data.copy()
+        result = df.compute_reward_success_rate(reward_col, groupby_cols)
+
+        plt.figure(figsize=figsize)
+        sns.lineplot(
+            data=result,
+            x=groupby_cols[1],
+            y=f"{reward_col}_success_rate",
+            hue="mouse_id",
+        )
+        plt.title(title or f"Reward Success Rate by {groupby_cols[1]}")
+        plt.ylabel(ylabel or f"{reward_col} Success Rate (%)")
+        plt.xlabel(groupby_cols[1])
+        plt.xticks(rotation=45)
+        plt.legend(bbox_to_anchor=(1.05, 1), loc="upper left", borderaxespad=0.0)
+        plt.tight_layout()
+        plt.show()
+
+    def plot_metric_by_reindexed_trial(
+        self,
+        y_metric: str,
+        # session_order: list,
+        groupby_cols: list = ["mouse_id", "session_id"],
+        hue: str = "mouse_id",
+        title: str = None,
+        ylabel: str = None,
+        figsize: tuple = (10, 6),
+    ):
+        """
+        Plot the given metric against reindexed trial numbers, with session continuity.
+
+        Args:
+            y_metric: the column name of the metric to plot on the y-axis
+            session_order: list of session type prefixes in desired order
+            hue: column to color lines by (default: "mouse_id")
+            title: plot title
+            ylabel: y-axis label
+            figsize: figure size
+        """
+
+        df = self.data.copy()
+        grouped = df.groupby(groupby_cols)[y_metric].mean().reset_index()
+
+        plt.figure(figsize=figsize)
+        sns.lineplot(
+            data=grouped,
+            x=groupby_cols[1],  # session_id
+            y=y_metric,
+            hue=hue,
+            marker="o",
+        )
+        plt.title(title or f"{y_metric} by Session")
+        plt.xlabel(groupby_cols[1])
+        plt.ylabel(ylabel or y_metric.replace("_", " ").title())
+        plt.xticks(rotation=45)
+        plt.legend(bbox_to_anchor=(1.05, 1), loc="upper left")
+        plt.tight_layout()
+        plt.show()
