@@ -8,6 +8,11 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import re
 from scipy.stats import wilcoxon, mannwhitneyu
+import os
+import math
+import matplotlib.pyplot as plt
+
+plt.rcParams["figure.dpi"] = 150
 
 from tfcrig.google_drive import GoogleDrive
 
@@ -593,6 +598,7 @@ class Cohort:
         self,
         reward_col: str = "post_trace_reward",
         groupby_cols: list = ["mouse_id", "session_id"],
+        hue: str = "mouse_id",
         title: str = None,
         ylabel: str = None,
         figsize: tuple = (10, 6),
@@ -607,15 +613,28 @@ class Cohort:
             ylabel: y-axis label
             figsize: figure size
         """
-        df = self.data.copy()
-        result = df.compute_reward_success_rate(reward_col, groupby_cols)
+        result = self.compute_reward_success_rate(reward_col, groupby_cols)
+
+        if hue not in result.columns:
+            if hue in self.data.columns:
+                merge_keys = list(set(groupby_cols) & set(self.data.columns))
+                result = result.merge(
+                    self.data[list(set(["mouse_id", hue]))].drop_duplicates(),
+                    on="mouse_id",
+                    how="left",
+                )
+            else:
+                raise ValueError(f"Hue '{hue}' not found in result or data.")
 
         plt.figure(figsize=figsize)
         sns.lineplot(
             data=result,
             x=groupby_cols[1],
             y=f"{reward_col}_success_rate",
-            hue="mouse_id",
+            hue=hue,
+            marker="o",
+            units=groupby_cols[0],
+            estimator=None,
         )
         plt.title(title or f"Reward Success Rate by {groupby_cols[1]}")
         plt.ylabel(ylabel or f"{reward_col} Success Rate (%)")
@@ -665,3 +684,412 @@ class Cohort:
         plt.legend(bbox_to_anchor=(1.05, 1), loc="upper left")
         plt.tight_layout()
         plt.show()
+
+    def count_above_below_mean_by_group(
+        self,
+        reward_col: str = "post_trace_licks",
+        groupby_cols: list = ["mouse_id", "session_id"],
+        group_var: str = "age",
+    ) -> pd.DataFrame:
+        """
+        Count how many points are above/below the session-wise mean reward success rate,
+        grouped by a categorical variable like 'age' or 'tone'.
+
+        Args:
+            reward_col: column name indicating reward counts
+            groupby_cols: columns to group by for reward success rate
+            group_var: variable to group by (e.g., 'age', 'tone')
+
+        Returns:
+            DataFrame with columns: session_id, group_var, count_above, count_below
+        """
+        df = self.compute_reward_success_rate(reward_col, groupby_cols)
+
+        # Merge group_var into result if needed
+        if group_var not in df.columns:
+            df = df.merge(
+                self.data[["mouse_id", group_var]].drop_duplicates(),
+                on="mouse_id",
+                how="left",
+            )
+
+        y_col = f"{reward_col}_success_rate"
+
+        # Calculate per-session mean
+        session_means = df.groupby("session_id")[y_col].mean().rename("session_mean")
+        df = df.merge(session_means, on="session_id")
+
+        # Flag each point as above or below mean
+        df["above_mean"] = df[y_col] > df["session_mean"]
+
+        # Count above/below by group
+        summary = (
+            df.groupby(["session_id", group_var])["above_mean"]
+            .agg(count_above=lambda x: x.sum(), count_total="count")
+            .reset_index()
+        )
+        summary["count_below"] = summary["count_total"] - summary["count_above"]
+        return summary[["session_id", group_var, "count_above", "count_below"]]
+
+    def plot_reward_success_rate_by_age_split(
+        self,
+        reward_col: str = "post_trace_licks",
+        groupby_cols: list = ["mouse_id", "session_id"],
+        age_col: str = "age",
+        figsize: tuple = (14, 6),
+        ylabel: str = "Reward Success Rate (%)",
+        title: str = "Reward Success Rate by Age Group",
+    ):
+        """
+        Side-by-side line plots for young and aged groups showing individual mice reward success rates with overlaid mean.
+
+        Args:
+            reward_col: column for reward count
+            groupby_cols: columns to group by (default ['mouse_id', 'session_id'])
+            age_col: column name for age group
+            figsize: size of the full figure
+            ylabel: y-axis label
+            title: overall plot title
+        """
+        df = self.compute_reward_success_rate(reward_col, groupby_cols)
+
+        # Merge age info
+        if age_col not in df.columns:
+            df = df.merge(
+                self.data[["mouse_id", age_col]].drop_duplicates(),
+                on="mouse_id",
+                how="left",
+            )
+
+        age_groups = df[age_col].dropna().unique()
+        if len(age_groups) != 2:
+            raise ValueError(f"Expected two age groups, found {age_groups}")
+
+        fig, axes = plt.subplots(1, 2, figsize=figsize, sharey=True)
+
+        for ax, group in zip(axes, sorted(age_groups)):
+            group_df = df[df[age_col] == group].copy()
+
+            # Sort session_id based on the numeric part of the day
+            def session_sort_key(s):
+                match = re.search(r"d(\d+)", s)
+                return int(match.group(1)) if match else float("inf")
+
+            group_df[groupby_cols[1]] = pd.Categorical(
+                group_df[groupby_cols[1]],
+                categories=sorted(
+                    group_df[groupby_cols[1]].unique(), key=session_sort_key
+                ),
+                ordered=True,
+            )
+
+            # Individual lines
+            sns.lineplot(
+                data=group_df,
+                x=groupby_cols[1],
+                y=f"{reward_col}_success_rate",
+                hue=groupby_cols[0],
+                marker="o",
+                units=groupby_cols[0],
+                estimator=None,
+                lw=1,
+                ax=ax,
+                legend=False,
+            )
+
+            # Overlay mean line
+            mean_df = (
+                group_df.groupby(groupby_cols[1])[f"{reward_col}_success_rate"]
+                .mean()
+                .reset_index()
+            )
+            sns.lineplot(
+                data=mean_df,
+                x=groupby_cols[1],
+                y=f"{reward_col}_success_rate",
+                color="black",
+                marker="o",
+                label="Mean",
+                ax=ax,
+            )
+
+            ax.set_title(f"{group.capitalize()} Mice")
+            ax.set_xlabel("Session")
+            ax.set_ylabel(ylabel)
+            ax.tick_params(axis="x", rotation=45)
+
+        fig.suptitle(title)
+        plt.tight_layout(rect=[0, 0, 1, 0.95])
+        plt.show()
+
+
+class MultiCohort:
+    """
+    class for from multiple cohrots,
+    containing multiple sessions and all animals within cohort
+    """
+
+    def __init__(self, csv_paths: list, metadata_df: pd.DataFrame = None):
+        df_list = []
+
+        for path in csv_paths:
+            df = pd.read_csv(path)
+
+            if df.empty:
+                print(
+                    f"WARNING: {fname} became empty after merging. cohort={cohort_name}"
+                )
+
+            fname = os.path.basename(path)
+            print(f"Processing: {fname}")
+
+            match = re.match(r"(cohort\d+)", fname)
+            if match:
+                cohort_name = match.group(0)
+            else:
+                raise ValueError(f"Invalid filename format: {fname}")
+
+            parts = df["source_file"].str.split("_", expand=True)
+            if parts.shape[1] == 6:
+                df["session_date"] = parts[4]
+            elif parts.shape[1] == 4:
+                df["session_date"] = parts[2]
+
+            if metadata_df is not None:
+                df = df.merge(metadata_df, on=["mouse_id", "session_date"], how="left")
+            print(f"{fname} → after merge: {df.shape}")
+
+            df["cohort"] = cohort_name
+            df_list.append(df)
+
+        self.data = pd.concat(df_list, ignore_index=True)
+        self.cohorts = self.data["cohort"].unique().tolist()
+        self.which_days = (
+            self.data.groupby("cohort")["session_id"].unique().apply(list).to_dict()
+        )
+
+    def plot_stage_boxplots_by_group_per_session(
+        self,
+        stage_cols: dict = {
+            "Tone": "norm_tone_licks",
+            "Trace": "norm_trace_licks",
+            "Post-trace": "norm_post_trace_licks",
+        },
+        group_vars: list = ["age", "tone"],
+        figsize_per_plot: tuple = (8, 6),
+    ):
+        """
+        Generate subplots of stage-wise boxplots grouped by interaction of group variables for each of cohort x session pair.
+        """
+        df = self.data.copy()
+        df["group"] = df[group_vars].astype(str).agg(" × ".join, axis=1)
+
+        levels_1 = sorted(df[group_vars[0]].dropna().unique())
+        levels_2 = sorted(df[group_vars[1]].dropna().unique())
+        hue_order = [f"{l1} × {l2}" for l1 in levels_1 for l2 in levels_2]
+
+        green_palette = sns.color_palette("Greens", n_colors=len(levels_2) + 1)[1:]
+        blue_palette = sns.color_palette("Blues", n_colors=len(levels_2) + 1)[1:]
+        palette = {}
+        for i, l2 in enumerate(levels_2):
+            palette[f"{levels_1[0]} × {l2}"] = green_palette[i]
+            palette[f"{levels_1[1]} × {l2}"] = blue_palette[i]
+
+        # unique cohort x session pairs
+        combos = (
+            df[["cohort", "session_id"]]
+            .drop_duplicates()
+            .sort_values(["cohort", "session_id"])
+        )
+        n = len(combos)
+        cols = 2
+        rows = math.ceil(n / cols)
+
+        fig, axes = plt.subplots(
+            rows,
+            cols,
+            figsize=(
+                figsize_per_plot[0] * cols,
+                figsize_per_plot[1] * rows,
+            ),
+            constrained_layout=True,
+            squeeze=False,
+        )
+
+        for idx, (cohort, session_id) in enumerate(combos.values):
+            ax = axes[idx // cols][idx % cols]
+            sub_df = df[
+                (df["cohort"] == cohort) & (df["session_id"] == session_id)
+            ].copy()
+
+            long_df = []
+            for stage, col in stage_cols.items():
+                temp = sub_df[[col, "group"]].copy()
+                temp = temp.rename(columns={col: "licks"})
+                temp["stage"] = stage
+                long_df.append(temp)
+            plot_df = pd.concat(long_df, ignore_index=True)
+
+            sns.boxplot(
+                data=plot_df,
+                x="stage",
+                y="licks",
+                hue="group",
+                hue_order=[h for h in hue_order if h in plot_df["group"].unique()],
+                palette=palette,
+                ax=ax,
+                showfliers=False,
+            )
+
+            ax.set_title(f"{cohort} - {session_id}")
+            ax.set_xlabel("")
+            ax.set_ylabel("Lick Count")
+            ax.legend_.remove()
+
+        for j in range(n, rows * cols):
+            fig.delaxes(axes[j // cols][j % cols])
+
+        handles, labels = axes[0][0].get_legend_handles_labels()
+        fig.legend(
+            handles,
+            labels,
+            title=" × ".join(group_vars),
+            bbox_to_anchor=(1.15, 1),
+            loc="upper right",
+        )
+
+        plt.tight_layout(rect=[0, 0, 1, 0.95])
+        # plt.subplots_adjust(right=0.85)
+        # plt.savefig("stage_boxplots.png", dpi=300, bbox_inches="tight")
+
+        plt.show()
+
+    def plot_stage_boxplot_by_group(
+        self,
+        stage_cols: dict = {
+            "Pre-tone": "pre_tone_licks",
+            "Tone": "norm_tone_licks",
+            "Trace": "norm_trace_licks",
+            "Post-trace": "norm_post_trace_licks",
+        },
+        group_vars: list = ["tone", "Age"],
+        figsize: tuple = (8, 6),
+        title: str = None,
+        ylabel: str = "Lick Count",
+    ):
+        """
+        Plot boxplots of lick metrics per stage, grouped by interaction of group variables across the cohort within a session.
+
+        Args:
+            stage_cols: dict mapping stage names to data columns
+            group_vars: list of columns to group by (e.g., ['tone', 'Age'])
+        """
+        df = self.data.copy()
+
+        # Create group labels by joining group_vars
+        df["group"] = df[group_vars].astype(str).agg(" × ".join, axis=1)
+
+        # Sort values for hue_order
+        levels_1 = sorted(df[group_vars[0]].dropna().unique())
+        levels_2 = sorted(df[group_vars[1]].dropna().unique())
+        hue_order = [f"{l1} × {l2}" for l1 in levels_1 for l2 in levels_2]
+
+        # Define color palette
+        green_palette = sns.color_palette("Greens", n_colors=len(levels_2) + 1)[
+            1:
+        ]  # Skip very light
+        blue_palette = sns.color_palette("Blues", n_colors=len(levels_2) + 1)[1:]
+
+        palette = {}
+        for i, l2 in enumerate(levels_2):
+            palette[f"{levels_1[0]} × {l2}"] = green_palette[i]
+            palette[f"{levels_1[1]} × {l2}"] = blue_palette[i]
+
+        # Reshape to long format
+        long_df = []
+        for stage, col in stage_cols.items():
+            temp = df[["group", col]].copy()
+            temp = temp.rename(columns={col: "licks"})
+            temp["stage"] = stage
+            long_df.append(temp)
+
+        plot_df = pd.concat(long_df)
+
+        # Plot
+        plt.figure(figsize=figsize)
+        sns.boxplot(
+            data=plot_df,
+            x="stage",
+            y="licks",
+            hue="group",
+            hue_order=hue_order,
+            palette=palette,
+            showfliers=False,
+        )
+
+        plt.title(title or None)
+        plt.xlabel("Stage")
+        plt.ylabel(ylabel)
+        plt.legend(
+            title=" × ".join(group_vars), bbox_to_anchor=(1.05, 1), loc="upper left"
+        )
+        plt.tight_layout()
+        # plt.yscale("log")
+        # plt.ylim(0, 15)
+        plt.show()
+
+    def wilcoxon_test_for_condition(
+        self,
+        condition: str = "tone",
+        filter_group: str = "age",
+        select_group: str = "aged",
+        testing_metrics: str = "norm_tone_licks",
+    ):
+        """
+        Perform Wilcoxon signed rank test for comparing two conditions (e.g., cs+ vs cs-) within the same aged group (e.g., aged mice). within a session across all trials.
+
+        Args:
+            condition: column name indicationg the condition to compare
+            filter_group: column name indicating the group to filter by
+            select_group: specific value from filter_group to select (e.g., choose "aged" for "age")
+            testing_metrics: column name indicating the metric to test
+        """
+        df = self.data.copy()
+        df = df[df[filter_group] == select_group]
+        condition1 = df[condition].unique()[0]
+        condition2 = df[condition].unique()[1]
+        df_group1 = df[df[condition] == condition1][testing_metrics]
+        df_group2 = df[df[condition] == condition2][testing_metrics]
+        result = wilcoxon(df_group1, df_group2)
+        print(
+            f"Wilcoxon test between {condition1} and {condition2} among {select_group} mice:"
+        )
+        print(f"Statistic: {result.statistic}, p-value: {result.pvalue}")
+
+    def mann_whitney_test_for_age(
+        self,
+        condition: str = "age",
+        filter_group: str = "tone",
+        select_group: str = "cs+",
+        testing_metrics: str = "norm_tone_licks",
+    ):
+        """
+        Perform Mann-Whitney U test for comparing two age groups (e.g., aged vs young) within a specific condition (e.g., cs+).
+
+        Args:
+            condition: column name indicating the condition to compare
+            filter_group: column name indicating the group to filter by
+            select_group: specific value from filter_group to select (e.g., choose "cs+" for "tone")
+            testing_metrics: column name indicating the metric to test
+        """
+        df = self.data.copy()
+        df = df[df[filter_group] == select_group]
+        condition1 = df[condition].unique()[0]
+        condition2 = df[condition].unique()[1]
+        df_group1 = df[df[condition] == condition1][testing_metrics]
+        df_group2 = df[df[condition] == condition2][testing_metrics]
+        result = mannwhitneyu(df_group1, df_group2)
+        print(
+            f"Mann-Whitney U test between {condition1} and {condition2} among {select_group} mice:"
+        )
+        print(f"Statistic: {result.statistic}, p-value: {result.pvalue}")
