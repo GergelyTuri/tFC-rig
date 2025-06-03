@@ -70,7 +70,14 @@ class Session:
             + df["trace_licks"]
             + df["post_trace_licks"]
         )
+        df["trial_duration"] = (
+            df["pre_tone_duration"]
+            + df["tone_duration"]
+            + df["trace_duration"]
+            + df["post_trace_duration"]
+        )
 
+        df["trial_lick_rate"] = df["total_licks"] / df["trial_duration"]
         df["pre_tone_lick_rate"] = df["pre_tone_licks"] / df["pre_tone_duration"]
         df["tone_lick_rate"] = df["tone_licks"] / df["tone_duration"]
         df["trace_lick_rate"] = df["trace_licks"] / df["trace_duration"]
@@ -386,6 +393,66 @@ class Session:
         )
         print(f"Statistic: {result.statistic}, p-value: {result.pvalue}")
 
+    def iti_trend_comparison(
+        self,
+        hue: str = "age",
+        hue_order: list = ["young", "aged"],
+        figsize: tuple = (12, 5),
+        title: str = None,
+        ylabel: str = "Lick Rate (licks/s)",
+    ):
+        """
+        plot the ratio of in-trial lick rate to inter-trial interval lick rate (in-trial lick rate / ITI lick rate), using hues to separate the age groups regardless of tone condition.
+        """
+        df = self.data.copy()
+
+        ratio_rows = []
+
+        for mouse_id, group in df.groupby("mouse_id"):
+            group = group.sort_values("trial_number")
+            trial_rates = group["trial_lick_rate"].values
+            iti_rates = group["iti_lick_rate"].values
+
+            min_len = min(len(trial_rates), len(iti_rates))
+            if len(trial_rates) > min_len:
+                trial_rates = trial_rates[:min_len]
+            elif len(iti_rates) > min_len:
+                iti_rates = iti_rates[:min_len]
+
+            ratio = trial_rates / iti_rates
+            temp_df = group.iloc[:min_len].copy()
+            temp_df["trial_iti_ratio"] = ratio
+            ratio_rows.append(temp_df)
+
+        plot_df = pd.concat(ratio_rows, ignore_index=True)
+
+        plt.figure(figsize=figsize)
+        sns.stripplot(
+            data=plot_df,
+            x="trial_number",
+            y="trial_iti_ratio",
+            hue=hue,
+            hue_order=hue_order,
+            dodge=True,
+            jitter=True,
+        )
+        sns.lineplot(
+            data=plot_df,
+            x="trial_number",
+            y="trial_iti_ratio",
+            hue=hue,
+            hue_order=hue_order,
+            estimator="mean",
+            errorbar="se",
+            legend=False,
+        )
+        plt.ylabel(ylabel)
+        if title:
+            plt.title(title)
+        plt.legend(title=hue)
+        plt.tight_layout()
+        plt.show()
+
     def iti_comparison(
         self,
         stage_cols: dict = {
@@ -497,6 +564,38 @@ class Session:
             print(f"Comparison: {col} vs {iti_col} (group = {select_group})")
             print(f"Statistic: {result.statistic:.3f}, p-value: {result.pvalue:.5f}\n")
 
+    def plot_lick_metrics_remapped_trial_number(
+        self,
+        y_metric: str = "norm_tone_licks",
+        hue: str = "tone",
+        style: str = "age",
+        title: str = None,
+        ylabel: str = None,
+        figsize: tuple = (10, 6),
+    ):
+        """
+        Plot lick metrics against remapped trial numbers. This function specifically remaps the trial numbers of two tone conditions within a single session so that for a single mouse, it will have a set of cs+ and cs- trials that are continuous across the session.
+        """
+
+        df = self.data.copy()
+
+        df["remapped_trial_number"] = df.groupby(["mouse_id", "tone"]).cumcount() + 1
+
+        plt.figure(figsize=figsize)
+        sns.lineplot(
+            data=df,
+            x="remapped_trial_number",
+            y=y_metric,
+            hue=hue,
+            style=style,
+            marker="o",
+        )
+        plt.title(title or f"{y_metric} by Remapped Trial Number in {self.session_id}")
+        plt.ylabel(ylabel or y_metric.replace("_", " ").title())
+        plt.xlabel("Trial Number")
+        plt.legend(loc="upper right", ncol=2, title=f"{hue} x {style}")
+        plt.tight_layout(rect=[0, 0, 0.85, 1])
+
 
 class Cohort:
     """
@@ -506,8 +605,15 @@ class Cohort:
 
     def __init__(self, data: pd.DataFrame, metadata_df: pd.DataFrame = None):
         df = data.copy()
+
+        parts = df["source_file"].str.split("_", expand=True)
+        if parts.shape[1] == 6:
+            df["session_date"] = parts[4]
+        elif parts.shape[1] == 4:
+            df["session_date"] = parts[2]
+
         if metadata_df is not None:
-            df = df.merge(metadata_df, on="mouse_id", how="left")
+            df = df.merge(metadata_df, on=["mouse_id", "session_date"], how="left")
 
         required = {"session_id", "mouse_id", "trial_number"}
         missing = required - set(df.columns)
@@ -519,6 +625,10 @@ class Cohort:
         )
         df["new_norm_post_trace_licks"] = (
             df["post_trace_licks"] / df["pre_post_trace_licks"]
+        )
+        df["norm_lick_rate"] = (df["tone_licks"] / df["tone_duration"]) / (
+            np.where(df["pre_tone_licks"] == 0, 1, df["pre_tone_licks"])
+            / df["pre_tone_duration"]
         )
 
         self.data = df
@@ -685,6 +795,35 @@ class Cohort:
         plt.tight_layout()
         plt.show()
 
+    def plot_norm_lick_rate_by_reindexed_trial(
+        self,
+        x: str = "trial_number",
+        y: str = "norm_lick_rate",
+        hue: str = "tone",
+        style: str = "age",
+        title: str = None,
+    ):
+        """
+        plot cohort data across trials for multiple sessions by age and tone groups
+        """
+        plt.figure(figsize=(10, 6))
+        sns.lineplot(data=self.data, x=x, y=y, hue=hue, style=style)
+        sns.scatterplot(
+            data=self.data,
+            x=x,
+            y=y,
+            hue=hue,
+            style=style,
+            alpha=0.5,
+            legend=False,
+            s=20,
+        )
+        plt.title(title or f"{y} over {x} in {self.session_id}")
+        plt.ylabel(y)
+        plt.xlabel(x)
+        plt.legend(loc="upper right", ncol=2, title=hue + " x " + style)
+        plt.tight_layout(rect=[0, 0, 0.85, 1])
+
     def count_above_below_mean_by_group(
         self,
         reward_col: str = "post_trace_licks",
@@ -731,94 +870,94 @@ class Cohort:
         summary["count_below"] = summary["count_total"] - summary["count_above"]
         return summary[["session_id", group_var, "count_above", "count_below"]]
 
-    def plot_reward_success_rate_by_age_split(
+    def plot_metric_by_reindexed_trial_split(
         self,
-        reward_col: str = "post_trace_licks",
+        y_metric: str,
         groupby_cols: list = ["mouse_id", "session_id"],
-        age_col: str = "age",
+        group_var: str = "age",
         figsize: tuple = (14, 6),
-        ylabel: str = "Reward Success Rate (%)",
-        title: str = "Reward Success Rate by Age Group",
+        ylabel: str = None,
+        title: str = None,
     ):
         """
-        Side-by-side line plots for young and aged groups showing individual mice reward success rates with overlaid mean.
+        Plot the given metric against session_id (trial reindexed),
+        split by a group variable into side-by-side subplots with individual and mean lines.
 
         Args:
-            reward_col: column for reward count
-            groupby_cols: columns to group by (default ['mouse_id', 'session_id'])
-            age_col: column name for age group
-            figsize: size of the full figure
+            y_metric: the column name of the metric to plot on the y-axis
+            groupby_cols: columns for grouping the data (default: ["mouse_id", "session_id"])
+            group_var: variable to split plots by (e.g., "age")
+            figsize: full figure size
             ylabel: y-axis label
             title: overall plot title
         """
-        df = self.compute_reward_success_rate(reward_col, groupby_cols)
+        df = self.data.copy()
+        grouped = df.groupby(groupby_cols)[y_metric].mean().reset_index()
 
-        # Merge age info
-        if age_col not in df.columns:
-            df = df.merge(
-                self.data[["mouse_id", age_col]].drop_duplicates(),
+        # Merge group info if missing
+        if group_var not in grouped.columns:
+            grouped = grouped.merge(
+                self.data[["mouse_id", group_var]].drop_duplicates(),
                 on="mouse_id",
                 how="left",
             )
 
-        age_groups = df[age_col].dropna().unique()
-        if len(age_groups) != 2:
-            raise ValueError(f"Expected two age groups, found {age_groups}")
+        group_levels = sorted(grouped[group_var].dropna().unique())
+        if len(group_levels) != 2:
+            raise ValueError(
+                f"Expected two groups in '{group_var}', got {group_levels}"
+            )
 
         fig, axes = plt.subplots(1, 2, figsize=figsize, sharey=True)
 
-        for ax, group in zip(axes, sorted(age_groups)):
-            group_df = df[df[age_col] == group].copy()
+        for ax, group in zip(axes, group_levels):
+            sub_df = grouped[grouped[group_var] == group].copy()
 
-            # Sort session_id based on the numeric part of the day
+            # Sort session order by day number if possible
             def session_sort_key(s):
                 match = re.search(r"d(\d+)", s)
                 return int(match.group(1)) if match else float("inf")
 
-            group_df[groupby_cols[1]] = pd.Categorical(
-                group_df[groupby_cols[1]],
+            sub_df[groupby_cols[1]] = pd.Categorical(
+                sub_df[groupby_cols[1]],
                 categories=sorted(
-                    group_df[groupby_cols[1]].unique(), key=session_sort_key
+                    sub_df[groupby_cols[1]].unique(), key=session_sort_key
                 ),
                 ordered=True,
             )
 
-            # Individual lines
+            # Plot individual lines
             sns.lineplot(
-                data=group_df,
+                data=sub_df,
                 x=groupby_cols[1],
-                y=f"{reward_col}_success_rate",
+                y=y_metric,
                 hue=groupby_cols[0],
-                marker="o",
                 units=groupby_cols[0],
                 estimator=None,
                 lw=1,
+                marker="o",
                 ax=ax,
                 legend=False,
             )
 
-            # Overlay mean line
-            mean_df = (
-                group_df.groupby(groupby_cols[1])[f"{reward_col}_success_rate"]
-                .mean()
-                .reset_index()
-            )
+            # Plot mean
+            mean_df = sub_df.groupby(groupby_cols[1])[y_metric].mean().reset_index()
             sns.lineplot(
                 data=mean_df,
                 x=groupby_cols[1],
-                y=f"{reward_col}_success_rate",
+                y=y_metric,
                 color="black",
                 marker="o",
                 label="Mean",
                 ax=ax,
             )
 
-            ax.set_title(f"{group.capitalize()} Mice")
+            ax.set_title(f"{group.capitalize()} Group")
             ax.set_xlabel("Session")
-            ax.set_ylabel(ylabel)
+            ax.set_ylabel(ylabel or y_metric.replace("_", " ").title())
             ax.tick_params(axis="x", rotation=45)
 
-        fig.suptitle(title)
+        fig.suptitle(title or f"{y_metric.replace('_', ' ').title()} by Group")
         plt.tight_layout(rect=[0, 0, 1, 0.95])
         plt.show()
 
