@@ -133,6 +133,16 @@ class Window(QWidget):
         elif (self.secondary_mouse_id.text() and not self.secondary_port.text()) or (self.secondary_port.text() and not self.secondary_mouse_id.text()):
             QMessageBox.warning(self, "Warning", "Number of Mouse IDs must match number of Ports")
 
+        elif self.cs_plus_ratio.text() != "":
+            cs_plus_ratio_warning = "CS Plus Ratio must be a number between 0.0 and 1.0"
+            try:
+                cs_plus_ratio = float(self.cs_plus_ratio.text())
+                int(self.cs_plus_ratio.text())
+            except (TypeError, ValueError):
+                QMessageBox.warning(self, "Warning", cs_plus_ratio_warning)
+            if cs_plus_ratio < 0.0 or cs_plus_ratio > 1.0:
+                QMessageBox.warning(self, "Warning", cs_plus_ratio_warning)
+
         elif self.min_iti.value()>self.max_iti.value():
             QMessageBox.warning(self, "Warning", "Minimum iti duration cannot exceed Maximum iti duration")
         
@@ -255,7 +265,7 @@ class Window(QWidget):
         """
         params = {
             "NUMBER_OF_TRIALS": self.number_of_trials.value(),
-            "CS_PLUS_RATIO": self.cs_plus_ratio.value(),
+            "CS_PLUS_RATIO": self.cs_plus_ratio.currentText(),
             "IS_TRAINING": self.is_training.checkState() == Qt.CheckState.Checked,
             "TRAINING_TRIALS_ARE_REWARDED": self.training_trials_are_rewarded.checkState() == Qt.CheckState.Checked,
             "TRIAL_TYPE_1": self.trial_type_1.currentText(),
