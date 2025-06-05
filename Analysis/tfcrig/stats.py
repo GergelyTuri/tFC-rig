@@ -631,6 +631,31 @@ class Cohort:
             / df["pre_tone_duration"]
         )
 
+        df["total_licks"] = (
+            df["pre_tone_licks"]
+            + df["tone_licks"]
+            + df["trace_licks"]
+            + df["post_trace_licks"]
+        )
+        df["trial_duration"] = (
+            df["pre_tone_duration"]
+            + df["tone_duration"]
+            + df["trace_duration"]
+            + df["post_trace_duration"]
+        )
+
+        df["trial_lick_rate"] = df["total_licks"] / df["trial_duration"]
+        df["pre_tone_lick_rate"] = df["pre_tone_licks"] / df["pre_tone_duration"]
+        df["tone_lick_rate"] = df["tone_licks"] / df["tone_duration"]
+        df["trace_lick_rate"] = df["trace_licks"] / df["trace_duration"]
+        df["post_trace_lick_rate"] = df["post_trace_licks"] / df["post_trace_duration"]
+        df["norm_tone_lick_rate"] = df["norm_tone_licks"] / df["tone_duration"]
+        df["norm_trace_lick_rate"] = df["norm_trace_licks"] / df["trace_duration"]
+        df["norm_post_trace_lick_rate"] = (
+            df["norm_post_trace_licks"] / df["post_trace_duration"]
+        )
+        df["iti_lick_rate"] = df["iti_lick_count"] / df["iti_duration"]
+
         self.data = df
         self.sessions = self.data["session_id"].unique().tolist()
         self.subjects = self.data["mouse_id"].unique().tolist()
@@ -961,6 +986,161 @@ class Cohort:
         plt.tight_layout(rect=[0, 0, 1, 0.95])
         plt.show()
 
+    def plot_lick_rate_comparison_by_age(
+        self,
+        session_ids: list,
+        lick_rate_cols: list = ["tone_lick_rate", "iti_lick_rate"],
+        age_col: str = "age",
+        session_col: str = "session_id",
+        figsize: tuple = (6, 6),
+        palette: dict = None,
+        edgecolor: str = "black",
+        title: str = None,
+    ):
+        """
+        Flexible bar plot comparing multiple lick rate types (e.g., tone, trace, ITI) by age group across sessions.
+
+        Args:
+            session_ids: list of session IDs to include
+            lick_rate_cols: list of lick rate columns to compare
+            age_col: column name for age group
+            session_col: session ID column
+            figsize: figure size
+            palette: dictionary mapping lick rate names to colors
+            edgecolor: color for bar edges (used to distinguish age groups)
+            title: optional plot title
+        """
+        df = self.data.copy()
+        df = df[df[session_col].isin(session_ids)]
+
+        if palette is None:
+            default_colors = sns.color_palette("Set2", n_colors=len(lick_rate_cols))
+            palette = dict(zip(lick_rate_cols, default_colors))
+
+        # Melt to long format
+        melted = pd.melt(
+            df,
+            id_vars=[session_col, age_col],
+            value_vars=lick_rate_cols,
+            var_name="lick_type",
+            value_name="lick_rate",
+        )
+
+        # Aggregate
+        agg = (
+            melted.groupby([session_col, age_col, "lick_type"])["lick_rate"]
+            .mean()
+            .reset_index()
+        )
+
+        # Plot
+        fig, ax = plt.subplots(figsize=figsize)
+        n_types = len(lick_rate_cols)
+        n_groups = 2  # young and aged
+        total_bars = n_types * n_groups
+        bar_width = 0.8 / total_bars  # fit within total width of 0.8 per session
+        x_positions = np.arange(len(session_ids))
+
+        for i, lick_type in enumerate(lick_rate_cols):
+            for j, age in enumerate(["young", "aged"]):
+                sub = agg[(agg["lick_type"] == lick_type) & (agg[age_col] == age)]
+                heights = (
+                    sub.set_index(session_col).reindex(session_ids)["lick_rate"].values
+                )
+                bar_index = i * n_groups + j
+                offset = (bar_index - total_bars / 2 + 0.5) * bar_width
+
+                label = f"{lick_type.replace('_lick_rate', '').capitalize()} ({age})"
+                ax.bar(
+                    x_positions + offset,
+                    heights,
+                    width=bar_width,
+                    color=palette[lick_type],
+                    edgecolor=edgecolor,
+                    hatch="" if age == "young" else "//",
+                    label=label,
+                )
+
+        ax.set_xticks(x_positions)
+        ax.set_xticklabels(session_ids)
+        ax.set_ylabel("Lick Rate")
+        ax.set_xlabel("Session")
+        ax.set_title(title or "Lick Rate Comparison by Age Group")
+        ax.legend(bbox_to_anchor=(1.05, 1), loc="upper left")
+        plt.tight_layout()
+        plt.show()
+
+    def wilcoxon_lick_vs_iti(
+        self,
+        testing_metric: str = "post_trace_lick_rate",
+        filter_group: str = "age",
+        select_group: str = "aged",
+        session_ids: list = None,
+        session_col: str = "session_id",
+    ):
+        """
+        Wilcoxon test comparing a lick metric vs ITI lick rate across multiple sessions,
+        within a specific group (e.g., aged mice).
+
+        Args:
+            testing_metric: e.g., 'post_trace_lick_rate'
+            filter_group: group column to filter (e.g., 'age')
+            select_group: which group (e.g., 'aged')
+            session_ids: list of sessions to compare
+            session_col: session column name
+        """
+        df = self.data.copy()
+        df = df[df[filter_group] == select_group]
+        if session_ids:
+            df = df[df[session_col].isin(session_ids)]
+
+        grouped = (
+            df.groupby("mouse_id")[[testing_metric, "iti_lick_rate"]].mean().dropna()
+        )
+        if grouped.empty:
+            print("No data found for selected group and sessions.")
+            return
+
+        result = wilcoxon(grouped[testing_metric], grouped["iti_lick_rate"])
+        print(
+            f"Wilcoxon test between {testing_metric} and ITI lick rate (group: {select_group})"
+        )
+        print(f"Statistic: {result.statistic:.3f}, p-value: {result.pvalue:.5f}")
+
+    def mann_whitney_lick_vs_iti_within_session(
+        self,
+        testing_metric: str = "post_trace_lick_rate",
+        session_id: str = None,
+        group_col: str = "age",
+    ):
+        """
+        Mann-Whitney U test comparing lick metric vs ITI within each group in one session.
+
+        Args:
+            testing_metric: metric to compare (e.g., 'trace_lick_rate')
+            session_id: session to filter
+            group_col: group to split (e.g., 'age')
+        """
+        df = self.data.copy()
+        if session_id:
+            df = df[df["session_id"] == session_id]
+
+        groups = df[group_col].dropna().unique()
+        for group in groups:
+            sub = df[df[group_col] == group]
+            m1 = sub[testing_metric].dropna()
+            m2 = sub["iti_lick_rate"].dropna()
+
+            if m1.empty or m2.empty:
+                print(f"{group} group missing data.")
+                continue
+
+            result = mannwhitneyu(m1, m2, alternative="two-sided")
+            print(f"{group.capitalize()} Group in {session_id}:")
+            print(
+                f"{testing_metric} vs ITI → U={result.statistic:.3f}, p={result.pvalue:.5f}\n"
+            )
+
 
 class MultiCohort:
     """
@@ -1000,6 +1180,36 @@ class MultiCohort:
 
             df["cohort"] = cohort_name
             df_list.append(df)
+
+        df["norm_lick_rate"] = (df["tone_licks"] / df["tone_duration"]) / (
+            np.where(df["pre_tone_licks"] == 0, 1, df["pre_tone_licks"])
+            / df["pre_tone_duration"]
+        )
+
+        df["total_licks"] = (
+            df["pre_tone_licks"]
+            + df["tone_licks"]
+            + df["trace_licks"]
+            + df["post_trace_licks"]
+        )
+        df["trial_duration"] = (
+            df["pre_tone_duration"]
+            + df["tone_duration"]
+            + df["trace_duration"]
+            + df["post_trace_duration"]
+        )
+
+        df["trial_lick_rate"] = df["total_licks"] / df["trial_duration"]
+        df["pre_tone_lick_rate"] = df["pre_tone_licks"] / df["pre_tone_duration"]
+        df["tone_lick_rate"] = df["tone_licks"] / df["tone_duration"]
+        df["trace_lick_rate"] = df["trace_licks"] / df["trace_duration"]
+        df["post_trace_lick_rate"] = df["post_trace_licks"] / df["post_trace_duration"]
+        df["norm_tone_lick_rate"] = df["norm_tone_licks"] / df["tone_duration"]
+        df["norm_trace_lick_rate"] = df["norm_trace_licks"] / df["trace_duration"]
+        df["norm_post_trace_lick_rate"] = (
+            df["norm_post_trace_licks"] / df["post_trace_duration"]
+        )
+        df["iti_lick_rate"] = df["iti_lick_count"] / df["iti_duration"]
 
         self.data = pd.concat(df_list, ignore_index=True)
         self.cohorts = self.data["cohort"].unique().tolist()
@@ -1166,11 +1376,17 @@ class MultiCohort:
             showfliers=False,
         )
 
-        plt.title(title or None)
-        plt.xlabel("Stage")
-        plt.ylabel(ylabel)
+        plt.title(title or None, fontsize=18)
+        plt.xlabel("Stage", fontsize=16)
+        plt.ylabel(ylabel, fontsize=16)
+        plt.xticks(fontsize=14)
+        plt.yticks(fontsize=14)
         plt.legend(
-            title=" × ".join(group_vars), bbox_to_anchor=(1.05, 1), loc="upper left"
+            title=" × ".join(group_vars),
+            bbox_to_anchor=(1.05, 1),
+            loc="upper left",
+            fontsize=16,
+            title_fontsize=16,
         )
         plt.tight_layout()
         # plt.yscale("log")
@@ -1232,3 +1448,100 @@ class MultiCohort:
             f"Mann-Whitney U test between {condition1} and {condition2} among {select_group} mice:"
         )
         print(f"Statistic: {result.statistic}, p-value: {result.pvalue}")
+
+    def iti_comparison(
+        self,
+        stage_cols: dict = {
+            "Tone": "tone_lick_rate",
+            "Trace": "trace_lick_rate",
+            "Post-Trace": "post_trace_lick_rate",
+            "ITI": "iti_lick_rate",
+        },
+        group_vars: str = "age",
+        hue: str = "tone",
+        hue_order: list = ["cs+", "cs-"],
+        palette: dict = {"cs+": "#3c73a8", "cs-": "#acc2d9"},
+        figsize: tuple = (12, 5),
+        title: str = None,
+        ylabel: str = "Lick Rate (licks/s)",
+        aggregate: str = None,  # 'mean', 'median', or None
+    ):
+        """
+        Plot horizontal subplots comparing lick rate metrics between two groups defined by a group variable,
+        using hue to separate conditions (e.g., tone: cs+ vs cs-).
+
+        If `aggregate` is 'mean' or 'median', aggregate the stage lick rates (except ITI) at mouse level.
+        """
+
+        df = self.data.copy()
+        unique_groups = df[group_vars].dropna().unique()
+
+        if len(unique_groups) != 2:
+            raise ValueError(
+                f"Expected exactly two levels in '{group_vars}', got {unique_groups}"
+            )
+
+        fig, axes = plt.subplots(1, 2, figsize=figsize, sharey=True)
+
+        for ax, group in zip(axes, unique_groups):
+            sub_df = df[df[group_vars] == group].copy()
+
+            # Optionally aggregate (only non-ITI columns)
+            if aggregate in ["mean", "median"]:
+                agg_func = np.mean if aggregate == "mean" else np.median
+                agg_cols = {v: agg_func for k, v in stage_cols.items() if k != "ITI"}
+
+                # include hue and mouse_id for grouping
+                grouped = sub_df.groupby(["mouse_id", hue]).agg(agg_cols).reset_index()
+                grouped["iti_lick_rate"] = (
+                    sub_df.groupby(["mouse_id", hue])["iti_lick_rate"].mean().values
+                )
+
+                melted = grouped.melt(
+                    id_vars=[hue],
+                    value_vars=grouped.columns.difference([hue]),
+                    var_name="stage",
+                    value_name="licks",
+                )
+            else:
+                # no aggregation: reshape full data
+                long_df = []
+                for stage, col in stage_cols.items():
+                    temp = sub_df[[col, hue]].copy()
+                    temp = temp.rename(columns={col: "licks"})
+                    temp["stage"] = stage
+                    long_df.append(temp)
+                melted = pd.concat(long_df, ignore_index=True)
+
+            sns.boxplot(
+                data=melted,
+                x="stage",
+                y="licks",
+                hue=hue,
+                hue_order=hue_order,
+                palette=palette,
+                ax=ax,
+                showfliers=False,
+            )
+
+            ax.set_title(f"{group_vars.capitalize()}: {group}", fontsize=14)
+            ax.set_xlabel("Stage", fontsize=12)
+            ax.set_ylabel(ylabel, fontsize=12)
+            ax.tick_params(axis="x", labelsize=10)
+            ax.tick_params(axis="y", labelsize=10)
+            ax.legend_.remove()
+
+        if title:
+            fig.suptitle(title, fontsize=16)
+
+        handles, labels = axes[0].get_legend_handles_labels()
+        fig.legend(
+            handles,
+            labels,
+            title=hue.capitalize(),
+            loc="upper right",
+            bbox_to_anchor=(1.15, 1),
+        )
+
+        plt.tight_layout(rect=[0, 0, 1, 0.95])
+        plt.show()
