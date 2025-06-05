@@ -138,13 +138,14 @@ class Window(QWidget):
             QMessageBox.warning(self, "Warning", "Number of Mouse IDs must match number of Ports")
 
         if self.cs_plus_ratio.text() != "":
-            found_an_error = True
             try:
                 cs_plus_ratio = float(self.cs_plus_ratio.text())
                 float(self.cs_plus_ratio.text())
             except (TypeError, ValueError):
+                found_an_error = True
                 QMessageBox.warning(self, "Warning", f"Could not convert CS Plus Ratio to float. Given {cs_plus_ratio}")
             if cs_plus_ratio < 0.0 or cs_plus_ratio > 1.0:
+                found_an_error = True
                 QMessageBox.warning(self, "Warning", f"CS Plus Ratio must be b/w 0, 1, not {cs_plus_ratio}")
 
         if self.min_iti.value() > self.max_iti.value():
