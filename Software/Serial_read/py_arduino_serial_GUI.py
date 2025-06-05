@@ -147,27 +147,27 @@ class Window(QWidget):
             if cs_plus_ratio < 0.0 or cs_plus_ratio > 1.0:
                 QMessageBox.warning(self, "Warning", f"CS Plus Ratio must be b/w 0, 1, not {cs_plus_ratio}")
 
-        if self.min_iti.value()>self.max_iti.value():
+        if self.min_iti.value() > self.max_iti.value():
             found_an_error = True
             QMessageBox.warning(self, "Warning", "Minimum iti duration cannot exceed Maximum iti duration")
         
-        if self.water_disp_time.value()>=self.water_timeout.value():
+        if self.water_disp_time.value() >= self.water_timeout.value():
             found_an_error = True
             QMessageBox.warning(self, "Warning", "Water timeout should be greater than water dispense time")
 
-        if self.lick_timeout.value()>=self.lick_count_timeout.value():
+        if self.lick_timeout.value() >= self.lick_count_timeout.value():
             found_an_error = True
             QMessageBox.warning(self, "Warning", "Lick count timeout should be greater than lick timeout")
 
-        if self.auditory_start.value()>=self.auditory_stop.value():
+        if self.auditory_start.value() >= self.auditory_stop.value():
             found_an_error = True
             QMessageBox.warning(self, "Warning", "Auditory stop should be greater than auditory start")
         
-        if self.auditory_stop.value()>=self.air_puff_start_time.value():
+        if self.auditory_stop.value() >= self.air_puff_start_time.value():
             found_an_error = True
             QMessageBox.warning(self, "Warning", "Airpuff Start Time should be greater than auditory stop")
 
-        if self.trial_duration.value()<self.air_puff_start_time.value()+self.air_puff_duration.value():
+        if self.trial_duration.value() < self.air_puff_start_time.value() + self.air_puff_duration.value():
             found_an_error = True
             QMessageBox.warning(self, "Warning", "Trial duration needs to be greater than or equal to Airpuff Start Time plus Airpuff Duration")
 
