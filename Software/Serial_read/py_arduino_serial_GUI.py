@@ -276,7 +276,7 @@ class Window(QWidget):
         """
         params = {
             "NUMBER_OF_TRIALS": self.number_of_trials.value(),
-            "CS_PLUS_RATIO": self.cs_plus_ratio.currentText(),
+            "CS_PLUS_RATIO": self.cs_plus_ratio.text(),
             "IS_TRAINING": self.is_training.checkState() == Qt.CheckState.Checked,
             "TRAINING_TRIALS_ARE_REWARDED": self.training_trials_are_rewarded.checkState() == Qt.CheckState.Checked,
             "TRIAL_TYPE_1": self.trial_type_1.currentText(),
