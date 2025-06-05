@@ -139,9 +139,9 @@ class Window(QWidget):
                 cs_plus_ratio = float(self.cs_plus_ratio.text())
                 int(self.cs_plus_ratio.text())
             except (TypeError, ValueError):
-                QMessageBox.warning(self, "Warning", cs_plus_ratio_warning)
+                QMessageBox.warning(self, "Warning", "Could not convert CS Plus Ratio to float")
             if cs_plus_ratio < 0.0 or cs_plus_ratio > 1.0:
-                QMessageBox.warning(self, "Warning", cs_plus_ratio_warning)
+                QMessageBox.warning(self, "Warning", f"CS Plus Ratio must be b/w 0, 1, not {cs_plus_ratio}")
 
         elif self.min_iti.value()>self.max_iti.value():
             QMessageBox.warning(self, "Warning", "Minimum iti duration cannot exceed Maximum iti duration")
