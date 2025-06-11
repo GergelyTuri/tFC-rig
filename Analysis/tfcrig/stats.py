@@ -51,11 +51,13 @@ class Session:
             else:
                 df = df[df["trial_number"].isin(trial_filter)]
 
-        parts = df["source_file"].str.split("_", expand=True)
-        if parts.shape[1] == 6:
-            df["session_date"] = parts[4]
-        elif parts.shape[1] == 4:
-            df["session_date"] = parts[2]
+        parts = df["source_file"].str.split("_")
+        df["session_date"] = parts.apply(
+            lambda x: x[4] if len(x) >= 5 else x[2] if len(x) >= 3 else None
+        )
+
+        df["session_date"] = pd.to_datetime(df["session_date"])
+        metadata_df["session_date"] = pd.to_datetime(metadata_df["session_date"])
 
         if metadata_df is not None:
             df = df.merge(metadata_df, on=["mouse_id", "session_date"], how="left")
@@ -993,7 +995,7 @@ class Cohort:
         age_col: str = "age",
         session_col: str = "session_id",
         figsize: tuple = (6, 6),
-        palette: dict = None,
+        ylabel: str = None,
         edgecolor: str = "black",
         title: str = None,
     ):
@@ -1013,10 +1015,6 @@ class Cohort:
         df = self.data.copy()
         df = df[df[session_col].isin(session_ids)]
 
-        if palette is None:
-            default_colors = sns.color_palette("Set2", n_colors=len(lick_rate_cols))
-            palette = dict(zip(lick_rate_cols, default_colors))
-
         # Melt to long format
         melted = pd.melt(
             df,
@@ -1027,43 +1025,70 @@ class Cohort:
         )
 
         # Aggregate
-        agg = (
+        grouped = (
             melted.groupby([session_col, age_col, "lick_type"])["lick_rate"]
-            .mean()
+            .agg(["mean", "sem"])
             .reset_index()
         )
 
-        # Plot
+        bar_order = [
+            (lick_rate_cols[0], "aged"),
+            ("iti_lick_rate", "aged"),
+            (lick_rate_cols[0], "young"),
+            ("iti_lick_rate", "young"),
+        ]
+
+        # Colors
+        green_palette = sns.color_palette("Greens", n_colors=3)[1:]
+        blue_palette = sns.color_palette("Blues", n_colors=3)[1:]
+        color_map = {
+            (lick_rate_cols[0], "young"): blue_palette[0],
+            ("iti_lick_rate", "young"): blue_palette[1],
+            (lick_rate_cols[0], "aged"): green_palette[0],
+            ("iti_lick_rate", "aged"): green_palette[1],
+        }
         fig, ax = plt.subplots(figsize=figsize)
-        n_types = len(lick_rate_cols)
-        n_groups = 2  # young and aged
-        total_bars = n_types * n_groups
-        bar_width = 0.8 / total_bars  # fit within total width of 0.8 per session
         x_positions = np.arange(len(session_ids))
+        bar_width = 0.2
 
-        for i, lick_type in enumerate(lick_rate_cols):
-            for j, age in enumerate(["young", "aged"]):
-                sub = agg[(agg["lick_type"] == lick_type) & (agg[age_col] == age)]
-                heights = (
-                    sub.set_index(session_col).reindex(session_ids)["lick_rate"].values
-                )
-                bar_index = i * n_groups + j
-                offset = (bar_index - total_bars / 2 + 0.5) * bar_width
+        for i, (lick_type, age) in enumerate(bar_order):
+            sub = grouped[
+                (grouped["lick_type"] == lick_type) & (grouped[age_col] == age)
+            ]
+            heights = sub.set_index(session_col).reindex(session_ids)["mean"].values
+            errors = sub.set_index(session_col).reindex(session_ids)["sem"].values
 
-                label = f"{lick_type.replace('_lick_rate', '').capitalize()} ({age})"
-                ax.bar(
-                    x_positions + offset,
-                    heights,
-                    width=bar_width,
-                    color=palette[lick_type],
-                    edgecolor=edgecolor,
-                    hatch="" if age == "young" else "//",
-                    label=label,
-                )
+            offset = (i - 1.5) * bar_width  # center 4 bars
+            ax.bar(
+                x_positions + offset,
+                heights,
+                width=bar_width,
+                yerr=errors,
+                capsize=4,
+                label=f"{lick_type.replace('_lick_rate','').capitalize()} ({age})",
+                color=color_map[(lick_type, age)],
+                edgecolor=edgecolor,
+                # hatch="" if age == "young" else "//",
+            )
+
+            # # plot individual dots
+            # raw = melted[(melted["lick_type"] == lick_type) & (melted[age_col] == age)]
+            # for j, session in enumerate(session_ids):
+            #     dots = raw[raw[session_col] == session]["lick_rate"]
+            #     x_vals = np.full(len(dots), x_positions[j] + offset)
+            #     ax.scatter(
+            #         x_vals,
+            #         dots,
+            #         alpha=0.6,
+            #         s=12,
+            #         color=color_map[(lick_type, age)],
+            #         edgecolors="black",
+            #         linewidth=0.3,
+            #     )
 
         ax.set_xticks(x_positions)
         ax.set_xticklabels(session_ids)
-        ax.set_ylabel("Lick Rate")
+        ax.set_ylabel(ylabel)
         ax.set_xlabel("Session")
         ax.set_title(title or "Lick Rate Comparison by Age Group")
         ax.legend(bbox_to_anchor=(1.05, 1), loc="upper left")
@@ -1313,7 +1338,7 @@ class MultiCohort:
 
         plt.show()
 
-    def plot_stage_boxplot_by_group(
+    def plot_stage_by_group(
         self,
         stage_cols: dict = {
             "Pre-tone": "pre_tone_licks",
@@ -1366,14 +1391,14 @@ class MultiCohort:
 
         # Plot
         plt.figure(figsize=figsize)
-        sns.boxplot(
+        sns.barplot(
             data=plot_df,
             x="stage",
             y="licks",
             hue="group",
             hue_order=hue_order,
             palette=palette,
-            showfliers=False,
+            # showfliers=False,
         )
 
         plt.title(title or None, fontsize=18)
@@ -1544,4 +1569,111 @@ class MultiCohort:
         )
 
         plt.tight_layout(rect=[0, 0, 1, 0.95])
+        plt.show()
+
+    def plot_lick_rate_comparison_by_age(
+        self,
+        session_ids: list,
+        lick_rate_cols: list = ["tone_lick_rate", "iti_lick_rate"],
+        age_col: str = "age",
+        session_col: str = "session_id",
+        figsize: tuple = (6, 6),
+        ylabel: str = None,
+        edgecolor: str = "black",
+        title: str = None,
+    ):
+        """
+        Flexible bar plot comparing multiple lick rate types (e.g., tone, trace, ITI) by age group across sessions.
+
+        Args:
+            session_ids: list of session IDs to include
+            lick_rate_cols: list of lick rate columns to compare
+            age_col: column name for age group
+            session_col: session ID column
+            figsize: figure size
+            palette: dictionary mapping lick rate names to colors
+            edgecolor: color for bar edges (used to distinguish age groups)
+            title: optional plot title
+        """
+        df = self.data.copy()
+        df = df[df[session_col].isin(session_ids)]
+
+        # Melt to long format
+        melted = pd.melt(
+            df,
+            id_vars=[session_col, age_col],
+            value_vars=lick_rate_cols,
+            var_name="lick_type",
+            value_name="lick_rate",
+        )
+
+        # Aggregate
+        grouped = (
+            melted.groupby([session_col, age_col, "lick_type"])["lick_rate"]
+            .agg(["mean", "sem"])
+            .reset_index()
+        )
+
+        bar_order = [
+            (lick_rate_cols[0], "aged"),
+            ("iti_lick_rate", "aged"),
+            (lick_rate_cols[0], "young"),
+            ("iti_lick_rate", "young"),
+        ]
+
+        # Colors
+        green_palette = sns.color_palette("Greens", n_colors=3)[1:]
+        blue_palette = sns.color_palette("Blues", n_colors=3)[1:]
+        color_map = {
+            (lick_rate_cols[0], "young"): blue_palette[0],
+            ("iti_lick_rate", "young"): blue_palette[1],
+            (lick_rate_cols[0], "aged"): green_palette[0],
+            ("iti_lick_rate", "aged"): green_palette[1],
+        }
+        fig, ax = plt.subplots(figsize=figsize)
+        x_positions = np.arange(len(session_ids))
+        bar_width = 0.2
+
+        for i, (lick_type, age) in enumerate(bar_order):
+            sub = grouped[
+                (grouped["lick_type"] == lick_type) & (grouped[age_col] == age)
+            ]
+            heights = sub.set_index(session_col).reindex(session_ids)["mean"].values
+            errors = sub.set_index(session_col).reindex(session_ids)["sem"].values
+
+            offset = (i - 1.5) * bar_width  # center 4 bars
+            ax.bar(
+                x_positions + offset,
+                heights,
+                width=bar_width,
+                yerr=errors,
+                capsize=4,
+                label=f"{lick_type.replace('_lick_rate','').capitalize()} ({age})",
+                color=color_map[(lick_type, age)],
+                edgecolor=edgecolor,
+                # hatch="" if age == "young" else "//",
+            )
+
+            # # plot individual dots
+            # raw = melted[(melted["lick_type"] == lick_type) & (melted[age_col] == age)]
+            # for j, session in enumerate(session_ids):
+            #     dots = raw[raw[session_col] == session]["lick_rate"]
+            #     x_vals = np.full(len(dots), x_positions[j] + offset)
+            #     ax.scatter(
+            #         x_vals,
+            #         dots,
+            #         alpha=0.6,
+            #         s=12,
+            #         color=color_map[(lick_type, age)],
+            #         edgecolors="black",
+            #         linewidth=0.3,
+            #     )
+
+        ax.set_xticks(x_positions)
+        ax.set_xticklabels(session_ids)
+        ax.set_ylabel(ylabel)
+        ax.set_xlabel("Session")
+        ax.set_title(title or "Lick Rate Comparison by Age Group")
+        ax.legend(bbox_to_anchor=(1.05, 1), loc="upper left")
+        plt.tight_layout()
         plt.show()
