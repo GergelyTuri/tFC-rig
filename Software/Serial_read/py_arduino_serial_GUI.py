@@ -60,7 +60,8 @@ class Window(QWidget):
         trailSettingsGroupBox = QGroupBox("Trial Settings")
         trialSettingsLayout = QFormLayout()
 
-        self.num_trials = SpinBox(trialSettingsLayout, "Number of trials", 6, step=1, min=1, max=30)
+        self.number_of_trials = SpinBox(trialSettingsLayout, "Number of trials", 6, step=1, min=1, max=30)
+        self.cs_plus_ratio = LineEdit(formLayout, "CS+ Ratio")
         self.is_training = CheckBox(
             layout=trialSettingsLayout,
             text="Is training session?",
@@ -122,38 +123,59 @@ class Window(QWidget):
         Validate input fields before starting the experiment.
         """
         pattern = r"^[a-zA-Z0-9]+_\d+$"
+        found_an_error = False
 
         if self.primary_mouse_id.text() == '' or self.primary_port.text() == '':
+            found_an_error = True
             QMessageBox.warning(self, "Warning", "Mouse ID and Primary Port fields must be set!")
         
-        elif not re.match(pattern, self.primary_mouse_id.text()) or (self.secondary_mouse_id.text() and not re.match(pattern, self.secondary_mouse_id.text())):
+        if not re.match(pattern, self.primary_mouse_id.text()) or (self.secondary_mouse_id.text() and not re.match(pattern, self.secondary_mouse_id.text())):
+            found_an_error = True
             QMessageBox.warning(self, "Warning", "Mouse IDs must follow the pattern: {character(s)}_{digit(s)}")
 
-        elif (self.secondary_mouse_id.text() and not self.secondary_port.text()) or (self.secondary_port.text() and not self.secondary_mouse_id.text()):
+        if (self.secondary_mouse_id.text() and not self.secondary_port.text()) or (self.secondary_port.text() and not self.secondary_mouse_id.text()):
+            found_an_error = True
             QMessageBox.warning(self, "Warning", "Number of Mouse IDs must match number of Ports")
 
-        elif self.min_iti.value()>self.max_iti.value():
+        if self.cs_plus_ratio.text() != "":
+            try:
+                cs_plus_ratio = float(self.cs_plus_ratio.text())
+                float(self.cs_plus_ratio.text())
+            except (TypeError, ValueError):
+                found_an_error = True
+                QMessageBox.warning(self, "Warning", f"Could not convert CS Plus Ratio to float. Given {cs_plus_ratio}")
+            if cs_plus_ratio < 0.0 or cs_plus_ratio > 1.0:
+                found_an_error = True
+                QMessageBox.warning(self, "Warning", f"CS Plus Ratio must be b/w 0, 1, not {cs_plus_ratio}")
+
+        if self.min_iti.value() > self.max_iti.value():
+            found_an_error = True
             QMessageBox.warning(self, "Warning", "Minimum iti duration cannot exceed Maximum iti duration")
         
-        elif self.water_disp_time.value()>=self.water_timeout.value():
+        if self.water_disp_time.value() >= self.water_timeout.value():
+            found_an_error = True
             QMessageBox.warning(self, "Warning", "Water timeout should be greater than water dispense time")
 
-        elif self.lick_timeout.value()>=self.lick_count_timeout.value():
+        if self.lick_timeout.value() >= self.lick_count_timeout.value():
+            found_an_error = True
             QMessageBox.warning(self, "Warning", "Lick count timeout should be greater than lick timeout")
 
-        elif self.auditory_start.value()>=self.auditory_stop.value():
+        if self.auditory_start.value() >= self.auditory_stop.value():
+            found_an_error = True
             QMessageBox.warning(self, "Warning", "Auditory stop should be greater than auditory start")
         
-        elif self.auditory_stop.value()>=self.air_puff_start_time.value():
+        if self.auditory_stop.value() >= self.air_puff_start_time.value():
+            found_an_error = True
             QMessageBox.warning(self, "Warning", "Airpuff Start Time should be greater than auditory stop")
 
-        elif self.trial_duration.value()<self.air_puff_start_time.value()+self.air_puff_duration.value():
+        if self.trial_duration.value() < self.air_puff_start_time.value() + self.air_puff_duration.value():
+            found_an_error = True
             QMessageBox.warning(self, "Warning", "Trial duration needs to be greater than or equal to Airpuff Start Time plus Airpuff Duration")
 
-        else:
-            # Check that ports and cameras are able to connect
+        # Check that ports and cameras are able to connect
+        if not found_an_error:
             try:
-                comm=sc(self.primary_port.text(), 9600)
+                comm = sc(self.primary_port.text(), 9600)
                 comm.close()
 
                 if self.secondary_port.text():
@@ -253,7 +275,8 @@ class Window(QWidget):
             dict: Dictionary containing parameters.
         """
         params = {
-            "NUMBER_OF_TRIALS": self.num_trials.value(),
+            "NUMBER_OF_TRIALS": self.number_of_trials.value(),
+            "CS_PLUS_RATIO": self.cs_plus_ratio.text(),
             "IS_TRAINING": self.is_training.checkState() == Qt.CheckState.Checked,
             "TRAINING_TRIALS_ARE_REWARDED": self.training_trials_are_rewarded.checkState() == Qt.CheckState.Checked,
             "TRIAL_TYPE_1": self.trial_type_1.currentText(),

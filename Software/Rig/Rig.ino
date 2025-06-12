@@ -61,6 +61,8 @@ int currentTrialType;
 int trialTypesCharIdxSize = sizeof(trialTypesCharIdx) / sizeof(trialTypesCharIdx[0]);
 int trialType1Idx = getArrayIndex(TRIAL_TYPE_1, trialTypesCharIdx, trialTypesCharIdxSize);
 int trialType2Idx = getArrayIndex(TRIAL_TYPE_2, trialTypesCharIdx, trialTypesCharIdxSize);
+int numTrialType1 = round(NUMBER_OF_TRIALS * CS_PLUS_RATIO);
+int numTrialType2 = NUMBER_OF_TRIALS - numTrialType1;
 
 long randomInterTrialInterval = 0;
 
@@ -122,21 +124,7 @@ void setup() {
   // Each session is a random permutation of the trial types (ex: {CS-, CS-, CS-, CS+, CS+, CS+}
   // in the case that there are `6` trials).
   // Note that 0 is CS-, 1 is CS+.
-  for (int i = 0; i < NUMBER_OF_TRIALS / 2; ++i) {
-    trialTypes[i] = trialType1Idx;
-  }
-  for (int i = NUMBER_OF_TRIALS / 2; i < NUMBER_OF_TRIALS; ++i) {
-    trialTypes[i] = trialType2Idx;
-  }
-  currentTrialType = trialTypes[0];
-  // This uses Fisher-Yates shuffle to randomize the trial types
-  for (int i = NUMBER_OF_TRIALS-1; i > 0; --i) {
-    int j = random (0, i+1);
-    int temp = trialTypes[i];
-    trialTypes[i] = trialTypes[j];
-    trialTypes[j] = temp;
-  }
-  intArrayToChar(trialTypes, NUMBER_OF_TRIALS, trialTypesChar);
+  generateTrialTypes();
 
   // Keeps track of the rig start time. This should be close to 0 since
   // `millis` starts when the rig starts, but is tracked separately for
@@ -407,6 +395,8 @@ void printSessionParameters() {
   vprint(TRIAL_TYPE_1, trialType1Idx);
   vprint(TRIAL_TYPE_2, trialType2Idx);
   vprint("trialTypesChar", trialTypesChar);
+  vprint("Number of CS+ trials", numTrialType1);
+  vprint("Number of CS- trials", numTrialType2);
 
   // print("Printing Arduino or rig parameters");
   vprint("BAUD_RATE", BAUD_RATE);
@@ -453,6 +443,23 @@ void printSessionParameters() {
 /* TRIAL MANAGEMENT
  *
  */
+ void generateTrialTypes() {
+  for (int i = 0; i < numTrialType1; ++i) {
+    trialTypes[i] = trialType1Idx;
+  }
+  for (int i = numTrialType1; i < NUMBER_OF_TRIALS; ++i) {
+    trialTypes[i] = trialType2Idx;
+  }
+  currentTrialType = trialTypes[0];
+  // This uses Fisher-Yates shuffle to randomize the trial types
+  for (int i = NUMBER_OF_TRIALS-1; i > 0; --i) {
+    int j = random (0, i+1);
+    int temp = trialTypes[i];
+    trialTypes[i] = trialTypes[j];
+    trialTypes[j] = temp;
+  }
+  intArrayToChar(trialTypes, NUMBER_OF_TRIALS, trialTypesChar);
+}
 void trialStart() {
   print("Trial has started");
   trialHasStarted = true;
