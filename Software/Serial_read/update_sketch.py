@@ -20,9 +20,11 @@ class UpdateSketch:
             primary_port (str): Primary port for uploading sketches.
 
         """
+        print("Executing 'write_and_compile_ino'")
         
         # Loop through list of boards
         try:
+            print("Listing boards with 'arduino-cli'")
             output = subprocess.run(["arduino-cli", "board", "list", "--format", "json"], capture_output=True, text=True)
             boards_info = json.loads(output.stdout)
             # After updating arduino-cli use: boards_info['detected_ports']:
@@ -33,20 +35,23 @@ class UpdateSketch:
                     continue
                 fqbn = board['matching_boards'][0]['fqbn']
 
-                # update parameters in .ino file
+                # Update parameters in .ino file
                 params["IS_PRIMARY_RIG"] = com == primary_port
                 self.update_params(params)
                 
                 # Check if platform is installed. If not, install it
                 platform = ":".join(fqbn.split(":")[:-1])
+                print("Listing cores with 'arduino-cli'")
                 output = subprocess.run(["arduino-cli", "core", "list", "--format", "json"], capture_output=True, text=True)
                 cores_info = json.loads(output.stdout)
                 # TODO: After updating arduino-cli uses cores_info['platforms']
+                print("Installing core with 'arduino-cli'")
                 if cores_info is None or platform not in [core["id"] for core in cores_info]:
                     install_command = ["arduino-cli", "core", "install", platform]
                     install_result = subprocess.run(install_command)
                 
                 # Compile and upload .ino file to rig
+                print("Compiling and uploading sketch to board")
                 compile_command = ["arduino-cli", "compile", "-b", fqbn, SKETCH_PATH]
                 upload_command = ["arduino-cli", "upload", SKETCH_PATH, "-p", com, "-b", fqbn]
         
@@ -80,11 +85,14 @@ class UpdateSketch:
     def update_params(self, params: dict): 
         """
         Update parameters in the .ino file.
-        """       
+        """
+        print("Executing 'update_params'")
         try:
+            print(f"Trying to read '{PARAMS_PATH}'")
             with open(PARAMS_PATH, "r") as file:
                 param_content = file.read()
 
+            print("Replacing values from GUI input")
             for param, value in params.items():
                 if isinstance(value, str):
                     value = f"\"{value}\""  # Ensure the value is surrounded by double quotes
@@ -94,6 +102,7 @@ class UpdateSketch:
                 pattern = re.compile(rf"({re.escape(param)}(\[\])?\s*=\s*)(\".*?\"|\d+|true|false);")
                 param_content = re.sub(pattern, rf"\g<1>{value};", param_content)
 
+            print(f"Trying to write to '{PARAMS_PATH}'")
             with open(PARAMS_PATH, "w") as file:
                 file.write(param_content)
                 

@@ -175,7 +175,7 @@ class Window(QWidget):
         # Check that ports and cameras are able to connect
         if not found_an_error:
             try:
-                comm=sc(self.primary_port.text(), 9600)
+                comm = sc(self.primary_port.text(), 9600)
                 comm.close()
 
                 if self.secondary_port.text():
