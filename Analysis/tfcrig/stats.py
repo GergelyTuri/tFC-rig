@@ -459,25 +459,76 @@ class Session:
         )
 
         # Reshape to long format
+        # long_df = []
+        # for stage, col in stage_cols.items():
+        #     temp = mean_df[["group", col]].copy()
+        #     temp = temp.rename(columns={col: "licks"})
+        #     temp["stage"] = stage
+        #     long_df.append(temp)
+        # plot_df = pd.concat(long_df)
+
         long_df = []
         for stage, col in stage_cols.items():
-            temp = mean_df[["group", col]].copy()
+            temp = mean_df[["mouse_id", "group", col] + group_vars].copy()
             temp = temp.rename(columns={col: "licks"})
             temp["stage"] = stage
             long_df.append(temp)
-        plot_df = pd.concat(long_df)
+        plot_df = pd.concat(long_df, ignore_index=True)
 
         # Plot
         plt.figure(figsize=figsize)
-        sns.boxplot(
+        sns.barplot(
             data=plot_df,
             x="stage",
             y="licks",
             hue="group",
             hue_order=hue_order,
             palette=palette,
-            showfliers=False,
+            estimator="mean",
+            # showfliers=False,
         )
+        sns.stripplot(
+            x="stage",
+            y="licks",
+            hue="group",
+            hue_order=hue_order,
+            dodge=True,
+            palette=["black"],
+            data=plot_df,
+        )
+
+        # Add connecting lines per mouse
+        line_df = pd.concat(long_df)
+        line_df["mouse_id"] = (
+            mean_df["mouse_id"].repeat(len(stage_cols)).reset_index(drop=True)
+        )
+
+        sns.lineplot(
+            data=line_df,
+            x="stage",
+            y="licks",
+            units="mouse_id",
+            estimator=None,
+            color="gray",
+            alpha=0.5,
+            linewidth=0.8,
+        )
+
+        # Connect cs+ and cs- values within each stage for the same mouse
+        for stage in plot_df["stage"].unique():
+            stage_df = plot_df[plot_df["stage"] == stage]
+            for mouse_id, group_df in stage_df.groupby("mouse_id"):
+                if group_df.shape[0] == 2:
+                    x_vals = [stage] * 2
+                    y_vals = group_df["licks"].tolist()
+                    plt.plot(
+                        x_vals,
+                        y_vals,
+                        color="gray",
+                        alpha=0.4,
+                        linewidth=1,
+                        zorder=1,
+                    )
 
         plt.title(title or f"Mouse-Averaged Lick Metrics by Group ({self.session_id})")
         plt.xlabel("Stage")
